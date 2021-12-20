@@ -1,37 +1,24 @@
-import React from 'react'
+// routes
+import Router from './routes';
+// theme
+import ThemeConfig from './theme';
+import GlobalStyles from './theme/globalStyles'; 
 
-import { Sidebar, Smallcomponent } from './components';
+import { Navigate, useRoutes } from 'react-router-dom';
+// components
+/* import ScrollToTop from './components/ScrollToTop';
+import { BaseOptionChartStyle } from './components/charts/BaseOptionChart'; */
 
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+// ----------------------------------------------------------------------
 
-const App = () => {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: prefersDarkMode ? 'dark' : 'light',
-        },
-      }),
-    [prefersDarkMode],
-  );
-
+export default function App() {
   return (
-    <>
-      {/* <div className="sidebar">
-        <Sidebar />
-      </div> */}
-      <div className="test-dark-mode-toggle">
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Sidebar />
-        </ThemeProvider>
-      </div>
-    </>
-  )
+    <ThemeConfig>
+     {/*  <ScrollToTop /> */}
+      <GlobalStyles />
+     {/*  <BaseOptionChartStyle /> */}
+     {/* <Navigate to="/dashboard/app" replace /> */}
+      <Router />
+    </ThemeConfig>
+  );
 }
-
-export default App
