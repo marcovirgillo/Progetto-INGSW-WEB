@@ -9,7 +9,8 @@ import { Box } from '@mui/material';
 const RootStyle = styled('div')({
   flexGrow: 1,
   height: '100%',
-  overflow: 'hidden'
+  overflow: 'hidden',
+  backgroundColor: 'black'
 });
 
 const SimpleBarStyle = styled(SimpleBarReact)(({ theme }) => ({
@@ -47,7 +48,7 @@ export default function Scrollbar({ children, sx, ...other }) {
 
   if (isMobile) {
     return (
-      <Box sx={{ overflowX: 'auto', ...sx }} {...other}>
+      <Box sx={{ overflowX: 'auto', ...sx,  backgroundColor: 'black' }} {...other}>
         {children}
       </Box>
     );
