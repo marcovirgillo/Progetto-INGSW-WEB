@@ -24,7 +24,7 @@ a:hover{
 
 .navbar{
   flex: 0.2;
-  background-color: rgb(0, 21, 41);
+  background-color: rgb(0, 0, 0);
 }
 
 .main{
@@ -41,22 +41,79 @@ a:hover{
   margin: 10px;
   height: 100vh;
   margin: 0px;
-  background-color: rgb(0, 21, 41);
+  background-color: rgb(0, 0, 0);
+  width:16%;
 }
 
 .logo-container{
-  background-color: #001529;
+  background-color: #000000;
   display: flex;
   padding: 20px;
   align-items: center;
   width: 100%;
 }
 .logo{
-  margin:0 0 0 15px;
+  margin:14px 0 0 10px;
+  font-family: 'Noto Sans'
 }
 .logo a{
  color: white;
 }
+
+.menu {
+  font-family: 'Noto Sans';
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-variant: tabular-nums;
+  line-height: 1.5715;
+  font-feature-settings: 'tnum';  
+  margin-bottom: 0;
+  padding-left: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 17px;  
+  line-height: 0;
+  text-align: left;
+  list-style: none;
+  background: rgb(0, 0, 0);
+  outline: none;
+  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  transition: background 0.3s, width 0.3s cubic-bezier(0.2, 0, 0, 1) 0s;
+  
+  border-right: 1px solid #000000;
+}
+
+.menu a {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.menu-item {
+  font-size: 25px !important;
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+  margin-top: 7px !important;
+}
+
+.ant-menu-item:hover {
+  color: #0bd0eb  !important;
+}
+
+.ant-menu-item-selected {
+  background-color: #0c3e55 !important;
+}
+
+.ant-menu-item-selected {
+  color: #0bd0eb !important;
+}
+
+.ant-menu-item-selected a{
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.ant-menu-item a:hover {
+  color: #0bd0eb !important;
+}
+
 .menu-control-container{
   display: none !important;
   position: absolute !important;
@@ -370,7 +427,7 @@ width: 70%;
 }
 
 .footer {
-  background-color: #001529;
+  background-color: #000000;
   display: flex;
   flex-direction: column;
   padding: 20px;
