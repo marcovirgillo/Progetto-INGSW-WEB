@@ -32,12 +32,14 @@ const NavBar = () => {
         <div className="nav-container">
             <div className="logo-container">
                 <Avatar src={icon} size="large" />
-                <Typography.Title level={2} className="logo">
+                <Typography.Title level={4} className="logo">
                     <Link to="/">CryptoView</Link>
                 </Typography.Title>
-                <Button className="menu-control-container" onClick={() => setActiveMenu(!activeMenu)}> {/* Clicking the button shows or hides the menu */}
-                    <MenuOutlined />
-                </Button>
+                <Button className="menu-control-container" type="primary" shape="circle" icon={<MenuOutlined />} size={'large'} onClick={() => setActiveMenu(!activeMenu)} /> {/* Clicking the button shows or hides the menu */}
+                
+               {/*  <Button className="menu-control-container" onClick={() => setActiveMenu(!activeMenu)}> 
+                    <MenuOutlined style={{backgroundColor:'black', color:'white'}}/>
+                </Button> */}
             </div>
             {activeMenu && ( //If activeMenu is true then I render the menu like this:
                 <Menu className='menu'>

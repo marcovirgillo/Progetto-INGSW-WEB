@@ -62,8 +62,6 @@ a:hover{
  color: #3bbaf5;
 }
 
-a.ant-typography:focus,
-.ant-typography a:focus,
 a.ant-typography:hover,
 .ant-typography a:hover {
   color: #0AFEED !important;
@@ -183,11 +181,17 @@ a.ant-typography:hover,
   }
 
   .menu-control-container{
+      margin-top: 4px;
+      margin-right: 4px;
       display: block !important;
   }
 
   .ant-btn-primary {
     background-color: #3bbaf5 !important;
+  }
+
+  .ant-btn-primary:active {
+    background-color: #0087D4 !important;
   }
 
   .ant-menu{
