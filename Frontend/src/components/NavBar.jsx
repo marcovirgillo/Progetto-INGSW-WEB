@@ -19,7 +19,7 @@ const NavBar = () => {
     }, []);
 
     useEffect(() => {
-        if (screenSize <= 768) {        
+        if (screenSize <= 1300) {        
           setActiveMenu(false);
         } 
         else {
