@@ -59,7 +59,14 @@ a:hover{
   font-family: 'Noto Sans'
 }
 .logo a{
- color: white;
+ color: #3bbaf5;
+}
+
+a.ant-typography:focus,
+.ant-typography a:focus,
+a.ant-typography:hover,
+.ant-typography a:hover {
+  color: #0AFEED !important;
 }
 
 .menu {
@@ -173,11 +180,14 @@ a:hover{
       position:fixed;
       width: 100%;
       z-index: 100;
-      background-color: var(--bgSecondary);
   }
 
   .menu-control-container{
       display: block !important;
+  }
+
+  .ant-btn-primary {
+    background-color: #3bbaf5 !important;
   }
 
   .ant-menu{
