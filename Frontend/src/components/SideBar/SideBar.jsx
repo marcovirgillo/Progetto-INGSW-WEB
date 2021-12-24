@@ -6,11 +6,10 @@ import { Icon } from '@mui/material';
 import "./SideBar.css"
 
 const getClassnameForItem = (isActive) => {
-    let name = "side-bar-item ";
     if(isActive)
-        name = name + "active";
+        return "active side-bar-item";
 
-    return name;
+    return "side-bar-item";
 }
 
 export default function SideBar() {

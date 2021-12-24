@@ -1,5 +1,7 @@
 :root {
     --bg-color-dark: #1F1F1F;
-    --side-bar-min-width: 280px;
+    --side-bar-min-width: 300px;
     --bg-color-gray: #444444;
+    --bg-color-blue: #32C0FF;
+    --search-bg-color: #5A696B;
 }

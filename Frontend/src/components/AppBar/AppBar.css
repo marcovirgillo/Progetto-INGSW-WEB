@@ -1,0 +1,25 @@
+.app-bar {
+    height: 70px;
+    position: relative;
+    top: 0px;
+    left: var(--side-bar-min-width);
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    background-color: var(--bg-color-dark);
+    align-items: center;
+}
+
+.app-bar-search {
+    height: 36px;
+    margin-left: 30px;
+    width: 300px;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--search-bg-color);
+}
+
+input[type=text] {
+    color: white;
+    margin-left: 50px !important;
+}
