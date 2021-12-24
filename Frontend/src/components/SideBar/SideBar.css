@@ -1,0 +1,23 @@
+.side-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 12%;
+    background-color: #1F1F1F;
+}
+
+.side-bar-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.side-bar-item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 0px 0px 6px 0px;
+    padding: 0;
+}
