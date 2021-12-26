@@ -1,12 +1,8 @@
 .app-bar {
     height: 70px;
-    position: relative;
-    top: 0px;
-    left: var(--side-bar-min-width);
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
+    margin-left: var(--side-bar-min-width);
     background-color: var(--bg-color-dark);
+    display: flex;
     align-items: center;
 }
 
@@ -19,7 +15,15 @@
     background-color: var(--search-bg-color);
 }
 
+.menu-button {
+    width: 1.4em !important;
+}
+
 input[type=text] {
     color: white;
     margin-left: 50px !important;
+}
+
+.spacer {
+    flex: 1 0 0;
 }

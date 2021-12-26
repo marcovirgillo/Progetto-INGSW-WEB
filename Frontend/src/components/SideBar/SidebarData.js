@@ -6,7 +6,7 @@ export const SidebarData = [
         title: "Home",
         icon: <img src={require("../../res/logos/home.png")}  alt="logo" height={24} width={24}/>,
         blueIcon: <img src={require("../../res/logos/homeBlue.png")} alt="logo" height={24} width={24}/>,
-        link: "/home"
+        link: "/"
     },
     {
         title: "Portfolio",
