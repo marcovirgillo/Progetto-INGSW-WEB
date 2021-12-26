@@ -34,3 +34,12 @@ export const SidebarData = [
     }
 ]
 
+export const SideBarOptionalData = [
+    {
+        title: "Profile",
+        icon: <img src={require("../../res/logos/profile.png")} alt="logo" height={24} width={24}/>,
+        blueIcon:  <img src={require("../../res/logos/profileBlue.png")} alt="logo" height={24} width={24}/>,
+        link: "/profile"
+    }
+]
+

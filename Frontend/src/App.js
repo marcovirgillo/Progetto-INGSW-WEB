@@ -20,6 +20,7 @@ export default function App() {
             setSideBarClass("");
 
     }, [sideBarEnabled]);
+    
 
     return (
         <BrowserRouter>

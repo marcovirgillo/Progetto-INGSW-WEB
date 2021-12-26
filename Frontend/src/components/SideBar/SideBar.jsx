@@ -1,9 +1,8 @@
 import React, { Component, useState } from 'react'
-import { SidebarData } from './SidebarData';
+import { SidebarData, SideBarOptionalData } from './SidebarData';
 import { Link } from 'react-router-dom'
-import { Icon } from '@mui/material';
+import { Icon, Divider } from '@mui/material';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
-
 import "./SideBar.css"
 
 //se il bottone è active, aggiungo la classe active per cambiare lo stile
@@ -53,6 +52,17 @@ export default function SideBar(props) {
                                   link={item.link} text={item.title} setItemActive={setItemActive}
                     />
                 ))}
+
+                <div className="vert-spacer"/>
+                <div className="sidebar-profile-section" style={{display: 'none'}}>
+                    <div className="divider" />
+                    {SideBarOptionalData.map((item, val) => (
+                        <SideBarItem key={5 + val} logo={item.icon} blueLogo={item.blueIcon} setSideBarEnabled={props.setSideBarEnabled}
+                                    link={item.link} text={item.title} setItemActive={setItemActive}
+                        />
+                    ))}
+                </div>
+                
             </ul>
         </div>
     );

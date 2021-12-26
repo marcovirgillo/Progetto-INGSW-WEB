@@ -4,8 +4,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    height: 100%;
-    min-width: var(--side-bar-min-width);
+    min-height: 100%;
+    width: var(--side-bar-min-width);
     background-color: var(--bg-color-dark);
 }
 
@@ -13,10 +13,24 @@ ul {
     list-style-type: none;
 }
 
+.divider {
+    height: 1px;
+    width: 260px;
+    background-color: var(--bg-color-gray);
+    margin-bottom: 5px;
+}
+
+.vert-spacer {
+    flex: 1;
+    width: 1px;
+}
+
 .side-bar-list {
     margin: 0;
     padding: 0 20px;
     margin-left: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 .active {

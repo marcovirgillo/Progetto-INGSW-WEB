@@ -6,7 +6,7 @@
         transform: translateX(-100%); 
     } 
 
-    .side-bar.side-bar-active {
+    .side-bar-active {
         transform: translateX(0) !important;
     }
 
@@ -21,6 +21,19 @@
     .side-bar-back-btn {
         display: revert !important;
     }
+
+    .sidebar-profile-section {
+        display: revert !important;
+    }
+
+    .profile-icon {
+        display: none !important;
+    }
+
+    .app-bar-logo {
+        display: revert !important;
+    }
+
 }
 
 #root {
