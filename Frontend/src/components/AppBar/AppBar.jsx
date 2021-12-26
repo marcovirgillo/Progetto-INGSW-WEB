@@ -42,7 +42,7 @@ export default function AppBar(props) {
                     </Icon>
                     <SearchField />
                     <div className="spacer" />
-                    <Icon className="search-icon" style={{display: 'none'}} onClick={() => {props.setSearchMobileOpen(true)}}>
+                    <Icon className="search-icon" style={{display: 'none'}} onClick={() => {console.log("AA"); props.setSearchMobileOpen(true)}}>
                         <img src={require("../../res/logos/search.png")} width={20} height={20}/>
                     </Icon>
                     <Icon className="notification-icon">

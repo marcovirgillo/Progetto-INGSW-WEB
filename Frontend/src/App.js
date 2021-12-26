@@ -12,7 +12,6 @@ export default function App() {
     //lo state inizialmente è vuoto => non passo la classe che attiva la sidebar
     const [sideBarClass, setSideBarClass] = useState("");
     const [sideBarEnabled, setSideBarEnabled] = useState(false);
-
     const [searchMobileOpen, setSearchMobileOpen] = useState(false);
 
     //quando il toggle cambia, cambio lo stato della sidebar class, per capire se deve essere aperta o no
@@ -29,7 +28,7 @@ export default function App() {
             <div className="layout-main">
                 <SideBar setSideBarEnabled={setSideBarEnabled} sideBarClass={sideBarClass}/>
                 <div className="layout-content">
-                    <AppBar setSideBarEnabled={setSideBarEnabled}/>
+                    <AppBar setSideBarEnabled={setSideBarEnabled} setSearchMobileOpen={setSearchMobileOpen} isSearchFieldOpen={searchMobileOpen}/>
                     <div className="layout-content-main">
                         <AppRoutes />
                     </div>
