@@ -8,8 +8,8 @@
 
 .app-bar-logo {
     margin-left: 20px;
-    width: 42px !important;
-    height: 42px !important;
+    width: 50px !important;
+    height: 50px !important;
 }
 
 .app-bar-search-field {
@@ -27,7 +27,7 @@
 
 .app-bar-search:focus {
     outline: none;
-    box-shadow: 0px 0px 20px 4px var(--bg-color-blue);
+    box-shadow: 0px 0px 10px 2px var(--bg-color-blue);
 }
 
 .app-bar-search-icon {
@@ -35,7 +35,32 @@
     left: 30px;
 }
 
-.notification-icon:hover, .profile-icon:hover {
+.app-bar-search-field-mobile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.close-btn {
+    position: relative;
+    right: 10px;
+}
+
+.app-bar-search-mobile {
+    height: 32px;
+    width: 250px;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--search-bg-color);
+}
+
+.app-bar-search-mobile:focus {
+    outline: none;
+}
+
+.notification-icon:hover, .profile-icon:hover, .search-icon:hover {
     background-color: var(--search-bg-color);
     border-radius: 100%;
 }
@@ -50,6 +75,11 @@
     padding: 10px;
 }
 
+.search-icon {
+    padding: 10px;
+    margin-right: 10px;
+}
+
 .menu-button {
     width: 1.4em !important;
 }
@@ -57,6 +87,7 @@
 input[type=text] {
     color: white;
     padding-left: 40px;
+    font-weight: 500;
 }
 
 .spacer {

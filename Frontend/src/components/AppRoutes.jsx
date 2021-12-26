@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 
 import { Route, Routes } from 'react-router-dom'
-import SideBar from './SideBar/SideBar'
+import Home from '../pages/Home'
 
 export default function AppRoutes() {
     return (
         <Routes>
-            <Route path="/" element={<div></div>}/>
-            {/*<Route path="/portfolio" element={Portfolio}/>*/}
+            <Route path="/" exact element={<Home />} />
         </Routes>
     )
 }

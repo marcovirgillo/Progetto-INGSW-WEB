@@ -9,8 +9,11 @@ import React, { useState, useEffect } from 'react';
 
 export default function App() {
     //le due funzioni di stato vengono passate a sideBar e appbar, e servono a chiudere/aprire la sidebar sull'evento onclick dei bottoni
+    //lo state inizialmente è vuoto => non passo la classe che attiva la sidebar
     const [sideBarClass, setSideBarClass] = useState("");
     const [sideBarEnabled, setSideBarEnabled] = useState(false);
+
+    const [searchMobileOpen, setSearchMobileOpen] = useState(false);
 
     //quando il toggle cambia, cambio lo stato della sidebar class, per capire se deve essere aperta o no
     useEffect(() => {
@@ -20,14 +23,17 @@ export default function App() {
             setSideBarClass("");
 
     }, [sideBarEnabled]);
-    
 
     return (
         <BrowserRouter>
-            <SideBar setSideBarEnabled={setSideBarEnabled} sideBarClass={sideBarClass}/>
-            <AppBar setSideBarEnabled={setSideBarEnabled}/>
-            <div>
-                <AppRoutes />
+            <div className="layout-main">
+                <SideBar setSideBarEnabled={setSideBarEnabled} sideBarClass={sideBarClass}/>
+                <div className="layout-content">
+                    <AppBar setSideBarEnabled={setSideBarEnabled}/>
+                    <div className="layout-content-main">
+                        <AppRoutes />
+                    </div>
+                </div>
             </div>
         </BrowserRouter>
     );
