@@ -18,9 +18,9 @@ export default function SideBar(props) {
         const isActive = itemActive === props.text;
     
         return (
-            <ul className={getClassnameForItem(isActive)}>
+            <ul className={getClassnameForItem(isActive)} onClick={() => {props.setItemActive(props.text); props.setSideBarEnabled(false);}}>
                 <li> <Icon sx={{marginRight: 2}}> {isActive ? props.blueLogo : props.logo} </Icon> </li>
-                <li> <Link to={props.link} onClick={() => {props.setItemActive(props.text); props.setSideBarEnabled(false);}}>{props.text}</Link> </li>
+                <li> <Link to={props.link}>{props.text}</Link> </li>
             </ul>
         );
     } 
@@ -48,18 +48,22 @@ export default function SideBar(props) {
             </div>
             <ul className="side-bar-list">
                 {SidebarData.map((item, val) => (
-                     <SideBarItem key={val} logo={item.icon} blueLogo={item.blueIcon} setSideBarEnabled={props.setSideBarEnabled}
-                                  link={item.link} text={item.title} setItemActive={setItemActive}
-                    />
+                    <Link to={item.link} key={val}>
+                        <SideBarItem key={val} logo={item.icon} blueLogo={item.blueIcon} setSideBarEnabled={props.setSideBarEnabled}
+                                    link={item.link} text={item.title} setItemActive={setItemActive}
+                        />
+                    </Link>
                 ))}
 
                 <div className="vert-spacer"/>
                 <div className="sidebar-profile-section" style={{display: 'none'}}>
                     <div className="divider" />
                     {SideBarOptionalData.map((item, val) => (
-                        <SideBarItem key={5 + val} logo={item.icon} blueLogo={item.blueIcon} setSideBarEnabled={props.setSideBarEnabled}
-                                    link={item.link} text={item.title} setItemActive={setItemActive}
-                        />
+                        <Link to={item.link} key={val}>
+                            <SideBarItem key={5 + val} logo={item.icon} blueLogo={item.blueIcon} setSideBarEnabled={props.setSideBarEnabled}
+                                        link={item.link} text={item.title} setItemActive={setItemActive}
+                            />
+                        </Link>
                     ))}
                 </div>
                 

@@ -1,0 +1,1 @@
+L'icona del profilo, quando il sito è in versione mobile, fa uscire una tendina con settings o logout

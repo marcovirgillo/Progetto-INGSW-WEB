@@ -59,14 +59,14 @@ ul {
     color: white;
     position: relative;
     top: -2px;
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .side-bar-item a:visited {
     color: white;
     position: relative;
     top: -2px;
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .side-bar-item:hover {
