@@ -51,7 +51,6 @@
 
 .layout-content-main {
     margin-left: var(--side-bar-min-width);
-    padding: 25px;
 }
 
 #root {

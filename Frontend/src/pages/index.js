@@ -1,6 +1,6 @@
-export { default as Home } from './Home';
-export { default as Dashboard } from './Dashboard';
-export { default as Exchanges } from './Exchanges';
-export { default as News } from './News';
-export { default as Portfolio } from './Portfolio';
-export { default as Profile } from './Profile';
+export { default as Home } from './Home/Home';
+export { default as Dashboard } from './Dashboard/Dashboard';
+export { default as Exchanges } from './Exchange/Exchanges';
+export { default as News } from './News/News';
+export { default as Portfolio } from './Portfolio/Portfolio';
+export { default as Profile } from './Profile/Profile';

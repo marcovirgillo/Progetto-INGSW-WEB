@@ -19,8 +19,8 @@ export default function SideBar(props) {
     
         return (
             <ul className={getClassnameForItem(isActive)} onClick={() => {props.setItemActive(props.text); props.setSideBarEnabled(false);}}>
-                <li> <Icon sx={{marginRight: 2}}> {isActive ? props.blueLogo : props.logo} </Icon> </li>
-                <li> <Link to={props.link}>{props.text}</Link> </li>
+                <Icon sx={{marginRight: 2}}> {isActive ? props.blueLogo : props.logo} </Icon> 
+                <p>{props.text}</p> 
             </ul>
         );
     } 

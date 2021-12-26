@@ -1,0 +1,82 @@
+.home-page {
+    background-color: var(--bg-color-dark);
+}
+
+.paper-grey {
+    background-color: var(--bg-color-gray);
+    border-radius: 8px;
+    width: 99%;
+    height: 100vh;
+    margin-left: 8px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.item {
+    margin-bottom: 10px;
+}
+
+.container {
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.worst-gainers {
+    background: radial-gradient(115.28% 290.48% at 4.5% -15.43%, rgba(238, 16, 16, 0.67) 0%, #3A2B2B 22.92%, #342E2E 56.77%, #353030 100%);
+}
+
+.top-gainers {
+    background: radial-gradient(115.28% 290.48% at 4.5% -15.43%, rgba(114, 238, 16, 0.67) 0%, #2F3A2B 22.92%, #30342E 56.77%, #323530 100%);
+}
+
+.list-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    height: 40px;
+    margin-left: -10px;
+    font-weight: 500;
+}
+
+.list-title {
+    color: #8B8B8B;
+    font-weight: 500;
+}
+
+.list-number {
+    margin-right: 10px;
+    font-size: 0.8em;
+    color: #8B8B8B;
+}
+
+.list-name {
+    margin-right: 8px;
+    color: white;
+    margin-left: 5px;
+}
+
+.list-ticker {
+    color: #8B8B8B;
+}
+
+.list-change-green {
+    margin-right: 15px;
+    color: #49B668;
+}
+
+.list-change-red {
+    margin-right: 15px;
+    color: #B64949;
+}
+
+@media only screen and (max-width: 900px) {
+    .xs-spacer {
+        display: revert !important;
+    }
+}

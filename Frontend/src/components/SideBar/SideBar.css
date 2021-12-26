@@ -39,7 +39,7 @@ ul {
     margin-left: -5px !important;
 }
 
-.active a, .active a:visited {
+.active p {
     color: var(--bg-color-blue) !important;
 }
 
@@ -49,20 +49,13 @@ ul {
     align-items: center;
     justify-content: flex-start;
     margin: 0px 0px 6px 0px;
-    padding: 15px 25px;
+    padding: 15px 25px 15px 50px;
     border-radius: 10px;
     font-weight: 600;
-    padding-left: 50px;
+    height: 25px;
 }
 
-.side-bar-item a {
-    color: white;
-    position: relative;
-    top: -2px;
-    text-decoration: none !important;
-}
-
-.side-bar-item a:visited {
+.side-bar-list a, .side-bar-item p {
     color: white;
     position: relative;
     top: -2px;
