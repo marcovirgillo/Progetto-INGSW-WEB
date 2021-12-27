@@ -15,17 +15,15 @@ const getClassnameForItem = (isActive) => {
 
 export default function SideBar(props) {
     const SideBarItem = (props) => {
-        const isActive = itemActive === props.text;
+        const isActive = window.location.pathname == props.link;
     
         return (
-            <ul className={getClassnameForItem(isActive)} onClick={() => {props.setItemActive(props.text); props.setSideBarEnabled(false);}}>
+            <ul className={getClassnameForItem(isActive)} onClick={() => {props.setSideBarEnabled(false);}}>
                 <Icon sx={{marginRight: 2}}> {isActive ? props.blueLogo : props.logo} </Icon> 
                 <p>{props.text}</p> 
             </ul>
         );
     } 
-
-    const [itemActive, setItemActive] = useState(null);
 
     //questa funzione aggiunge o meno side-bar-active, in base allo stato di app.js
     //se è active, la sidebar torna visibile
@@ -50,7 +48,7 @@ export default function SideBar(props) {
                 {SidebarData.map((item, val) => (
                     <Link to={item.link} key={val}>
                         <SideBarItem key={val} logo={item.icon} blueLogo={item.blueIcon} setSideBarEnabled={props.setSideBarEnabled}
-                                    link={item.link} text={item.title} setItemActive={setItemActive}
+                                     link={item.link} text={item.title} 
                         />
                     </Link>
                 ))}
@@ -61,7 +59,7 @@ export default function SideBar(props) {
                     {SideBarOptionalData.map((item, val) => (
                         <Link to={item.link} key={val}>
                             <SideBarItem key={5 + val} logo={item.icon} blueLogo={item.blueIcon} setSideBarEnabled={props.setSideBarEnabled}
-                                        link={item.link} text={item.title} setItemActive={setItemActive}
+                                        link={item.link} text={item.title} 
                             />
                         </Link>
                     ))}
