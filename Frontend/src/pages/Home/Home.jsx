@@ -3,6 +3,7 @@ import { Grid, Icon } from '@mui/material'
 import "./Home.css"
 import "./../../App.css"
 import { TopGainers, WorstGainers } from "./TestData.js"
+import CriptoTable from './CriptoTable'
 
 const Home = () => {
     return (
@@ -63,6 +64,7 @@ const Home = () => {
                     </Grid>
                     <Grid item lg={1} md={1} sm={6} xs={1} />
                 </Grid>
+                <CriptoTable />
             </div>
         </div>
     )

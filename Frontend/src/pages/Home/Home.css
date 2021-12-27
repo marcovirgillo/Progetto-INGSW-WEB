@@ -1,12 +1,17 @@
 .home-page {
     background-color: var(--bg-color-dark);
+    min-height: 100vh;
+}
+
+.table-item {
+    color: white !important;
 }
 
 .paper-grey {
     background-color: var(--bg-color-gray);
     border-radius: 8px;
     width: 98%;
-    height: 100vh;
+    padding-bottom: 40px;
     margin-left: 8px;
 }
 
