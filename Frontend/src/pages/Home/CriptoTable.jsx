@@ -6,7 +6,7 @@ import "./Home.css"
 export default function CriptoTable() {
     /*Il margine è temporaneo, va sistemato con flexbox*/
     return (
-        <Table sx={{maxWidth: '95%', marginLeft: '20px', marginTop: '20px'}}>
+        <Table className="table" sx={{maxWidth: '95%', marginLeft: '20px', marginTop: '20px'}}>
             <TableHead>
                 <TableRow>
                     <TableCell className="table-item">#</TableCell>

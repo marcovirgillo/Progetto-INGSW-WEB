@@ -3,7 +3,7 @@
     min-height: 100vh;
 }
 
-.table-item {
+.table-item{
     color: white !important;
 }
 
@@ -87,5 +87,13 @@ ul {
 
     .list-item {
         font-size: 0.9em;
+    }
+}
+
+@media only screen and (max-width: 980px) {
+    .table{
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
     }
 }
