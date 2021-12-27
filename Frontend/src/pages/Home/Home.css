@@ -1,14 +1,14 @@
 .home-page {
     background-color: var(--bg-color-dark);
     min-height: 100vh;
+    padding: 0px 10px 10px 10px;
 }
 
 .paper-grey {
     background-color: var(--bg-color-gray);
     border-radius: 8px;
-    width: 98%;
+    width: 100%;
     padding-bottom: 40px;
-    margin-left: 8px;
 }
 
 ul {
@@ -16,7 +16,7 @@ ul {
 }
 
 .item {
-    padding-bottom: 10px;
+    padding-bottom: 30px;
 }
 /* il container di worst e top gainers */
 .container {
@@ -24,6 +24,8 @@ ul {
     width: 100%;
     height: 100%;
     box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    padding-top: 2px;
+    padding-bottom: 10px;
 }
 
 .worst-gainers {
@@ -47,8 +49,12 @@ ul {
 }
 
 .list-title {
-    color: #8B8B8B;
+    color: #FFFFFF;
     font-weight: 500;
+    font-size: 17px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    margin-left: -10px
 }
 
 .list-number {
@@ -103,7 +109,7 @@ ul {
     color: white !important;
     text-align: left !important;
     text-transform: capitalize !important;
-    padding: 15px 10px !important;
+    padding: 10px 0px 10px 15px !important;
 }
 
 .item-green {
@@ -113,8 +119,57 @@ ul {
 .item-red {
     color: var(--price-color-red) !important;
 }
+
+thead th {
+    font-weight: 600 !important;
+    font-size: 16px !important;
+}
+
+tbody tr:hover {
+    background-color: #464646;
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+}
   
 .table:last-child {
     border: hidden !important;
 }
 
+.news-img {
+    border-radius: 15px;
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+}
+
+.news-day-label {
+    margin: 0px 0px 10px 60px;
+    padding: 0;
+    color: white;
+    padding-top: 10px;
+    font-weight: 500;
+}
+
+.news-title {
+    color: var(--bg-color-blue);
+    max-width: 300px;
+    font-weight: 500;
+    font-size: 0.9em;
+}
+
+.news-content {
+    color: white;
+    max-width: 260px;
+    font-size: 0.8em;
+}
+
+.swiper-main {
+    margin-top: 5px;
+    width: 100%;
+}
+
+.swiper-pagination-bullets {
+    bottom: 0px !important; 
+}
+
+/* override di una classe di swiper */
+.swiper-wrapper {
+    padding-left: 10px !important;
+}

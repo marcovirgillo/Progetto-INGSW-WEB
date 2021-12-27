@@ -6,14 +6,13 @@ import "./Home.css"
 export default function CriptoTable() {
     /*Il margine è temporaneo, va sistemato con flexbox*/
     function getPriceClass(price) {
-        console.log(price[0]);
         let className = 'table-item ';
         className += price[0] === '+' ? 'item-green' : 'item-red';
         return className;
     }
 
     return (
-        <Table className="table" sx={{maxWidth: '95%', marginLeft: '20px', marginTop: '20px'}}>
+        <Table className="table" sx={{maxWidth: '95%'}}>
             <TableHead>
                 <TableRow>
                     <TableCell className="table-attribute">#</TableCell>

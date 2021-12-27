@@ -86,3 +86,42 @@ export const CriptoData = [
         chart: "https://s3.coinmarketcap.com/generated/sparklines/web/7d/2781/2010.svg",
     },
 ]
+
+export const NewsData = [
+    {
+        title: "How to store Crypto in 2022",
+        content: "As new cryptocurrency storage ...",
+        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS9zdG9yYWdlL3VwbG9hZHMvdmlldy80MThlODJiNTcwMjk3YmQ4ZGQ0OTMxMTE3MmY3OGE5NS5qcGc=.jpg",
+        link: "https://cointelegraph.com/explained/how-to-store-crypto-in-2022-explained"
+    },
+    {
+        title: "BTC can hit $333k 'parabolically'",
+        content: " change of course from the FED could ...",
+        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvYTJmOGQwZjQtNzhmMy00ZWM1LTllZjYtMmZlNWJiZWVmYzcwLmpwZw==.jpg",
+        link: "https://cointelegraph.com/news/bitcoin-can-hit-333k-parabolically-if-this-btc-price-fractal-plays-out"
+    },
+    {
+        title: "Finance Redefined: Binance leads $60M Multichain funding",
+        content: "Binance Labs was the lead founder in a ...",
+        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvNTViOWRiZmYtNjIxMi00MTdkLWFlMWUtNDlhYTI1MTQzZTI5LmpwZw==.jpg",
+        link: "https://cointelegraph.com/news/finance-redefined-binance-leads-60m-multichain-funding-interlay-raises-6-5m-dec-17-24"
+    },
+    {
+        title: "How to store Crypto in 2022",
+        content: "As new cryptocurrency storage ...",
+        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS9zdG9yYWdlL3VwbG9hZHMvdmlldy80MThlODJiNTcwMjk3YmQ4ZGQ0OTMxMTE3MmY3OGE5NS5qcGc=.jpg",
+        link: "https://cointelegraph.com/explained/how-to-store-crypto-in-2022-explained"
+    },
+    {
+        title: "BTC can hit $333k 'parabolically'",
+        content: " change of course from the FED could ...",
+        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvYTJmOGQwZjQtNzhmMy00ZWM1LTllZjYtMmZlNWJiZWVmYzcwLmpwZw==.jpg",
+        link: "https://cointelegraph.com/news/bitcoin-can-hit-333k-parabolically-if-this-btc-price-fractal-plays-out"
+    },
+    {
+        title: "Finance Redefined: Binance leads $60M Multichain funding",
+        content: "Binance Labs was the lead founder in a ...",
+        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvNTViOWRiZmYtNjIxMi00MTdkLWFlMWUtNDlhYTI1MTQzZTI5LmpwZw==.jpg",
+        link: "https://cointelegraph.com/news/finance-redefined-binance-leads-60m-multichain-funding-interlay-raises-6-5m-dec-17-24"
+    },
+]
