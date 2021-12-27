@@ -3,10 +3,6 @@
     min-height: 100vh;
 }
 
-.table-item{
-    color: white !important;
-}
-
 .paper-grey {
     background-color: var(--bg-color-gray);
     border-radius: 8px;
@@ -22,11 +18,12 @@ ul {
 .item {
     padding-bottom: 10px;
 }
-
+/* il container di worst e top gainers */
 .container {
-    border-radius: 10px;
+    border-radius: 15px;
     width: 100%;
     height: 100%;
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
 }
 
 .worst-gainers {
@@ -72,12 +69,12 @@ ul {
 
 .list-change-green {
     margin-right: 15px;
-    color: #49B668;
+    color: var(--price-color-green);
 }
 
 .list-change-red {
     margin-right: 15px;
-    color: #B64949;
+    color: var(--price-color-red);
 }
 
 @media only screen and (max-width: 900px) {
@@ -86,7 +83,7 @@ ul {
     }
 
     .list-item {
-        font-size: 0.9em;
+        font-size: 0.8em;
     }
 }
 
@@ -97,3 +94,27 @@ ul {
         white-space: nowrap !important;
     }
 }
+
+.table-attribute {
+    color: white !important;
+}
+
+.table-item {
+    color: white !important;
+    text-align: left !important;
+    text-transform: capitalize !important;
+    padding: 15px 10px !important;
+}
+
+.item-green {
+    color: var(--price-color-green) !important;
+}
+
+.item-red {
+    color: var(--price-color-red) !important;
+}
+  
+.table:last-child {
+    border: hidden !important;
+}
+

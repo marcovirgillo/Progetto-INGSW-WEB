@@ -3,6 +3,8 @@ import { Icon } from '@mui/material';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import "./AppBar.css"
+import { Link } from 'react-router-dom'
+
 
 function SearchField() {
     return (
@@ -37,12 +39,14 @@ export default function AppBar(props) {
                         onClick={() => {props.setSideBarEnabled(true)}} > 
                         <MenuRoundedIcon style={{fontSize:32}} /> 
                     </Icon>
-                    <Icon className="app-bar-logo" sx={{display: 'none'}}>
-                        <img src={require("../../res/logos/CryptoViewLogo.png")}  alt="logo-cryptoview" height={50} width={50}/>
+                    <Icon className="app-bar-logo" sx={{display: 'none'}} >
+                    <Link to=""> 
+                        <img src={require("../../res/logos/CryptoViewLogo.png")}  alt="logo-cryptoview" height={50} width={50} />
+                    </Link>
                     </Icon>
                     <SearchField />
                     <div className="spacer" />
-                    <Icon className="search-icon" style={{display: 'none'}} onClick={() => {console.log("AA"); props.setSearchMobileOpen(true)}}>
+                    <Icon className="search-icon" style={{display: 'none'}} onClick={() => {props.setSearchMobileOpen(true)}}>
                         <img src={require("../../res/logos/search.png")} width={20} height={20}/>
                     </Icon>
                     <Icon className="notification-icon">

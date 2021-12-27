@@ -20,7 +20,7 @@ const Home = () => {
                                     TopGainers.map((item, val) => (
                                         <ul key={val} className="list-item">
                                             <p className="list-number">{val+1}</p>
-                                            <Icon> <img src={item.img} width={18} height={18}/> </Icon>
+                                            <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.img} width={18} height={18}/> </Icon>
                                             <p className="list-name">{item.name}</p>
                                             <p className="list-ticker">{item.ticker}</p>
                                             <div className="spacer"> </div>
@@ -42,7 +42,7 @@ const Home = () => {
                                     WorstGainers.map((item, val) => (
                                         <ul key={val} className="list-item">
                                             <p className="list-number">{val+1}</p>
-                                            <Icon> <img src={item.img} width={18} height={18}/> </Icon>
+                                            <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.img} width={18} height={18}/> </Icon>
                                             <p className="list-name">{item.name}</p>
                                             <p className="list-ticker">{item.ticker}</p>
                                             <div className="spacer"> </div>
