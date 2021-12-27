@@ -5,18 +5,25 @@ import "./Home.css"
 
 export default function CriptoTable() {
     /*Il margine è temporaneo, va sistemato con flexbox*/
+    function getPriceClass(price) {
+        console.log(price[0]);
+        let className = 'table-item ';
+        className += price[0] === '+' ? 'item-green' : 'item-red';
+        return className;
+    }
+
     return (
-        <Table sx={{maxWidth: '95%', marginLeft: '20px', marginTop: '20px'}}>
+        <Table className="table" sx={{maxWidth: '95%', marginLeft: '20px', marginTop: '20px'}}>
             <TableHead>
                 <TableRow>
-                    <TableCell className="table-item">#</TableCell>
-                    <TableCell className="table-item">Name</TableCell>
-                    <TableCell className="table-item">Price</TableCell>
-                    <TableCell className="table-item">24h</TableCell>
-                    <TableCell className="table-item">7d</TableCell>
-                    <TableCell className="table-item">Market Cap</TableCell>
-                    <TableCell className="table-item">Volume</TableCell>
-                    <TableCell className="table-item">7d Chart</TableCell>
+                    <TableCell className="table-attribute">#</TableCell>
+                    <TableCell className="table-attribute">Name</TableCell>
+                    <TableCell className="table-attribute">Price</TableCell>
+                    <TableCell className="table-attribute">24h</TableCell>
+                    <TableCell className="table-attribute">7d</TableCell>
+                    <TableCell className="table-attribute">Market Cap</TableCell>
+                    <TableCell className="table-attribute">Volume</TableCell>
+                    <TableCell className="table-attribute">7d Chart</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -31,8 +38,8 @@ export default function CriptoTable() {
                                 </ul>
                             </TableCell>
                             <TableCell className="table-item">{item.price}</TableCell>
-                            <TableCell className="table-item">{item.change_24h}</TableCell>
-                            <TableCell className="table-item">{item.change_7d}</TableCell>
+                            <TableCell className={getPriceClass(item.change_24h)}>{item.change_24h}</TableCell>
+                            <TableCell className={getPriceClass(item.change_7d)}>{item.change_7d}</TableCell>
                             <TableCell className="table-item">{item.m_cap}</TableCell>
                             <TableCell className="table-item">{item.volume}</TableCell>
                             <TableCell className="table-item">

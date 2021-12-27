@@ -15,7 +15,7 @@ const getClassnameForItem = (isActive) => {
 
 export default function SideBar(props) {
     const SideBarItem = (props) => {
-        const isActive = window.location.pathname == props.link;
+        const isActive = window.location.pathname === props.link;
     
         return (
             <ul className={getClassnameForItem(isActive)} onClick={() => {props.setSideBarEnabled(false);}}>
