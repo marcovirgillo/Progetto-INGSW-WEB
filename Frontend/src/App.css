@@ -1,4 +1,4 @@
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 1120px) {
     .side-bar {
         transition: transform 0.3s ease-in-out;
         max-width: 100%;
@@ -32,6 +32,15 @@
 
     .dropdown-profile {
         display: none !important;
+    }
+
+    .dropdown-notification {
+        right: 15px !important;
+        font-size: 0.8em !important;
+    }
+
+    .dropdown-notification-list {
+        padding-top: 30px !important;
     }
 
     .app-bar-logo {

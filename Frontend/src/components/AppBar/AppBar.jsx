@@ -4,10 +4,11 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import "./AppBar.css"
 import { Link } from 'react-router-dom'
+import { Notifications } from "./../../pages/Home/TestData.js";
 
 function DropdownProfile(props) {
     return (
-        <div className={"dropdown-profile " + props.class}>
+        <div className={"dropdown dropdown-profile " + props.class}>
             <ul className="dropdown-profile-list">
                 <ul className="dropdown-list-item-horizontal">
                     <img src={require("../../res/images/avatar.jpg")} width={42} height={42} style={{borderRadius: '100%'}}/>
@@ -22,6 +23,21 @@ function DropdownProfile(props) {
                     <img src={require("../../res/logos/logout.png")} width={34} height={34} />
                     <p className="dropdown-text">Logout</p>
                 </ul>
+            </ul>
+        </div>
+    );
+}
+
+function DropdownNotification(props) {
+    return (
+        <div className={"dropdown dropdown-notification " + props.class}>
+            <ul className="dropdown-notification-list">
+                {Notifications.map((item, val) => (
+                    <ul className="dropdown-list-item-horizontal">
+                        <img src={item.logo} width={20} height={20} style={{borderRadius: '100%'}} />
+                        <p className="dropdown-text">{item.text}</p>
+                    </ul>
+                ))}
             </ul>
         </div>
     );
@@ -49,6 +65,7 @@ function SearchFieldMobile(props) {
 
 export default function AppBar(props) {
     const [dropdownProfileActive, setDropdownProfileActive] = useState(false);
+    const [dropdownNotificationActive, setDropdownNotificationActive] = useState(false);
 
     return (
         <div className="app-bar">
@@ -72,12 +89,13 @@ export default function AppBar(props) {
                     <Icon className="search-icon" style={{display: 'none'}} onClick={() => {props.setSearchMobileOpen(true)}}>
                         <img src={require("../../res/logos/search.png")} width={20} height={20}/>
                     </Icon>
-                    <Icon className="notification-icon">
+                    <Icon className="notification-icon" onClick={()=>{setDropdownNotificationActive(!dropdownNotificationActive)}}>
                         <img src={require("../../res/logos/bell.png")} width={24} height={24}/>
                     </Icon>
                     <Icon className="profile-icon" style={{display: 'revert'}} onClick={()=>{setDropdownProfileActive(!dropdownProfileActive)}}>
                         <img src={require("../../res/logos/profile.png")} width={20} height={20}/>
                     </Icon>
+                    <DropdownNotification class={dropdownNotificationActive ? 'drop-active': ''} />
                     <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} />
                 </React.Fragment>
             )}

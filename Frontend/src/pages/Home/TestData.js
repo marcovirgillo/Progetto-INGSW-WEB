@@ -144,3 +144,30 @@ export const Stats = [
         value: "50.4%"
     }
 ]
+
+export const Notifications = [
+    {
+        text: "Hoge Finance is down -9999% in the last 24h",
+        logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/8438.png",
+    },
+    {
+        text: "Hoge Finance is up +1890% in the last 24h",
+        logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/8438.png",
+    },
+    {
+        text: "BTC is down -12.87% in the last 24h",
+        logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png",
+    },
+    {
+        text: "Hoge Finance is down -9999% in the last 24h",
+        logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/8438.png",
+    },
+    {
+        text: "Hoge Finance is up +1890% in the last 24h",
+        logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/8438.png",
+    },
+    {
+        text: "BTC is down -12.87% in the last 24h",
+        logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png",
+    }
+]

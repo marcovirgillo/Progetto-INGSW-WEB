@@ -107,17 +107,24 @@ input[type=text] {
     border-radius: 10px;
 }
 
-.dropdown-profile {
-    display: revert;
+.dropdown {
     background-color: var(--bg-color-dark);
     border-radius: 10px;
     position: absolute;
     top: calc(var(--app-bar-heigth) + 5px);
     z-index: 10;
-    right: 20px;
     padding: 10px 0px 10px 0px;
     transform: scale(0);
     transition: transform 0.5s ease 0s;
+}
+
+.dropdown-notification {
+    right: 75px;
+}
+
+.dropdown-profile {
+    display: revert;
+    right: 20px;
 }
 
 .dropdown-profile-list {
@@ -127,6 +134,20 @@ input[type=text] {
     justify-content: flex-start;
     margin: 0;
     padding: 0;
+}
+
+.dropdown-notification-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    padding-left: 10px;
+    max-height: 200px;
+    overflow-y: scroll;
+    white-space: nowrap;
+    overflow-x: hidden;
 }
 
 .dropdown-text {
