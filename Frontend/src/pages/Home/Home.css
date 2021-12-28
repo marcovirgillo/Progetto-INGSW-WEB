@@ -50,15 +50,15 @@ ul {
 }
 
 .worst-gainers {
-    background: radial-gradient(115.28% 290.48% at 4.5% -15.43%, rgba(238, 16, 16, 0.67) 0%, #3A2B2B 22.92%, #342E2E 56.77%, #353030 100%);
+    background: radial-gradient(115.28% 290.48% at 4.5% -15.43%, rgba(238, 16, 16, 0.67) 0%, #5A2626 22.92%, #331F1F 56.77%, #2D2727 100%);
 }
 
 .top-gainers {
-    background: radial-gradient(115.28% 290.48% at 4.5% -15.43%, rgba(114, 238, 16, 0.67) 0%, #2F3A2B 22.92%, #30342E 56.77%, #323530 100%);
+    background: radial-gradient(115.28% 290.48% at 4.5% -15.43%, rgba(85, 173, 17, 0.67) 0%, #36532C 22.92%, #2A3626 56.77%, #282C27 100%);
 }
 
 .stats {
-    background: radial-gradient(115.28% 290.48% at 4.5% -15.43%, rgba(21, 125, 171, 0.67) 0%, #1A3846 22.92%, #1E2A2E 56.77%, #233037 100%);
+    background: radial-gradient(115.28% 290.48% at 4.5% -15.43%, rgba(21, 125, 171, 0.67) 0%, #1E404F 22.92%, #1E2A2E 56.77%, #172126 100%);
 }
 
 .list-item {

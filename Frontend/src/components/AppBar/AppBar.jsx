@@ -89,13 +89,24 @@ export default function AppBar(props) {
                     <Icon className="search-icon" style={{display: 'none'}} onClick={() => {props.setSearchMobileOpen(true)}}>
                         <img src={require("../../res/logos/search.png")} width={20} height={20}/>
                     </Icon>
-                    <Icon className="notification-icon" onClick={()=>{setDropdownNotificationActive(!dropdownNotificationActive)}}>
+                    <Icon className="notification-icon" 
+                            onClick={()=>{ if(dropdownProfileActive)
+                                                setDropdownProfileActive(false);
+
+                                            setDropdownNotificationActive(!dropdownNotificationActive)}}
+                    >
                         <img src={require("../../res/logos/bell.png")} width={24} height={24}/>
                     </Icon>
-                    <Icon className="profile-icon" style={{display: 'revert'}} onClick={()=>{setDropdownProfileActive(!dropdownProfileActive)}}>
+                    <Icon className="profile-icon" style={{display: 'revert'}} 
+                            onClick={()=>{  if(dropdownNotificationActive)
+                                                setDropdownNotificationActive(false);
+
+                                            setDropdownProfileActive(!dropdownProfileActive)}}
+                    >
                         <img src={require("../../res/logos/profile.png")} width={20} height={20}/>
                     </Icon>
-                    <DropdownNotification class={dropdownNotificationActive ? 'drop-active': ''} />
+
+                    <DropdownNotification class={dropdownNotificationActive ? ' drop-active': ''} />
                     <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} />
                 </React.Fragment>
             )}
