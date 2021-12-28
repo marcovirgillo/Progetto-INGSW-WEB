@@ -12,9 +12,10 @@ const Home = () => {
         <div className="home-page">
             <div className="paper-grey">
                 <h4 className="news-day-label">News of the day</h4>
+                <NewsSection />
+                <p className="cripto-title">Today's Cryptocurrency Prices by Market Cap</p>
+                <GainersSection />
                 <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    <NewsSection />
-                    <GainersSection />
                     <CriptoTable /> {/* Tabella all criptos */}
                 </ul>
             </div>

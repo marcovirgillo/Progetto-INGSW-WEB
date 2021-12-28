@@ -30,7 +30,7 @@ export default function GainersSection() {
             <Grid item className="xs-spacer" sx={{display:'none'}} sm={1} xs={1} />
             <Grid item className="item" lg={6} md={5} sm={12} xs={5}> {/* Worst gainers card che occupa un numero di colonne specificato sulla base della larghezza dello schermo */}
                 <div className="container worst-gainers">
-                    <ul style={{paddingTop: '2px'}}>
+                    <ul>
                         <p className="list-title">Worst Gainers </p>
 
                         {
@@ -51,7 +51,7 @@ export default function GainersSection() {
             <Grid item className="xs-spacer" sx={{display:'none'}} sm={1} xs={1} />
             <Grid item className="xs-spacer" sx={{display:'none'}} sm={6} xs={1} />
             <Grid className="item" item lg={6} md={5} sm={15} xs={5}>
-                <div style={{backgroundColor: 'yellow', borderRadius: '10px', width:'100%', height:'100%'}}>
+                <div className="container cripto-stats">
                     <ul>
                         Top Gainers
                     </ul>

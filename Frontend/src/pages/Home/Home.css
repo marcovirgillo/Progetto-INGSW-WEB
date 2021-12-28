@@ -18,14 +18,21 @@ ul {
 .item {
     padding-bottom: 30px;
 }
+
+.cripto-title {
+    color: white;
+    margin-left: 70px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
 /* il container di worst e top gainers */
 .container {
     border-radius: 15px;
     width: 100%;
     height: 100%;
     box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
-    padding-top: 2px;
-    padding-bottom: 10px;
+    padding-top: 10px;
 }
 
 .worst-gainers {
@@ -34,6 +41,10 @@ ul {
 
 .top-gainers {
     background: radial-gradient(115.28% 290.48% at 4.5% -15.43%, rgba(114, 238, 16, 0.67) 0%, #2F3A2B 22.92%, #30342E 56.77%, #323530 100%);
+}
+
+.cripto-stats {
+    background: var(--bg-color-blue);
 }
 
 .list-item {
@@ -99,6 +110,15 @@ ul {
         overflow-x: auto !important;
         white-space: nowrap !important;
     }
+
+    .news-img {
+        width: 260px !important;
+    }
+
+    .cripto-title {
+        font-size: 14px !important;
+        margin-left: 50px !important;
+    }
 }
 
 .table-attribute {
@@ -110,11 +130,32 @@ ul {
     text-align: left !important;
     text-transform: capitalize !important;
     padding: 10px 0px 10px 15px !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+}
+
+.item-name {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.item-ticker {
+    margin-left: 5px;
+    color: #a8a7a7;
+}
+
+.chart-green {
+    filter: hue-rotate(85deg) saturate(80%) brightness(0.85);
+}
+
+.chart-red {
+    filter: hue-rotate(300deg) saturate(210%) brightness(0.7) contrast(170%);
 }
 
 .item-green {
     color: var(--price-color-green) !important;
 }
+
 
 .item-red {
     color: var(--price-color-red) !important;
@@ -137,10 +178,11 @@ tbody tr:hover {
 .news-img {
     border-radius: 15px;
     box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    width: 300px;
 }
 
 .news-day-label {
-    margin: 0px 0px 10px 60px;
+    margin: 0px 0px 10px 70px;
     padding: 0;
     color: white;
     padding-top: 10px;
@@ -171,5 +213,5 @@ tbody tr:hover {
 
 /* override di una classe di swiper */
 .swiper-wrapper {
-    padding-left: 10px !important;
+    padding-left: 30px !important;
 }

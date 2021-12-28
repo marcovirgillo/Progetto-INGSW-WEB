@@ -4,10 +4,14 @@ import { CriptoData } from "./TestData.js"
 import "./Home.css"
 
 export default function CriptoTable() {
-    /*Il margine è temporaneo, va sistemato con flexbox*/
     function getPriceClass(price) {
         let className = 'table-item ';
         className += price[0] === '+' ? 'item-green' : 'item-red';
+        return className;
+    }
+
+    function getChartColor(price) {
+        let className = price[0] === '+' ? 'chart-green' : 'chart-red';
         return className;
     }
 
@@ -33,7 +37,8 @@ export default function CriptoTable() {
                             <TableCell className="table-item">
                                 <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
                                     <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
-                                    <p>{item.name}</p>
+                                    <p className="item-name">{item.name}</p>
+                                    <p className="item-ticker">({item.ticker})</p>
                                 </ul>
                             </TableCell>
                             <TableCell className="table-item">{item.price}</TableCell>
@@ -42,7 +47,7 @@ export default function CriptoTable() {
                             <TableCell className="table-item">{item.m_cap}</TableCell>
                             <TableCell className="table-item">{item.volume}</TableCell>
                             <TableCell className="table-item">
-                                <img src={item.chart} />
+                                <img className={getChartColor(item.change_7d)} src={item.chart} />
                             </TableCell>
                         </TableRow>
                     ))

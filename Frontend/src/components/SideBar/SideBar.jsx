@@ -14,6 +14,8 @@ const getClassnameForItem = (isActive) => {
 }
 
 export default function SideBar(props) {
+    const [itemActive, setItemActive] = useState(null);
+
     const SideBarItem = (props) => {
         const isActive = window.location.pathname === props.link;
     
@@ -36,7 +38,7 @@ export default function SideBar(props) {
             <div className="side-bar-logo">
                 <ul className="side-bar-logo-list">
                     <img src={require("../../res/logos/CryptoViewLogo.png")}  alt="logo-cryptoview" height={80} width={80} /> 
-                    <div className="sidebar-logo-text"> <Link to="">CryptoView</Link> </div>
+                    <div className="sidebar-logo-text"> <Link to="" onClick={()=>{setItemActive("/")}}>CryptoView</Link> </div>
                     <ArrowBackIosNewRoundedIcon className="side-bar-back-btn"
                                                 onClick = {() => {props.setSideBarEnabled(false)}}
                                                 sx={{color: 'white', fontSize: 32, marginLeft: 5, display: 'none'}}
@@ -46,7 +48,7 @@ export default function SideBar(props) {
             </div>
             <ul className="side-bar-list">
                 {SidebarData.map((item, val) => (
-                    <Link to={item.link} key={val}>
+                    <Link to={item.link} key={val} onClick={()=>{setItemActive(item.title)}}>
                         <SideBarItem key={val} logo={item.icon} blueLogo={item.blueIcon} setSideBarEnabled={props.setSideBarEnabled}
                                      link={item.link} text={item.title} 
                         />

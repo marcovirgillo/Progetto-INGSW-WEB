@@ -42,7 +42,7 @@ export default function NewsSection() {
                     <SwiperSlide key={val} tag="li">
                         <div>
                             <ul>
-                                <a href={item.link}> <img className="news-img" width={300} src={item.image}/> </a>
+                                <a href={item.link}> <img className="news-img" src={item.image}/> </a>
                                 <p className="news-title">{item.title}</p>
                                 <p className="news-content">{item.content}</p>
                             </ul>
