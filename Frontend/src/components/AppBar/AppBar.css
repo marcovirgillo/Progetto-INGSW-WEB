@@ -97,7 +97,7 @@ input[type=text] {
 .dropdown-list-item-horizontal {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     padding: 0px 15px 0px 15px;
 }
@@ -109,7 +109,7 @@ input[type=text] {
 
 .dropdown {
     background-color: var(--bg-color-dark);
-    border-radius: 10px;
+    border-radius: 10px 0px 10px 10px;
     position: absolute;
     top: calc(var(--app-bar-heigth) + 5px);
     z-index: 10;
@@ -118,8 +118,20 @@ input[type=text] {
     transition: transform 0.5s ease 0s;
 }
 
+.notification-button {
+    width: 100%;
+    padding-left: 20px;
+}
+
+.notification-button:hover {
+    background-color: #505050;
+}
+
 .dropdown-notification {
     right: 75px;
+    max-height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .dropdown-profile {
@@ -143,16 +155,27 @@ input[type=text] {
     justify-content: center;
     margin: 0;
     padding: 0;
-    padding-left: 10px;
-    max-height: 200px;
-    overflow-y: scroll;
-    white-space: nowrap;
-    overflow-x: hidden;
 }
 
 .dropdown-text {
     color: white;
     margin-left: 20px;
+}
+
+.notif-spacer {
+    flex: 1 0 0;
+}
+
+.delete-btn {
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+    margin-right: 5px;
+    padding-right: 20px;
+}
+
+.delete-icon {
+    font-size: 24px;
 }
 
 .dropdown-divider {

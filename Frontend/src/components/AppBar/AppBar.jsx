@@ -5,6 +5,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import "./AppBar.css"
 import { Link } from 'react-router-dom'
 import { Notifications } from "./../../pages/Home/TestData.js";
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 
 function DropdownProfile(props) {
     return (
@@ -29,15 +30,29 @@ function DropdownProfile(props) {
 }
 
 function DropdownNotification(props) {
+    const [notificationList, setNotificationList] = useState(Notifications);
+
+    const deleteNotification = idx => {
+        let notif = [...notificationList.slice(0, idx), ...notificationList.slice(idx+1)]
+        setNotificationList(notif);
+    }
+
     return (
         <div className={"dropdown dropdown-notification " + props.class}>
             <ul className="dropdown-notification-list">
-                {Notifications.map((item, val) => (
-                    <ul className="dropdown-list-item-horizontal">
+                {notificationList.length > 0 && (notificationList.map((item, val) => (
+                    <ul key={val} className="dropdown-list-item-horizontal notification-button">
                         <img src={item.logo} width={20} height={20} style={{borderRadius: '100%'}} />
                         <p className="dropdown-text">{item.text}</p>
+                        <div className="notif-spacer" />
+                        <Icon className="delete-btn" onClick={()=>{deleteNotification(val)}}> 
+                            <DeleteOutlineRoundedIcon className="delete-icon" sx={{color: 'white'}}/> 
+                        </Icon>
                     </ul>
-                ))}
+                )))}
+                {notificationList.length === 0 && (
+                    <p style={{color: 'white', margin: '0px 20px 0px 20px'}}>There are no notifications</p>
+                )}
             </ul>
         </div>
     );
