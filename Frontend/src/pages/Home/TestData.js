@@ -129,3 +129,18 @@ export const NewsData = [
         link: "https://cointelegraph.com/news/finance-redefined-binance-leads-60m-multichain-funding-interlay-raises-6-5m-dec-17-24"
     },
 ]
+
+export const Stats = [
+    {
+        name: "Total Market Cap",
+        value: "2,320 T"
+    },
+    {
+        name: "24h Total Volume",
+        value: "100,321 B"
+    },
+    {
+        name: "Bitcoin dominance",
+        value: "50.4%"
+    }
+]

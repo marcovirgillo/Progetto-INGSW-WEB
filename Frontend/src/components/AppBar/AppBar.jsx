@@ -1,10 +1,31 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { Icon } from '@mui/material';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import "./AppBar.css"
 import { Link } from 'react-router-dom'
 
+function DropdownProfile(props) {
+    return (
+        <div className={"dropdown-profile " + props.class}>
+            <ul className="dropdown-profile-list">
+                <ul className="dropdown-list-item-horizontal">
+                    <img src={require("../../res/images/avatar.jpg")} width={42} height={42} style={{borderRadius: '100%'}}/>
+                    <p className="dropdown-text" >piero_gay</p>
+                </ul>
+                <div className="dropdown-divider" />
+                <ul className="dropdown-list-item-horizontal dropdown-button">      
+                    <img src={require("../../res/logos/settings.png")} width={36} height={36}/>
+                    <p className="dropdown-text">Settings</p>
+                </ul>
+                <ul className="dropdown-list-item-horizontal dropdown-button">
+                    <img src={require("../../res/logos/logout.png")} width={34} height={34} />
+                    <p className="dropdown-text">Logout</p>
+                </ul>
+            </ul>
+        </div>
+    );
+}
 
 function SearchField() {
     return (
@@ -27,6 +48,8 @@ function SearchFieldMobile(props) {
 }
 
 export default function AppBar(props) {
+    const [dropdownProfileActive, setDropdownProfileActive] = useState(false);
+
     return (
         <div className="app-bar">
             {props.isSearchFieldOpen && (
@@ -52,9 +75,10 @@ export default function AppBar(props) {
                     <Icon className="notification-icon">
                         <img src={require("../../res/logos/bell.png")} width={24} height={24}/>
                     </Icon>
-                    <Icon className="profile-icon" style={{display: 'revert'}}>
+                    <Icon className="profile-icon" style={{display: 'revert'}} onClick={()=>{setDropdownProfileActive(!dropdownProfileActive)}}>
                         <img src={require("../../res/logos/profile.png")} width={20} height={20}/>
                     </Icon>
+                    <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} />
                 </React.Fragment>
             )}
         </div>

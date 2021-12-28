@@ -35,6 +35,20 @@ ul {
     padding-top: 10px;
 }
 
+.container-title {
+    margin-top: -10px;
+    margin-left: -20px;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.container-title-icon{
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
 .worst-gainers {
     background: radial-gradient(115.28% 290.48% at 4.5% -15.43%, rgba(238, 16, 16, 0.67) 0%, #3A2B2B 22.92%, #342E2E 56.77%, #353030 100%);
 }
@@ -43,8 +57,8 @@ ul {
     background: radial-gradient(115.28% 290.48% at 4.5% -15.43%, rgba(114, 238, 16, 0.67) 0%, #2F3A2B 22.92%, #30342E 56.77%, #323530 100%);
 }
 
-.cripto-stats {
-    background: var(--bg-color-blue);
+.stats {
+    background: radial-gradient(115.28% 290.48% at 4.5% -15.43%, rgba(21, 125, 171, 0.67) 0%, #1A3846 22.92%, #1E2A2E 56.77%, #233037 100%);
 }
 
 .list-item {
@@ -66,6 +80,11 @@ ul {
     margin-top: 15px;
     margin-bottom: 10px;
     margin-left: -10px
+}
+
+.list-stat {
+    margin-right: 15px;
+    color: #adacac;
 }
 
 .list-number {
@@ -185,7 +204,7 @@ tbody tr:hover {
     margin: 0px 0px 10px 70px;
     padding: 0;
     color: white;
-    padding-top: 10px;
+    padding-top: 15px;
     font-weight: 500;
 }
 

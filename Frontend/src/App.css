@@ -30,6 +30,10 @@
         display: none !important;
     }
 
+    .dropdown-profile {
+        display: none !important;
+    }
+
     .app-bar-logo {
         display: revert !important;
     }
