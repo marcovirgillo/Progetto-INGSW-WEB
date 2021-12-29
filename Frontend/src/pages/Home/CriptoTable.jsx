@@ -16,7 +16,7 @@ export default function CriptoTable() {
     }
 
     return (
-        <Table className="table" sx={{maxWidth: '95%'}}>
+        <Table className="table" sx={{maxWidth: '95%', marginTop: '30px'}}>
             <TableHead>
                 <TableRow>
                     <TableCell className="table-attribute">#</TableCell>

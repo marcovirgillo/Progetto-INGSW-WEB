@@ -19,14 +19,17 @@ export default function NewsSection() {
     });
 
     useEffect(() => {
-        if(screenSize <= 650) 
+        if(screenSize <= 600) 
             setNumItemNewsPage(1);
         
-        else if(screenSize > 650 && screenSize <= 1200) 
+        else if(screenSize > 600 && screenSize <= 1300) 
             setNumItemNewsPage(2);
+        
+        else if(screenSize > 1300 && screenSize <= 1600)
+            setNumItemNewsPage(3);
 
         else
-            setNumItemNewsPage(3);
+            setNumItemNewsPage(4);
         
 
     }, [screenSize]);
