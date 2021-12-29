@@ -39,21 +39,23 @@ function DropdownNotification(props) {
 
     return (
         <div className={"dropdown dropdown-notification " + props.class}>
-            <ul className="dropdown-notification-list">
-                {notificationList.length > 0 && (notificationList.map((item, val) => (
-                    <ul key={val} className="dropdown-list-item-horizontal notification-button">
-                        <img src={item.logo} width={20} height={20} style={{borderRadius: '100%'}} />
-                        <p className="dropdown-text">{item.text}</p>
-                        <div className="notif-spacer" />
-                        <Icon className="delete-btn" onClick={()=>{deleteNotification(val)}}> 
-                            <DeleteOutlineRoundedIcon className="delete-icon" sx={{color: 'white'}}/> 
-                        </Icon>
-                    </ul>
-                )))}
-                {notificationList.length === 0 && (
-                    <p style={{color: 'white', margin: '0px 20px 0px 20px'}}>There are no notifications</p>
-                )}
-            </ul>
+            <div className="dropdown-wrapper">
+                <ul className="dropdown-notification-list">
+                    {notificationList.length > 0 && (notificationList.map((item, val) => (
+                        <ul key={val} className="dropdown-list-item-horizontal notification-button">
+                            <img src={item.logo} width={20} height={20} style={{borderRadius: '100%'}} />
+                            <p className="dropdown-text">{item.text}</p>
+                            <div className="notif-spacer" />
+                            <Icon className="delete-btn" onClick={()=>{deleteNotification(val)}}> 
+                                <DeleteOutlineRoundedIcon className="delete-icon" sx={{color: 'white'}}/> 
+                            </Icon>
+                        </ul>
+                    )))}
+                    {notificationList.length === 0 && (
+                        <p style={{color: 'white', margin: '0px 20px 0px 20px'}}>There are no notifications</p>
+                    )}
+                </ul>
+            </div>
         </div>
     );
 }
