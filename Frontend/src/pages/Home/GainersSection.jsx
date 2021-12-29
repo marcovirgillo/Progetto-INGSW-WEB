@@ -1,9 +1,34 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import { Grid, Icon } from '@mui/material'
 import { TopGainers, WorstGainers, Stats } from './TestData'
 import "./Home.css"
 
+const address = "192.168.1.12";
+
 export default function GainersSection() {
+    const [topGainers, setTopGainers] = useState([]);
+    const [worstPerformes, setWorstPerformers] = useState([]);
+    const [marketStats, setMarketStats] = useState([]);
+
+    //Serve per fetchare da spring
+    /*useEffect(() => {
+        console.log("HERE");
+        fetch(`http://${address}:8080/topGainers`)
+            .then(res => res.json())
+            .then((result) => setTopGainers(result),
+                  (error) => alert("Errore durante la richiesta"));
+
+        fetch(`http://${address}:8080/worstPerformers`)
+            .then(res => res.json())
+            .then((result) => setWorstPerformers(result),
+                  (error) => alert("Errore durante la richiesta"));
+
+        fetch(`http://${address}:8080/marketStats`)
+        .then(res => res.json())
+        .then((result) => setMarketStats(result),
+            (error) => alert("Errore durante la richiesta"));
+    }, []);*/
+
     return (
         <Grid container sx={{margin: '20px 0px 10px 0px'}} columnSpacing={{lg:5, md:2, sm:1, xs:2}} columns={{lg:20, md:17, sm:28, xs:7}}> {/* columnSpacing imposto lo spazio fra ogni colonna sulla base della larghezza dello schermo, columns suddivide la pagina in un numero di colonne specificato sempre sulla base della larghezza dello schermo */}
             <Grid item lg={1} md={1} sm={1} xs={1} /> {/* Grid item imposta un margine di 1 per ogni larghezza di schermo */}
@@ -39,7 +64,7 @@ export default function GainersSection() {
                             TopGainers.map((item, val) => (
                                 <ul key={val} className="list-item">
                                     <p className="list-number">{val+1}</p>
-                                    <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.img} width={18} height={18}/> </Icon>
+                                    <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.logo} width={18} height={18}/> </Icon>
                                     <p className="list-name">{item.name}</p>
                                     <p className="list-ticker">{item.ticker}</p>
                                     <div className="spacer"> </div>
@@ -63,7 +88,7 @@ export default function GainersSection() {
                             WorstGainers.map((item, val) => (
                                 <ul key={val} className="list-item">
                                     <p className="list-number">{val+1}</p>
-                                    <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.img} width={18} height={18}/> </Icon>
+                                    <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.logo} width={18} height={18}/> </Icon>
                                     <p className="list-name">{item.name}</p>
                                     <p className="list-ticker">{item.ticker}</p>
                                     <div className="spacer"> </div>
