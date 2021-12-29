@@ -2,8 +2,10 @@ import React, { Component, useState, useEffect } from 'react'
 import { TableBody, Table, TableCell, TableHead, TableRow } from '@mui/material';
 import { CriptoData } from "./TestData.js"
 import "./Home.css"
+import { useInterval } from '../../components/Hooks.js';
 
 const api_url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d";
+const interval_fetch = 1000 * 60; //60 secondi
 
 export default function CriptoTable() {
     const [marketStats, setMarketStats] = useState([]);
@@ -27,12 +29,16 @@ export default function CriptoTable() {
         return str.substr(0, str.length - 3);
     }
 
-    useEffect(() => {
+    const fetchData = () => {
         fetch(api_url)
             .then((res) => res.json())
             .then((result) => setMarketStats(result),
                   (error) => alert("Error during fetch!"));
-    }, []);
+    };
+
+    useEffect(fetchData, []);
+
+    useInterval(() => fetchData, interval_fetch);
 
     return (
         <Table className="table" sx={{maxWidth: '95%', marginTop: '30px'}}>

@@ -1,22 +1,21 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { Component, useEffect, useState, useRef } from 'react'
 import { Grid, Icon } from '@mui/material'
 import { TopGainers, WorstGainers, Stats } from './TestData'
 import "./Home.css"
 
-const address = "192.168.1.12";
+const address = "95.234.116.220";
 
 export default function GainersSection() {
     const [topGainers, setTopGainers] = useState([]);
-    const [worstPerformes, setWorstPerformers] = useState([]);
+    const [worstPerformers, setWorstPerformers] = useState([]);
     const [marketStats, setMarketStats] = useState([]);
 
     //Serve per fetchare da spring
-    /*useEffect(() => {
-        console.log("HERE");
+    useEffect(() => {
         fetch(`http://${address}:8080/topGainers`)
             .then(res => res.json())
             .then((result) => setTopGainers(result),
-                  (error) => alert("Errore durante la richiesta"));
+                  (error) => alert(error));
 
         fetch(`http://${address}:8080/worstPerformers`)
             .then(res => res.json())
@@ -27,7 +26,7 @@ export default function GainersSection() {
         .then(res => res.json())
         .then((result) => setMarketStats(result),
             (error) => alert("Errore durante la richiesta"));
-    }, []);*/
+    }, []);
 
     return (
         <Grid container sx={{margin: '20px 0px 10px 0px'}} columnSpacing={{lg:5, md:2, sm:1, xs:2}} columns={{lg:20, md:17, sm:28, xs:7}}> {/* columnSpacing imposto lo spazio fra ogni colonna sulla base della larghezza dello schermo, columns suddivide la pagina in un numero di colonne specificato sempre sulla base della larghezza dello schermo */}
@@ -40,7 +39,7 @@ export default function GainersSection() {
                             <div className="list-title">Market Statistics</div>
                         </ul>
                         {
-                            Stats.map((item, val) => (
+                            marketStats.map((item, val) => (
                                 <ul key={val} className="list-item">
                                     <p className="list-name">{item.name}</p>
                                     <div className="spacer"> </div>
@@ -61,7 +60,7 @@ export default function GainersSection() {
                             <div className="list-title">Top Gainers</div>
                         </ul>
                         {
-                            TopGainers.map((item, val) => (
+                            topGainers.map((item, val) => (
                                 <ul key={val} className="list-item">
                                     <p className="list-number">{val+1}</p>
                                     <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.logo} width={18} height={18}/> </Icon>
@@ -85,7 +84,7 @@ export default function GainersSection() {
                             <div className="list-title">Worst Performers</div>
                         </ul>
                         {
-                            WorstGainers.map((item, val) => (
+                            worstPerformers.map((item, val) => (
                                 <ul key={val} className="list-item">
                                     <p className="list-number">{val+1}</p>
                                     <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.logo} width={18} height={18}/> </Icon>
