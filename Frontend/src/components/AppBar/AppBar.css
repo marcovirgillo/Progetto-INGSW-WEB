@@ -157,6 +157,19 @@ input[type=text] {
     padding: 0;
 }
 
+/*::-webkit-scrollbar {
+    width: 16px;
+    height: 16px; 
+}
+    
+::-webkit-scrollbar-thumb {
+   border-radius: 15px; 
+}
+
+::-webkit-scrollbar-track {
+    background-color: yellow;
+}*/
+
 .dropdown-text {
     color: white;
     margin-left: 20px;
