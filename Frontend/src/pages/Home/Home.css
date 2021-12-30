@@ -213,15 +213,11 @@ thead th {
 }
 
 .table-header-list {
-    flex: 1;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    padding:0;
+    display: flex;
 }
 
 tbody tr:hover {
-    background-color: #464646;
+    background-color: #1a1818;
     box-shadow: 0px 1px 30px 1px rgba(0, 0, 0, 0.25);
     border-radius: 15px !important;
 }

@@ -14,6 +14,7 @@ const interval_fetch = 1000 * 120; //60 secondi
 export default function CriptoTable() {
     const [marketStats, setMarketStats] = useState([]);
     const [order, setOrder] = useState("ASC");
+    const [itemActive, setItemActive] = useState(null);
 
     const sorting = (col) => {
         console.log("Ordering by " + col)
@@ -33,6 +34,15 @@ export default function CriptoTable() {
         }
     }
 
+    const isArrowActive = (order, type) => {
+
+        if(itemActive == type) {
+            if(order == "DSC")
+                return <ArrowDropDownRoundedIcon/>;
+
+            return <ArrowDropUpRoundedIcon />;
+        }
+    }
 
     const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
 
@@ -65,6 +75,7 @@ export default function CriptoTable() {
 
     useInterval(() => fetchData, interval_fetch);
 
+
     return (
         <Table className="table" sx={{maxWidth: '95%', marginTop: '30px'}}>
             <TableHead>
@@ -72,16 +83,31 @@ export default function CriptoTable() {
                     <TableCell className="table-attribute">#</TableCell>
                     <TableCell className="table-attribute">Name</TableCell>
                     <TableCell className="table-attribute">Price</TableCell>
-                    <TableCell className="table-attribute" onClick={() => sorting("price_change_percentage_24h")} style={{cursor: 'pointer'}}>
-                       {/*   <ul className="table-header-list">
-                            <a>24h</a>
-                            {order === "DSC" ? <ArrowDropDownRoundedIcon style={{marginTop:'10px'}}/> : <ArrowDropUpRoundedIcon />}
-                         </ul> */}
-                         24h
+                    <TableCell className="table-attribute" onClick={() => {sorting("price_change_percentage_24h"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
+                       {  <span className="table-header-list">
+                            24h
+                            { isArrowActive(order, "24h") }
+                         </span> }
+                        
                     </TableCell>
-                    <TableCell className="table-attribute" onClick={() => sorting("price_change_percentage_7d_in_currency")} style={{cursor: 'pointer'}}>7d</TableCell>
-                    <TableCell className="table-attribute" onClick={() => sorting("market_cap")} style={{cursor: 'pointer'}}>Market Cap</TableCell>
-                    <TableCell className="table-attribute" onClick={() => sorting("total_volume")} style={{cursor: 'pointer'}}>Volume</TableCell>
+                    <TableCell className="table-attribute" onClick={() => {sorting("price_change_percentage_7d_in_currency"); setItemActive("7d")}} style={{cursor: 'pointer'}}>
+                        {  <span className="table-header-list">
+                                7d
+                                { isArrowActive(order, "7d")}
+                            </span> }
+                    </TableCell>
+                    <TableCell className="table-attribute" onClick={() => {sorting("market_cap"); setItemActive("market-cap")}} style={{cursor: 'pointer'}}>
+                        {  <span className="table-header-list">
+                                Market Cap
+                                {isArrowActive(order, "market-cap")}
+                            </span> }
+                    </TableCell>
+                    <TableCell className="table-attribute" onClick={() => {sorting("total_volume"); setItemActive("total-volume"); }} style={{cursor: 'pointer'}}>
+                        {  <span className="table-header-list">
+                                 Volume
+                                {isArrowActive(order, "total-volume")}
+                            </span> }
+                    </TableCell>
                     <TableCell className="table-attribute">7d Chart</TableCell>
                 </TableRow>
             </TableHead>
