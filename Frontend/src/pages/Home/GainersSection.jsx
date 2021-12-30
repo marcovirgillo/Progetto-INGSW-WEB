@@ -3,7 +3,7 @@ import { Grid, Icon } from '@mui/material'
 import { TopGainers, WorstGainers, Stats } from './TestData'
 import "./Home.css"
 
-const address = "95.234.116.220";
+const address = "localhost";
 
 export default function GainersSection() {
     const [topGainers, setTopGainers] = useState([]);
@@ -12,20 +12,21 @@ export default function GainersSection() {
 
     //Serve per fetchare da spring
     useEffect(() => {
+
         fetch(`http://${address}:8080/topGainers`)
             .then(res => res.json())
             .then((result) => setTopGainers(result),
-                  (error) => alert(error));
+                  (error) => console.log("Error fetching top gainers"));
 
         fetch(`http://${address}:8080/worstPerformers`)
             .then(res => res.json())
             .then((result) => setWorstPerformers(result),
-                  (error) => alert("Errore durante la richiesta"));
+                  (error) => console.log("Error fetching worst performers"));
 
         fetch(`http://${address}:8080/marketStats`)
         .then(res => res.json())
         .then((result) => setMarketStats(result),
-            (error) => alert("Errore durante la richiesta"));
+            (error) => console.log("Error fetching market stats"));
     }, []);
 
     return (
