@@ -1,4 +1,4 @@
-package com.example.demo.prova;
+package com.cryptoview.prova;
 
 import java.util.ArrayList;
 
@@ -8,12 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080", "http://192.168.1.12:3000"})
 public class Controller {
 
 	@GetMapping("/topGainers")
 	public ArrayList<Cripto> getTopGainers() {
-		System.out.println("SONO QUA");
 		Cripto c1 = new Cripto("Bitcoin", "BTC", "12.89%", "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png");
 		Cripto c2 = new Cripto("Ethereum", "ETH", "8.49%", "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png");
 		Cripto c3 = new Cripto("HOGE Finance", "HOGE", "4.11%", "https://s2.coinmarketcap.com/static/img/coins/64x64/8438.png");
