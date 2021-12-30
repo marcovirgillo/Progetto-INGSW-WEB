@@ -82,7 +82,12 @@ export default function CriptoTable() {
                 <TableRow>
                     <TableCell className="table-attribute">#</TableCell>
                     <TableCell className="table-attribute">Name</TableCell>
-                    <TableCell className="table-attribute">Price</TableCell>
+                    <TableCell className="table-attribute"onClick={() => {sorting("current_price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
+                    {  <span className="table-header-list">
+                            Price
+                            { isArrowActive(order, "price") }
+                         </span> }
+                    </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("price_change_percentage_24h"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
                        {  <span className="table-header-list">
                             24h

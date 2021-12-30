@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080", "http://192.168.1.12:3000"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"})
 public class Controller {
 
 	@GetMapping("/topGainers")
