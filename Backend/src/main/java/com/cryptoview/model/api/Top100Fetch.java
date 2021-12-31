@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import com.cryptoview.model.CryptoStats;
 
@@ -18,29 +19,36 @@ public class Top100Fetch {
 		return instance;
 	}
 	
-	public ArrayList<CryptoStats> fetch() {
-		String api = API.getInstance().getTop100API();
+	public String fetch() {
 		try {
-			URL obj = new URL(api);
-			HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String inputLine = "";
-			StringBuffer response = new StringBuffer();
-			System.out.println(in.ready());
-			int i = 0;
-			while(i < 100) {
-				System.out.println(inputLine);
-				inputLine = in.readLine();
-				response.append(inputLine);
-				i++;
-			}
-			in.close();
-			//System.out.println(response);
+			String url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d";
+			
+			URL obj = new URL(url);
+			
+			HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
+			conn.setRequestMethod("GET");
+//			conn.connect();
+			
+			//Getting the response code
+			int responsecode = conn.getResponseCode();
+			
+			System.out.println(responsecode);
+			
+			String inline = "";
+		    Scanner scanner = new Scanner(obj.openStream());
+		  
+		   //Write all the JSON data into a string using a scanner
+		    while (scanner.hasNext()) {
+		       inline += scanner.nextLine();
+		    }
+		    
+		    //Close the scanner
+		    scanner.close();
+		    
+		    return inline;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return null;
-		
+		return null;		
 	}
 }
