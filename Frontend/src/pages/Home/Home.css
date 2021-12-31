@@ -133,7 +133,7 @@ ul {
     }
 }
 
-@media only screen and (max-width: 980px) {
+@media only screen and (max-width: 1380px) {
     .table{
         display: block !important;
         overflow-x: auto !important;
@@ -209,6 +209,11 @@ thead th {
     background-color: #464646;
     opacity: 1;
     z-index: 0 !important;
+    min-width: 50px !important;
+}
+
+.table-header-list {
+    display: flex;
 }
 
 tbody tr:hover {

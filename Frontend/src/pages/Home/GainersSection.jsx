@@ -11,22 +11,23 @@ export default function GainersSection() {
     const [marketStats, setMarketStats] = useState([]);
 
     //Serve per fetchare da spring
-    /*useEffect(() => {
+    useEffect(() => {
+
         fetch(`http://${address}:8080/topGainers`)
             .then(res => res.json())
             .then((result) => setTopGainers(result),
-                  (error) => alert(error));
+                  (error) => console.log("Error fetching top gainers"));
 
         fetch(`http://${address}:8080/worstPerformers`)
             .then(res => res.json())
             .then((result) => setWorstPerformers(result),
-                  (error) => alert("Errore durante la richiesta"));
+                  (error) => console.log("Error fetching worst performers"));
 
         fetch(`http://${address}:8080/marketStats`)
         .then(res => res.json())
         .then((result) => setMarketStats(result),
-            (error) => alert("Errore durante la richiesta"));
-    }, []);*/
+            (error) => console.log("Error fetching market stats"));
+    }, []);
 
     return (
         <Grid container sx={{margin: '20px 0px 10px 0px'}} columnSpacing={{lg:5, md:2, sm:1, xs:2}} columns={{lg:20, md:17, sm:28, xs:7}}> {/* columnSpacing imposto lo spazio fra ogni colonna sulla base della larghezza dello schermo, columns suddivide la pagina in un numero di colonne specificato sempre sulla base della larghezza dello schermo */}

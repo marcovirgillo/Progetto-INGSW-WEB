@@ -1,4 +1,4 @@
-package com.example.demo.prova;
+package com.cryptoview.prova;
 
 public class Stats {
 	
