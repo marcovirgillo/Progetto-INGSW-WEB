@@ -1,12 +1,11 @@
 package com.cryptoview.controller;
 
-import java.util.ArrayList;
-
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cryptoview.model.CryptoStats;
 import com.cryptoview.model.api.Top100Fetch;
 
 @RestController
@@ -14,10 +13,13 @@ import com.cryptoview.model.api.Top100Fetch;
 public class CryptoDataController {
 	
 	@GetMapping("/get100")
-	private String getTop100() {
-		String top100 = Top100Fetch.getInstance().fetch();
-		
-		return top100;
+	//restituisce il primo object della lista, quindi la prima cripto, è solo per dimostrare che funfa e che
+	//marco è frocio
+	private JSONObject getTop100() {
+		JSONArray top100 = Top100Fetch.getInstance().fetch();
+		JSONObject obj = (JSONObject) top100.get(0);
+		System.out.println(obj);
+		return obj;
 	}
 	
 

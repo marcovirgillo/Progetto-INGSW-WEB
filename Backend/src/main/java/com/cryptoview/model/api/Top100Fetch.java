@@ -1,13 +1,11 @@
 package com.cryptoview.model.api;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.cryptoview.model.CryptoStats;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
 
 public class Top100Fetch {
 
@@ -19,7 +17,7 @@ public class Top100Fetch {
 		return instance;
 	}
 	
-	public String fetch() {
+	public JSONArray fetch() {
 		try {
 			String url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d";
 			
@@ -45,7 +43,10 @@ public class Top100Fetch {
 		    //Close the scanner
 		    scanner.close();
 		    
-		    return inline;
+		    JSONParser parser = new JSONParser();
+		    JSONArray array = (JSONArray) parser.parse(inline); 
+		    
+		    return array;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
