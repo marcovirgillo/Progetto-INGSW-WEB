@@ -7,19 +7,19 @@ import java.util.Scanner;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 
-public class Top100Fetch {
+public class TopCryptoFetcher {
 
-	private static Top100Fetch instance = null;
+	private static TopCryptoFetcher instance = null;
 	
-	public static Top100Fetch getInstance() {
+	public static TopCryptoFetcher getInstance() {
 		if (instance == null) 
-			instance = new Top100Fetch();
+			instance = new TopCryptoFetcher();
 		return instance;
 	}
 	
-	public JSONArray fetch() {
+	public JSONArray fetch(int cryptoNum) {
 		try {
-			String url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d";
+			String url = API.getInstance().getTopAPI(cryptoNum);
 			
 			URL obj = new URL(url);
 			
