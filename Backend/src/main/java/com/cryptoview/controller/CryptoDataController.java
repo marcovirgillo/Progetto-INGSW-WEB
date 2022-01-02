@@ -20,18 +20,8 @@ import com.cryptoview.model.api.TopCryptoFetcher;
 @RestController
 @CrossOrigin(origins = {"*"})
 public class CryptoDataController {
-	
-	@GetMapping("/topCrypto")
-	//restituisce il primo object della lista, quindi la prima cripto, è solo per dimostrare che funfa e che
-	//marco è frocio
-	private JSONObject getTop100() {
-		JSONArray top100 = TopCryptoFetcher.getInstance().fetch(100);
-		JSONObject obj = (JSONObject) top100.get(0);
-		System.out.println(obj);
-		return obj;
-	}
+	//TODO: Collegare frontend con Market Stats e Top 100 E RENDERE MIGLIORE IL RESPONSIVE DELLE CARDS GAINERS E STATS
 
-	
 	@GetMapping("/getTop100")
 	private List<CryptoDetail> top100(){
 		return TopCryptos.getInstance().getTop100();
