@@ -2,6 +2,7 @@ package com.cryptoview.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -10,14 +11,12 @@ import com.cryptoview.model.Gainers;
 import com.cryptoview.model.api.TopCryptoFetcher;
 
 public class CryptoGainers {
-	private ArrayList <Gainers> topGainers;
-	private ArrayList <Gainers> worstPerformers;
+	private ArrayList <Gainers> gainers;
 	
 	private static CryptoGainers instance = null;
 	
 	private CryptoGainers() {
-		topGainers = new ArrayList<>();
-		worstPerformers = new ArrayList<>();
+		gainers = new ArrayList<>();
 	}
 	
 	public static CryptoGainers getInstance() {
@@ -28,35 +27,39 @@ public class CryptoGainers {
 	}
 	
 	public void fetchData() {
-		topGainers.clear();
-		worstPerformers.clear();
+		JSONArray cryptos = TopCryptoFetcher.getInstance().fetch(250);
 		
-		JSONArray cryptos = TopCryptoFetcher.getInstance().fetch(200);
-		for(int i = 0; i < cryptos.size(); ++i) {
-			JSONObject obj = (JSONObject) cryptos.get(i);
+		synchronized (this) {
+			gainers.clear();
 			
-			Gainers gainerz = new Gainers();
-			gainerz.setChange_24h((Double) obj.get("price_change_percentage_24h"));
-			gainerz.setImage((String) obj.get("image"));
-			gainerz.setName((String) obj.get("name"));
-			gainerz.setId(getNameFromImage((String) obj.get("image")));
+			for(int i = 0; i < cryptos.size(); ++i) {
+				JSONObject obj = (JSONObject) cryptos.get(i);
+				
+				Gainers gainerz = new Gainers();
+				gainerz.setChange((Double) obj.get("price_change_percentage_24h"));
+				gainerz.setLogo((String) obj.get("image"));
+				gainerz.setName((String) obj.get("name"));
+				gainerz.setId(getNameFromImage((String) obj.get("image")));
+				gainerz.setTicker((String) obj.get("symbol"));
+				
+				gainers.add(gainerz);
+			}
 			
-			if(gainerz.getChange_24h() < 0)
-				worstPerformers.add(gainerz);
-			else
-				topGainers.add(gainerz);
+			Collections.sort(gainers);
 		}
-		
-		Collections.sort(topGainers);
-		Collections.sort(worstPerformers);
 	}
 	
-	public ArrayList<Gainers> getTopGainers() {
-		return topGainers;
+	public List<Gainers> getTopGainers() {
+		return gainers.subList(0, 3);
 	}
 	
-	public ArrayList<Gainers> getWorstPerformers() {
-		return worstPerformers;
+	public List<Gainers> getWorstPerformers() {
+		System.out.println(gainers.size());
+		List <Gainers> tmp = gainers.subList(gainers.size() - 3, gainers.size());
+		Gainers first = tmp.get(0);
+		tmp.set(0, tmp.get(2));
+		tmp.set(2, first);
+		return tmp;
 	}
 
 	private Integer getNameFromImage(String name) {

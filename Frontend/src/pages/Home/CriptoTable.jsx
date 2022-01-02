@@ -64,6 +64,13 @@ export default function CriptoTable() {
         return str.substring(0, str.length - 3);
     }
 
+    function getFormattedPrice(price) {
+        if(price > 1)
+            return formatter.format(price);
+        else 
+            return "$" + price;
+    }
+
     const fetchData = () => {
         fetch(api_url)
             .then((res) => res.json())
@@ -128,7 +135,9 @@ export default function CriptoTable() {
                                     <p className="item-ticker">({item.symbol.toUpperCase()})</p>
                                 </ul>
                             </TableCell>
-                            <TableCell className="table-item">{formatter.format(item.current_price)}</TableCell>
+                            <TableCell className="table-item">
+                                {getFormattedPrice(item.current_price)}
+                            </TableCell>
                             <TableCell className={getPriceClass(item.price_change_percentage_24h)}>
                                 {item.price_change_percentage_24h.toFixed(2)} %
                             </TableCell>

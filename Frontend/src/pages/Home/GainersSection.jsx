@@ -23,10 +23,10 @@ export default function GainersSection() {
             .then((result) => setWorstPerformers(result),
                   (error) => console.log("Error fetching worst performers"));
 
-        fetch(`http://${address}:8080/marketStats`)
+        /*fetch(`http://${address}:8080/marketStats`)
         .then(res => res.json())
         .then((result) => setMarketStats(result),
-            (error) => console.log("Error fetching market stats"));
+            (error) => console.log("Error fetching market stats"));*/
     }, []);
 
     return (
@@ -61,7 +61,7 @@ export default function GainersSection() {
                             <div className="list-title">Top Gainers</div>
                         </ul>
                         {
-                            TopGainers.map((item, val) => (
+                            topGainers.map((item, val) => (
                                 <ul key={val} className="list-item">
                                     <p className="list-number">{val+1}</p>
                                     <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.logo} width={18} height={18}/> </Icon>
@@ -85,7 +85,7 @@ export default function GainersSection() {
                             <div className="list-title">Worst Performers</div>
                         </ul>
                         {
-                            WorstGainers.map((item, val) => (
+                            worstPerformers.map((item, val) => (
                                 <ul key={val} className="list-item">
                                     <p className="list-number">{val+1}</p>
                                     <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.logo} width={18} height={18}/> </Icon>

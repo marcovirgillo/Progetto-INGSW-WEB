@@ -2,9 +2,10 @@ package com.cryptoview.model;
 
 public class Gainers implements Comparable <Gainers>{
 	private Integer id;
-	private String image;
-	private Double change_24h;
+	private String logo;
+	private Double change;
 	private String name;
+	private String ticker;
 	
 	public Gainers() {
 		// TODO Auto-generated constructor stub
@@ -13,56 +14,60 @@ public class Gainers implements Comparable <Gainers>{
 	public Gainers(Integer id, String image, Double change_24h, String name) {
 		super();
 		this.id = id;
-		this.image = image;
-		this.change_24h = change_24h;
+		this.logo = image;
+		this.change = change_24h;
 		this.name = name;
 	}
 
 	public Integer getId() {
 		return id;
 	}
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getImage() {
-		return image;
+	
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
-	public void setImage(String image) {
-		this.image = image;
+	
+	public String getLogo() {
+		return logo;
 	}
-	public Double getChange_24h() {
-		return change_24h;
+	
+	public Double getChange() {
+		return change;
 	}
-	public void setChange_24h(Double change_24h) {
-		this.change_24h = change_24h;
+	
+	public void setChange(Double change) {
+		this.change = change;
 	}
+	
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public void setTicker(String ticker) {
+		this.ticker = ticker;
+	}
+	
+	public String getTicker() {
+		return ticker;
 	}
 
 	@Override
 	public int compareTo(Gainers gainerz) {
-		if(this.change_24h < 0 && gainerz.change_24h < 0) {
-			if(this.change_24h > gainerz.change_24h)
-				return 1;
-			
-			if(this.change_24h == gainerz.change_24h)
-				return 0;
-			
+		if(this.change > gainerz.change)
 			return -1;
-		}
-		else {
-			if(this.change_24h > gainerz.change_24h)
-				return -1;
-			
-			if(this.change_24h == gainerz.change_24h)
-				return 0;
-			
-			return 1;
-		}
+		
+		if(this.change == gainerz.change)
+			return 0;
+		
+		return 1;
 	}
 	
 }

@@ -25,12 +25,13 @@ public class TopCryptoFetcher {
 			
 			HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
 			conn.setRequestMethod("GET");
-//			conn.connect();
 			
 			//Getting the response code
 			int responsecode = conn.getResponseCode();
 			
-			System.out.println(responsecode);
+			if(responsecode != 200)
+				return null;
+			//TODO errore
 			
 			String inline = "";
 		    Scanner scanner = new Scanner(obj.openStream());

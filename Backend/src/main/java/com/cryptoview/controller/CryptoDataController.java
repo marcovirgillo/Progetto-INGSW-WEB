@@ -1,6 +1,7 @@
 package com.cryptoview.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -13,7 +14,7 @@ import com.cryptoview.service.CryptoGainers;
 import com.cryptoview.model.api.TopCryptoFetcher;
 
 @RestController
-@CrossOrigin(origins = {"localhost:3000", "localhost:8080"})
+@CrossOrigin(origins = {"*"})
 public class CryptoDataController {
 	
 	@GetMapping("/topCrypto")
@@ -26,17 +27,13 @@ public class CryptoDataController {
 		return obj;
 	}
 	
-	@GetMapping("/getTopGainers")
-	private ArrayList <Gainers> getTopGainers() {
-		//Il fetch deve essere fatto ogni tot, e non ad ogni richiesta
-		//è qui solo per test
-		CryptoGainers.getInstance().fetchData();
+	@GetMapping("/topGainers")
+	private List <Gainers> getTopGainers() {
 		return CryptoGainers.getInstance().getTopGainers();
 	}
 	
-	@GetMapping("/getWorstPerformers")
-	private ArrayList <Gainers> getWorstPerformers() {
-		CryptoGainers.getInstance().fetchData();
+	@GetMapping("/worstPerformers")
+	private List <Gainers> getWorstPerformers() {
 		return CryptoGainers.getInstance().getWorstPerformers();
 	}
 }
