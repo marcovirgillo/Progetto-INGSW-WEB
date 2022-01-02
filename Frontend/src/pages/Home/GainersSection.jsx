@@ -34,7 +34,7 @@ export default function GainersSection() {
             return "+" + change.toFixed(2);
         }
         
-        return change.toFixed(2);  
+        return change.toFixed(2)  
     }
 
     return (
