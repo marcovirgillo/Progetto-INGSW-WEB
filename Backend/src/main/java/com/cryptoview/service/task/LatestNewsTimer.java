@@ -11,7 +11,7 @@ import com.cryptoview.service.LatestNews;
 public class LatestNewsTimer implements DisposableBean, Runnable {
 
 	//è la frequenza di aggiornamento in millisecondi dei topGainers/worstPerformers
-	private final int FREQUENCY = 1000 * 60 * 10; //update ogni 10 minuti
+	private final int FREQUENCY = 1000 * 60 * 30; //update ogni 30 minuti
 	
 	private long lastUpdate = 0;
 	
