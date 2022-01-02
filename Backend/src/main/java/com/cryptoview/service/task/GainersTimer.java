@@ -3,8 +3,9 @@ package com.cryptoview.service.task;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Component;
 
-import com.cryptoview.service.CryptoGainers;
+import com.cryptoview.service.TopCryptos;
 import com.cryptoview.service.LatestNews;
+import com.cryptoview.service.MarketStats;
 
 //è la classe che si occupa di processare dati ogni tot tempo, in modo da averli pronti ad ogni richiesta
 @Component
@@ -28,15 +29,22 @@ public class GainersTimer implements DisposableBean, Runnable {
 		while(isRunning) {
 			if(System.currentTimeMillis() - lastUpdate > FREQUENCY) {
 				updateGainers();
+				updateStats();
 
 				lastUpdate = System.currentTimeMillis();
 			}
 		}
 	}
 
+	private void updateStats() {
+		System.out.println(java.time.LocalDateTime.now() + " UPDATE Market Statistics");
+		MarketStats.getInstance().fetchData();
+		System.out.println(java.time.LocalDateTime.now() + " FETCHED Market Statistics");
+	}
+
 	private void updateGainers() {
 		System.out.println(java.time.LocalDateTime.now() + " UPDATE Gainers");
-		CryptoGainers.getInstance().fetchData();
+		TopCryptos.getInstance().fetchData();
 		System.out.println(java.time.LocalDateTime.now() + " FETCHED Gainers");
 	}
 

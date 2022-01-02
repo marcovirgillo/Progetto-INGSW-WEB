@@ -7,6 +7,8 @@ import java.util.Scanner;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 
+import com.cryptoview.service.log.Logger;
+
 public class TopCryptoFetcher {
 
 	private static TopCryptoFetcher instance = null;
@@ -29,9 +31,10 @@ public class TopCryptoFetcher {
 			//Getting the response code
 			int responsecode = conn.getResponseCode();
 			
-			if(responsecode != 200)
-				return null;
-			//TODO errore
+			if(responsecode != 200) {
+				System.out.println(java.time.LocalDateTime.now() + " ERROR fetching Top Cryptos. [" + responsecode + "]");
+				Logger.getInstance().addEvent("ERROR fetching Top Cryptos. [" + responsecode + "]");
+			}
 			
 			String inline = "";
 		    Scanner scanner = new Scanner(obj.openStream());

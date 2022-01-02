@@ -10,19 +10,19 @@ import org.json.simple.parser.JSONParser;
 
 import com.cryptoview.service.log.Logger;
 
-public class LatestNewsFetcher {
+public class MarketStatsFetcher {
+
+private static MarketStatsFetcher instance = null;
 	
-	private static LatestNewsFetcher instance = null;
-	
-	public static LatestNewsFetcher getInstance() {
+	public static MarketStatsFetcher getInstance() {
 		if (instance == null) 
-			instance = new LatestNewsFetcher();
+			instance = new MarketStatsFetcher();
 		return instance;
 	}
 	
-	public JSONArray fetch(int newsNum) {
+	public JSONObject fetch() {
 		try {
-			String url = API.getInstance().getNewsAPI(newsNum);
+			String url = API.getInstance().getMarketStatsAPI();
 			
 			URL obj = new URL(url);
 			
@@ -33,8 +33,8 @@ public class LatestNewsFetcher {
 			int responsecode = conn.getResponseCode();
 			
 			if(responsecode != 200) {
-				System.out.println(java.time.LocalDateTime.now() + " ERROR fetching Latest News. [" + responsecode + "]");
-				Logger.getInstance().addEvent("ERROR fetching Latest News. [" + responsecode + "]");
+				System.out.println(java.time.LocalDateTime.now() + " ERROR fetching Market Stats. [" + responsecode + "]");
+				Logger.getInstance().addEvent("ERROR fetching Market Stats. [" + responsecode + "]");
 			}
 			
 			String inline = "";
@@ -51,9 +51,9 @@ public class LatestNewsFetcher {
 		    JSONParser parser = new JSONParser();
 		    JSONObject result = (JSONObject) parser.parse(inline); 
 		    
-		    JSONArray news = (JSONArray) result.get("articles");
+		    JSONObject stats = (JSONObject) result.get("data");
 		    
-		    return news;
+		    return stats;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
