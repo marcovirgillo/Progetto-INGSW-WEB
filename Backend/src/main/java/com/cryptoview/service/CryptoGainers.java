@@ -16,7 +16,7 @@ public class CryptoGainers {
 	private static CryptoGainers instance = null;
 	
 	private CryptoGainers() {
-		gainers = new ArrayList<>();
+		gainers = new ArrayList<Gainers>();
 	}
 	
 	public static CryptoGainers getInstance() {
@@ -39,7 +39,7 @@ public class CryptoGainers {
 				gainerz.setChange((Double) obj.get("price_change_percentage_24h"));
 				gainerz.setLogo((String) obj.get("image"));
 				gainerz.setName((String) obj.get("name"));
-				gainerz.setId(getNameFromImage((String) obj.get("image")));
+				gainerz.setId(getNameFromImage((String) obj.get("image")));				
 				gainerz.setTicker((String) obj.get("symbol"));
 				
 				gainers.add(gainerz);
@@ -54,11 +54,11 @@ public class CryptoGainers {
 	}
 	
 	public List<Gainers> getWorstPerformers() {
-		System.out.println(gainers.size());
+		//System.out.println(gainers.size());
 		List <Gainers> tmp = gainers.subList(gainers.size() - 3, gainers.size());
-		Gainers first = tmp.get(0);
-		tmp.set(0, tmp.get(2));
-		tmp.set(2, first);
+		
+		Collections.reverse(tmp);
+
 		return tmp;
 	}
 

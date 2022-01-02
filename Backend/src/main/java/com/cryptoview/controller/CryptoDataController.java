@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cryptoview.model.Gainers;
+import com.cryptoview.model.News;
 import com.cryptoview.service.CryptoGainers;
+import com.cryptoview.service.LatestNews;
 import com.cryptoview.model.api.TopCryptoFetcher;
 
 @RestController
@@ -28,12 +30,17 @@ public class CryptoDataController {
 	}
 	
 	@GetMapping("/topGainers")
-	private List <Gainers> getTopGainers() {
+	private List<Gainers> getTopGainers() {
 		return CryptoGainers.getInstance().getTopGainers();
 	}
 	
 	@GetMapping("/worstPerformers")
-	private List <Gainers> getWorstPerformers() {
+	private List<Gainers> getWorstPerformers() {
 		return CryptoGainers.getInstance().getWorstPerformers();
+	}
+	
+	@GetMapping("/latestNews")
+	private List<News> getLatestNews(){
+		return LatestNews.getInstance().getLatestNews();
 	}
 }
