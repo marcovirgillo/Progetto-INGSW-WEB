@@ -42,9 +42,9 @@ public class GainersTimer implements DisposableBean, Runnable {
 	}
 
 	private void updateGainers() {
-		System.out.println(java.time.LocalDateTime.now() + " UPDATE Gainers");
+		System.out.println(java.time.LocalDateTime.now() + " UPDATE Crypto Detail");
 		TopCryptos.getInstance().fetchData();
-		System.out.println(java.time.LocalDateTime.now() + " FETCHED Gainers");
+		System.out.println(java.time.LocalDateTime.now() + " FETCHED Crypto Detail");
 	}
 
 	@Override
