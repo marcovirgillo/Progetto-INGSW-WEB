@@ -23,6 +23,18 @@ public class MarketStats {
 		return instance;
 	}
 	
+	// imposta il multiplo del valore attuale relativo al market cap e al volume
+	private String setValue(Double value, String valueStr) {
+		if (value < Math.pow(10, 6))
+			return valueStr.substring(0, 5) + " K";
+		else if (value >= Math.pow(10, 6) && value < Math.pow(10, 9))
+			return valueStr.substring(0, 5) + " M";
+		else if (value >= Math.pow(10, 9) && value < Math.pow(10, 12))
+			return valueStr.substring(0, 5) + " B";
+		else 
+			return valueStr.substring(0, 5) + " T";
+	}
+	
 	public void fetchData() {
 		JSONObject statsJSON = MarketStatsFetcher.getInstance().fetch();
 		
@@ -30,19 +42,25 @@ public class MarketStats {
 			stats.clear();
 			
 			JSONObject total_market_capJSON = (JSONObject) statsJSON.get("total_market_cap");
-			String total_market_cap = total_market_capJSON.get("usd").toString();
+			Double total_market_cap = (Double) total_market_capJSON.get("usd");
+			String total_market_cap_str = total_market_cap.toString();
 			Stats obj = new Stats();
 			obj.setName("Total market cap");
-			obj.setValue(total_market_cap.substring(0,5) + " B");
+			obj.setValue(setValue(total_market_cap, total_market_cap_str));
 			stats.add(obj);
+			
 			
 			
 			Stats obj2 = new Stats();
 			JSONObject volume_24h_JSON = (JSONObject) statsJSON.get("total_volume");
-			String volume_24h = volume_24h_JSON.get("usd").toString();
+			Double volume_24h = (Double) volume_24h_JSON.get("usd");
+			String volume_24h_str = volume_24h.toString();
 			obj2.setName("Volume 24h");
-			obj2.setValue(volume_24h.substring(0, 5) + " B");
+			obj2.setValue(setValue(volume_24h, volume_24h_str));
+			
+			
 			stats.add(obj2);
+			
 			
 			Stats obj3 = new Stats();
 			JSONObject dominance = (JSONObject) statsJSON.get("market_cap_percentage");
