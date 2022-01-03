@@ -1,6 +1,7 @@
 package com.cryptoview.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -66,19 +67,25 @@ public class TopCryptos {
 	}
 	
 	public List<CryptoDetail> getTopGainers() {
+		if(cryptosList.isEmpty())
+			return Arrays.asList();
+		
 		return cryptosList.subList(0, 3);
 	}
 	
 	public List<CryptoDetail> getWorstPerformers() {
-		//System.out.println(gainers.size());
-		List <CryptoDetail> tmp = cryptosList.subList(cryptosList.size() - 3, cryptosList.size());
+		if(cryptosList.isEmpty())
+			return Arrays.asList();
 		
+		List <CryptoDetail> tmp = cryptosList.subList(cryptosList.size() - 3, cryptosList.size());
 		Collections.reverse(tmp);
-
 		return tmp;
 	}
 	
 	public List<CryptoDetail> getTop100(){
+		if(top100Cryptos == null)
+			return Arrays.asList();
+		
 		return top100Cryptos;
 	}
 

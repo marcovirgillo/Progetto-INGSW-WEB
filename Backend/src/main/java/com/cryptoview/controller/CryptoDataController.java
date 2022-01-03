@@ -1,11 +1,7 @@
 package com.cryptoview.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +12,6 @@ import com.cryptoview.model.Stats;
 import com.cryptoview.service.LatestNews;
 import com.cryptoview.service.MarketStats;
 import com.cryptoview.service.TopCryptos;
-import com.cryptoview.model.api.TopCryptoFetcher;
 
 @RestController
 @CrossOrigin(origins = {"*"})

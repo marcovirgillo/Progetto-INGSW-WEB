@@ -2,12 +2,9 @@ package com.cryptoview.service;
 
 import java.util.ArrayList;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.cryptoview.model.News;
 import com.cryptoview.model.Stats;
-import com.cryptoview.model.api.LatestNewsFetcher;
 import com.cryptoview.model.api.MarketStatsFetcher;
 
 public class MarketStats {
@@ -50,7 +47,7 @@ public class MarketStats {
 			String btc_dominance = dominance.get("btc").toString();
 			
 			obj3.setName("Bitcoin dominance");
-			obj3.setValue(btc_dominance);
+			obj3.setValue(btc_dominance.substring(0, 5) + "%");
 			stats.add(obj3);
 		}
 	}

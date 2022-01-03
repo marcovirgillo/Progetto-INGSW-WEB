@@ -1,4 +1,5 @@
-@media only screen and (max-width: 1310px) {
+/* rende la sidebar fissa oppure no*/
+@media only screen and (max-width: 1500px) {
     .side-bar {
         transition: transform 0.3s ease-in-out;
         max-width: 100%;

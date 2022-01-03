@@ -1,15 +1,12 @@
 package com.cryptoview.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.model.News;
 import com.cryptoview.model.api.LatestNewsFetcher;
-import com.cryptoview.model.api.TopCryptoFetcher;
 
 public class LatestNews {
 	private ArrayList <News> latestNews;
@@ -28,7 +25,7 @@ public class LatestNews {
 	}
 	
 	public void fetchData() {
-		JSONArray latestNewsJSON = LatestNewsFetcher.getInstance().fetch(8);
+		JSONArray latestNewsJSON = LatestNewsFetcher.getInstance().fetch();
 		
 		synchronized (this) {
 			latestNews.clear();

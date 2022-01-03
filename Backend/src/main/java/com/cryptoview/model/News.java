@@ -38,6 +38,6 @@ public class News {
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = description.substring(0, Math.min(80, description.length()));
 	}
 }
