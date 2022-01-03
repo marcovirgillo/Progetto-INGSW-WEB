@@ -1,5 +1,7 @@
 package com.cryptoview.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import org.json.simple.JSONObject;
@@ -23,16 +25,26 @@ public class MarketStats {
 		return instance;
 	}
 	
+	private String useBigDecimal(Double value, Integer multiple, String multipleChar) { 
+		value = value / Math.pow(10, multiple);
+		BigDecimal bd = new BigDecimal(value);
+		bd.setScale(2, RoundingMode.DOWN);
+		
+		return bd.toPlainString().substring(0,5) + " " + multipleChar;
+	}
+	
 	// imposta il multiplo del valore attuale relativo al market cap e al volume
 	private String setOrder(Double value, String valueStr) {
-		if (value < Math.pow(10, 6))
-			return valueStr.substring(0, 5) + " K";
-		else if (value >= Math.pow(10, 6) && value < Math.pow(10, 9))
-			return valueStr.substring(0, 5) + " M";
-		else if (value >= Math.pow(10, 9) && value < Math.pow(10, 12))
-			return valueStr.substring(0, 5) + " B";
-		else 
-			return valueStr.substring(0, 5) + " T";
+		if (value < Math.pow(10, 6)) 	
+			return useBigDecimal(value, 3, "K");
+		
+		if (value >= Math.pow(10, 6) && value < Math.pow(10, 9)) 
+			return useBigDecimal(value, 6, "M");
+		
+		if (value >= Math.pow(10, 9) && value < Math.pow(10, 12)) 
+			return useBigDecimal(value, 9, "B");
+		
+		return useBigDecimal(value, 12, "T");
 	}
 	
 	public void fetchData() {
@@ -49,8 +61,6 @@ public class MarketStats {
 			obj.setValue(setOrder(total_market_cap, total_market_cap_str));
 			stats.add(obj);
 			
-			
-			
 			Stats obj2 = new Stats();
 			JSONObject volume_24h_JSON = (JSONObject) statsJSON.get("total_volume");
 			Double volume_24h = (Double) volume_24h_JSON.get("usd");
@@ -58,9 +68,7 @@ public class MarketStats {
 			obj2.setName("Volume 24h");
 			obj2.setValue(setOrder(volume_24h, volume_24h_str));
 			
-			
 			stats.add(obj2);
-			
 			
 			Stats obj3 = new Stats();
 			JSONObject dominance = (JSONObject) statsJSON.get("market_cap_percentage");
