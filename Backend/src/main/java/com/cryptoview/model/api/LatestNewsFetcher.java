@@ -8,6 +8,10 @@ public class LatestNewsFetcher {
 	
 	private static LatestNewsFetcher instance = null;
 	
+	private LatestNewsFetcher() {
+		
+	}
+	
 	public static LatestNewsFetcher getInstance() {
 		if (instance == null) 
 			instance = new LatestNewsFetcher();

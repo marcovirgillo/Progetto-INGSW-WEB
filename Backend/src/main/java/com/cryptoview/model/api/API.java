@@ -10,6 +10,8 @@ public class API {
 	private final String topAPIPart2 = "&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d";
 	private final String marketStatsAPI = "https://api.coingecko.com/api/v3/global";
 
+	private API() {}
+	
 	public static API getInstance() {
 		if (instance == null)
 			instance = new API();

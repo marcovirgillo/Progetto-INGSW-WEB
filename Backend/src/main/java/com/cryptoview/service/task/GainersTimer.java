@@ -4,7 +4,6 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Component;
 
 import com.cryptoview.service.TopCryptos;
-import com.cryptoview.service.LatestNews;
 import com.cryptoview.service.MarketStats;
 
 //è la classe che si occupa di processare dati ogni tot tempo, in modo da averli pronti ad ogni richiesta

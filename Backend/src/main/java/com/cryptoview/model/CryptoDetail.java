@@ -19,7 +19,6 @@ public class CryptoDetail implements Comparable <CryptoDetail>{
 	
 	
 	public CryptoDetail() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public CryptoDetail(Integer id, String image, Double change_24h, String name) {

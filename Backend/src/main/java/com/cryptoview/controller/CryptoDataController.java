@@ -16,7 +16,6 @@ import com.cryptoview.service.TopCryptos;
 @RestController
 @CrossOrigin(origins = {"*"})
 public class CryptoDataController {
-	//TODO: Collegare frontend con Market Stats e Top 100 E RENDERE MIGLIORE IL RESPONSIVE DELLE CARDS GAINERS E STATS
 
 	@GetMapping("/getTop100")
 	private List<CryptoDetail> top100(){

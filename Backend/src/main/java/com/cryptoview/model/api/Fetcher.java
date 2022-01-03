@@ -4,14 +4,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-
 import com.cryptoview.service.log.Logger;
 
 public class Fetcher {
 	
 	private static Fetcher instance = null;
+	
+	private Fetcher() {
+		
+	}
 	
 	public static Fetcher getInstance() {
 		if(instance == null)

@@ -8,6 +8,10 @@ public class TopCryptoFetcher {
 
 	private static TopCryptoFetcher instance = null;
 	
+	private TopCryptoFetcher() {
+		
+	}
+	
 	public static TopCryptoFetcher getInstance() {
 		if (instance == null) 
 			instance = new TopCryptoFetcher();

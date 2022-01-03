@@ -6,6 +6,10 @@ import org.json.simple.parser.JSONParser;
 public class MarketStatsFetcher {
 
 private static MarketStatsFetcher instance = null;
+
+	private MarketStatsFetcher() {
+		
+	}
 	
 	public static MarketStatsFetcher getInstance() {
 		if (instance == null) 
