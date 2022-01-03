@@ -517,15 +517,15 @@ export const NewsData = [
 export const Stats = [
     {
         name: "Total Market Cap",
-        value: "2,320 T"
+        value: "total_market_cap"
     },
     {
         name: "24h Total Volume",
-        value: "100,321 B"
+        value: "volume_24h"
     },
     {
         name: "Bitcoin dominance",
-        value: "50.4%"
+        value: "bitcoin_dominance"
     }
 ]
 

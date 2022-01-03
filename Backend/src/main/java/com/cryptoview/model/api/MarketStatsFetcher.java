@@ -5,23 +5,24 @@ import java.net.URL;
 import java.util.Scanner;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import com.cryptoview.service.log.Logger;
 
-public class TopCryptoFetcher {
+public class MarketStatsFetcher {
 
-	private static TopCryptoFetcher instance = null;
+private static MarketStatsFetcher instance = null;
 	
-	public static TopCryptoFetcher getInstance() {
+	public static MarketStatsFetcher getInstance() {
 		if (instance == null) 
-			instance = new TopCryptoFetcher();
+			instance = new MarketStatsFetcher();
 		return instance;
 	}
 	
-	public JSONArray fetch(int cryptoNum) {
+	public JSONObject fetch() {
 		try {
-			String url = API.getInstance().getTopAPI(cryptoNum);
+			String url = API.getInstance().getMarketStatsAPI();
 			
 			URL obj = new URL(url);
 			
@@ -32,8 +33,8 @@ public class TopCryptoFetcher {
 			int responsecode = conn.getResponseCode();
 			
 			if(responsecode != 200) {
-				System.out.println(java.time.LocalDateTime.now() + " ERROR fetching Top Cryptos. [" + responsecode + "]");
-				Logger.getInstance().addEvent("ERROR fetching Top Cryptos. [" + responsecode + "]");
+				System.out.println(java.time.LocalDateTime.now() + " ERROR fetching Market Stats. [" + responsecode + "]");
+				Logger.getInstance().addEvent("ERROR fetching Market Stats. [" + responsecode + "]");
 			}
 			
 			String inline = "";
@@ -48,9 +49,11 @@ public class TopCryptoFetcher {
 		    scanner.close();
 		    
 		    JSONParser parser = new JSONParser();
-		    JSONArray array = (JSONArray) parser.parse(inline); 
+		    JSONObject result = (JSONObject) parser.parse(inline); 
 		    
-		    return array;
+		    JSONObject stats = (JSONObject) result.get("data");
+		    
+		    return stats;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
