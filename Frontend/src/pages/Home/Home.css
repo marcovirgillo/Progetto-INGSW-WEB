@@ -1,3 +1,8 @@
+.remove-styles{
+    all: initial;
+    all: unset;
+}
+
 .home-page {
     background-color: var(--bg-color-dark);
     min-height: 100vh;

@@ -5,31 +5,32 @@ import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import { CriptoData } from "./TestData.js"
 import "./Home.css"
 import { useInterval } from '../../components/Hooks.js';
+import { Link, Navigate  } from 'react-router-dom'
 
-const api_url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d";
+const address = "localhost";
 
 //https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 const interval_fetch = 1000 * 120; //60 secondi
 
 export default function CriptoTable() {
-    const [marketStats, setMarketStats] = useState([]);
+    const [cryptoTable, setCryptoTable] = useState([]);
     const [order, setOrder] = useState("ASC");
     const [itemActive, setItemActive] = useState(null);
 
     const sorting = (col) => {
         console.log("Ordering by " + col)
         if(order === "ASC"){
-            const sorted = [...marketStats].sort((a,b) => 
+            const sorted = [...cryptoTable].sort((a,b) => 
                 a[col] > b[col] ? 1 : -1     
             );
-            setMarketStats(sorted)
+            setCryptoTable(sorted)
             setOrder("DSC")
         }
         if(order === "DSC"){
-            const sorted = [...marketStats].sort((a,b) => 
+            const sorted = [...cryptoTable].sort((a,b) => 
                 a[col] < b[col] ? 1 : -1     
             );
-            setMarketStats(sorted)
+            setCryptoTable(sorted)
             setOrder("ASC")
         }
     }
@@ -71,10 +72,27 @@ export default function CriptoTable() {
             return "$" + price;
     }
 
+    function change(change) {
+        if(change > 0){
+            return "+" + change.toFixed(2);
+        }
+        
+        return change.toFixed(2)  
+    }
+
+    function handleOnClick(id){
+        console.log(id)
+        return <Navigate 
+                to={{
+                pathname: "/profile"                
+                }}  
+             />
+    }
+
     const fetchData = () => {
-        fetch(api_url)
+        fetch(`http://${address}:8080/getTop100`)
             .then((res) => res.json())
-            .then((result) => setMarketStats(result),
+            .then((result) => setCryptoTable(result),
                   (error) => alert("Error fetching top 100 cryptos"));
     };
 
@@ -89,20 +107,20 @@ export default function CriptoTable() {
                 <TableRow>
                     <TableCell className="table-attribute">#</TableCell>
                     <TableCell className="table-attribute">Name</TableCell>
-                    <TableCell className="table-attribute"onClick={() => {sorting("current_price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
+                    <TableCell className="table-attribute"onClick={() => {sorting("price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
                     {  <span className="table-header-list">
                             Price
                             { isArrowActive(order, "price") }
                          </span> }
                     </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("price_change_percentage_24h"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
+                    <TableCell className="table-attribute" onClick={() => {sorting("change"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
                        {  <span className="table-header-list">
                             24h
                             { isArrowActive(order, "24h") }
                          </span> }
                         
                     </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("price_change_percentage_7d_in_currency"); setItemActive("7d")}} style={{cursor: 'pointer'}}>
+                    <TableCell className="table-attribute" onClick={() => {sorting("change_7d"); setItemActive("7d")}} style={{cursor: 'pointer'}}>
                         {  <span className="table-header-list">
                                 7d
                                 { isArrowActive(order, "7d")}
@@ -114,7 +132,7 @@ export default function CriptoTable() {
                                 {isArrowActive(order, "market-cap")}
                             </span> }
                     </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("total_volume"); setItemActive("total-volume"); }} style={{cursor: 'pointer'}}>
+                    <TableCell className="table-attribute" onClick={() => {sorting("volume"); setItemActive("total-volume"); }} style={{cursor: 'pointer'}}>
                         {  <span className="table-header-list">
                                  Volume
                                 {isArrowActive(order, "total-volume")}
@@ -125,35 +143,35 @@ export default function CriptoTable() {
             </TableHead>
             <TableBody>
                 {
-                    marketStats.map((item, val) => (
-                        <TableRow key={val}>
-                            <TableCell className="table-item">{item.market_cap_rank}</TableCell>
-                            <TableCell className="table-item">
-                                <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
-                                    <img src={item.image} width={24} height={24} style={{marginRight: 10}}/>
-                                    <p className="item-name">{item.name}</p>
-                                    <p className="item-ticker">({item.symbol.toUpperCase()})</p>
-                                </ul>
-                            </TableCell>
-                            <TableCell className="table-item">
-                                {getFormattedPrice(item.current_price)}
-                            </TableCell>
-                            <TableCell className={getPriceClass(item.price_change_percentage_24h)}>
-                                {item.price_change_percentage_24h.toFixed(2)} %
-                            </TableCell>
-                            <TableCell className={getPriceClass(item.price_change_percentage_7d_in_currency)}>
-                                {item.price_change_percentage_7d_in_currency.toFixed(2)} %
-                            </TableCell>
-                            <TableCell className="table-item">
-                               {getPriceWithCurrency(item.market_cap)}
-                            </TableCell>
-                            <TableCell className="table-item">
-                                {getPriceWithCurrency(item.total_volume)}
-                            </TableCell>
-                            <TableCell className="table-item">
-                                <img src={getChartUrl(item.image)} />
-                            </TableCell>
-                        </TableRow>
+                    cryptoTable.map((item, val) => (
+                            <TableRow key={val}>
+                                    <TableCell className="table-item">{item.rank}</TableCell>
+                                    <TableCell className="table-item">
+                                        <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
+                                            <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
+                                            <Link to={`/crypto/${item.id}`} className="remove-styles"><p className="item-name">{item.name}</p></Link>
+                                            <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker})</p>
+                                        </ul>
+                                    </TableCell>
+                                    <TableCell className="table-item">
+                                        {getFormattedPrice(item.price)}
+                                    </TableCell>
+                                    <TableCell className={getPriceClass(item.change)}>
+                                        {change(item.change)} %
+                                    </TableCell>
+                                    <TableCell className={getPriceClass(item.change_7d)}>
+                                        {change(item.change_7d)} %
+                                    </TableCell>
+                                    <TableCell className="table-item">
+                                    {getPriceWithCurrency(item.market_cap)}
+                                    </TableCell>
+                                    <TableCell className="table-item">
+                                        {getPriceWithCurrency(item.volume)}
+                                    </TableCell>
+                                    <TableCell className="table-item">
+                                        <img src={getChartUrl(item.logo)} />
+                                    </TableCell>
+                            </TableRow>
                     ))
                 }
             </TableBody>
