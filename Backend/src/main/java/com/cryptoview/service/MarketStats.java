@@ -26,7 +26,9 @@ public class MarketStats {
 	public void fetchData() {
 		JSONObject statsJSON = MarketStatsFetcher.getInstance().fetch();
 		
-		synchronized (this) {			
+		synchronized (this) {	
+			stats.clear();
+			
 			JSONObject total_market_capJSON = (JSONObject) statsJSON.get("total_market_cap");
 			String total_market_cap = total_market_capJSON.get("usd").toString();
 			Stats obj = new Stats();
