@@ -24,7 +24,7 @@ public class MarketStats {
 	}
 	
 	// imposta il multiplo del valore attuale relativo al market cap e al volume
-	private String setValue(Double value, String valueStr) {
+	private String setOrder(Double value, String valueStr) {
 		if (value < Math.pow(10, 6))
 			return valueStr.substring(0, 5) + " K";
 		else if (value >= Math.pow(10, 6) && value < Math.pow(10, 9))
@@ -46,7 +46,7 @@ public class MarketStats {
 			String total_market_cap_str = total_market_cap.toString();
 			Stats obj = new Stats();
 			obj.setName("Total market cap");
-			obj.setValue(setValue(total_market_cap, total_market_cap_str));
+			obj.setValue(setOrder(total_market_cap, total_market_cap_str));
 			stats.add(obj);
 			
 			
@@ -56,7 +56,7 @@ public class MarketStats {
 			Double volume_24h = (Double) volume_24h_JSON.get("usd");
 			String volume_24h_str = volume_24h.toString();
 			obj2.setName("Volume 24h");
-			obj2.setValue(setValue(volume_24h, volume_24h_str));
+			obj2.setValue(setOrder(volume_24h, volume_24h_str));
 			
 			
 			stats.add(obj2);
