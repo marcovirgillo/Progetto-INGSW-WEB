@@ -13,10 +13,10 @@ import com.cryptoview.model.api.MarketStatsFetcher;
 public class MarketStats {
 	
 	private static MarketStats instance = null;
-	private Stats stats;
+	private ArrayList<Stats> stats;
 	
 	private MarketStats() {
-		stats = new Stats();
+		stats = new ArrayList<Stats>();
 	}
 	
 	public static MarketStats getInstance() {
@@ -31,21 +31,31 @@ public class MarketStats {
 		
 		synchronized (this) {			
 			JSONObject total_market_capJSON = (JSONObject) statsJSON.get("total_market_cap");
-			Double total_market_cap = (Double) total_market_capJSON.get("usd");
+			String total_market_cap = total_market_capJSON.get("usd").toString();
+			Stats obj = new Stats();
+			obj.setName("Total market cap");
+			obj.setValue(total_market_cap);
+			stats.add(obj);
 			
-			stats.setTotal_market_cap(total_market_cap.longValue());
 			
+			Stats obj2 = new Stats();
 			JSONObject volume_24h_JSON = (JSONObject) statsJSON.get("total_volume");
-			Double volume_24h = (Double) volume_24h_JSON.get("usd");
-			stats.setVolume_24h(volume_24h.longValue());
+			String volume_24h = volume_24h_JSON.get("usd").toString();
+			obj2.setName("Volume 24h");
+			obj2.setValue(volume_24h);
+			stats.add(obj2);
 			
+			Stats obj3 = new Stats();
 			JSONObject dominance = (JSONObject) statsJSON.get("market_cap_percentage");
-			Double btc_dominance = (Double) dominance.get("btc");
-			stats.setBitcoin_dominance(btc_dominance);
+			String btc_dominance = dominance.get("btc").toString();
+			
+			obj3.setName("Bitcoin dominance");
+			obj3.setValue(btc_dominance);
+			stats.add(obj3);
 		}
 	}
 	
-	public Stats getStats() {
+	public ArrayList<Stats> getStats() {
 		return stats;
 	}
 }

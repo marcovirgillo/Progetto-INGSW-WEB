@@ -23,10 +23,10 @@ export default function GainersSection() {
             .then((result) => setWorstPerformers(result),
                   (error) => console.log("Error fetching worst performers"));
 
-        /* fetch(`http://${address}:8080/marketStats`)
+         fetch(`http://${address}:8080/marketStats`)
         .then(res => res.json())
         .then((result) => setMarketStats(result),
-            (error) => console.log("Error fetching market stats")); */
+            (error) => console.log("Error fetching market stats")); 
     }, []);
 
     function change(change) {
@@ -48,7 +48,7 @@ export default function GainersSection() {
                             <div className="list-title">Market Statistics</div>
                         </ul>
                         {
-                            Stats.map((item, val) => (
+                            marketStats.map((item, val) => (
                                 <ul key={val} className="list-item">
                                     <p className="list-name">{item.name}</p>
                                     <div className="spacer"> </div>

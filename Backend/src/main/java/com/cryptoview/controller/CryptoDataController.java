@@ -1,6 +1,7 @@
 package com.cryptoview.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -43,7 +44,7 @@ public class CryptoDataController {
 	}
 	
 	@GetMapping("/marketStats")
-	private Stats getMarketStats() {
+	private List<Stats> getMarketStats() {
 		return MarketStats.getInstance().getStats();
 	}
 }
