@@ -52,7 +52,7 @@ public class Gainers implements Comparable <Gainers>{
 	}
 	
 	public void setTicker(String ticker) {
-		this.ticker = ticker;
+		this.ticker = ticker.toUpperCase();
 	}
 	
 	public String getTicker() {

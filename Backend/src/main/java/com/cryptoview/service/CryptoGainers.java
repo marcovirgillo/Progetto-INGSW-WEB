@@ -1,6 +1,7 @@
 package com.cryptoview.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,11 +51,15 @@ public class CryptoGainers {
 	}
 	
 	public List<Gainers> getTopGainers() {
-		return gainers.subList(0, 3);
+		if(!gainers.isEmpty())
+			return gainers.subList(0, 3);
+		return Arrays.asList();
 	}
 	
 	public List<Gainers> getWorstPerformers() {
-		System.out.println(gainers.size());
+		if(gainers.isEmpty())
+			return Arrays.asList();
+		
 		List <Gainers> tmp = gainers.subList(gainers.size() - 3, gainers.size());
 		Gainers first = tmp.get(0);
 		tmp.set(0, tmp.get(2));
