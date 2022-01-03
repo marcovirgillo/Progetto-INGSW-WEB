@@ -76,6 +76,7 @@ ul {
     height: 40px;
     margin-left: -10px;
     font-weight: 500;
+    padding-right: 10px;
 }
 
 .list-title {
@@ -145,7 +146,7 @@ ul {
     }
 }
 
-@media only screen and (max-width: 1380px) {
+@media only screen and (max-width: 1160px) {
     .table{
         display: block !important;
         overflow-x: auto !important;
