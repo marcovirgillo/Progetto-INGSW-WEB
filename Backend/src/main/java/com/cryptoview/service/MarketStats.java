@@ -26,14 +26,14 @@ public class MarketStats {
 	public void fetchData() {
 		JSONObject statsJSON = MarketStatsFetcher.getInstance().fetch();
 		
-		synchronized (this) {	
+		synchronized (this) {
 			stats.clear();
 			
 			JSONObject total_market_capJSON = (JSONObject) statsJSON.get("total_market_cap");
 			String total_market_cap = total_market_capJSON.get("usd").toString();
 			Stats obj = new Stats();
 			obj.setName("Total market cap");
-			obj.setValue(total_market_cap);
+			obj.setValue(total_market_cap.substring(0,5) + " B");
 			stats.add(obj);
 			
 			
@@ -41,7 +41,7 @@ public class MarketStats {
 			JSONObject volume_24h_JSON = (JSONObject) statsJSON.get("total_volume");
 			String volume_24h = volume_24h_JSON.get("usd").toString();
 			obj2.setName("Volume 24h");
-			obj2.setValue(volume_24h);
+			obj2.setValue(volume_24h.substring(0, 5) + " B");
 			stats.add(obj2);
 			
 			Stats obj3 = new Stats();
