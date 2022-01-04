@@ -22,6 +22,8 @@ const Portfolio = () => {
     const [cryptoPrices, setCryptoPrices] = useState([]);
     const [cryptoDatetime, setCryptoDatetime] = useState([]);
 
+    const [chartType, setChartType] = useState("chart");
+
     useEffect(() => {
         fetch("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30")
             .then((res) => res.json())
@@ -49,6 +51,12 @@ const Portfolio = () => {
        
         setCryptoDatetime(times);
     }
+
+    function isBtnActive(name) {
+        return (name === chartType ? 'btn-active' : '');
+    }
+
+
     return (
         <div className="portfolio">
             <div className="paper-grey">
@@ -63,7 +71,11 @@ const Portfolio = () => {
                     <p className={getClassNameChange(PortfolioData.balance_change_24h)}>{PortfolioData.balance_change_24h}</p>
                     <p className="label-24h">24h</p>
                 </ul>
-                
+                <ul className="inline-list btn-container" style={{marginTop: '15px'}}>
+                    <p className={isBtnActive("chart")} onClick={() => setChartType("chart")}>Chart</p>
+                    <p className={isBtnActive("allocation")} onClick={() => setChartType("allocation")}>Allocation</p>
+                    <p className={isBtnActive("statistics")} onClick={() => setChartType("statistics")}>Statistics</p>
+                </ul>
             </ul>
                 <CryptoChart
                     color={greenColor} 
