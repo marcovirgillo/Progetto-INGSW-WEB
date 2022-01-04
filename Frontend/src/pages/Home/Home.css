@@ -71,6 +71,7 @@ ul {
     height: 40px;
     margin-left: -10px;
     font-weight: 500;
+    padding-right: 10px;
 }
 
 .list-title {
@@ -123,6 +124,13 @@ ul {
     }
 }
 
+@media only screen and (max-width: 1200px) {
+    .list-item {
+        font-size: 0.9em;
+    }
+}
+
+/* cambia la visualizzazione della griglia, i 900px arrivano da sm di grid, NON CAMBIARE*/
 @media only screen and (max-width: 900px) {
     .xs-spacer {
         display: revert !important;
@@ -133,7 +141,7 @@ ul {
     }
 }
 
-@media only screen and (max-width: 980px) {
+@media only screen and (max-width: 1160px) {
     .table{
         display: block !important;
         overflow-x: auto !important;
@@ -144,6 +152,14 @@ ul {
 
     .news-img {
         width: 260px !important;
+    }
+
+    .news-title {
+        width: 250px !important;
+    }
+
+    .news-content {
+        width: 250px !important;
     }
 
     .cripto-title {
@@ -168,6 +184,12 @@ ul {
 .item-name {
     font-weight: bold;
     font-size: 15px;
+    color: white;
+    text-decoration: none;
+}
+
+.item-name:hover {
+    color: #cacaca;
 }
 
 .item-ticker {
@@ -209,6 +231,11 @@ thead th {
     background-color: #464646;
     opacity: 1;
     z-index: 0 !important;
+    min-width: 50px !important;
+}
+
+.table-header-list {
+    display: flex;
 }
 
 tbody tr:hover {
@@ -294,5 +321,5 @@ table th:last-child{
 
 /* override di una classe di swiper */
 .swiper-wrapper {
-    padding-left: 30px !important;
+    padding-left: 60px !important;
 }

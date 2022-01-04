@@ -3,19 +3,19 @@ export const TopGainers = [
         name: "Bitcoin",
         ticker: "BTC",
         change: "12.89%",
-        img: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
+        logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
     },
     {
         name: "Bitcoin",
         ticker: "BTC",
         change: "12.89%",
-        img: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
+        logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
     },
     {
         name: "Bitcoin",
         ticker: "BTC",
         change: "12.89%",
-        img: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
+        logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
     },
 ]
 
@@ -24,19 +24,19 @@ export const WorstGainers = [
         name: "Bitcoin",
         ticker: "BTC",
         change: "- 12.89%",
-        img: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
+        logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
     },
     {
         name: "Bitcoin",
         ticker: "BTC",
         change: "- 12.89%",
-        img: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
+        logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
     },
     {
         name: "Bitcoin",
         ticker: "BTC",
         change: "- 12.89%",
-        img: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
+        logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
     },
 ]
 
@@ -517,15 +517,15 @@ export const NewsData = [
 export const Stats = [
     {
         name: "Total Market Cap",
-        value: "2,320 T"
+        value: "total_market_cap"
     },
     {
         name: "24h Total Volume",
-        value: "100,321 B"
+        value: "volume_24h"
     },
     {
         name: "Bitcoin dominance",
-        value: "50.4%"
+        value: "bitcoin_dominance"
     }
 ]
 

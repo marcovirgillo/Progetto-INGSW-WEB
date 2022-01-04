@@ -1,9 +1,41 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect, useState, useRef } from 'react'
 import { Grid, Icon } from '@mui/material'
-import { TopGainers, WorstGainers, Stats } from './TestData'
+import { topPerformers, WorstGainers, Stats } from './TestData'
 import "./Home.css"
+import { address } from './../../assets/globalVar.js';
 
 export default function GainersSection() {
+    const [topPerformers, setTopPerformers] = useState([]);
+    const [worstPerformers, setWorstPerformers] = useState([]);
+    const [marketStats, setMarketStats] = useState([]);
+
+    //Serve per fetchare da spring
+    useEffect(() => {
+
+        fetch(`http://${address}:8080/topGainers`)
+            .then(res => res.json())
+            .then((result) => setTopPerformers(result),
+                  (error) => console.log("Error fetching top gainers"));
+
+        fetch(`http://${address}:8080/worstPerformers`)
+            .then(res => res.json())
+            .then((result) => setWorstPerformers(result),
+                  (error) => console.log("Error fetching worst performers"));
+
+         fetch(`http://${address}:8080/marketStats`)
+        .then(res => res.json())
+        .then((result) => setMarketStats(result),
+            (error) => console.log("Error fetching market stats")); 
+    }, []);
+
+    function change(change) {
+        if(change > 0){
+            return "+" + change.toFixed(2);
+        }
+        
+        return change.toFixed(2)  
+    }
+
     return (
         <Grid container sx={{margin: '20px 0px 10px 0px'}} columnSpacing={{lg:5, md:2, sm:1, xs:2}} columns={{lg:20, md:17, sm:28, xs:7}}> {/* columnSpacing imposto lo spazio fra ogni colonna sulla base della larghezza dello schermo, columns suddivide la pagina in un numero di colonne specificato sempre sulla base della larghezza dello schermo */}
             <Grid item lg={1} md={1} sm={1} xs={1} /> {/* Grid item imposta un margine di 1 per ogni larghezza di schermo */}
@@ -15,7 +47,7 @@ export default function GainersSection() {
                             <div className="list-title">Market Statistics</div>
                         </ul>
                         {
-                            Stats.map((item, val) => (
+                            marketStats.map((item, val) => (
                                 <ul key={val} className="list-item">
                                     <p className="list-name">{item.name}</p>
                                     <div className="spacer"> </div>
@@ -33,17 +65,17 @@ export default function GainersSection() {
                     <ul style={{paddingLeft: '50px'}}>
                         <ul className="container-title">
                             <img src={require("../../res/logos/gainers-icon.png")} width={32} height={32} className="container-title-icon" style={{marginRight:'20px', marginTop:'7px'}}/>
-                            <div className="list-title">Top Gainers</div>
+                            <div className="list-title">Top Performers</div>
                         </ul>
                         {
-                            TopGainers.map((item, val) => (
+                            topPerformers.map((item, val) => (
                                 <ul key={val} className="list-item">
                                     <p className="list-number">{val+1}</p>
-                                    <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.img} width={18} height={18}/> </Icon>
+                                    <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.logo} width={18} height={18}/> </Icon>
                                     <p className="list-name">{item.name}</p>
                                     <p className="list-ticker">{item.ticker}</p>
                                     <div className="spacer"> </div>
-                                    <p className="list-change-green">+ {item.change}</p>
+                                    <p className="list-change-green">{change(item.change)}%</p>
                                 </ul>
                             ))
                         }
@@ -60,14 +92,14 @@ export default function GainersSection() {
                             <div className="list-title">Worst Performers</div>
                         </ul>
                         {
-                            WorstGainers.map((item, val) => (
+                            worstPerformers.map((item, val) => (
                                 <ul key={val} className="list-item">
                                     <p className="list-number">{val+1}</p>
-                                    <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.img} width={18} height={18}/> </Icon>
+                                    <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.logo} width={18} height={18}/> </Icon>
                                     <p className="list-name">{item.name}</p>
                                     <p className="list-ticker">{item.ticker}</p>
                                     <div className="spacer"> </div>
-                                    <p className="list-change-red"> {item.change}</p>
+                                    <p className="list-change-red">{change(item.change)}%</p> {/* item.change>0 ? "+".concat(String(item.change.toFixed(2))) : item.change.toFixed(2) */}
                                 </ul>
                             ))
                         }

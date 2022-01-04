@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import { Route, Routes } from 'react-router-dom'
 import { Home, Dashboard, Exchanges, News, Portfolio, Profile } from '../pages'
+import SpecificCrypto from '../pages/SpecificCrypto/SpecificCrypto'
 
 export default function AppRoutes() {
     return (
@@ -12,6 +13,7 @@ export default function AppRoutes() {
             <Route path="/news" exact element={<News />} />
             <Route path="/exchanges" exact element={<Exchanges />} />
             <Route path="/profile" exact element={<Profile />} />
+            <Route path="/crypto/:name" exact element={<SpecificCrypto />} />
         </Routes>
     )
 }
