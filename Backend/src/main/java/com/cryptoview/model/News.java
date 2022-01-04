@@ -7,6 +7,8 @@ public class News {
 	private String title;
 	private String description;
 	
+	private final int MAX_DESCRIPTION_LENGTH = 100;
+	
 	public News() {}
 
 	public String getUrl() {
@@ -38,6 +40,9 @@ public class News {
 	}
 
 	public void setDescription(String description) {
-		this.description = description.substring(0, Math.min(80, description.length()));
+		if(description.length() > MAX_DESCRIPTION_LENGTH)
+			this.description = description.substring(0, MAX_DESCRIPTION_LENGTH) + "...";
+		else
+			this.description = description;
 	}
 }

@@ -32,9 +32,7 @@ public class LatestNews {
 			
 			for(int i = 0; i < latestNewsJSON.size(); ++i) {
 				JSONObject obj = (JSONObject) latestNewsJSON.get(i);
-				
-				//System.out.println(obj.toString());
-				
+
 				News news = new News();
 				news.setUrl((String) obj.get("url"));
 				news.setImageUrl((String) obj.get("urlToImage")) ;

@@ -2,8 +2,7 @@ import React, { Component, useEffect, useState, useRef } from 'react'
 import { Grid, Icon } from '@mui/material'
 import { topPerformers, WorstGainers, Stats } from './TestData'
 import "./Home.css"
-
-const address = "localhost";
+import { address } from './../../assets/globalVar.js';
 
 export default function GainersSection() {
     const [topPerformers, setTopPerformers] = useState([]);

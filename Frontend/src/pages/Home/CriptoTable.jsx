@@ -6,8 +6,7 @@ import { CriptoData } from "./TestData.js"
 import "./Home.css"
 import { useInterval } from '../../components/Hooks.js';
 import { Link, Navigate  } from 'react-router-dom'
-
-const address = "localhost";
+import { address } from './../../assets/globalVar.js';
 
 //https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 const interval_fetch = 1000 * 120; //60 secondi
@@ -18,7 +17,6 @@ export default function CriptoTable() {
     const [itemActive, setItemActive] = useState(null);
 
     const sorting = (col) => {
-        console.log("Ordering by " + col)
         if(order === "ASC"){
             const sorted = [...cryptoTable].sort((a,b) => 
                 a[col] > b[col] ? 1 : -1     
@@ -36,7 +34,6 @@ export default function CriptoTable() {
     }
 
     const isArrowActive = (order, type) => {
-
         if(itemActive == type) {
             if(order == "DSC")
                 return <ArrowDropDownRoundedIcon/>;
@@ -81,10 +78,9 @@ export default function CriptoTable() {
     }
 
     function handleOnClick(id){
-        console.log(id)
         return <Navigate 
-                to={{
-                pathname: "/profile"                
+                    to={{
+                    pathname: "/profile"                
                 }}  
              />
     }
@@ -149,7 +145,9 @@ export default function CriptoTable() {
                                     <TableCell className="table-item">
                                         <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
                                             <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
-                                            <Link to={`/crypto/${item.id}`} className="remove-styles"><p className="item-name">{item.name}</p></Link>
+                                            <Link to={`/crypto/${item.name}`} state={{ id: item.id }} className="item-name">
+                                                <p>{item.name}</p>
+                                            </Link>
                                             <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker})</p>
                                         </ul>
                                     </TableCell>

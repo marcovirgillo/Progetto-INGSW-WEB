@@ -13,6 +13,7 @@ export default function AppRoutes() {
             <Route path="/news" exact element={<News />} />
             <Route path="/exchanges" exact element={<Exchanges />} />
             <Route path="/profile" exact element={<Profile />} />
+            <Route path="/crypto/:name" exact element={<SpecificCrypto />} />
         </Routes>
     )
 }

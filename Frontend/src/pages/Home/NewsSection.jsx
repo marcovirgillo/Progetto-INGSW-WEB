@@ -3,10 +3,9 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Navigation, Pagination } from 'swiper';
 import 'swiper/css/bundle';
 import { NewsData } from './TestData'
+import { address } from './../../assets/globalVar.js';
 
 SwiperCore.use([Navigation, Pagination]);
-
-const address = "localhost";
 
 export default function NewsSection() {
     const [screenSize, setScreenSize] = useState(null);
@@ -26,10 +25,10 @@ export default function NewsSection() {
         if(screenSize <= 600) 
             setNumItemNewsPage(1);
         
-        else if(screenSize > 600 && screenSize <= 800)
+        else if(screenSize > 600 && screenSize <= 900)
             setNumItemNewsPage(2);
         
-        else if(screenSize > 800 && screenSize <= 1600) 
+        else if(screenSize > 900 && screenSize <= 1600) 
             setNumItemNewsPage(3);
 
         else
