@@ -14,7 +14,7 @@
 .name-label {
    margin: 0;
    padding-top: 30px;
-   padding-left: 60px;
+   margin-left: 60px;
    color: white;
 }
 
@@ -27,7 +27,8 @@ h3 {
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    padding-left: 80px;
+    margin-left: 60px;
+    padding: 0px;
 }
 
 .current-balance-label {
@@ -41,6 +42,14 @@ h3 {
     align-items: center;
     justify-content: flex-start;
     max-height: 40px;
+    padding: 0px;
+}
+
+.btn-containers-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
     padding: 0px;
 }
 
@@ -81,3 +90,70 @@ h3 {
     margin-left: 10px;
     font-size: 0.9em;
 }
+
+.h-spacer {
+    display: revert;
+    flex: 1;
+}
+
+.chart-div {
+    max-width: 90%;
+    padding-left: 60px;
+}
+
+.chart-btns-mobile {
+    display: none;
+}
+
+.chart-btns-desktop {
+    display: flex;
+}
+
+.chart {
+    margin-left: -10px;
+}
+
+@media only screen and (max-width: 800px) {
+    .chart-btns-mobile {
+        display: flex;
+    }
+
+    .h-spacer {
+        display: none;
+    }
+
+    .chart-btns-desktop {
+        display: none;
+    }
+
+    .btn-container {
+        width: 100%;
+        max-width: 98%;
+        justify-content: space-evenly;
+    }
+
+    .chart-div {
+        padding-left: 20px;
+    }
+
+    .chart {
+        margin-left: -15px;
+    }
+
+    .portfolio-list {
+        margin-left: 30px;
+    }
+
+    .portfolio {
+        padding: 0px;
+    }
+
+    .paper-grey {
+        border-radius: 0px;
+    }
+
+    .name-label {
+        margin-left: 30px;
+    }
+}
+

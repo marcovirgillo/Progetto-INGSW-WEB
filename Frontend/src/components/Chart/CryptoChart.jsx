@@ -29,11 +29,11 @@ export default function CryptoChart(props) {
         stroke: {
             curve: 'smooth'
         },
-        colors: [props.color]
+        colors: [props.color],
     }
 
     return (
-        <Chart 
+        <Chart className={props.className}
             options={options}
             series={props.data}
             type="area"
