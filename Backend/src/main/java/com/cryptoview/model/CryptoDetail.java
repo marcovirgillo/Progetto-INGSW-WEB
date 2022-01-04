@@ -2,26 +2,25 @@ package com.cryptoview.model;
 
 public class CryptoDetail implements Comparable <CryptoDetail>{
 	private Long rank;
-	private Integer id;
+	private String id;
+	
 	//For Gainers
 	private String logo; //Usando imageURL beccare ID per prendere la sparkline di 7 giorni
 	private Double change;
 	private String name;
 	private String ticker;
+	private String chart_7d;
 	
 	//For Table
-	
 	private Double price;
 	private Double change_7d;
 	private Long market_cap;
 	private Long volume;
 	
-	
-	
 	public CryptoDetail() {
 	}
 	
-	public CryptoDetail(Integer id, String image, Double change_24h, String name) {
+	public CryptoDetail(String id, String image, Double change_24h, String name) {
 		super();
 		this.id = id;
 		this.logo = image;
@@ -29,12 +28,20 @@ public class CryptoDetail implements Comparable <CryptoDetail>{
 		this.name = name;
 	}
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 	
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public void setChart7d(String chart7d) {
+		this.chart_7d = chart7d;
+	}
+	
+	public String getChart7d() {
+		return chart_7d;
 	}
 	
 	public void setLogo(String logo) {

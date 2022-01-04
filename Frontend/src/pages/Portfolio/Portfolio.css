@@ -1,0 +1,83 @@
+.portfolio {
+    background-color: var(--bg-color-dark);
+    min-height: 100vh;
+    padding: 0px 10px 10px 10px;
+}
+
+.paper-grey {
+    background-color: var(--bg-color-gray);
+    border-radius: 8px;
+    width: 100%;
+    padding-bottom: 40px;
+}
+
+.name-label {
+   margin: 0;
+   padding-top: 30px;
+   padding-left: 60px;
+   color: white;
+}
+
+h3 {
+    color: #8F8F8F;
+}
+
+.portfolio-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 80px;
+}
+
+.current-balance-label {
+    margin: 0;
+    padding: 10px 0px 10px 4px;
+}
+
+.inline-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    max-height: 40px;
+    padding: 0px;
+}
+
+.rectangle {
+    border-radius: 12px;
+    color: white;
+    padding: 6px 8px 6px 8px;
+    margin-left: 20px;
+    font-weight: 600;
+}
+
+.rectangle-green {
+    background-color: #46C95B;
+}
+
+.label-green {
+    color: #46C95B;
+    font-weight: 500;
+}
+
+.rectangle-red {
+    background-color: #E05757;
+}
+
+.label-red {
+    color: #E05757;
+    font-weight: 500;
+}
+
+.current-balance {
+    color: white;
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.label-24h {
+    color: #8F8F8F;
+    margin-left: 10px;
+    font-size: 0.9em;
+}

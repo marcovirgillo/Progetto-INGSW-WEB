@@ -44,13 +44,6 @@ export default function CriptoTable() {
 
     const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
 
-    //L'id della cripto è contenuto dentro il link per la sua immagine, quindi prima lo estraggo dalla stringa e poi lo inserisco nel link del chart
-    function getChartUrl(image_url) {
-        let part1 = image_url.substr(42, image_url.length);
-        let part2 = part1.substring(0, part1.indexOf("/"));
-        return `https://www.coingecko.com/coins/${part2}/sparkline`;
-    }
-
     function getPriceClass(price) {
         let className = 'table-item ';
         className += price < 0 ? 'item-red' : 'item-green';
@@ -75,14 +68,6 @@ export default function CriptoTable() {
         }
         
         return change.toFixed(2)  
-    }
-
-    function handleOnClick(id){
-        return <Navigate 
-                    to={{
-                    pathname: "/profile"                
-                }}  
-             />
     }
 
     const fetchData = () => {
@@ -145,7 +130,7 @@ export default function CriptoTable() {
                                     <TableCell className="table-item">
                                         <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
                                             <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
-                                            <Link to={`/crypto/${item.name}`} state={{ id: item.id }} className="item-name">
+                                            <Link to={`/crypto/${item.id}`} state={{ id: item.id }} className="item-name">
                                                 <p>{item.name}</p>
                                             </Link>
                                             <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker})</p>
@@ -167,7 +152,7 @@ export default function CriptoTable() {
                                         {getPriceWithCurrency(item.volume)}
                                     </TableCell>
                                     <TableCell className="table-item">
-                                        <img src={getChartUrl(item.logo)} />
+                                        <img src={item.chart7d} />
                                     </TableCell>
                             </TableRow>
                     ))

@@ -41,9 +41,10 @@ public class TopCryptos {
 				crypto.setChange((Double) obj.get("price_change_percentage_24h"));
 				crypto.setLogo((String) obj.get("image"));
 				crypto.setName((String) obj.get("name"));
-				crypto.setId(getNameFromImage((String) obj.get("image")));				
+				crypto.setId((String) obj.get("id"));				
 				crypto.setTicker((String) obj.get("symbol"));
 				crypto.setChange_7d((Double) obj.get("price_change_percentage_7d_in_currency"));
+				crypto.setChart7d(getCryptoChart((String) obj.get("image")));
 				
 				Object o = obj.get("total_volume");
 				Long volume = ((Number) o).longValue();
@@ -66,6 +67,11 @@ public class TopCryptos {
 		}
 	}
 	
+	private String getCryptoChart(String imageUrl) {
+		Integer cryptoId = getIdFromImage(imageUrl);
+		return "https://www.coingecko.com/coins/" + cryptoId + "/sparkline";
+	}
+
 	public List<CryptoDetail> getTopGainers() {
 		if(cryptosList.isEmpty())
 			return Arrays.asList();
@@ -89,7 +95,7 @@ public class TopCryptos {
 		return top100Cryptos;
 	}
 
-	private Integer getNameFromImage(String name) {
+	private Integer getIdFromImage(String name) {
 		name = name.substring(42, name.length());
 		name = name.substring(0, name.indexOf("/"));
 		return Integer.parseInt(name);

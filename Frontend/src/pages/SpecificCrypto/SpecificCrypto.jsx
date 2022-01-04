@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router';
-import Chart from "react-apexcharts";
-
-const series = [
-{
-      name: "Price",
-      data: [30, 40, 45, 50, 49, 60, 70, 91]
-}];
-
+import CryptoChart from '../../components/Chart/CryptoChart';
 
 const SpecificCrypto = () => {
     const location = useLocation()
@@ -17,7 +10,7 @@ const SpecificCrypto = () => {
     const [cryptoDatetime, setCryptoDatetime] = useState([]);
 
     useEffect(() => {
-        fetch("https://api.coingecko.com/api/v3/coins/hoge-finance/market_chart?vs_currency=usd&days=30")
+        fetch("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30")
             .then((res) => res.json())
             .then((result) => processData(result));
     }, []);
@@ -27,7 +20,7 @@ const SpecificCrypto = () => {
         let values = new Array();
         let times = new Array();
         prices.map((item) => {
-            values.push(item [1].toFixed(6));
+            values.push(item [1].toFixed(2));
             times.push(item [0]);
         })
 
@@ -39,31 +32,14 @@ const SpecificCrypto = () => {
        
         setCryptoDatetime(times);
     }
+
+    // se i dati non sono stati fetchati, non fare return TODO sistemare
     if(cryptoPrices.length === 0 || cryptoDatetime.length === 0)
         return (<React.Fragment />)
 
     return (
         <React.Fragment>
-          <Chart
-            type="line"
-            width="80%"
-            series={cryptoPrices}
-            options={{
-                chart: {
-                    id: "basic-bar"
-                },
-                xaxis: {
-                    type: "datetime",
-                    categories: cryptoDatetime,
-                },
-                tooltip: {
-                    x: {
-                        format: "dd MMM yyyy HH:mm",
-                    }
-                }
-            }}
-          >
-          </Chart>
+            <CryptoChart width="80%" data={cryptoPrices} timestamps={cryptoDatetime} color="#46C95B"/>
         </React.Fragment>
     );
 }
