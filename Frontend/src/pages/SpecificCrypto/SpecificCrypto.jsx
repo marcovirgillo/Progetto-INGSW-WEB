@@ -14,12 +14,10 @@ const SpecificCrypto = () => {
     const cryptoID = location.state.id; 
 
     const [cryptoPrices, setCryptoPrices] = useState([]);
-    const [options, setOptions] = useState({
-       
-    });
+    const [cryptoDatetime, setCryptoDatetime] = useState([]);
 
     useEffect(() => {
-        fetch("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=7")
+        fetch("https://api.coingecko.com/api/v3/coins/hoge-finance/market_chart?vs_currency=usd&days=30")
             .then((res) => res.json())
             .then((result) => processData(result));
     }, []);
@@ -29,8 +27,8 @@ const SpecificCrypto = () => {
         let values = new Array();
         let times = new Array();
         prices.map((item) => {
-            values.push(item [1]);
-            times.push(new Date(item [0]).toLocaleString());
+            values.push(item [1].toFixed(6));
+            times.push(item [0]);
         })
 
         setCryptoPrices([{
@@ -38,24 +36,32 @@ const SpecificCrypto = () => {
             data: values
         }])
 
-        setOptions({
-            chart: {
-                id: "basic-bar"
-            },
-            xaxis: {
-                type: "datetime",
-                categories: times,
-            },
-        })
+       
+        setCryptoDatetime(times);
     }
+    if(cryptoPrices.length === 0 || cryptoDatetime.length === 0)
+        return (<React.Fragment />)
 
     return (
         <React.Fragment>
           <Chart
             type="line"
-            width="500"
+            width="80%"
             series={cryptoPrices}
-            options={options}
+            options={{
+                chart: {
+                    id: "basic-bar"
+                },
+                xaxis: {
+                    type: "datetime",
+                    categories: cryptoDatetime,
+                },
+                tooltip: {
+                    x: {
+                        format: "dd MMM yyyy HH:mm",
+                    }
+                }
+            }}
           >
           </Chart>
         </React.Fragment>

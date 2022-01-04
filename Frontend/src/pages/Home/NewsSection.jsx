@@ -28,7 +28,7 @@ export default function NewsSection() {
         else if(screenSize > 600 && screenSize <= 900)
             setNumItemNewsPage(2);
         
-        else if(screenSize > 900 && screenSize <= 1600) 
+        else if(screenSize > 900 && screenSize <= 1680) 
             setNumItemNewsPage(3);
 
         else
@@ -50,7 +50,7 @@ export default function NewsSection() {
     return (
         <React.Fragment>
             <Swiper className="swiper-main" tag="section" wrapperTag="ul" navigation pagination style={{minHeight: '310px'}}
-                spaceBetween={40}
+                spaceBetween={-40}
                 slidesPerView={numItemNewsPage}
             >
             {
