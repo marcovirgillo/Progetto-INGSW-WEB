@@ -119,6 +119,7 @@
     border-radius: 15px;
 }
 
+
 .apexcharts-xaxis-label tspan {
     fill: #8F8F8F !important;
 }
@@ -126,3 +127,4 @@
 .apexcharts-yaxis-label tspan {
     fill: #8F8F8F !important;
 }
+
