@@ -19,42 +19,40 @@ const SpecificCrypto = () => {
     const [chartData, setChartData] = useState([{name: 'Price', data: []}]);
     const [chartDatetime, setChartDatetime] = useState([]);
 
-    function fetcher(){
+    const fetcher = () => {
         fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=usd&days=${chartInterval}`)
         .then((res) => res.json())
         .then((result) => processData(result));
-
-        console.log("Fetched", chartInterval)
     }
 
     useEffect(() => {
-            fetcher();
+        fetcher();
     }, []);
 
     //se cambia l'intervallo di tempo, fetcho i dati nuovi
     useEffect(() =>{
         fetcher();
-    }, [chartInterval])
+    }, [chartInterval]);
 
     //ogni volta che cambia il tipo di chart (price, cap, volume), imposto i dati nuovi che erano stati già fetchati
     useEffect(checkChartType, [chartType]);
 
     function checkChartType() {
-        if(chartType == "price") {
+        if(chartType === "price") {
             setChartData([{
                 name: 'Price',
                 data: crypto_prices
             }]);
         }
 
-        if(chartType == "market_cap") {
+        if(chartType === "market_cap") {
             setChartData([{
                 name: 'Market Cap',
                 data: market_caps
             }]);
         }
 
-        if(chartType == "volume") {
+        if(chartType === "volume") {
             setChartData([{
                 name: 'Volume 24h',
                 data: volumes
@@ -73,20 +71,20 @@ const SpecificCrypto = () => {
 
         prices.forEach((item) => {
             if(item[1]>1)
-                crypto_prices.push(item [1].toFixed(2));
+                crypto_prices.push(item[1].toFixed(2));
             else
                 crypto_prices.push(item[1].toFixed(6));
 
-            times.push(item [0]);
+            times.push(item[0]);
         })
         
 
         caps.forEach((item) => {
-            market_caps.push(item [1].toFixed(2));
+            market_caps.push(item[1].toFixed(2));
         })
 
         vols.forEach((item) => {
-            volumes.push(item [1].toFixed(2));
+            volumes.push(item[1].toFixed(2));
         })
 
         setChartDatetime(times);
