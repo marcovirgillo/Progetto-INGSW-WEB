@@ -4,25 +4,25 @@
     padding: 0px 10px 10px 10px;
 }
 
-.paper-grey {
+.portfolio .paper-grey {
     background-color: var(--bg-color-gray);
     border-radius: 8px;
     width: 100%;
     padding-bottom: 40px;
 }
 
-.name-label {
+.portfolio .name-label {
    margin: 0;
    padding-top: 30px;
    margin-left: 60px;
    color: white;
 }
 
-h3 {
-    color: #8F8F8F;
+.portfolio h3 {
+    color: var(--light-gray-color);
 }
 
-.portfolio-list {
+.portfolio .portfolio-list {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -31,12 +31,12 @@ h3 {
     padding: 0px;
 }
 
-.current-balance-label {
+.portfolio .current-balance-label {
     margin: 0;
     padding: 10px 0px 10px 4px;
 }
 
-.inline-list {
+.portfolio .inline-list {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -45,7 +45,7 @@ h3 {
     padding: 0px;
 }
 
-.btn-containers-list {
+.portfolio .btn-containers-list {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -53,7 +53,7 @@ h3 {
     padding: 0px;
 }
 
-.rectangle {
+.portfolio .rectangle {
     border-radius: 12px;
     color: white;
     padding: 6px 8px 6px 8px;
@@ -61,86 +61,94 @@ h3 {
     font-weight: 600;
 }
 
-.rectangle-green {
+.portfolio .rectangle-green {
     background-color: #46C95B;
 }
 
-.label-green {
+.portfolio .label-green {
     color: #46C95B;
     font-weight: 500;
 }
 
-.rectangle-red {
+.portfolio .rectangle-red {
     background-color: #E05757;
 }
 
-.label-red {
+.portfolio .label-red {
     color: #E05757;
     font-weight: 500;
 }
 
-.current-balance {
+.portfolio .current-balance {
     color: white;
     font-size: 2em;
     font-weight: 600;
 }
 
-.label-24h {
-    color: #8F8F8F;
+.portfolio .label-24h {
+    color: var(--light-gray-color);
     margin-left: 10px;
-    font-size: 0.9em;
+    font-size: 0.portfolio .9em;
 }
 
-.h-spacer {
+.portfolio .h-spacer {
     display: revert;
     flex: 1;
 }
 
-.chart-div {
-    max-width: 90%;
+.portfolio .chart-div {
+    max-width: 92%;
     padding-left: 60px;
 }
 
-.chart-btns-mobile {
+.portfolio .chart-btns-mobile {
     display: none;
 }
 
-.chart-btns-desktop {
+.portfolio .chart-btns-desktop {
     display: flex;
 }
 
-.chart {
+.portfolio .chart {
     margin-left: -10px;
 }
 
 @media only screen and (max-width: 800px) {
-    .chart-btns-mobile {
+    .portfolio .table{
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+        font-size: 12px !important;
+        max-height: 100vh !important;
+    }
+
+    .portfolio .chart-btns-mobile {
         display: flex;
     }
 
-    .h-spacer {
+    .portfolio .h-spacer {
         display: none;
     }
 
-    .chart-btns-desktop {
+    .portfolio .chart-btns-desktop {
         display: none;
     }
 
-    .btn-container {
+    .portfolio .btn-container {
         width: 100%;
         max-width: 98%;
         justify-content: space-evenly;
     }
 
-    .chart-div {
+    .portfolio .chart-div {
         padding-left: 20px;
     }
 
-    .chart {
+    .portfolio .chart {
         margin-left: -15px;
     }
 
-    .portfolio-list {
+    .portfolio .portfolio-list {
         margin-left: 30px;
     }
 
@@ -148,12 +156,105 @@ h3 {
         padding: 0px;
     }
 
-    .paper-grey {
+    .portfolio .paper-grey {
         border-radius: 0px;
     }
 
-    .name-label {
+    .portfolio .name-label {
         margin-left: 30px;
     }
 }
 
+.portfolio .table-attribute {
+    color: white !important;
+}
+
+.portfolio .table-item {
+    color: white !important;
+    text-align: left !important;
+    text-transform: capitalize !important;
+    padding: 10px 0px 10px 15px !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+}
+
+.portfolio table tr th, tbody tr td {
+    border-bottom: none !important;
+}
+
+.portfolio .table-header-list {
+    display: flex;
+}
+
+.portfolio .table:last-child {
+    border: hidden !important;
+}
+
+.portfolio table th:first-child{
+    border-radius:10px 0 0 10px;
+}
+  
+.portfolio table th:last-child{
+    border-radius:0 10px 10px 0;
+}
+
+.portfolio .table-item-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.portfolio .table-item ul {
+    padding: 0px;
+}
+
+.portfolio .item-green {
+    color: var(--price-color-green) !important;
+}
+
+.portfolio .item-red {
+    color: var(--price-color-red) !important;
+}
+
+.portfolio .item-grey {
+    color: var(--light-gray-color);
+}
+
+.portfolio .profit {
+    padding: 0px 0px 0px 10px !important;
+}
+
+.portfolio .assets-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0px;
+    margin: 20px 60px -20px 60px;
+}
+
+.portfolio .white-label {
+    color: white;
+    font-weight: 600;
+}
+
+.portfolio .assets-label {
+    font-size: 1.2em;
+}
+
+.portfolio .btn-label {
+    margin-left: 8px;
+}
+
+.portfolio .add-new-btn {
+    background: #1C91C6;
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    padding: 0px 10px 0px 10px;
+    cursor: pointer;
+}
+
+.portfolio .add-new-btn:hover {
+    background: #1879a7;
+}
