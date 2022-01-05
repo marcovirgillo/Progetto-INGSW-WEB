@@ -9,8 +9,7 @@ import NewsSection from './NewsSection'
 
 const Home = () => {
     return (
-        <div className="home-page">
-            <div className="paper-grey">
+        <div className="home-page">            <div className="paper-grey">
                 <h4 className="news-day-label">News of the day</h4>
                 <NewsSection />
                 <p className="cripto-title">Today's Cryptocurrency Prices by Market Cap</p>

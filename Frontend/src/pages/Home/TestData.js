@@ -478,7 +478,7 @@ export const CriptoData = [
 export const NewsData = [
     {
         title: "How to store Crypto in 2022",
-        content: "As new cryptocurrency storage ...",
+        content: "Secondo quanto segnalato dagli utenti, Solana è andato offline per quattro ore. Malgrado ciò, Solana. Status mostra che non si sono verificati problemi sulla rete.",
         image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS9zdG9yYWdlL3VwbG9hZHMvdmlldy80MThlODJiNTcwMjk3YmQ4ZGQ0OTMxMTE3MmY3OGE5NS5qcGc=.jpg",
         link: "https://cointelegraph.com/explained/how-to-store-crypto-in-2022-explained"
     },
