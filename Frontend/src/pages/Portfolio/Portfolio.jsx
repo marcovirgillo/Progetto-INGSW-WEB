@@ -122,7 +122,7 @@ const Portfolio = () => {
                 </div>
                 <ul className="assets-list">
                     <p className="white-label assets-label">My Assets</p>
-                    <div className="h-spacer" />
+                    <div className="h-spacer-assets" />
                     <AddNewButton />
                 </ul>
                 <ul style={{display: 'flex', flexDirection: 'columns', padding: 0, margin: 0,

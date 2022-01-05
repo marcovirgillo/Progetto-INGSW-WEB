@@ -1,6 +1,10 @@
 package com.cryptoview.controller;
 
+import java.net.http.HttpResponse;
+import java.util.Arrays;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.model.News;
 import com.cryptoview.model.Stats;
+import com.cryptoview.persistence.dao.TransactionDao;
+import com.cryptoview.persistence.model.Transaction;
 import com.cryptoview.service.LatestNews;
 import com.cryptoview.service.MarketStats;
 import com.cryptoview.service.TopCryptos;
@@ -40,5 +46,18 @@ public class CryptoDataController {
 	@GetMapping("/marketStats")
 	private List<Stats> getMarketStats() {
 		return MarketStats.getInstance().getStats();
+	}
+	
+	@GetMapping("/transactions") 
+	private List <Transaction> getTransactions(HttpServletResponse response) {
+		List <Transaction> list = Arrays.asList();
+		try {
+			list = TransactionDao.getInstance().getAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setStatus(500);
+		}
+		
+		return list;
 	}
 }

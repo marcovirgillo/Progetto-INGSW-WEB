@@ -163,6 +163,11 @@
     .portfolio .name-label {
         margin-left: 30px;
     }
+
+    .portfolio .assets-list {
+        margin-left: 25px !important;
+        margin-right: 30px !important;
+    }
 }
 
 .portfolio .table-attribute {
@@ -257,4 +262,8 @@
 
 .portfolio .add-new-btn:hover {
     background: #1879a7;
+}
+
+.h-spacer-assets {
+    flex: 1;
 }
