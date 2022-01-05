@@ -4,25 +4,25 @@
     padding: 0px 10px 10px 10px;
 }
 
-.paper-grey {
+.portfolio .paper-grey {
     background-color: var(--bg-color-gray);
     border-radius: 8px;
     width: 100%;
     padding-bottom: 40px;
 }
 
-.name-label {
+.portfolio .name-label {
    margin: 0;
    padding-top: 30px;
    padding-left: 60px;
    color: white;
 }
 
-h3 {
-    color: #8F8F8F;
+.portfolio h3 {
+    color: var(--light-gray-color);
 }
 
-.portfolio-list {
+.portfolio .portfolio-list {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -30,12 +30,12 @@ h3 {
     padding-left: 80px;
 }
 
-.current-balance-label {
+.portfolio .current-balance-label {
     margin: 0;
     padding: 10px 0px 10px 4px;
 }
 
-.inline-list {
+.portfolio .inline-list {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -52,32 +52,32 @@ h3 {
     font-weight: 600;
 }
 
-.rectangle-green {
+.portfolio .rectangle-green {
     background-color: #46C95B;
 }
 
-.label-green {
+.portfolio .label-green {
     color: #46C95B;
     font-weight: 500;
 }
 
-.rectangle-red {
+.portfolio .rectangle-red {
     background-color: #E05757;
 }
 
-.label-red {
+.portfolio .label-red {
     color: #E05757;
     font-weight: 500;
 }
 
-.current-balance {
+.portfolio .current-balance {
     color: white;
     font-size: 2em;
     font-weight: 600;
 }
 
-.label-24h {
-    color: #8F8F8F;
+.portfolio .label-24h {
+    color: var(--light-gray-color);
     margin-left: 10px;
     font-size: 0.9em;
 }

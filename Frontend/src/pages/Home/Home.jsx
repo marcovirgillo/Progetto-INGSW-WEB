@@ -1,8 +1,6 @@
 import React from 'react'
-import { Grid, Icon, Typography } from '@mui/material'
 import "./Home.css"
 import "./../../App.css"
-import { TopGainers, WorstGainers } from "./TestData.js"
 import CriptoTable from './CriptoTable'
 import GainersSection from './GainersSection'
 import NewsSection from './NewsSection'

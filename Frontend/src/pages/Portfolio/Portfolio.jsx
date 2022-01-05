@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import CryptoChart from '../../components/Chart/CryptoChart';
 import { PortfolioData } from './Data.js';
+import PortfolioTable from './PortfolioTable';
 import "./../../App.css";
 import "./Portfolio.css";
+import plus_icon from "./../../res/logos/plus.png";
 
 const greenColor = "#46C95B";
 const redColor = "#E05757";
@@ -35,19 +37,18 @@ const Portfolio = () => {
     }
 
     function processData(res) {
-        let prices = res ["prices"];
-        let values = new Array();
-        let times = new Array();
-        prices.map((item) => {
-            values.push(item [1].toFixed(2));
-            times.push(item [0]);
+        let prices = res["prices"];
+        let values = [];
+        let times = [];
+        prices.forEach((item) => {
+            values.push(item[1].toFixed(2));
+            times.push(item[0]);
         })
 
         setCryptoPrices([{
             name: "Price",
             data: values
         }])
-
        
         setCryptoDatetime(times);
     }
@@ -60,16 +61,17 @@ const Portfolio = () => {
     return (
         <div className="portfolio">
             <div className="paper-grey">
-            <h4 className="name-label">{PortfolioData.portfolio_name}</h4>
-            <ul className="portfolio-list">
-                <h3 className="current-balance-label">Current Balance</h3>
-                <ul className="inline-list">
-                    <p className="current-balance">{PortfolioData.balance}</p>
-                    <IndicatorRectangle price_change={PortfolioData.balance_change_24h_percentage}/>
-                </ul>
-                <ul className="inline-list">
-                    <p className={getClassNameChange(PortfolioData.balance_change_24h)}>{PortfolioData.balance_change_24h}</p>
-                    <p className="label-24h">24h</p>
+                <h4 className="name-label">{PortfolioData.portfolio_name}</h4>
+                <ul className="portfolio-list">
+                    <h3 className="current-balance-label">Current Balance</h3>
+                    <ul className="inline-list">
+                        <p className="current-balance">{PortfolioData.balance}</p>
+                        <IndicatorRectangle price_change={PortfolioData.balance_change_24h_percentage}/>
+                    </ul>
+                    <ul className="inline-list">
+                        <p className={getClassNameChange(PortfolioData.balance_change_24h)}>{PortfolioData.balance_change_24h}</p>
+                        <p className="label-24h">24h</p>
+                    </ul>
                 </ul>
                 <ul className="inline-list btn-container" style={{marginTop: '15px'}}>
                     <p className={isBtnActive("chart")} onClick={() => setChartType("chart")}>Chart</p>
