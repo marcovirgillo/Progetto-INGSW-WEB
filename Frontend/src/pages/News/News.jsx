@@ -5,23 +5,19 @@ import { NewsData } from '../Home/TestData'
 
 const BigNewsBox = (props) => {
     return (
-        <div className='big-news-box'>
-            <ul className='list-big-news'>
-                <img src={props.imagePath} className='big-news-image'/>
-                <p className='big-news-title'> {props.title} </p>
-                <p className='big-news-description'> {props.content} </p>
-            </ul>
-        </div>
+        <ul className='big-news-list'>
+            <img src={props.imagePath} className='big-news-image'/>
+            <p className='big-news-title'> {props.title} </p>
+            <p className='big-news-description'> {props.content} </p>
+        </ul>
     );
 }
 
 const SideNewsBox = (props) => {
     return (
-        <ul className='side-news-container' >
-            <ul className='side-news-list'>
-                <p className='side-news-title'> {props.title} </p>
-                <img src={props.imagePath} className='side-news-image'/>
-            </ul>
+        <ul className='side-news-list'>
+            <p className='side-news-title'> {props.title} </p>
+            <img src={props.imagePath} className='side-news-image'/>
         </ul>
     );
 }
@@ -39,10 +35,20 @@ export default function News() {
                     content = {NewsData[0].content}
                />
                
-               <SideNewsBox 
-                    title = {NewsData[1].title}
+               <div className='side-news-box-container'>
+                <SideNewsBox 
+                        title = {"Dirigente di Coinbase: presto arriveranno miglioramenti importanti sulla scalabilità di Ethereum"}
+                        imagePath = {NewsData[1].image}
+                />
+                <SideNewsBox 
+                    title = {"Dirigente di Coinbase: presto arriveranno miglioramenti importanti sulla scalabilità di Ethereum"}
                     imagePath = {NewsData[1].image}
-               />
+                />
+                <SideNewsBox 
+                    title = {"Dirigente di Coinbase: presto arriveranno miglioramenti importanti sulla scalabilità di Ethereum"}
+                    imagePath = {NewsData[1].image}
+                />
+                </div>
 
             </div>
 
