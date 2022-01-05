@@ -4,6 +4,10 @@ import CryptoChart from '../../components/Chart/CryptoChart';
 import './SpecificCrypto.css';
 import "./../../App.css";
 
+let crypto_prices = [];
+let market_caps = [];
+let volumes = [];
+
 const SpecificCrypto = () => {
     const [chartType, setChartType] = useState("price");
     const [chartInterval, setChartInterval] = useState("1");
@@ -12,21 +16,13 @@ const SpecificCrypto = () => {
     const location = useLocation()
     const cryptoID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
 
-    //FARE STATE UNICO
-    const [cryptoPrices, setCryptoPrices] = useState([]);
-    const [cryptoMarketcaps, setCryptoMarketCaps] = useState([]);
-    const [cryptoVolumes, setCryptoVolumes] = useState([]);
-
-    const [cryptoDatetime, setCryptoDatetime] = useState([]);
-
-    let prices = [];
-    let market_caps = [];
-    let volumes = [];
+    const [chartData, setChartData] = useState([{name: 'Price', data: []}]);
+    const [chartDatetime, setChartDatetime] = useState([]);
 
     function fetcher(){
         fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=usd&days=${chartInterval}`)
         .then((res) => res.json())
-        .then((result) => processData(result, chartType));
+        .then((result) => processData(result));
 
         console.log("Fetched", chartInterval)
     }
@@ -35,56 +31,67 @@ const SpecificCrypto = () => {
             fetcher();
     }, []);
 
+    //se cambia l'intervallo di tempo, fetcho i dati nuovi
     useEffect(() =>{
-        console.log("INTERVAL: ", chartInterval);
         fetcher();
     }, [chartInterval])
 
-    
+    //ogni volta che cambia il tipo di chart (price, cap, volume), imposto i dati nuovi che erano stati già fetchati
+    useEffect(checkChartType, [chartType]);
+
+    function checkChartType() {
+        if(chartType == "price") {
+            setChartData([{
+                name: 'Price',
+                data: crypto_prices
+            }]);
+        }
+
+        if(chartType == "market_cap") {
+            setChartData([{
+                name: 'Market Cap',
+                data: market_caps
+            }]);
+        }
+
+        if(chartType == "volume") {
+            setChartData([{
+                name: 'Volume 24h',
+                data: volumes
+            }]);
+        }
+    }
 
     function processData(res) {
-        prices = res["prices"];
-        market_caps = res["market_caps"]
-        volumes = res["total_volumes"]
-        let values = [];
+        crypto_prices = [];
+        market_caps = [];
+        volumes = [];
+        let prices = res["prices"];
+        let caps = res["market_caps"]
+        let vols = res["total_volumes"]
         let times = [];
 
-        prices.map((item) => {
+        prices.forEach((item) => {
             if(item[1]>1)
-                values.push(item [1].toFixed(2));
+                crypto_prices.push(item [1].toFixed(2));
             else
-                values.push(item[1].toFixed(6));
+                crypto_prices.push(item[1].toFixed(6));
+
             times.push(item [0]);
         })
-        setCryptoPrices([{
-            name: "Price",
-            data: values
-        }])
+        
 
-        values = [];
-        market_caps.map((item) => {
-            values.push(item [1].toFixed(2));
+        caps.forEach((item) => {
+            market_caps.push(item [1].toFixed(2));
         })
 
-        setCryptoMarketCaps([{
-            name: "Market cap",
-            data: values
-        }])
-
-        values = [];
-
-        volumes.map((item) => {
-            values.push(item [1].toFixed(2));
+        vols.forEach((item) => {
+            volumes.push(item [1].toFixed(2));
         })
 
-        setCryptoVolumes([{
-            name: "Volume",
-            data: values
-        }])
-
-        setCryptoDatetime(times);  
-
-        console.log("SETTED ", chartInterval)
+        setChartDatetime(times);
+        //dopo il fetch, controllo che tipo di chart era attivo
+        checkChartType();
     }
 
     function isBtnActive(name) {
@@ -95,47 +102,18 @@ const SpecificCrypto = () => {
         return (name === chartInterval ? 'btn-active' : '');
     }
 
-    function intervalHandler(interval){
-        setChartInterval(interval);
-        console.log("SET ", interval)
-   /*      fetcher(); */
-    }
-
-    function handleChartType(type){
-        setChartType(type)
-    }
-
     const ChartButtons = (props) => {
         return (
             <ul className={"btn-container chart-btn-controller " + props.className}>
-                <p className={isBtnChartActive("1")} onClick={() => intervalHandler("1")}>24h</p>
-                <p className={isBtnChartActive("7")} onClick={() => intervalHandler("7")}>7D</p>
-                <p className={isBtnChartActive("30")} onClick={() => intervalHandler("30")}>30D</p>
-                <p className={isBtnChartActive("90")} onClick={() => intervalHandler("90")}>90D</p>
-                <p className={isBtnChartActive("365")} onClick={() => intervalHandler("365")}>1Y</p>
-                <p className={isBtnChartActive("max")} onClick={() => intervalHandler("max")}>ALL</p>
+                <p className={isBtnChartActive("1")} onClick={() => setChartInterval("1")}>24h</p>
+                <p className={isBtnChartActive("7")} onClick={() => setChartInterval("7")}>7D</p>
+                <p className={isBtnChartActive("30")} onClick={() => setChartInterval("30")}>30D</p>
+                <p className={isBtnChartActive("90")} onClick={() => setChartInterval("90")}>90D</p>
+                <p className={isBtnChartActive("365")} onClick={() => setChartInterval("365")}>1Y</p>
+                <p className={isBtnChartActive("max")} onClick={() => setChartInterval("max")}>ALL</p>
             </ul>
         )
     }
-
-    function getDesiredData(){
-        switch(chartType){
-            case 'price':
-                return prices;
-            case 'market_cap':
-                return market_caps;
-            case 'volume':
-                return volumes;
-        }
-    }
-
-
-    // se i dati non sono stati fetchati, non fare return TODO sistemare
-    if(cryptoPrices.length === 0 || cryptoDatetime.length === 0)
-        return (<React.Fragment />)
-
-
-    console.log("RENDER")
 
     return (
         <div className="specific-crypto">
@@ -143,7 +121,7 @@ const SpecificCrypto = () => {
                 <div className="chart-div">
                     <ul className="btn-containers-list">
                         <ul className="btn-container">
-                            <p className={isBtnActive("price")} onClick={() => handleChartType("price")}>Price</p>
+                            <p className={isBtnActive("price")} onClick={() => setChartType("price")}>Price</p>
                             <p className={isBtnActive("market_cap")} onClick={() => setChartType("market_cap")}>Market cap</p>
                             <p className={isBtnActive("volume")} onClick={() => setChartType("volume")}>Volume</p>
                         </ul>
@@ -153,8 +131,9 @@ const SpecificCrypto = () => {
                     <CryptoChart 
                         className="chart"
                         width="100%" 
-                        data={getDesiredData()} 
-                        timestamps={cryptoDatetime} 
+                        heigth="100%"
+                        data={chartData} 
+                        timestamps={chartDatetime} 
                         color="#32C0FF"
                     />  
                     <ChartButtons className="chart-btns-mobile"/>

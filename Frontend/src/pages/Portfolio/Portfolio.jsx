@@ -25,6 +25,7 @@ const Portfolio = () => {
     const [cryptoDatetime, setCryptoDatetime] = useState([]);
 
     const [chartType, setChartType] = useState("chart");
+    const [chartInterval, setChartInterval] = useState("24h");
 
     useEffect(() => {
         fetch("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30")
@@ -57,6 +58,33 @@ const Portfolio = () => {
         return (name === chartType ? 'btn-active' : '');
     }
 
+    function isBtnChartActive(name) {
+        return (name === chartInterval ? 'btn-active' : '');
+    }
+
+    const ChartButtons = (props) => {
+        return (
+            <ul className={"btn-container chart-btn-controller " + props.className}>
+                <p className={isBtnChartActive("24h")} onClick={() => setChartInterval("24h")}>24h</p>
+                <p className={isBtnChartActive("7d")} onClick={() => setChartInterval("7d")}>7D</p>
+                <p className={isBtnChartActive("30d")} onClick={() => setChartInterval("30d")}>30D</p>
+                <p className={isBtnChartActive("90d")} onClick={() => setChartInterval("90d")}>90D</p>
+                <p className={isBtnChartActive("all")} onClick={() => setChartInterval("all")}>ALL</p>
+            </ul>
+        )
+    }
+
+    const AddNewButton = () => {
+        return (
+            <div className="add-new-btn">
+                <ul className="inline-list">
+                    <img src={plus_icon} width={24} height={24} alt="icon"/>
+                    <p className="white-label btn-label">Add New</p>
+                </ul>
+            </div>
+        );
+    }
+
 
     return (
         <div className="portfolio">
@@ -73,19 +101,34 @@ const Portfolio = () => {
                         <p className="label-24h">24h</p>
                     </ul>
                 </ul>
-                <ul className="inline-list btn-container" style={{marginTop: '15px'}}>
-                    <p className={isBtnActive("chart")} onClick={() => setChartType("chart")}>Chart</p>
-                    <p className={isBtnActive("allocation")} onClick={() => setChartType("allocation")}>Allocation</p>
-                    <p className={isBtnActive("statistics")} onClick={() => setChartType("statistics")}>Statistics</p>
+                <div className="chart-div" style={{marginTop: '20px'}}>
+                    <ul className="btn-containers-list">
+                        <ul className="btn-container">
+                            <p className={isBtnActive("chart")} onClick={() => setChartType("chart")}>Chart</p>
+                            <p className={isBtnActive("allocation")} onClick={() => setChartType("allocation")}>Allocation</p>
+                            <p className={isBtnActive("statistics")} onClick={() => setChartType("statistics")}>Statistics</p>
+                        </ul>
+                        <div className="h-spacer" />
+                        { chartType === 'chart' && (<ChartButtons className="chart-btns-desktop"/>) }
+                    </ul>
+                    <CryptoChart className="chart"
+                        color={greenColor} 
+                        width="100%" 
+                        height="120%"
+                        data={cryptoPrices} 
+                        timestamps={cryptoDatetime} 
+                    />
+                    { chartType === 'chart' && (<ChartButtons className="chart-btns-mobile"/>) }
+                </div>
+                <ul className="assets-list">
+                    <p className="white-label assets-label">My Assets</p>
+                    <div className="h-spacer" />
+                    <AddNewButton />
                 </ul>
-            </ul>
-                <CryptoChart
-                    color={greenColor} 
-                    width="80%" 
-                    height="200%"
-                    data={cryptoPrices} 
-                    timestamps={cryptoDatetime} 
-                />
+                <ul style={{display: 'flex', flexDirection: 'columns', padding: 0, margin: 0,
+                            justifyContent: 'center', alignItems: 'flex-start'}}>
+                    <PortfolioTable />
+                </ul>
             </div>
         </div>
     )
