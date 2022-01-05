@@ -36,9 +36,9 @@ export default function CriptoTable() {
     const isArrowActive = (order, type) => {
         if(itemActive == type) {
             if(order == "DSC")
-                return <ArrowDropDownRoundedIcon/>;
+                return <ArrowDropUpRoundedIcon/>;
 
-            return <ArrowDropUpRoundedIcon />;
+            return <ArrowDropDownRoundedIcon />;
         }
     }
 
@@ -67,7 +67,16 @@ export default function CriptoTable() {
             return "+" + change.toFixed(2);
         }
         
-        return change.toFixed(2)  
+        return change.toFixed(2);
+    }
+
+    const TableCellArrow = props => {
+        return (
+            <span className="table-header-list">
+                { props.content }
+                { isArrowActive(order, props.arrowChecker) }
+            </span>
+        )
     }
 
     const fetchData = () => {
@@ -89,35 +98,19 @@ export default function CriptoTable() {
                     <TableCell className="table-attribute">#</TableCell>
                     <TableCell className="table-attribute">Name</TableCell>
                     <TableCell className="table-attribute"onClick={() => {sorting("price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
-                    {  <span className="table-header-list">
-                            Price
-                            { isArrowActive(order, "price") }
-                         </span> }
+                        <TableCellArrow content="Price" arrowChecker="price" />
                     </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("change"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
-                       {  <span className="table-header-list">
-                            24h
-                            { isArrowActive(order, "24h") }
-                         </span> }
-                        
+                        <TableCellArrow content="24h" arrowChecker="24h" />
                     </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("change_7d"); setItemActive("7d")}} style={{cursor: 'pointer'}}>
-                        {  <span className="table-header-list">
-                                7d
-                                { isArrowActive(order, "7d")}
-                            </span> }
+                        <TableCellArrow content="7d" arrowChecker="7d" />
                     </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("market_cap"); setItemActive("market-cap")}} style={{cursor: 'pointer'}}>
-                        {  <span className="table-header-list">
-                                Market Cap
-                                {isArrowActive(order, "market-cap")}
-                            </span> }
+                        <TableCellArrow content="Market Cap" arrowChecker="market-cap" />
                     </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("volume"); setItemActive("total-volume"); }} style={{cursor: 'pointer'}}>
-                        {  <span className="table-header-list">
-                                 Volume
-                                {isArrowActive(order, "total-volume")}
-                            </span> }
+                        <TableCellArrow content="Volume" arrowChecker="total-volume" />
                     </TableCell>
                     <TableCell className="table-attribute">7d Chart</TableCell>
                 </TableRow>

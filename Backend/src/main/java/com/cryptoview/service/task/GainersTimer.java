@@ -4,6 +4,7 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Component;
 
 import com.cryptoview.service.TopCryptos;
+import com.cryptoview.service.TopExchanges;
 import com.cryptoview.service.MarketStats;
 
 //è la classe che si occupa di processare dati ogni tot tempo, in modo da averli pronti ad ogni richiesta
@@ -29,7 +30,8 @@ public class GainersTimer implements DisposableBean, Runnable {
 			if(System.currentTimeMillis() - lastUpdate > FREQUENCY) {
 				updateGainers();
 				updateStats();
-
+				updateExchanges();
+				
 				lastUpdate = System.currentTimeMillis();
 			}
 		}
@@ -47,6 +49,12 @@ public class GainersTimer implements DisposableBean, Runnable {
 		System.out.println(java.time.LocalDateTime.now() + " FETCHED Crypto Detail");
 	}
 
+	private void updateExchanges() {
+		System.out.println(java.time.LocalDateTime.now() + " UPDATE Exchanges");
+		TopExchanges.getInstance().fetchData();
+		System.out.println(java.time.LocalDateTime.now() + " FETCHED Exchanges");
+	}
+	
 	@Override
 	public void destroy() throws Exception {
 		isRunning = false;

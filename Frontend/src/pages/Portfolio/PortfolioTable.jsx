@@ -1,16 +1,51 @@
-import React, { Component, useState, useEffect } from 'react'
-import { TableBody, Table, TableCell, TableHead, TableRow, Icon } from '@mui/material';
+import React, { useState } from 'react'
+import { TableBody, Table, TableCell, TableHead, TableRow } from '@mui/material';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import { PortfolioData } from './Data.js';
-import "./../Home/Home.css"
-import { Link, Navigate  } from 'react-router-dom'
+import "./Portfolio.css"
+import { Link  } from 'react-router-dom'
+
+const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
+
+function getPriceClass(price) {
+    let className = 'table-item ';
+    className += price < 0 ? 'item-red' : 'item-green';
+    return className;
+}
+
+function getFormattedPrice(price) {
+    if(price > 1)
+        return formatter.format(price);
+    else 
+        return "$" + price;
+}
+
+function formatPercentage(change) {
+    if(change > 0){
+        return "+" + change.toFixed(2) + " %";
+    }
+    
+    return change.toFixed(2) + " %";
+}
+
+function formatProfitDollar(change) {
+    if(change > 0)
+        return "+ " + getFormattedPrice(change);
+    else {
+        let price = getFormattedPrice(change);
+        return "- $" + price.substring(2);
+    }
+}
 
 export default function CriptoTable() {
     const [cryptoTable, setCryptoTable] = useState([]);
     const [order, setOrder] = useState("ASC");
+
+    //itemactive è un'etichetta che dice chi è l'elemento che ha fatto il sorting
     const [itemActive, setItemActive] = useState(null);
 
+    //il parametro è l'elemento del json sul quale fare l'ordinamento
     const sorting = (col) => {
         if(order === "ASC"){
             const sorted = [...cryptoTable].sort((a,b) => 
@@ -29,115 +64,89 @@ export default function CriptoTable() {
     }
 
     const isArrowActive = (order, type) => {
-        if(itemActive == type) {
-            if(order == "DSC")
-                return <ArrowDropDownRoundedIcon/>;
+        if(itemActive === type) {
+            if(order === "DSC")
+                return <ArrowDropUpRoundedIcon/>;
 
-            return <ArrowDropUpRoundedIcon />;
+            return <ArrowDropDownRoundedIcon />;
         }
     }
 
-    const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
-
-    function getPriceClass(price) {
-        let className = 'table-item ';
-        className += price < 0 ? 'item-red' : 'item-green';
-        return className;
-    }
-
-    function getPriceWithCurrency(price) {
-        let str = formatter.format(price);
-        return str.substring(0, str.length - 3);
-    }
-
-    function getFormattedPrice(price) {
-        if(price > 1)
-            return formatter.format(price);
-        else 
-            return "$" + price;
-    }
-
-    function change(change) {
-        if(change > 0){
-            return "+" + change.toFixed(2);
-        }
-        
-        return change.toFixed(2)  
+    const TableCellArrow = props => {
+        return (
+            <span className="table-header-list">
+                { props.content }
+                { isArrowActive(order, props.arrowChecker) }
+            </span>
+        )
     }
 
     return (
-        <Table className="table" sx={{maxWidth: '95%', marginTop: '30px'}}>
+        <Table className="table" sx={{maxWidth: '94%', marginTop: '30px'}}>
             <TableHead>
                 <TableRow>
-                    <TableCell className="table-attribute">#</TableCell>
                     <TableCell className="table-attribute">Name</TableCell>
-                    <TableCell className="table-attribute"onClick={() => {sorting("price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
-                    {  <span className="table-header-list">
-                            Price
-                            { isArrowActive(order, "price") }
-                         </span> }
+                    <TableCell className="table-attribute" onClick={() => {sorting("price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
+                        <TableCellArrow content="Price" arrowChecker="price" />
                     </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("change"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
-                       {  <span className="table-header-list">
-                            24h
-                            { isArrowActive(order, "24h") }
-                         </span> }
-                        
+                        <TableCellArrow content="24h" arrowChecker="24h" />
                     </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("change_7d"); setItemActive("7d")}} style={{cursor: 'pointer'}}>
-                        {  <span className="table-header-list">
-                                7d
-                                { isArrowActive(order, "7d")}
-                            </span> }
+                        <TableCellArrow content="7d" arrowChecker="7d" />
                     </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("market_cap"); setItemActive("market-cap")}} style={{cursor: 'pointer'}}>
-                        {  <span className="table-header-list">
-                                Market Cap
-                                {isArrowActive(order, "market-cap")}
-                            </span> }
+                    <TableCell className="table-attribute" onClick={() => {sorting("holding_dollar"); setItemActive("holdings")}} style={{cursor: 'pointer'}}>
+                        <TableCellArrow content="Holdings" arrowChecker="holdings" />
                     </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("volume"); setItemActive("total-volume"); }} style={{cursor: 'pointer'}}>
-                        {  <span className="table-header-list">
-                                 Volume
-                                {isArrowActive(order, "total-volume")}
-                            </span> }
+                    <TableCell className="table-attribute" onClick={() => {sorting("avg_buy_price"); setItemActive("avg-buy-price"); }} style={{cursor: 'pointer'}}>
+                        <TableCellArrow content="Avg. Buy Price" arrowChecker="avg-buy-price" />
                     </TableCell>
-                    <TableCell className="table-attribute">7d Chart</TableCell>
+                    <TableCell className="table-attribute" onClick={() => {sorting("profit_dollar"); setItemActive("profit"); }} style={{cursor: 'pointer'}}>
+                        <TableCellArrow content="Profit/Loss" arrowChecker="profit" />
+                    </TableCell>
+                    <TableCell className="table-attribute">Actions</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 {
-                    cryptoTable.map((item, val) => (
-                            <TableRow key={val}>
-                                    <TableCell className="table-item">{item.rank}</TableCell>
-                                    <TableCell className="table-item">
-                                        <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
-                                            <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
-                                            <Link to={`/crypto/${item.id}`} state={{ id: item.id }} className="item-name">
-                                                <p>{item.name}</p>
-                                            </Link>
-                                            <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker})</p>
-                                        </ul>
-                                    </TableCell>
-                                    <TableCell className="table-item">
-                                        {getFormattedPrice(item.price)}
-                                    </TableCell>
-                                    <TableCell className={getPriceClass(item.change)}>
-                                        {change(item.change)} %
-                                    </TableCell>
-                                    <TableCell className={getPriceClass(item.change_7d)}>
-                                        {change(item.change_7d)} %
-                                    </TableCell>
-                                    <TableCell className="table-item">
-                                    {getPriceWithCurrency(item.market_cap)}
-                                    </TableCell>
-                                    <TableCell className="table-item">
-                                        {getPriceWithCurrency(item.volume)}
-                                    </TableCell>
-                                    <TableCell className="table-item">
-                                        <img src={item.chart7d} />
-                                    </TableCell>
-                            </TableRow>
+                    PortfolioData.assets.map((item, val) => (
+                        <TableRow key={val}>
+                                <TableCell className="table-item">
+                                    <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
+                                        <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
+                                        <Link to={`/crypto/${item.id}`} className="item-name">
+                                            <p>{item.name}</p>
+                                        </Link>
+                                        <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker})</p>
+                                    </ul>
+                                </TableCell>
+                                <TableCell className="table-item">
+                                    {getFormattedPrice(item.price)}
+                                </TableCell>
+                                <TableCell className={getPriceClass(item.change_24h)}>
+                                    {formatPercentage(item.change_24h)} 
+                                </TableCell>
+                                <TableCell className={getPriceClass(item.change_7d)}>
+                                    {formatPercentage(item.change_7d)} 
+                                </TableCell>
+                                <TableCell className="table-item">
+                                    <ul className="table-item-list">
+                                        <li>{item.holdings}</li>
+                                        <li className="item-grey">{getFormattedPrice(item.holding_dollar)}</li>
+                                    </ul>
+                                </TableCell>
+                                <TableCell className="table-item">
+                                    {getFormattedPrice(item.avg_buy_price)}
+                                </TableCell>
+                                <TableCell className="table-item">
+                                    <ul className="table-item-list">
+                                        <li>{formatProfitDollar(item.profit_dollar)}</li>
+                                        <li className={"profit " + getPriceClass(item.profit_percentage)}>
+                                            {item.profit_percentage} %
+                                        </li>
+                                    </ul>
+                                </TableCell>
+                        </TableRow>
                     ))
                 }
             </TableBody>

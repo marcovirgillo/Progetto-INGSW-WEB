@@ -27,13 +27,14 @@ export default function CryptoChart(props) {
             },
         }, 
         stroke: {
-            curve: 'smooth'
+            curve: 'smooth',
+            width: 2
         },
-        colors: [props.color],
+        colors: [props.color]
     }
 
     return (
-        <Chart className={props.className}
+        <Chart 
             options={options}
             series={props.data}
             type="area"

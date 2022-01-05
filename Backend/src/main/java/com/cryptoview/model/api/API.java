@@ -9,6 +9,7 @@ public class API {
 	private final String topAPIPart1 = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=";
 	private final String topAPIPart2 = "&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d";
 	private final String marketStatsAPI = "https://api.coingecko.com/api/v3/global";
+	private final String exchangesAPI = "https://api.coingecko.com/api/v3/exchanges";
 
 	private API() {}
 	
@@ -28,5 +29,9 @@ public class API {
 	
 	public String getMarketStatsAPI() {
 		return marketStatsAPI;
+	}
+	
+	public String getExchangesAPI() {
+		return exchangesAPI;
 	}
 }
