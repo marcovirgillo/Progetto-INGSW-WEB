@@ -17,6 +17,11 @@
     padding-left: 60px;
 }
 
+a {
+    text-decoration: none;
+    color: white;
+}
+
 .header{
     display: flex;
     flex-direction: column;
