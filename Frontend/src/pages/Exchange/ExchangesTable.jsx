@@ -59,13 +59,6 @@ export default function ExchangesTable() {
         return str.substring(0, str.length - 3);
     }
 
-    function getFormattedPrice(price) {
-        if(price > 1)
-            return formatter.format(price);
-        else 
-            return "$" + price;
-    }
-
     const fetchData = () => {
         fetch(`http://${address}:8080/getTop100Exchanges`)
             .then((res) => res.json())
@@ -126,7 +119,7 @@ export default function ExchangesTable() {
                                         </div>
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                        {item.volume}
+                                        {getPriceWithCurrency(item.volume)}
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
                                         {item.country} 

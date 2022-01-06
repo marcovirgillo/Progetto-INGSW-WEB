@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState }  from 'react'
 import "./Home.css"
 import "./../../App.css"
 import CriptoTable from './CriptoTable'
@@ -6,6 +6,11 @@ import GainersSection from './GainersSection'
 import NewsSection from './NewsSection'
 
 const Home = () => {
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     return (
         <div className="home-page">            
             <div className="paper-gray">
@@ -18,8 +23,6 @@ const Home = () => {
                 </ul>
             </div>
         </div>
-
-
     )
 }
 
