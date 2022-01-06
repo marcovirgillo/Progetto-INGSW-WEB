@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +49,7 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 	}
 
 	@Override
-	public Portfolio get(String owner) throws Exception {
+	public Portfolio get(String owner) throws SQLException {
 		Portfolio portfolio = null;
 		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(getUserPortfolio);
 		stm.setString(1, owner);
@@ -67,21 +66,9 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 		return portfolio;
 	}
 
-	private void fillTransaction(Portfolio portfolio, String owner) throws Exception {
-		String query = "select * from transaction where portfolio_owner=?";
-		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(query);
-		stm.setString(1, owner);
-		
-		ResultSet rs = stm.executeQuery();
-		List <Transaction> transactionList = new ArrayList<>();
-		while(rs.next()) {
-			Transaction transaction = Transaction.parseFromDB(rs);
-			transactionList.add(transaction);
-		}
-		
-		Collections.sort(transactionList);
+	private void fillTransaction(Portfolio portfolio, String owner) throws SQLException {
+		List <Transaction> transactionList = TransactionDaoJDBC.getInstance().getUserTransaction(owner);
 		portfolio.setTransactionList(transactionList);
-		
 	}
 	
 	private void getActualCripto(Portfolio portfolio) throws SQLException {

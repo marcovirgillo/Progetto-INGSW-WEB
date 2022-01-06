@@ -1,6 +1,7 @@
 package com.cryptoview.model.api;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 
@@ -30,5 +31,21 @@ public class TopCryptoFetcher {
 			e.printStackTrace();
 		}
 		return new JSONArray();		
+	}
+	
+	public JSONObject fetchCrypto(String cryptoID) {
+		try {
+			String response = Fetcher.getInstance().fetch(API.getInstance().getCriptoDataAPI(cryptoID), "ERROR fetching crypto info");
+		
+			JSONParser parser = new JSONParser();
+			JSONObject obj = (JSONObject) parser.parse(response);
+			
+			return obj;
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new JSONObject();
 	}
 }

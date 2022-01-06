@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,9 +68,14 @@ public class Transaction implements Comparable<Transaction> {
 		return transactionDatestamp;
 	}
 	
-	public void calculateDateStamp() throws ParseException  {
-		SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-		transactionDatestamp = formatter.parse(transactionDate + " " + transactionTime);
+	public void calculateDateStamp() {
+		try {
+			SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+			transactionDatestamp = formatter.parse(transactionDate + " " + transactionTime);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			transactionDatestamp = Date.from(Instant.EPOCH);
+		}
 	}
 	
 	public void setPriceUsdCrypto(double priceUsdCrypto) {
@@ -100,7 +106,7 @@ public class Transaction implements Comparable<Transaction> {
 		this.transactionTime = transactionTime;
 	}
 	
-	public static Transaction parseFromDB(ResultSet rs) throws SQLException, ParseException {
+	public static Transaction parseFromDB(ResultSet rs) throws SQLException {
 		Transaction transaction = new Transaction();
 		transaction.setPortfolioOwner(rs.getString("portfolio_owner"));
 		transaction.setCryptoTicker(rs.getString("crypto_ticker"));
