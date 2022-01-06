@@ -1,10 +1,12 @@
 package com.cryptoview.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,8 @@ import com.cryptoview.persistence.model.Portfolio;
 import com.cryptoview.persistence.model.Transaction;
 import com.cryptoview.service.LatestNews;
 import com.cryptoview.service.MarketStats;
+import com.cryptoview.service.PortfolioService;
+import com.cryptoview.service.PortfolioService.Pair;
 import com.cryptoview.service.TopCryptos;
 import com.cryptoview.service.TopExchanges;
 
@@ -89,10 +93,15 @@ public class CryptoDataController {
 		return TopExchanges.getInstance().getTop100();
 	}
 	
-	@GetMapping("/prices")
-	private JSONObject getPrices() throws Exception{
-		return TopCryptoFetcher.getInstance().fetchCrypto("hoge-finance");
-		//return null;
+	@GetMapping("/portfolioValue")
+	private JSONArray getPrices() throws Exception{
+		return PortfolioService.getInstance().getPortfolioValueTime("prova", "10");
+		//return new JSONArray();
+	}
+	
+	@GetMapping("/portfolioInfo")
+	private JSONObject getPortfolio() throws Exception {
+		return PortfolioService.getInstance().getPortfolioInfo("prova");
 	}
 	
 }

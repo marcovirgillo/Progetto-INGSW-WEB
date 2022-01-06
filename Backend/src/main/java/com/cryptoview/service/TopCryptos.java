@@ -77,6 +77,22 @@ public class TopCryptos {
 		return "";
 	}
 	
+	public Double getSupportedCryptoPrice(String ticker) {
+		return supportedCryptoDetail.get(ticker).getPrice();
+	}
+	
+	public String getSupportedCryptoLogo(String ticker) {
+		return supportedCryptoDetail.get(ticker).getLogo();
+	}
+	
+	public Double getSupportedCrypto24hChange(String ticker) {
+		return supportedCryptoDetail.get(ticker).getChange();
+	}
+	
+	public Double getSupportedCrypto7dChange(String ticker) {
+		return supportedCryptoDetail.get(ticker).getChange_7d();
+	}
+	
 	private void checkMissingPrices() {
 		//se non ho fetchato una cripto supportata nell'ultimo aggiornamento, la fetcho singolarmente
 		//serve per il portfolio

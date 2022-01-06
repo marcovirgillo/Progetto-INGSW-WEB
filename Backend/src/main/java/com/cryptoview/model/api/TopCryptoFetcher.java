@@ -48,4 +48,20 @@ public class TopCryptoFetcher {
 		
 		return new JSONObject();
 	}
+	
+	public JSONArray fetchCryptoHistoricprices(String cryptoID, String timestamp) {
+		try {
+			String response = Fetcher.getInstance().fetch(API.getInstance().getCriptoHistoryAPI(cryptoID, timestamp), "ERROR fetching crypto history");
+		
+			JSONParser parser = new JSONParser();
+			JSONObject obj = (JSONObject) parser.parse(response);
+			
+			return (JSONArray) obj.get("prices");
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new JSONArray();
+	}
 }

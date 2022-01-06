@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TableBody, Table, TableCell, TableHead, TableRow } from '@mui/material';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import { PortfolioData } from './Data.js';
 import "./Portfolio.css"
 import { Link  } from 'react-router-dom'
+import { address } from '../../assets/globalVar.js';
 
 const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
+
+const portfolioInfoUrl = "http://localhost:8080/portfolioInfo";
 
 function getPriceClass(price) {
     let className = 'table-item ';
@@ -38,8 +41,8 @@ function formatProfitDollar(change) {
     }
 }
 
-export default function CriptoTable() {
-    const [cryptoTable, setCryptoTable] = useState([]);
+export default function CriptoTable(props) {
+    const [cryptoTable, setCryptoTable] = useState(props.data);
     const [order, setOrder] = useState("ASC");
 
     //itemactive è un'etichetta che dice chi è l'elemento che ha fatto il sorting
@@ -109,7 +112,7 @@ export default function CriptoTable() {
             </TableHead>
             <TableBody>
                 {
-                    PortfolioData.assets.map((item, val) => (
+                    props.data.map((item, val) => (
                         <TableRow key={val}>
                                 <TableCell className="table-item">
                                     <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
@@ -117,7 +120,7 @@ export default function CriptoTable() {
                                         <Link to={`/crypto/${item.id}`} className="item-name">
                                             <p>{item.name}</p>
                                         </Link>
-                                        <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker})</p>
+                                        <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker.toUpperCase()})</p>
                                     </ul>
                                 </TableCell>
                                 <TableCell className="table-item">

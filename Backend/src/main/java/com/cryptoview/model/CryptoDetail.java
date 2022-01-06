@@ -121,6 +121,12 @@ public class CryptoDetail implements Comparable <CryptoDetail>{
 	
 	@Override
 	public int compareTo(CryptoDetail gainerz) {
+		if(this.change == null)
+			return 1;
+		
+		if(gainerz.change == null)
+			return -1;
+		
 		if(this.change > gainerz.change)
 			return -1;
 		
@@ -150,6 +156,8 @@ public class CryptoDetail implements Comparable <CryptoDetail>{
 		crypto.setMarket_cap((Long) obj.get("market_cap"));
 		crypto.setRank((Long) obj.get("market_cap_rank"));
 		
+		crypto.checkNullField();
+		
 		return crypto;
 	}
 	
@@ -169,6 +177,16 @@ public class CryptoDetail implements Comparable <CryptoDetail>{
 		detail.setVolume((long) 0);
 		detail.setChart7d("");
 		
+		detail.checkNullField();
+		
 		return detail;
+	}
+	
+	private void checkNullField() {
+		if(change == null)
+			change = 0.0;
+		
+		if(change_7d == null)
+			change_7d = 0.0;
 	}
 }
