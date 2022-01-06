@@ -142,19 +142,41 @@
     }
 }
 
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 700px) {
     .paper-grey-news {
         flex-direction: column;
     }
     
     .big-news-container {
-        width: 95%;
+        width: 80%;
+        margin-left: 8%;
+    }
+
+    .big-news-title {
+        font-size: 20px;
+    }
+
+    .big-news-description {
+        font-size: 14px;
+    }
+
+    .big-news-date {
+        font-size: 12px;
     }
 
     .three-side-news-container {
         padding-top: 30px;
-        width: 80%;
-        margin-left: 40px;   
+        width: 70%;
+        margin-left: 17%;
     }
+
+    .side-news-title {
+        font-size: 14px;
+    }
+
+    .side-news-date {
+        font-size: 12px;
+    }
+
 }
 
