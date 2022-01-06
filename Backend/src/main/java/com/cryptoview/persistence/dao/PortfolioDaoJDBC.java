@@ -49,7 +49,7 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 	}
 
 	@Override
-	public Portfolio get(String owner) throws Exception {
+	public Portfolio get(String owner) throws SQLException {
 		Portfolio portfolio = null;
 		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(getUserPortfolio);
 		stm.setString(1, owner);

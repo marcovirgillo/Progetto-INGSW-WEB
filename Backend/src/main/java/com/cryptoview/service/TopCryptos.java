@@ -48,29 +48,14 @@ public class TopCryptos {
 				CryptoDetail crypto = CryptoDetail.parseFromResponse(obj);
 				crypto.setChart7d(getCryptoChart((String) obj.get("image")));
 				
-<<<<<<< HEAD
 				//se una cripto delle top è anche supportata, aggiungo i suoi dati alla map
 				if(CryptoDaoJDBC.getInstance().getSupportedCripto().contains(crypto.getTicker()))
 					supportedCryptoDetail.put(crypto.getTicker(), crypto);
-=======
-				Object o = obj.get("total_volume");
-				Long volume = ((Number) o).longValue();
-				crypto.setVolume(volume);
-				
-				o = obj.get("current_price");
-				Double price = ((Number) o).doubleValue();
-				crypto.setPrice(price);
-				
-				crypto.setMarket_cap((Long) obj.get("market_cap"));
-				
 				
 				if (crypto.getName().equals("Bitcoin"))
 					bitcoinPrice = crypto.getPrice();
 				
 				crypto.setRank((Long) obj.get("market_cap_rank"));
-				
-				checkCryptoPrice(crypto.getTicker(), crypto.getPrice());
->>>>>>> e74b75df9eac5743e07e5c1a26ef54ced7395862
 				
 				cryptosList.add(crypto);
 			}

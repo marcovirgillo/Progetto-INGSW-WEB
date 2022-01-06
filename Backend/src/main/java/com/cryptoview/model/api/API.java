@@ -13,6 +13,8 @@ public class API {
 	private final String exchangesAPI = "https://api.coingecko.com/api/v3/exchanges";
 	private final String criptoDataAPIPart1 = "https://api.coingecko.com/api/v3/coins/";
 	private final String criptoDatatAPIpart2 = "?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false";
+	private final String criptoHistoryAPIPart1 = "https://api.coingecko.com/api/v3/coins/";
+	private final String cryptoHistoryAPIPart2 = "/market_chart?vs_currency=usd&days=";
 			
 	private API() {}
 	
@@ -32,6 +34,10 @@ public class API {
 	
 	public String getCriptoDataAPI(String id) {
 		return criptoDataAPIPart1 + id + criptoDatatAPIpart2;
+	}
+	
+	public String getCriptoHistoryAPI(String id, String timeStamp) {
+		return criptoHistoryAPIPart1 + id + cryptoHistoryAPIPart2 + timeStamp;
 	}
 	
 	public String getMarketStatsAPI() {
