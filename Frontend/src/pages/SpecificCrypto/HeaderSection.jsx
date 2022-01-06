@@ -182,6 +182,7 @@ const HeaderSection = () => {
                         )
                     }
                     <Grid className="item" item xl={6} lg={12} md={12} sm={12} xs={5}> 
+                    
                     {
                         screenSize<600 ? <PriceDataSection /> : <CommunitySection />
                     }

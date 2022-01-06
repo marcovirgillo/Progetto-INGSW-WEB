@@ -19,13 +19,13 @@ public class TopCryptos {
 	private ArrayList <CryptoDetail> top100Cryptos;
 	private Double bitcoinPrice;
 	
-	private Map <String, Double> cryptoActualPrice;
+	private Map <String, CryptoDetail> supportedCryptoDetail;
 	
 	private static TopCryptos instance = null;
 	
 	private TopCryptos() {
 		cryptosList = new ArrayList<CryptoDetail>();
-		cryptoActualPrice = new HashMap<String, Double>();
+		supportedCryptoDetail = new HashMap<String, CryptoDetail>();
 	}
 	
 	public static TopCryptos getInstance() {
@@ -40,36 +40,22 @@ public class TopCryptos {
 		
 		synchronized (this) {
 			cryptosList.clear();
+			supportedCryptoDetail.clear();
 			
 			for(int i = 0; i < cryptos.size(); ++i) {
 				JSONObject obj = (JSONObject) cryptos.get(i);
 				
-				CryptoDetail crypto = new CryptoDetail();
-				crypto.setChange((Double) obj.get("price_change_percentage_24h"));
-				crypto.setLogo((String) obj.get("image"));
-				crypto.setName((String) obj.get("name"));
-				crypto.setId((String) obj.get("id"));				
-				crypto.setTicker((String) obj.get("symbol"));
-				crypto.setChange_7d((Double) obj.get("price_change_percentage_7d_in_currency"));
+				CryptoDetail crypto = CryptoDetail.parseFromResponse(obj);
 				crypto.setChart7d(getCryptoChart((String) obj.get("image")));
 				
-				Object o = obj.get("total_volume");
-				Long volume = ((Number) o).longValue();
-				crypto.setVolume(volume);
-				
-				o = obj.get("current_price");
-				Double price = ((Number) o).doubleValue();
-				crypto.setPrice(price);
-				
-				crypto.setMarket_cap((Long) obj.get("market_cap"));
-				
+				//se una cripto delle top è anche supportata, aggiungo i suoi dati alla map
+				if(CryptoDaoJDBC.getInstance().getSupportedCripto().contains(crypto.getTicker()))
+					supportedCryptoDetail.put(crypto.getTicker(), crypto);
 				
 				if (crypto.getName().equals("Bitcoin"))
 					bitcoinPrice = crypto.getPrice();
 				
 				crypto.setRank((Long) obj.get("market_cap_rank"));
-				
-				checkCryptoPrice(crypto.getTicker(), crypto.getPrice());
 				
 				cryptosList.add(crypto);
 			}
@@ -77,22 +63,29 @@ public class TopCryptos {
 			top100Cryptos = new ArrayList<CryptoDetail>(cryptosList.subList(0, 100));
 			
 			Collections.sort(cryptosList);
+			
+			checkMissingPrices();
 		}
 	}
 	
-	//Questo metodo aggiorna il prezzo della cripto, se è supportata
-	private void checkCryptoPrice(String ticker, Double price) {
-		if(CryptoDaoJDBC.getInstance().getCrypto(ticker) != null) {
-			cryptoActualPrice.put(ticker, price);
+	private String getCryptoId(String ticker) {
+		for(CryptoDetail crypto : cryptosList) {
+			if(crypto.getTicker().equalsIgnoreCase(ticker))
+				return crypto.getId();
 		}
-	}
-	
-	public Double getCryptoPrice(String ticker) {
-		Double price = cryptoActualPrice.get(ticker);
-		if(price != null)
-			return price;
 		
-		return 0.0;
+		return "";
+	}
+	
+	private void checkMissingPrices() {
+		//se non ho fetchato una cripto supportata nell'ultimo aggiornamento, la fetcho singolarmente
+		//serve per il portfolio
+		for(String ticker : CryptoDaoJDBC.getInstance().getSupportedCripto()) {
+			if(!supportedCryptoDetail.keySet().contains(ticker)) {
+				CryptoDetail cryptoDetail = CryptoDetail.parseFromSingleResponse(TopCryptoFetcher.getInstance().fetchCrypto(getCryptoId(ticker)));
+				supportedCryptoDetail.put(ticker, cryptoDetail);
+			}
+		}
 	}
 
 	private String getCryptoChart(String imageUrl) {

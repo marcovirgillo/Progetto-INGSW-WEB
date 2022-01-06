@@ -11,7 +11,11 @@ public class API {
 	private final String topAPIPart2 = "&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d";
 	private final String marketStatsAPI = "https://api.coingecko.com/api/v3/global";
 	private final String exchangesAPI = "https://api.coingecko.com/api/v3/exchanges";
-
+	private final String criptoDataAPIPart1 = "https://api.coingecko.com/api/v3/coins/";
+	private final String criptoDatatAPIpart2 = "?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false";
+	private final String criptoHistoryAPIPart1 = "https://api.coingecko.com/api/v3/coins/";
+	private final String cryptoHistoryAPIPart2 = "/market_chart?vs_currency=usd&days=";
+			
 	private API() {}
 	
 	public static API getInstance() {
@@ -26,6 +30,14 @@ public class API {
 	
 	public String getTopAPI(int number) {
 		return topAPIPart1 + number + topAPIPart2;
+	}
+	
+	public String getCriptoDataAPI(String id) {
+		return criptoDataAPIPart1 + id + criptoDatatAPIpart2;
+	}
+	
+	public String getCriptoHistoryAPI(String id, String timeStamp) {
+		return criptoHistoryAPIPart1 + id + cryptoHistoryAPIPart2 + timeStamp;
 	}
 	
 	public String getMarketStatsAPI() {

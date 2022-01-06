@@ -126,7 +126,7 @@ export default function CriptoTable() {
                                             <Link to={`/crypto/${item.id}`} state={{ id: item.id }} className="item-name">
                                                 <p>{item.name}</p>
                                             </Link>
-                                            <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker})</p>
+                                            <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker.toUpperCase()})</p>
                                         </ul>
                                     </TableCell>
                                     <TableCell className="table-item">
