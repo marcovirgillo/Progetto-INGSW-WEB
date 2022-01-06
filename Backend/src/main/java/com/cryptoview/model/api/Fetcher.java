@@ -1,18 +1,16 @@
 package com.cryptoview.model.api;
 
-import java.net.HttpURLConnection;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URL;
-import java.util.Scanner;
-
-import com.cryptoview.service.log.Logger;
+import java.nio.charset.Charset;
 
 public class Fetcher {
 	
 	private static Fetcher instance = null;
-	
-	private Fetcher() {
-		
-	}
 	
 	public static Fetcher getInstance() {
 		if(instance == null)
@@ -23,7 +21,7 @@ public class Fetcher {
 	
 	public String fetch(String url, String errorMsg) {
 		try {
-			URL obj = new URL(url);
+			/*URL obj = new URL(url);
 			
 			HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
 			conn.setRequestMethod("GET");
@@ -44,13 +42,27 @@ public class Fetcher {
 		       inline += scanner.nextLine();
 		    }
 		   
-		    scanner.close();
+		    scanner.close();*/
+			InputStream is = new URL(url).openStream();
+		    BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+		    String response = readAll(rd);
 		    
-		   return inline;
+		    is.close();
+		    return response;
+		    
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
 		
-		return null;		
+		return "";		
 	}
+	
+	private static String readAll(Reader rd) throws IOException {
+	    StringBuilder sb = new StringBuilder();
+	    int cp;
+	    while ((cp = rd.read()) != -1) {
+	      sb.append((char) cp);
+	    }
+	    return sb.toString();
+	  }
 }

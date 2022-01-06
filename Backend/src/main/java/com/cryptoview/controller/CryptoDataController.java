@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.model.Exchanges;
 import com.cryptoview.model.News;
 import com.cryptoview.model.Stats;
+import com.cryptoview.model.api.TopCryptoFetcher;
 import com.cryptoview.persistence.dao.PortfolioDaoJDBC;
 import com.cryptoview.persistence.dao.TransactionDaoJDBC;
 import com.cryptoview.persistence.model.Portfolio;
@@ -85,6 +87,12 @@ public class CryptoDataController {
 	@GetMapping("/getTop100Exchanges")
 	private List<Exchanges> getExchanges() {
 		return TopExchanges.getInstance().getTop100();
+	}
+	
+	@GetMapping("/prices")
+	private JSONObject getPrices() throws Exception{
+		return TopCryptoFetcher.getInstance().fetchCrypto("hoge-finance");
+		//return null;
 	}
 	
 }

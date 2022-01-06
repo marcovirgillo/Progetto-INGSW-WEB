@@ -73,7 +73,7 @@ export default function GainersSection() {
                                     <p className="list-number">{val+1}</p>
                                     <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.logo} width={18} height={18}/> </Icon>
                                     <p className="list-name">{item.name}</p>
-                                    <p className="list-ticker">{item.ticker}</p>
+                                    <p className="list-ticker">{item.ticker.toUpperCase()}</p>
                                     <div className="spacer"> </div>
                                     <p className="list-change-green">{change(item.change)}%</p>
                                 </ul>
@@ -97,7 +97,7 @@ export default function GainersSection() {
                                     <p className="list-number">{val+1}</p>
                                     <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.logo} width={18} height={18}/> </Icon>
                                     <p className="list-name">{item.name}</p>
-                                    <p className="list-ticker">{item.ticker}</p>
+                                    <p className="list-ticker">{item.ticker.toUpperCase()}</p>
                                     <div className="spacer"> </div>
                                     <p className="list-change-red">{change(item.change)}%</p> {/* item.change>0 ? "+".concat(String(item.change.toFixed(2))) : item.change.toFixed(2) */}
                                 </ul>

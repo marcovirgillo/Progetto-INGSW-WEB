@@ -1,5 +1,7 @@
 package com.cryptoview.model;
 
+import org.json.simple.JSONObject;
+
 public class CryptoDetail implements Comparable <CryptoDetail>{
 	private Long rank;
 	private String id;
@@ -69,7 +71,7 @@ public class CryptoDetail implements Comparable <CryptoDetail>{
 	}
 	
 	public void setTicker(String ticker) {
-		this.ticker = ticker.toUpperCase();
+		this.ticker = ticker;
 	}
 	
 	public String getTicker() {
@@ -115,7 +117,6 @@ public class CryptoDetail implements Comparable <CryptoDetail>{
 	public void setRank(Long rank) {
 		this.rank = rank;
 	}
-
 	
 	@Override
 	public int compareTo(CryptoDetail gainerz) {
@@ -126,5 +127,47 @@ public class CryptoDetail implements Comparable <CryptoDetail>{
 			return 0;
 		
 		return 1;
+	}
+	
+	public static CryptoDetail parseFromResponse(JSONObject obj) {
+		CryptoDetail crypto = new CryptoDetail();
+		crypto.setChange((Double) obj.get("price_change_percentage_24h"));
+		crypto.setLogo((String) obj.get("image"));
+		crypto.setName((String) obj.get("name"));
+		crypto.setId((String) obj.get("id"));				
+		crypto.setTicker((String) obj.get("symbol"));
+		crypto.setChange_7d((Double) obj.get("price_change_percentage_7d_in_currency"));
+		
+		Object o = obj.get("total_volume");
+		Long volume = ((Number) o).longValue();
+		crypto.setVolume(volume);
+		
+		o = obj.get("current_price");
+		Double price = ((Number) o).doubleValue();
+		crypto.setPrice(price);
+		
+		crypto.setMarket_cap((Long) obj.get("market_cap"));
+		crypto.setRank((Long) obj.get("market_cap_rank"));
+		
+		return crypto;
+	}
+	
+	public static CryptoDetail parseFromSingleResponse(JSONObject obj) {
+		CryptoDetail detail = new CryptoDetail();
+		detail.setName((String) obj.get("name"));
+		detail.setId((String) obj.get("id"));
+		detail.setTicker(((String) obj.get("symbol")));
+		
+		detail.setLogo((String) ((JSONObject) obj.get("image")).get("small"));
+		detail.setPrice((Double) ((JSONObject) ((JSONObject) obj.get("market_data")).get("current_price")).get("usd"));
+		detail.setChange((Double) ((JSONObject) obj.get("market_data")).get("price_change_percentage_24h"));
+		detail.setChange_7d((Double) ((JSONObject) obj.get("market_data")).get("price_change_percentage_7d"));
+		
+		detail.setMarket_cap((long) 0);
+		detail.setRank((long) 0);
+		detail.setVolume((long) 0);
+		detail.setChart7d("");
+		
+		return detail;
 	}
 }
