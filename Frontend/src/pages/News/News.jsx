@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState }  from 'react'
 import "./News.css"
 import { NewsData } from '../Home/TestData'
+
 
 
 const BigNewsBox = (props) => {
@@ -28,6 +29,10 @@ const SideNewsBox = (props) => {
 
 
 export default function News() {
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     return (
         <div className='news-page'>
             <h4 className='popular-news-label'> Popular News</h4>

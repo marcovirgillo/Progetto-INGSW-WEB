@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState }  from 'react'
 import ExchangesTable from './ExchangesTable'
 import NewsExchangesSection from './NewsExchangeSection'
 
 const Exchanges = () => {
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     return (
         <div className="exchanges-page">
             <div className="paper-grey">
