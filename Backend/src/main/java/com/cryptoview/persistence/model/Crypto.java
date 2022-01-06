@@ -51,4 +51,9 @@ public class Crypto {
 		return crypto;
 	}
 	
+	@Override
+	public String toString() {
+		return ticker;
+	}
+	
 }

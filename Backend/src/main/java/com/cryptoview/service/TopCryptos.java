@@ -3,22 +3,29 @@ package com.cryptoview.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.model.api.TopCryptoFetcher;
+import com.cryptoview.persistence.dao.CryptoDaoJDBC;
 
 public class TopCryptos {
 	private ArrayList <CryptoDetail> cryptosList;
 	private ArrayList <CryptoDetail> top100Cryptos;
+	private Double bitcoinPrice;
+	
+	private Map <String, Double> cryptoActualPrice;
 	
 	private static TopCryptos instance = null;
 	
 	private TopCryptos() {
 		cryptosList = new ArrayList<CryptoDetail>();
+		cryptoActualPrice = new HashMap<String, Double>();
 	}
 	
 	public static TopCryptos getInstance() {
@@ -56,7 +63,13 @@ public class TopCryptos {
 				
 				crypto.setMarket_cap((Long) obj.get("market_cap"));
 				
+				
+				if (crypto.getName().equals("Bitcoin"))
+					bitcoinPrice = crypto.getPrice();
+				
 				crypto.setRank((Long) obj.get("market_cap_rank"));
+				
+				checkCryptoPrice(crypto.getTicker(), crypto.getPrice());
 				
 				cryptosList.add(crypto);
 			}
@@ -67,6 +80,21 @@ public class TopCryptos {
 		}
 	}
 	
+	//Questo metodo aggiorna il prezzo della cripto, se è supportata
+	private void checkCryptoPrice(String ticker, Double price) {
+		if(CryptoDaoJDBC.getInstance().getCrypto(ticker) != null) {
+			cryptoActualPrice.put(ticker, price);
+		}
+	}
+	
+	public Double getCryptoPrice(String ticker) {
+		Double price = cryptoActualPrice.get(ticker);
+		if(price != null)
+			return price;
+		
+		return 0.0;
+	}
+
 	private String getCryptoChart(String imageUrl) {
 		Integer cryptoId = getIdFromImage(imageUrl);
 		return "https://www.coingecko.com/coins/" + cryptoId + "/sparkline";
@@ -100,4 +128,9 @@ public class TopCryptos {
 		name = name.substring(0, name.indexOf("/"));
 		return Integer.parseInt(name);
 	}
+	
+	public Double getBitcoinPrice() {
+		return bitcoinPrice;
+	}
+	
 }

@@ -4,7 +4,7 @@
     padding: 0px 10px 10px 10px;
 }
 
-.paper-grey {
+.paper-gray {
     background-color: var(--bg-color-gray);
     border-radius: 8px;
     width: 100%;
@@ -116,11 +116,11 @@ ul {
 
 @media only screen and (max-width: 600px) {
     .home-page {
-        padding: 0;
+        padding: 0px;
     }
 
-    .paper-grey {
-        border-radius: 0;
+    .paper-gray {
+        border-radius: 0px;
     }
 }
 

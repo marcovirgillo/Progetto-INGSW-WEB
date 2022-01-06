@@ -41,7 +41,7 @@ public class TopExchanges {
 				Exchanges exchange = new Exchanges();
 				exchange.setName((String) obj.get("name"));
 				exchange.setTrust_score((Long) obj.get("trust_score"));
-				exchange.setVolume((Double) obj.get("trade_volume_24h_btc"));
+				exchange.setVolume((Double) obj.get("trade_volume_24h_btc") * TopCryptos.getInstance().getBitcoinPrice());
 				exchange.setRank((Long) obj.get("trust_score_rank"));
 				exchange.setLogo((String) obj.get("image"));
 				exchange.setChart_7d(getExchangeChart((String) obj.get("image")));

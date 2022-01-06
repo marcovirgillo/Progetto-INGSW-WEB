@@ -113,8 +113,6 @@ const ChartSection = () => {
         )
     }
 
-    console.log("RENDER")
-
     return (
         <div className="chart-div">
             <div style={{paddingTop:'20px'}}></div>

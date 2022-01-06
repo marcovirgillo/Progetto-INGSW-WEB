@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState }  from 'react'
 import "./Home.css"
 import "./../../App.css"
 import CriptoTable from './CriptoTable'
@@ -6,8 +6,14 @@ import GainersSection from './GainersSection'
 import NewsSection from './NewsSection'
 
 const Home = () => {
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     return (
-        <div className="home-page">            <div className="paper-grey">
+        <div className="home-page">            
+            <div className="paper-gray">
                 <h4 className="news-day-label">News of the day</h4>
                 <NewsSection />
                 <p className="cripto-title">Today's Cryptocurrency Prices by Market Cap</p>
@@ -17,8 +23,6 @@ const Home = () => {
                 </ul>
             </div>
         </div>
-
-
     )
 }
 

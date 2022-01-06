@@ -5,9 +5,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.cryptoview.persistence.model.Crypto;
 import com.cryptoview.persistence.model.Portfolio;
+import com.cryptoview.persistence.model.Transaction;
 
 public class PortfolioDaoJDBC extends PortfolioDao {
 	
@@ -15,7 +20,7 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 	
 	private final String getAllQuery = "select * from portfolio;";
 	private final String getUserPortfolio = "select * from portfolio where username_owner=?";
-	private final String insertPortfolio = "insert into portfolio values(?, now(), ?);";
+	//private final String insertPortfolio = "insert into portfolio values(?, now(), ?);";
 	
 	public static PortfolioDaoJDBC getInstance() {
 		if(instance == null)
@@ -45,7 +50,7 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 	}
 
 	@Override
-	public Portfolio get(String owner) throws SQLException {
+	public Portfolio get(String owner) throws Exception {
 		Portfolio portfolio = null;
 		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(getUserPortfolio);
 		stm.setString(1, owner);
@@ -53,6 +58,8 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 		ResultSet rs = stm.executeQuery();
 		if(rs.next()) {
 			portfolio = Portfolio.parseFromDB(rs);
+			fillTransaction(portfolio, owner);
+			getActualCripto(portfolio);
 		}
 		
 		rs.close();
@@ -60,4 +67,40 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 		return portfolio;
 	}
 
+	private void fillTransaction(Portfolio portfolio, String owner) throws Exception {
+		String query = "select * from transaction where portfolio_owner=?";
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(query);
+		stm.setString(1, owner);
+		
+		ResultSet rs = stm.executeQuery();
+		List <Transaction> transactionList = new ArrayList<>();
+		while(rs.next()) {
+			Transaction transaction = Transaction.parseFromDB(rs);
+			transactionList.add(transaction);
+		}
+		
+		Collections.sort(transactionList);
+		portfolio.setTransactionList(transactionList);
+		
+	}
+	
+	private void getActualCripto(Portfolio portfolio) throws SQLException {
+		Map <Crypto, Double> cryptoMap = new HashMap <Crypto, Double>();
+		for(Transaction transaction : portfolio.getTransactionList()) {
+			Crypto crypto = CryptoDaoJDBC.getInstance().getCrypto(transaction.getCryptoTicker());
+			
+			if(cryptoMap.containsKey(crypto)) {
+				if(transaction.getType() == Transaction.BUY)
+					cryptoMap.put(crypto, cryptoMap.get(crypto) + transaction.getQuantity());
+				else 
+					cryptoMap.put(crypto, cryptoMap.get(crypto) - transaction.getQuantity());
+			}
+			else {
+				if(transaction.getType() == Transaction.BUY)
+					cryptoMap.put(crypto, transaction.getQuantity());
+			}
+		}
+		
+		portfolio.setCryptoMap(cryptoMap);
+	}
 }
