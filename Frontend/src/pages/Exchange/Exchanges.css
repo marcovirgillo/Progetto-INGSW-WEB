@@ -49,32 +49,6 @@
         padding: 0;
     }
 
-    .paper-grey {
-        border-radius: 0;
-    }
-}
-
-@media only screen and (max-width: 1160px) {
-    .table {
-        display: block !important;
-        overflow-x: auto !important;
-        white-space: nowrap !important;
-        font-size: 12px !important;
-        max-height: 100vh !important;
-    }
-
-    .news-img {
-        width: 260px !important;
-    }
-
-    .news-title {
-        width: 250px !important;
-    }
-
-    .news-content {
-        width: 250px !important;
-    }
-
     .exchanges-title {
         font-size: 14px !important;
         margin-left: 50px !important;
@@ -86,5 +60,9 @@
     margin-left: 70px;
     font-weight: bold;
     font-size: 18px;
+}
+
+.trust_score {
+    text-indent: 25px;
 }
 
