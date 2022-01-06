@@ -51,14 +51,18 @@ export const info = {
         "small": "https://assets.coingecko.com/coins/images/12171/small/polkadot.png?1639712644",
         "large": "https://assets.coingecko.com/coins/images/12171/large/polkadot.png?1639712644"
       },
-      "current_price": 29.74,
+      "current_price": {
+        "usd": 26.03,
+        "btc": 0.00060589,
+        "eth": 0.00766153,
+      },
       "market_cap": 31858473950,
       "market_cap_rank": 9,
       "total_volume": 1112749687,
       "price_change_percentage_24h": -0.98659,
-      "price_change_24h_in_currency": {
-        "btc": -3.47355e-7,
-        "eth": 0.00003908
+      "price_change_percentage_24h_in_currency":{
+        "btc": -5.40177,
+        "eth": -1.9578,
       },
       "tickers": [
         {

@@ -65,12 +65,36 @@
 .crypto-title{
     color: #FFFFFF;
     font-weight: 500;
-    font-size: 30px;
+    font-size: 35px;
     margin-left: 15px;
 }
 
 .grey-container{
     background-color: #737373;
+    color: white;
+    font-weight: 500;
+    border-radius: 15px;
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    cursor: default;
+    max-height: 35px;
+    padding: 6px 13px;
+    margin-bottom: 10px;
+}
+
+.green-container{
+    background-color: #55AD11;
+    color: white;
+    font-weight: 500;
+    border-radius: 15px;
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    cursor: default;
+    max-height: 35px;
+    padding: 6px 13px;
+    margin-bottom: 10px;
+}
+
+.red-container{
+    background-color: #B63939;
     color: white;
     font-weight: 500;
     border-radius: 15px;
@@ -100,6 +124,24 @@
     color: white;
     font-weight: 500;
     margin-bottom: 10px;
+}
+
+.p-crypto-green {
+    color: #55AD11;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.p-crypto-red {
+    color: #B63939;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+@media only screen and (max-width:600px) {
+    .container-header{
+        margin-left: -50px;
+    }
 }
 
 @media only screen and (max-width: 800px) {
