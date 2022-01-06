@@ -143,6 +143,10 @@ a {
     margin-bottom: 10px;
 }
 
+.crypto-main-stats-4x {
+    background-color: #414141;
+}
+
 @media only screen and (max-width:600px) {
     .container-header{
         margin-left: -50px;
