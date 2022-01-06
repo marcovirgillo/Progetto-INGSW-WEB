@@ -38,17 +38,29 @@ public class TopExchanges {
 			for(int i = 0; i < exchanges.size(); ++i) {
 				JSONObject obj = (JSONObject) exchanges.get(i);
 				
-				Exchanges exchage = new Exchanges();
-				exchage.setName((String) obj.get("name"));
-				exchage.setTrust_score((Long) obj.get("trust_score"));
-				exchage.setVolume((Double) obj.get("trade_volume_24h_btc"));
-				exchage.setCountry((String) obj.get("country"));
-				exchage.setYearEstabilished((Long) obj.get("year_established"));
-				exchage.setRank((Long) obj.get("trust_score_rank"));
-				exchage.setLogo((String) obj.get("image"));
-				exchage.setChart_7d(getExchangeChart((String) obj.get("image")));
+				Exchanges exchange = new Exchanges();
+				exchange.setName((String) obj.get("name"));
+				exchange.setTrust_score((Long) obj.get("trust_score"));
+				exchange.setVolume((Double) obj.get("trade_volume_24h_btc"));
+				exchange.setRank((Long) obj.get("trust_score_rank"));
+				exchange.setLogo((String) obj.get("image"));
+				exchange.setChart_7d(getExchangeChart((String) obj.get("image")));
 				
-				top100Exchanges.add(exchage);
+				if (obj.get("country") != null) {
+					exchange.setCountry((String) obj.get("country"));
+				}
+				else {
+					exchange.setCountry("not available");
+				}
+				
+				if (obj.get("year_established") != null) {
+					exchange.setYearEstabilished((Long) obj.get("year_established"));
+				}
+				else {
+					exchange.setYearEstabilished((long) 0);
+				}
+				
+				top100Exchanges.add(exchange);
 		
 			}
 			
