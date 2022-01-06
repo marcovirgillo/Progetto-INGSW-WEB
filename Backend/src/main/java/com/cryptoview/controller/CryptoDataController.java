@@ -13,7 +13,9 @@ import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.model.Exchanges;
 import com.cryptoview.model.News;
 import com.cryptoview.model.Stats;
+import com.cryptoview.persistence.dao.PortfolioDaoJDBC;
 import com.cryptoview.persistence.dao.TransactionDaoJDBC;
+import com.cryptoview.persistence.model.Portfolio;
 import com.cryptoview.persistence.model.Transaction;
 import com.cryptoview.service.LatestNews;
 import com.cryptoview.service.MarketStats;
@@ -66,6 +68,20 @@ public class CryptoDataController {
 		
 		return list;
 	}
+	
+	@GetMapping("/portfolio") 
+	private Portfolio getPortfolio(HttpServletResponse response) {
+		try {
+			Portfolio portfolio = PortfolioDaoJDBC.getInstance().get("prova");
+			return portfolio;
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setStatus(500);
+		}
+		
+		return new Portfolio();
+	}
+	
 	@GetMapping("/getTop100Exchanges")
 	private List<Exchanges> getExchanges() {
 		return TopExchanges.getInstance().getTop100();

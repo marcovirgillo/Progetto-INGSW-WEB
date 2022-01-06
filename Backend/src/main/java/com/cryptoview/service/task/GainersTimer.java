@@ -28,7 +28,7 @@ public class GainersTimer implements DisposableBean, Runnable {
 	public void run() {
 		while(isRunning) {
 			if(System.currentTimeMillis() - lastUpdate > FREQUENCY) {
-				updateGainers();
+				updateTopCryptos();
 				updateStats();
 				updateExchanges();
 				
@@ -43,7 +43,7 @@ public class GainersTimer implements DisposableBean, Runnable {
 		System.out.println(java.time.LocalDateTime.now() + " FETCHED Market Statistics");
 	}
 
-	private void updateGainers() {
+	private void updateTopCryptos() {
 		System.out.println(java.time.LocalDateTime.now() + " UPDATE Crypto Detail");
 		TopCryptos.getInstance().fetchData();
 		System.out.println(java.time.LocalDateTime.now() + " FETCHED Crypto Detail");

@@ -2,17 +2,20 @@ package com.cryptoview.persistence.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class Transaction {
+public class Transaction implements Comparable<Transaction> {
 	
 	@JsonIgnore
-	public final char BUY = 'b';
+	public static final char BUY = 'b';
 	@JsonIgnore
-	public final char SELL = 's';
+	public static final char SELL = 's';
 	@JsonIgnore
-	public final char TRANSFER = 't';
+	public static final char TRANSFER = 't';
 	
 	private String portfolioOwner;
 	private String cryptoTicker;
@@ -22,6 +25,7 @@ public class Transaction {
 	private double totalUsdSpent;
 	private String transactionDate;
 	private String transactionTime;
+	private Date transactionDatestamp;
 	
 	public String getPortfolioOwner() {
 		return portfolioOwner;
@@ -46,6 +50,7 @@ public class Transaction {
 	public void setType(char type) {
 		this.type = type;
 	}
+	
 	public double getQuantity() {
 		return quantity;
 	}
@@ -56,6 +61,15 @@ public class Transaction {
 	
 	public double getPriceUsdCrypto() {
 		return priceUsdCrypto;
+	}
+	
+	public Date getTransactionDatestamp() {
+		return transactionDatestamp;
+	}
+	
+	public void calculateDateStamp() throws ParseException  {
+		SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		transactionDatestamp = formatter.parse(transactionDate + " " + transactionTime);
 	}
 	
 	public void setPriceUsdCrypto(double priceUsdCrypto) {
@@ -86,7 +100,7 @@ public class Transaction {
 		this.transactionTime = transactionTime;
 	}
 	
-	public static Transaction parseFromDB(ResultSet rs) throws SQLException {
+	public static Transaction parseFromDB(ResultSet rs) throws SQLException, ParseException {
 		Transaction transaction = new Transaction();
 		transaction.setPortfolioOwner(rs.getString("portfolio_owner"));
 		transaction.setCryptoTicker(rs.getString("crypto_ticker"));
@@ -96,7 +110,19 @@ public class Transaction {
 		transaction.setTransactionDate(rs.getString("transaction_date"));
 		transaction.setTransactionTime(rs.getString("transaction_time"));
 		transaction.setTotalUsdSpent(rs.getDouble("total_usd_spent"));
+		transaction.calculateDateStamp();
 		return transaction;
+	}
+
+	@Override
+	public int compareTo(Transaction t2) {
+		if(t2.getTransactionDatestamp().getTime() > this.transactionDatestamp.getTime())
+			return -1;
+		
+		if(t2.getTransactionDatestamp().getTime() < this.transactionDatestamp.getTime())
+			return 1;
+		
+		return 0;
 	}
 	
 }

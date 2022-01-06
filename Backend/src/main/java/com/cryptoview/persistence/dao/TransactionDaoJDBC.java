@@ -23,7 +23,7 @@ public class TransactionDaoJDBC extends TransactionDao{
 	}
 
 	@Override
-	public List<Transaction> getAll() throws SQLException {
+	public List<Transaction> getAll() throws Exception {
 		List <Transaction> transactions = new ArrayList<>();
 		Statement stm = DBConnection.getInstance().getConnection().createStatement();
 		ResultSet rs = stm.executeQuery(getAllQuery);
