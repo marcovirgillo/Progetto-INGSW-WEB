@@ -3,7 +3,9 @@ import Chart from "react-apexcharts";
 
 export default function CryptoChart(props) {
     const format = (value) => {
-        if(value >= Math.pow(10,6) && value < Math.pow(10,9))
+        if(value >= Math.pow(10,3) && value < Math.pow(10,6))
+            return value / Math.pow(10,3) + " K";
+        else if(value >= Math.pow(10,6) && value < Math.pow(10,9))
             return value / Math.pow(10,6) + " M";
         else if(value >= Math.pow(10,9) && value < Math.pow(10,12))
             return value / Math.pow(10,9) + " B";

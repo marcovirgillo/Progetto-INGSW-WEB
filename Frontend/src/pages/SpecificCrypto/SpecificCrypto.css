@@ -142,6 +142,11 @@
     .container-header{
         margin-left: -50px;
     }
+
+    .prices-info-container,
+    .community-info-container {
+        font-size: 120;
+    }
 }
 
 @media only screen and (max-width: 800px) {
@@ -173,6 +178,10 @@
 
     .paper-grey {
         border-radius: 0px;
+    }
+
+    .specific-crypto {
+        padding: 0px;
     }
 }
 
