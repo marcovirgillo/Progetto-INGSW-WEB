@@ -42,7 +42,12 @@ public class CryptoDataController {
 	
 	@GetMapping("/latestNews")
 	private List<News> getLatestNews(){
-		return LatestNews.getInstance().getLatestNews();
+		return LatestNews.getInstance().getLatestCryptoNews();
+	}
+	
+	@GetMapping("/latestNewsExchanges")
+	private List<News> getLatestExchangesNews(){
+		return LatestNews.getInstance().getLatestExchangesNews();
 	}
 	
 	@GetMapping("/marketStats")

@@ -18,16 +18,29 @@ public class LatestNewsFetcher {
 		return instance;
 	}
 	
-	public JSONArray fetch() {
+	public JSONArray fetch(String type) {
 		try {
-			String response = Fetcher.getInstance().fetch(API.getInstance().getNewsAPI(8), "ERROR fetching latest news.");
-		    
-		    JSONParser parser = new JSONParser();
-		    JSONObject result = (JSONObject) parser.parse(response); 
-		    
-		    JSONArray news = (JSONArray) result.get("articles");
-		    
-		    return news;
+			if (type == "crypto") {
+				String response = Fetcher.getInstance().fetch(API.getInstance().getNewsAPI(8), "ERROR fetching latest news.");
+			    
+			    JSONParser parser = new JSONParser();
+			    JSONObject result = (JSONObject) parser.parse(response); 
+			    
+			    JSONArray news = (JSONArray) result.get("articles");
+			    
+			    return news;
+			}
+			
+			if (type == "exchanges") {
+				String response = Fetcher.getInstance().fetch(API.getInstance().getNewsExchangesAPI(), "ERROR fetching latest news.");
+			    
+			    JSONParser parser = new JSONParser();
+			    JSONObject result = (JSONObject) parser.parse(response); 
+			    
+			    JSONArray news = (JSONArray) result.get("articles");
+			    
+			    return news;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

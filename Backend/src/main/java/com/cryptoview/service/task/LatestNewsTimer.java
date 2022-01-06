@@ -34,9 +34,13 @@ public class LatestNewsTimer implements DisposableBean, Runnable {
 	}
 
 	private void updateLatestNews() {
-		System.out.println(java.time.LocalDateTime.now() + " UPDATE Latest news");
-		LatestNews.getInstance().fetchData();
-		System.out.println(java.time.LocalDateTime.now() + " FETCHED Lastest news");
+		System.out.println(java.time.LocalDateTime.now() + " UPDATE Latest crypto news");
+		LatestNews.getInstance().fetchCryptoData();
+		System.out.println(java.time.LocalDateTime.now() + " FETCHED Lastest crypto news");
+		
+		System.out.println(java.time.LocalDateTime.now() + " UPDATE Latest exchanges news");
+		LatestNews.getInstance().fetchExchangesData();
+		System.out.println(java.time.LocalDateTime.now() + " FETCHED Lastest exchanges news");
 	}
 
 

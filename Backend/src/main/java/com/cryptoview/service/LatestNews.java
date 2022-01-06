@@ -9,12 +9,14 @@ import com.cryptoview.model.News;
 import com.cryptoview.model.api.LatestNewsFetcher;
 
 public class LatestNews {
-	private ArrayList <News> latestNews;
+	private ArrayList <News> latestCryptoNews;
+	private ArrayList <News> latestExchangesNews;
 	
 	private static LatestNews instance = null;
 	
 	private LatestNews() {
-		latestNews = new ArrayList<News>();
+		latestCryptoNews = new ArrayList<News>();
+		latestExchangesNews = new ArrayList<News>();
 	}
 	
 	public static LatestNews getInstance() {
@@ -24,11 +26,11 @@ public class LatestNews {
 		return instance;
 	}
 	
-	public void fetchData() {
-		JSONArray latestNewsJSON = LatestNewsFetcher.getInstance().fetch();
+	public void fetchCryptoData() {
+		JSONArray latestNewsJSON = LatestNewsFetcher.getInstance().fetch("crypto");
 		
 		synchronized (this) {
-			latestNews.clear();
+			latestCryptoNews.clear();
 			
 			for(int i = 0; i < latestNewsJSON.size(); ++i) {
 				JSONObject obj = (JSONObject) latestNewsJSON.get(i);
@@ -39,12 +41,36 @@ public class LatestNews {
 				news.setTitle((String) obj.get("title"));
 				news.setDescription((String) obj.get("description"));
 				
-				latestNews.add(news);
+				latestCryptoNews.add(news);
 			}
 		}
 	}
 	
-	public ArrayList<News> getLatestNews() {
-		return latestNews;
+	public void fetchExchangesData() {
+		JSONArray latestNewsJSON = LatestNewsFetcher.getInstance().fetch("exchanges");
+		
+		synchronized (this) {
+			latestExchangesNews.clear();
+			
+			for(int i = 0; i < latestNewsJSON.size(); ++i) {
+				JSONObject obj = (JSONObject) latestNewsJSON.get(i);
+
+				News news = new News();
+				news.setUrl((String) obj.get("url"));
+				news.setImageUrl((String) obj.get("urlToImage")) ;
+				news.setTitle((String) obj.get("title"));
+				news.setDescription((String) obj.get("description"));
+				
+				latestExchangesNews.add(news);
+			}
+		}
+	}
+	
+	public ArrayList<News> getLatestCryptoNews() {
+		return latestCryptoNews;
+	}
+	
+	public ArrayList<News> getLatestExchangesNews() {
+		return latestExchangesNews;
 	}
 }
