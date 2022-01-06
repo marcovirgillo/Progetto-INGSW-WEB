@@ -1,6 +1,5 @@
 package com.cryptoview.controller;
 
-import java.net.http.HttpResponse;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,7 +13,7 @@ import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.model.Exchanges;
 import com.cryptoview.model.News;
 import com.cryptoview.model.Stats;
-import com.cryptoview.persistence.dao.TransactionDao;
+import com.cryptoview.persistence.dao.TransactionDaoJDBC;
 import com.cryptoview.persistence.model.Transaction;
 import com.cryptoview.service.LatestNews;
 import com.cryptoview.service.MarketStats;
@@ -54,7 +53,7 @@ public class CryptoDataController {
 	private List <Transaction> getTransactions(HttpServletResponse response) {
 		List <Transaction> list = Arrays.asList();
 		try {
-			list = TransactionDao.getInstance().getAll();
+			list = TransactionDaoJDBC.getInstance().getAll();
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.setStatus(500);
