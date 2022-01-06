@@ -17,6 +17,7 @@ public class CryptoDetail implements Comparable <CryptoDetail>{
 	private Long market_cap;
 	private Long volume;
 	
+	
 	public CryptoDetail() {
 	}
 	
@@ -127,4 +128,5 @@ public class CryptoDetail implements Comparable <CryptoDetail>{
 		
 		return 1;
 	}
+	
 }

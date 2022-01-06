@@ -17,6 +17,7 @@ import com.cryptoview.persistence.dao.CryptoDaoJDBC;
 public class TopCryptos {
 	private ArrayList <CryptoDetail> cryptosList;
 	private ArrayList <CryptoDetail> top100Cryptos;
+	private Double bitcoinPrice;
 	
 	private Map <String, Double> cryptoActualPrice;
 	
@@ -61,6 +62,10 @@ public class TopCryptos {
 				crypto.setPrice(price);
 				
 				crypto.setMarket_cap((Long) obj.get("market_cap"));
+				
+				
+				if (crypto.getName().equals("Bitcoin"))
+					bitcoinPrice = crypto.getPrice();
 				
 				crypto.setRank((Long) obj.get("market_cap_rank"));
 				
@@ -123,4 +128,9 @@ public class TopCryptos {
 		name = name.substring(0, name.indexOf("/"));
 		return Integer.parseInt(name);
 	}
+	
+	public Double getBitcoinPrice() {
+		return bitcoinPrice;
+	}
+	
 }
