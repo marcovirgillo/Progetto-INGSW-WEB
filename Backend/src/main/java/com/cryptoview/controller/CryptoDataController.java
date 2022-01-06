@@ -96,7 +96,6 @@ public class CryptoDataController {
 	@GetMapping("/portfolioValue")
 	private JSONArray getPrices() throws Exception{
 		return PortfolioService.getInstance().getPortfolioValueTime("prova", "10");
-		//return new JSONArray();
 	}
 	
 	@GetMapping("/portfolioInfo")

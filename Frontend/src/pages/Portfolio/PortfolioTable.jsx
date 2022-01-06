@@ -111,7 +111,7 @@ export default function CriptoTable(props) {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {
+                {props.data.length > 0 && (
                     props.data.map((item, val) => (
                         <TableRow key={val}>
                                 <TableCell className="table-item">
@@ -151,7 +151,7 @@ export default function CriptoTable(props) {
                                 </TableCell>
                         </TableRow>
                     ))
-                }
+                )}
             </TableBody>
         </Table>
     );
