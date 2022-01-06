@@ -52,7 +52,7 @@ const SpecificCrypto = () => {
         <div className="specific-crypto">
             <div className="paper-grey">
                 <div style={{paddingTop:'20px'}}/>
-                <Grid container columnSpacing={{xl:5, lg:5, md:2, sm:1, xs:2}} columns={{xl:20, lg:28, md:28, sm:7, xs:7}}> 
+                <Grid container columnSpacing={{xl:5, lg:5, md:2, sm:1, xs:2}} columns={{xl:20, lg:28, md:28, sm:7, xs:7}} style={{marginLeft:'7px'}}> 
                     <Grid item xl={1} lg={1} md={1} sm={1} xs={1} /> 
                     <Grid className="item" item xl={6} lg={12} md={12} sm={5} xs={5}> 
                         <div className="container-header">
@@ -87,10 +87,10 @@ const SpecificCrypto = () => {
                             </ul>
                         </div>
                     </Grid>
-                    <Grid item className="xs-spacer-crypto" sx={{display:'none'}} sm={1}  /> {/* Spaziatura per schermi più piccoli */}
+                    <Grid item className="xs-spacer-crypto" sx={{display:'none'}} sm={1}  xs={1}/> {/* Spaziatura per schermi più piccoli */}
                     <Grid item className="xs-spacer-crypto" sx={{display:'none'}} sm={1}  />
                     <Grid className="item" item xl={6} lg={12} md={12} sm={5} xs={5}> 
-                        <div>
+                        <div className='prices-info-container'>
                             <ul>
                                 <p className="p-crypto" style={{color:'#ABABAB'}}>{info.name} {info.symbol.toUpperCase()} Price</p>
                                 <ul className="container-title">
@@ -113,10 +113,10 @@ const SpecificCrypto = () => {
                             </ul>
                         </div>
                     </Grid>
-                    <Grid item className="xs-spacer-crypto" sx={{display:'none'}} sm={1}  />
-                    <Grid item className="xs-spacer-crypto" sx={{display:'none'}} sm={1}  /> {/* md={8}  TO CENTER BOTTOM ONE*/}
+                    <Grid item className="xs-spacer-crypto" sx={{display:'none'}} sm={1} xs={1} />
+                    <Grid item className="xs-spacer-crypto" sx={{display:'none'}} sm={1} xs={1} /> {/* md={8}  TO CENTER BOTTOM ONE*/}
                     <Grid className="item" item xl={6} lg={12} md={12} sm={5} xs={5}> 
-                    <div>
+                    <div className='community-info-container'>
                             <ul>
                                 <p className="p-crypto" style={{color:'#ABABAB'}}>Community</p>
                                 <ul className="container-title" style={{marginTop:'20px'}}>

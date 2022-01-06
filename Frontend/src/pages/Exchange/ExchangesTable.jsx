@@ -4,6 +4,7 @@ import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import { useInterval } from '../../components/Hooks.js';
 import { Link, Navigate  } from 'react-router-dom'
+import { ExchangesData } from './data.js'
 import "./Exchanges.css"
 import { address } from './../../assets/globalVar.js';
 
@@ -44,7 +45,15 @@ export default function ExchangesTable() {
 
     const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
 
+    function getChartUrl(image_url) {
+        let part1 = image_url.substr(44, image_url.length);
+        let part3 = part1.substring(0, part1.indexOf("/"));
+        console.log(`https://www.coingecko.com/exchanges/${part3}/sparkline`);
+        return `https://www.coingecko.com/exchanges/${part3}/sparkline`;
+    }
+
     function setColor(price) {
+        console.log(price);
         let className = 'table-item ';
         if (price >= 8)
             return className += 'item-green-exchange';
@@ -64,6 +73,14 @@ export default function ExchangesTable() {
             return formatter.format(price);
         else 
             return "$" + price;
+    }
+
+    function change(change) {
+        if(change > 0){
+            return "+" + change.toFixed(2);
+        }
+        
+        return change.toFixed(2)  
     }
 
     const fetchData = () => {
@@ -122,7 +139,7 @@ export default function ExchangesTable() {
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
                                         <div class="trust-bar-exchange">
-                                            <div class={setColor(item.trust_score)}> <div className="trust_score"> {item.trust_score} </div> </div>
+                                            <div class={setColor(item.trust_score)}></div>
                                         </div>
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
