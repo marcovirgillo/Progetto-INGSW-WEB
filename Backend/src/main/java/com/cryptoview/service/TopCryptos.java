@@ -149,5 +149,15 @@ public class TopCryptos {
 	public Double getBitcoinPrice() {
 		return bitcoinPrice;
 	}
+
+	public List<CryptoDetail> getAllSupportedCrypto() {
+		ArrayList <CryptoDetail> list = new ArrayList<>();
+		for(String ticker : CryptoDaoJDBC.getInstance().getSupportedCripto()) {
+			list.add(supportedCryptoDetail.get(ticker));
+		}
+		
+		Collections.shuffle(list);
+		return list;
+	}
 	
 }

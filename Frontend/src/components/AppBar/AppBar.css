@@ -120,11 +120,29 @@ input[type=text] {
 
 .dropdown-search {
     left: calc(var(--side-bar-min-width) + 20px);
+    width: 320px;
+    transition: transform 0.2s ease 0s !important;
+}
+
+.dropdown-search p {
+    margin-left: 10px;
+    padding: 0px;
+    margin: 0px 0px 0px 15px;
+    color: white;
 }
 
 .search-list {
     padding: 0px;
-    
+}
+
+.search-list .label {
+    margin-left: 40px;
+    color: var(--light-gray-color);
+    margin-bottom: 5px;
+}
+
+.search-list .ticker {
+    color: var(--light-gray-color) ;
 }
 
 .h-list-item {
@@ -132,6 +150,13 @@ input[type=text] {
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    padding: 10px 0px 10px 30px;
+    margin: 0px 10px 0px 10px;
+    border-radius: 8px;
+}
+
+.h-list-item:hover {
+    background-color: #555555;
 }
 
 .notification-button {
@@ -209,4 +234,9 @@ input[type=text] {
 .drop-active {
     transform: scale(1);
     transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.search-active {
+    transform: scale(1);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }

@@ -40,10 +40,6 @@ public class CryptoDaoJDBC extends CryptoDao {
 		return cryptosMap.keySet();
 	}
 	
-	public List<Crypto> getAllSupportedCrypto() {
-		return new ArrayList<Crypto>(cryptosMap.values());
-	}
-	
 	private void fillCripto() throws SQLException {
 		Statement stm = DBConnection.getInstance().getConnection().createStatement();
 		ResultSet rs = stm.executeQuery(getAllQuery);
