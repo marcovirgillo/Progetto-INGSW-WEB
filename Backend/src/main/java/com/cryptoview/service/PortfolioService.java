@@ -1,5 +1,7 @@
 package com.cryptoview.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,13 +21,16 @@ import com.cryptoview.persistence.model.Transaction;
 public class PortfolioService {
 
 	private static PortfolioService instance;
-	
+	private Map <String, Double> portfolioValue24hOld;
+ 	
 	public class Pair <T1, T2> {
 		public T1 first;
 		public T2 second;
 	}
 	
-	private PortfolioService() {}
+	private PortfolioService() {
+		portfolioValue24hOld = new HashMap<>();
+	}
 	
 	public static  PortfolioService getInstance() {
 		if(instance == null)
@@ -82,8 +87,10 @@ public class PortfolioService {
 	}	
 	
 	
+	
+	
 	@SuppressWarnings("unchecked")
-	public JSONArray  getPortfolioValueTime(String user, String timestamp) throws SQLException {
+	public JSONObject getPortfolioValueTime(String user, String timestamp) throws SQLException {
 		Portfolio userPortfolio = PortfolioDaoJDBC.getInstance().get(user);
 		
 		ArrayList <Crypto> cryptoPortfolio = getCryptoEverPresentInPortfolio(userPortfolio);
@@ -152,13 +159,23 @@ public class PortfolioService {
 				}
 			}
 			
+			
+			boolean incomplete = false;
 			//per ogni cripto presente nel portfolio all'istante di tempo che sto considerando, calcolo il valore
-			//come quantità * prezzo
+			//come quantità * prezzo storico, dove il prezzo storico è nella lista di prezzi storici
 			for(String cryptoTicker : cryptoQuantity.keySet()) {
 				Double cryptoQuant = cryptoQuantity.get(cryptoTicker);
 				
-				valueAtTimeZeroDollar += cryptoQuant * cryptoPricesOverTime.get(cryptoTicker).get(i);
+				ArrayList <Double> prices = cryptoPricesOverTime.get(cryptoTicker);
+				
+				if(prices.size() > i)
+					valueAtTimeZeroDollar += cryptoQuant * prices.get(i);
+				else 
+					incomplete = true;
 			}
+			
+			if(incomplete)
+				continue;
 			
 			pair.second = valueAtTimeZeroDollar;
 			
@@ -168,7 +185,24 @@ public class PortfolioService {
 			portfolioValueOverTime.add(item);
 		}
 		
-		return portfolioValueOverTime;
+		if(timestamp == "1")
+			portfolioValue24hOld.put(user, (Double) ((JSONObject) portfolioValueOverTime.get(0)).get("value"));
+		
+		JSONObject resp = new JSONObject();
+		insertPortfolioChangeData(resp, userPortfolio);
+		resp.put("data", portfolioValueOverTime);
+		
+		return resp;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void insertPortfolioChangeData(JSONObject obj, Portfolio portfolio) {
+		Double actualBalance = calculatePortfolioBalance(portfolio);
+		Double oldBalance = portfolioValue24hOld.getOrDefault(portfolio.getUsernameOwner(), 0.0);
+		Double portfolioChange24h = actualBalance - oldBalance;
+		
+		obj.put("balance_change_24h", round(portfolioChange24h, 2));
+		obj.put("balance_change_24h_percentage", round(portfolioChange24h / oldBalance * 100, 2));
 	}
 	
 	private Double calculatePortfolioBalance(Portfolio portfolio) {
@@ -186,13 +220,17 @@ public class PortfolioService {
 	public JSONObject getPortfolioInfo(String username) throws SQLException {
 		JSONObject response = new JSONObject();
 		Portfolio portfolio = PortfolioDaoJDBC.getInstance().get(username);
+		Double actualBalance = calculatePortfolioBalance(portfolio);
 		
 		response.put("portfolio_name", portfolio.getPortfolioName());
-		response.put("balance", calculatePortfolioBalance(portfolio));
-		response.put("balance_change_24h", "+ 2.21%");
-		response.put("balance_change_24h_percentage", "+ $36.81");
+		response.put("balance", actualBalance);
 		
 		JSONArray assets = new JSONArray();
+		
+		Map <String, Double> avgPrices = new HashMap<>();
+		Map <String, Double> dollarProfit = new HashMap<>();
+		Map <String, Double> percentageProfit = new HashMap<>();
+		getPriceInfo((ArrayList<Transaction>) portfolio.getTransactionList(), dollarProfit, avgPrices, percentageProfit);
 		
 		for(Crypto crypto : portfolio.getCryptoMap().keySet()) {
 			JSONObject cryptoObj = new JSONObject();
@@ -203,12 +241,12 @@ public class PortfolioService {
 			cryptoObj.put("price", TopCryptos.getInstance().getSupportedCryptoPrice(crypto.getTicker()));
 			cryptoObj.put("change_24h", TopCryptos.getInstance().getSupportedCrypto24hChange(crypto.getTicker()));
 			cryptoObj.put("change_7d", TopCryptos.getInstance().getSupportedCrypto7dChange(crypto.getTicker()));
-			cryptoObj.put("holdings", portfolio.getCryptoMap().get(crypto) + " " + crypto.getTicker().toUpperCase());
+			cryptoObj.put("holdings", round(portfolio.getCryptoMap().get(crypto), 6) + " " + crypto.getTicker().toUpperCase());
 			cryptoObj.put("holding_dollar", portfolio.getCryptoMap().get(crypto) * TopCryptos.getInstance().getSupportedCryptoPrice(crypto.getTicker()));
 			//TODO
-			cryptoObj.put("avg_buy_price", 100.0);
-			cryptoObj.put("profit_dollar", 100.0);
-			cryptoObj.put("profit_percentage", 10.0);
+			cryptoObj.put("avg_buy_price", avgPrices.get(crypto.getTicker()));
+			cryptoObj.put("profit_dollar", dollarProfit.get(crypto.getTicker()));
+			cryptoObj.put("profit_percentage", percentageProfit.get(crypto.getTicker()));
 			
 			assets.add(cryptoObj);
 		}
@@ -216,6 +254,61 @@ public class PortfolioService {
 		response.put("assets", assets);
 		
 		return response;
+	}
+	
+	private void getPriceInfo(ArrayList<Transaction> transactionList, Map <String, Double> profitDollar,
+			                  Map <String, Double> avgPrices, Map <String, Double> profitPercentage) {
+		
+		Map <String, Double> dollarSpent = new HashMap<>();
+		Map <String, Double> cryptoQuantityAvg = new HashMap<>();
+		Map <String, Double> totalBalance = new HashMap<>();
+		Map <String, Double> totalCryptoInPortfolio = new HashMap<>();
+		
+		for(Transaction transaction : transactionList) {
+			String ticker = transaction.getCryptoTicker();
+			if(transaction.getType() == Transaction.BUY) {
+				cryptoQuantityAvg.put(ticker, cryptoQuantityAvg.getOrDefault(ticker, 0.0) + transaction.getQuantity());
+				dollarSpent.put(ticker, dollarSpent.getOrDefault(ticker, 0.0) + transaction.getTotalUsdSpent());
+				
+				totalBalance.put(ticker, totalBalance.getOrDefault(ticker, 0.0) - transaction.getTotalUsdSpent());
+				totalCryptoInPortfolio.put(ticker, totalCryptoInPortfolio.getOrDefault(ticker, 0.0) + transaction.getQuantity());
+			}
+			
+			if(transaction.getType() == Transaction.SELL) {
+				totalBalance.put(ticker, totalBalance.getOrDefault(ticker, 0.0) + transaction.getTotalUsdSpent());
+				totalCryptoInPortfolio.put(ticker, totalCryptoInPortfolio.get(ticker) - transaction.getQuantity());
+			}
+			
+			if(transaction.getType() == Transaction.TRANSFER) {
+				totalCryptoInPortfolio.put(ticker, totalCryptoInPortfolio.get(ticker) - transaction.getQuantity());
+			}
+		}
+		
+		for(String ticker : dollarSpent.keySet()) {
+			Double avg = dollarSpent.get(ticker);
+			avg = avg / cryptoQuantityAvg.get(ticker);
+			avgPrices.put(ticker, avg);
+			
+			Double balance = totalBalance.get(ticker);
+			Double liquidValue = TopCryptos.getInstance().getSupportedCryptoPrice(ticker);
+			liquidValue = liquidValue * totalCryptoInPortfolio.get(ticker);
+			balance = balance + liquidValue;
+			Double totalSpent = dollarSpent.get(ticker);
+			
+			Double percentage = balance;
+			percentage = percentage / totalSpent;
+			percentage *= 100;
+			profitPercentage.put(ticker, round(percentage, 2));
+			profitDollar.put(ticker, round(balance, 2));
+		}
+	}
+	
+	private static double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    BigDecimal bd = new BigDecimal(Double.toString(value));
+	    bd = bd.setScale(places, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
 	}
 	
 	
