@@ -97,7 +97,7 @@ public class CryptoDataController {
 	@GetMapping("/portfolioValue")
 	private JSONObject getPrices(HttpServletRequest request) throws Exception{
 		String timeStamp = request.getHeader("timeStamp");
-		return PortfolioService.getInstance().getPortfolioValueTime("prova", "1");
+		return PortfolioService.getInstance().getPortfolioValueTime("prova", timeStamp);
 	}
 	
 	@GetMapping("/portfolioInfo")
