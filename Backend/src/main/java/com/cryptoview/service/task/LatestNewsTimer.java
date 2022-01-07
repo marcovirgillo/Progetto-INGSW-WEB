@@ -26,7 +26,7 @@ public class LatestNewsTimer implements DisposableBean, Runnable {
 	public void run() {
 		while(isRunning) {
 			if(System.currentTimeMillis() - lastUpdate > FREQUENCY) {
-				updateLatestNews();
+				//updateLatestNews();
 				
 				lastUpdate = System.currentTimeMillis();
 			}

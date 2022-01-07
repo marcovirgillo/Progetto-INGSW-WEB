@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CryptoChart from '../../components/Chart/CryptoChart';
-import { PortfolioData } from './Data.js';
-import PortfolioTable from './PortfolioTable';
+import { PlaceholderBalanceChange, PlaceholderInfo, PortfolioData } from './Data.js';
+import PortfolioTable, { formatProfitDollar } from './PortfolioTable';
 import "./../../App.css";
 import "./Portfolio.css";
 import plus_icon from "./../../res/logos/plus.png";
@@ -10,18 +10,16 @@ import { address } from '../../assets/globalVar';
 const greenColor = "#46C95B";
 const redColor = "#E05757";
 
-const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
-
 const portfolioChartUrl = `http://${address}:8080/portfolioValue`;
 const portfolioInfoUrl = `http://${address}:8080/portfolioInfo`;
 
 function IndicatorRectangle(props) {
     let classname = 'rectangle ';
-    classname = classname + (props.price_change[0] === '+' ? 'rectangle-green' : 'rectangle-red');
+    classname = classname + (props.price_change >= 0 ? 'rectangle-green' : 'rectangle-red');
 
     return(
         <div className={classname}>
-            {props.price_change}
+            {props.price_change} %
         </div>
     );
 }
@@ -32,10 +30,20 @@ const Portfolio = () => {
 
     const [chartData, setChartData] = useState([{name: 'Price', data: []}]);
     const [chartDatetime, setChartDatetime] = useState([]);
-    const [portfolioInfo, setPortfolioInfo] = useState(PortfolioData);
+    const [portfolioInfo, setPortfolioInfo] = useState(PlaceholderInfo);
+    const [portfolioChange, setPortfolioChange] = useState(PlaceholderBalanceChange);
+    const [authToken, setAuthToken] = useState("");
 
-    const fetcherUrl = () => {
-        fetch(portfolioChartUrl)
+    let myheaders = {
+        "authToken": authToken,
+        "timeStamp": chartInterval
+    }
+
+    const fetcherChart = () => {
+        fetch(portfolioChartUrl, {
+            method: 'GET',
+            headers: myheaders
+        })
         .then((res) => res.json())
         .then((result) => processData(result))
         .then((error) => console.log("error"));
@@ -49,20 +57,20 @@ const Portfolio = () => {
     }
 
     useEffect(() => {
+        fetcherChart();
         fetcherInfo();
-        fetcherUrl();
     }, []);
 
     //se cambia l'intervallo di tempo, fetcho i dati nuovi
     useEffect(() =>{
-        fetcherUrl();
+        fetcherChart();
     }, [chartInterval]);
 
     function processData(res) {
         let portfolioValues = [];
         let portfolioTimes = [];
 
-        res.forEach((item) => {
+        res.data.forEach((item) => {
             if(item["value"]>1)
                 portfolioValues.push(item["value"].toFixed(2));
             else
@@ -76,10 +84,15 @@ const Portfolio = () => {
         setChartData([{
             name: 'Value',
             data: portfolioValues}]);
+
+        setPortfolioChange({
+            balance_change_24h_percentage: res.balance_change_24h_percentage,
+            balance_change_24h: res.balance_change_24h
+        });
     }
 
     function getClassNameChange(price) {
-        return (price[0] === '+' ? 'label-green' : 'label-red');
+        return (price >= 0 ? 'label-green' : 'label-red');
     }
 
     function isBtnActive(name) {
@@ -93,20 +106,13 @@ const Portfolio = () => {
     const ChartButtons = (props) => {
         return (
             <ul className={"btn-container chart-btn-controller " + props.className}>
-                <p className={isBtnChartActive("24h")} onClick={() => setChartInterval("1")}>24h</p>
-                <p className={isBtnChartActive("7d")} onClick={() => setChartInterval("7")}>7D</p>
-                <p className={isBtnChartActive("30d")} onClick={() => setChartInterval("30")}>30D</p>
-                <p className={isBtnChartActive("90d")} onClick={() => setChartInterval("90")}>90D</p>
-                <p className={isBtnChartActive("all")} onClick={() => setChartInterval("max")}>ALL</p>
+                <p className={isBtnChartActive("1")} onClick={() => setChartInterval("1")}>24h</p>
+                <p className={isBtnChartActive("7")} onClick={() => setChartInterval("7")}>7D</p>
+                <p className={isBtnChartActive("30")} onClick={() => setChartInterval("30")}>30D</p>
+                <p className={isBtnChartActive("90")} onClick={() => setChartInterval("90")}>90D</p>
+                <p className={isBtnChartActive("max")} onClick={() => setChartInterval("max")}>ALL</p>
             </ul>
         )
-    }
-
-    function getFormattedPrice(price) {
-        if(price > 1)
-            return formatter.format(price);
-        else 
-            return "$" + price;
     }
 
     const ButtonAddNewAsset = () => {
@@ -127,11 +133,15 @@ const Portfolio = () => {
                 <ul className="portfolio-list">
                     <h3 className="current-balance-label">Current Balance</h3>
                     <ul className="inline-list">
-                        <p className="current-balance">{getFormattedPrice(portfolioInfo.balance)}</p>
-                        <IndicatorRectangle price_change={portfolioInfo.balance_change_24h_percentage}/>
+                        <p className="current-balance">
+                            {formatProfitDollar(portfolioInfo.balance).substring(2)}
+                        </p>
+                        <IndicatorRectangle price_change={portfolioChange.balance_change_24h_percentage}/>
                     </ul>
                     <ul className="inline-list">
-                        <p className={getClassNameChange(portfolioInfo.balance_change_24h)}>{PortfolioData.balance_change_24h}</p>
+                        <p className={getClassNameChange(portfolioChange.balance_change_24h)}>
+                            {formatProfitDollar(portfolioChange.balance_change_24h)}
+                        </p>
                         <p className="label-24h">24h</p>
                     </ul>
                 </ul>
@@ -147,7 +157,7 @@ const Portfolio = () => {
                     </ul>
                     {chartData [0].data.length > 1 && (
                     <CryptoChart className="chart"
-                        color={greenColor} 
+                        color={portfolioChange.balance_change_24h >= 0 ? greenColor : redColor} 
                         width="100%" 
                         height="120%"
                         data={chartData} 

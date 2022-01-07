@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONArray;
@@ -94,8 +95,9 @@ public class CryptoDataController {
 	}
 	
 	@GetMapping("/portfolioValue")
-	private JSONArray getPrices() throws Exception{
-		return PortfolioService.getInstance().getPortfolioValueTime("prova", "10");
+	private JSONObject getPrices(HttpServletRequest request) throws Exception{
+		String timeStamp = request.getHeader("timeStamp");
+		return PortfolioService.getInstance().getPortfolioValueTime("prova", timeStamp);
 	}
 	
 	@GetMapping("/portfolioInfo")
