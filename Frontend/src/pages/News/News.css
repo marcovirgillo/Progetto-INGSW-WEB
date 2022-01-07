@@ -11,7 +11,7 @@
     padding: 0px 10px 10px 10px;
 }
 
-.paper-grey-news {
+.paper-grey-news-top {
     background-color: var(--bg-color-gray);
     border-radius: 8px;
     padding: 15px 15px 15px 15px;
@@ -22,8 +22,7 @@
 
 .big-news-container {
     background-color: #414141;
-    width: 50%;
-    height: 30%;
+    width: 45%;
     border-radius: 35px;
     padding: 0;
     margin: 0;
@@ -53,7 +52,7 @@
     margin-bottom: 0;
 }
 
-.big-news-description {
+.big-news-content {
     color: rgb(255, 255, 255);
     font-size: 16px;
     margin-left: 15px;
@@ -77,22 +76,23 @@
 
 .three-side-news-container {
     margin-left: 80px;
-    width: 40%;
+    width: 35%;
 }
 
+.single-side-news-container {
+    margin: 0;
+    padding: 0;
+    background-color: #414141;
+    border-radius: 35px;
+    display: flex; 
+    justify-content: space-between;
+    margin-bottom: 50px;
+}
 
 .single-side-news-list {
     margin: 0;
     padding: 0;
     list-style-type: none;
-    background-color: #414141;
-    border-radius: 35px;
-    display: flex; 
-    margin-bottom: 20px;
-}
-
-.side-news-list-title-date{
-
 }
 
 .side-news-title {
@@ -100,15 +100,12 @@
     font-size: 18px;
     font-weight: bold;
     margin-left: 20px;
-    margin-bottom: 10px;
 }
 
 .side-news-image {
     border-radius: 35px;
     width: 25%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-right: 10px;
+    margin: 10px;
 }
 
 .side-news-date {
@@ -118,7 +115,72 @@
     padding-bottom: 10px;
     color: var(--light-gray-color);
     font-weight: bold;
+    font-size: 14px;
+}
+
+
+
+
+
+.paper-grey-news-bottom {
+    background-color: var(--bg-color-gray);
+    border-radius: 8px;
+    padding: 15px 15px 15px 15px;
+    /*display: flex;*/
+    margin-top: 50px;
+}
+
+.standard-news-container {
+    background-color: #414141;
+    border-radius: 35px;
+    margin: 0;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.standard-news-list-title-content {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    justify-content: space-between;
+}
+
+.standard-news-list-content-date {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.standard-news-image {
+    border-radius: 35px;
+    width: 40%;
+    height: 150px;
+}
+
+.standard-news-title {
+    color: var(--bg-color-blue);
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 8px;
+    margin-left: 15px;
+    margin-bottom: 0;
+}
+
+.standard-news-content {
+    color: rgb(255, 255, 255);
     font-size: 16px;
+    margin-left: 15px;
+    margin-top: 10px;
+}
+
+.standard-news-date {
+    text-align: right;
+    margin: 0;
+    padding-right: 10px;
+    color: var(--light-gray-color);
+    font-weight: bold;
+    font-size: 14px;
 }
 
 
@@ -126,24 +188,36 @@
 
 
 @media only screen and (max-width: 1215px) {
-    .single-side-news-list {
-        flex-direction: column-reverse;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
 
-    .side-news-image {
-        margin-bottom: 0;
-        width: 100%;
+    .big-news-container {
+        max-height: 550px;
     }
 
     .three-side-news-container {
         width: 30%;
     }
+
+    .single-side-news-container {
+        flex-direction: column-reverse;
+        padding-right: 20px;
+    }
+
+    .side-news-title {
+        margin-top: 0;
+    }
+
+    .side-news-image {
+        width: 100%;
+    }
+
+    .standard-news-image {
+        width: 25%;
+        height: 100px;
+    }
 }
 
 @media only screen and (max-width: 700px) {
-    .paper-grey-news {
+    .paper-grey-news-top {
         flex-direction: column;
     }
     
@@ -160,6 +234,10 @@
         font-size: 14px;
     }
 
+    .big-news-image {
+        height: 200px;
+    }
+
     .big-news-date {
         font-size: 12px;
     }
@@ -167,16 +245,16 @@
     .three-side-news-container {
         padding-top: 30px;
         width: 70%;
-        margin-left: 17%;
+        margin-left: 15%;
     }
 
     .side-news-title {
-        font-size: 14px;
+        font-size: 16px;
     }
 
     .side-news-date {
         font-size: 12px;
     }
-
 }
+
 
