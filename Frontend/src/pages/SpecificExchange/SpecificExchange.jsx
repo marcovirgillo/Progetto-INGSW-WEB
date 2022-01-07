@@ -25,7 +25,9 @@ const SpecificExchange = () => {
             <div className="paper-grey">
                 <div style={{paddingTop:'20px'}}/>
                 <HeaderSection />
-                <SpecificExchangeTable />
+                <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                    <SpecificExchangeTable />
+                </ul>
             </div>
             
         </div>
