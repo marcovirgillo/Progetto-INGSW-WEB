@@ -42,8 +42,7 @@ const HeaderSection = () => {
                     <ul className="container-title">
                         <img src={exchangeData.image} />
                         <div className='crypto-title'>{exchangeData.name}</div>
-                        <p className='grey-container' style={{marginLeft:'10px'}}>{exchangeData.name}</p>
-                        <p className="p-crypto" style={{marginLeft:'15px'}}>{screenSize>600 ? 'Rank' : ''} #{exchangeData.trust_score_rank}</p>
+                        <p className="rank" style={{marginLeft:'18px', fontSize: '20px', color: 'white'}}> Rank #{exchangeData.trust_score_rank}</p>
                     </ul>
                 </ul>
                 <ul>
@@ -60,17 +59,15 @@ const HeaderSection = () => {
         )
     }
 
-
-
     return (
         <React.Fragment>
         {
             exchangeDataSize() && (
                 <Grid container columnSpacing={{xl:5, lg:5, md:2, sm:1, xs:2}} columns={{xl:20, lg:28, md:28, sm:28, xs:7}} > 
                     <Grid item xl={1} lg={1} md={1} sm={1} xs={1} /> 
-                    <Grid className="item" item xl={6} lg={12} md={12} sm={12} xs={5}> 
+                    
                         <MainDetailsSection />
-                    </Grid>  
+                  
                 </Grid>                 
             )
         }
