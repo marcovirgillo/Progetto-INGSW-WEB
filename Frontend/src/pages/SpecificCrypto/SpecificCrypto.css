@@ -145,6 +145,29 @@ a {
 
 .crypto-main-stats-4x {
     background-color: #414141;
+    height: 150px;
+}
+
+.crypto-main-container-title {
+    color: #BBBBBB;
+    font-weight: 500;
+    font-size: 18px;
+    padding: 10px;
+    margin-left: 15px;
+}
+
+.crypto-main-container-value  {
+    text-align: center;
+    color: white;
+    font-weight: 500;
+    font-size: 24px;
+}
+
+.crypto-main-container-change {
+    text-align: center;
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
 }
 
 @media only screen and (max-width:600px) {
