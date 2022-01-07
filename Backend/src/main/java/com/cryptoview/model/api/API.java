@@ -56,6 +56,6 @@ public class API {
 	
 	public String getNewsExchangesAPI() {
 		return newsExchangesAPI + newsAPIKey[1];
-
+		
 	}
 }
