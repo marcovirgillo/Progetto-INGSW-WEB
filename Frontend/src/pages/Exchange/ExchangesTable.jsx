@@ -113,8 +113,8 @@ export default function ExchangesTable() {
                                         </ul>
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                        <div class="trust-bar-exchange">
-                                            <div class={setColor(item.trust_score)}> <div className="trust_score"> {item.trust_score} </div> </div>
+                                        <div className="trust-bar-exchange">
+                                            <div className={setColor(item.trust_score)}> <div className="trust_score"> {item.trust_score} </div> </div>
                                         </div>
                                     </TableCell>
                                     <TableCell className="table-item-exchange">

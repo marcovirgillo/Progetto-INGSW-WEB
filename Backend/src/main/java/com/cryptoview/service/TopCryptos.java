@@ -13,6 +13,7 @@ import org.json.simple.JSONObject;
 import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.model.api.TopCryptoFetcher;
 import com.cryptoview.persistence.dao.CryptoDaoJDBC;
+import com.cryptoview.persistence.model.Crypto;
 
 public class TopCryptos {
 	private ArrayList <CryptoDetail> cryptosList;
@@ -69,12 +70,18 @@ public class TopCryptos {
 	}
 	
 	private String getCryptoId(String ticker) {
+		//Prima cerco nelle top crypto
 		for(CryptoDetail crypto : cryptosList) {
 			if(crypto.getTicker().equalsIgnoreCase(ticker))
 				return crypto.getId();
 		}
 		
-		return "";
+		//poi cerco nelle cripto supportate dal sistema
+		Crypto crypto = CryptoDaoJDBC.getInstance().getCrypto(ticker);
+		if(crypto != null)
+			return crypto.getIdApi();
+		
+		throw new IllegalArgumentException("the id for the crypto: " + ticker + " doesn't exists!");
 	}
 	
 	public Double getSupportedCryptoPrice(String ticker) {
@@ -98,7 +105,8 @@ public class TopCryptos {
 		//serve per il portfolio
 		for(String ticker : CryptoDaoJDBC.getInstance().getSupportedCripto()) {
 			if(!supportedCryptoDetail.keySet().contains(ticker)) {
-				CryptoDetail cryptoDetail = CryptoDetail.parseFromSingleResponse(TopCryptoFetcher.getInstance().fetchCrypto(getCryptoId(ticker)));
+				String id = getCryptoId(ticker);
+				CryptoDetail cryptoDetail = CryptoDetail.parseFromSingleResponse(TopCryptoFetcher.getInstance().fetchCrypto(id));
 				supportedCryptoDetail.put(ticker, cryptoDetail);
 			}
 		}

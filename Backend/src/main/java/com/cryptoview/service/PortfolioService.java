@@ -185,6 +185,7 @@ public class PortfolioService {
 			portfolioValueOverTime.add(item);
 		}
 		
+		//se sto calcolando l'andamento giornaliero, aggiorno il valore del portfolio 24h fa e le varie percentuali
 		if(timestamp.equals("1"))
 			portfolioValue24hOld.put(user, (Double) ((JSONObject) portfolioValueOverTime.get(0)).get("value"));
 		
@@ -244,7 +245,6 @@ public class PortfolioService {
 			cryptoObj.put("change_7d", TopCryptos.getInstance().getSupportedCrypto7dChange(crypto.getTicker()));
 			cryptoObj.put("holdings", round(portfolio.getCryptoMap().get(crypto), 6) + " " + crypto.getTicker().toUpperCase());
 			cryptoObj.put("holding_dollar", portfolio.getCryptoMap().get(crypto) * TopCryptos.getInstance().getSupportedCryptoPrice(crypto.getTicker()));
-			//TODO
 			cryptoObj.put("avg_buy_price", avgPrices.get(crypto.getTicker()));
 			cryptoObj.put("profit_dollar", dollarProfit.get(crypto.getTicker()));
 			cryptoObj.put("profit_percentage", percentageProfit.get(crypto.getTicker()));
@@ -311,7 +311,4 @@ public class PortfolioService {
 	    bd = bd.setScale(places, RoundingMode.HALF_UP);
 	    return bd.doubleValue();
 	}
-	
-	
-	
 }

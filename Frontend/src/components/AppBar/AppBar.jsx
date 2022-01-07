@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { Icon } from '@mui/material';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
@@ -6,6 +6,9 @@ import "./AppBar.css"
 import { Link } from 'react-router-dom'
 import { Notifications } from "./../../pages/Home/TestData.js";
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import { address } from "./../../assets/globalVar.js";
+
+const allCryptoUrl = `http://${address}:8080/supportedCrypto`;
 
 function DropdownProfile(props) {
     return (
@@ -27,6 +30,40 @@ function DropdownProfile(props) {
             </ul>
         </div>
     );
+}
+
+
+function getLogoUrl(idNum, idApi) {
+    let url = `http://assets.coingecko.com/coins/images/${idNum}/small/${idApi}.png`;
+    console.log(url);
+    return url;
+}
+
+function DropdownSearchPanel() {
+    console.log("aa");
+    const [allCryptos, setAllCryptos] = useState([]);
+
+    useEffect(() => {
+        fetch(allCryptoUrl)
+            .then((res) => res.json())
+            .then((result) => setAllCryptos(result),
+                   (error) => console.log("error"));
+    }, []);
+
+    return(
+        <div className="dropdown dropdown-search drop-active">
+            <ul className="search-list">
+                {
+                    allCryptos.slice(0, 6).map((item, val) => (
+                        <ul key={val} className="h-list-item">
+                            <img src={getLogoUrl(item.idGraphic, item.idApi)} width={24}/>
+                            {item.name}
+                        </ul>
+                    ))
+                }
+            </ul>
+        </div>
+    )
 }
 
 function DropdownNotification(props) {
@@ -60,9 +97,9 @@ function DropdownNotification(props) {
     );
 }
 
-function SearchField() {
+function SearchField(props) {
     return (
-        <div className="app-bar-search-field">
+        <div className="app-bar-search-field" onClick={props.onClick}>
             <img className="app-bar-search-icon" src={require("../../res/logos/search.png")} width={18} height={18}/>
             <input className="app-bar-search" type="text" placeholder="Cerca.."/>
         </div>
@@ -83,6 +120,7 @@ function SearchFieldMobile(props) {
 export default function AppBar(props) {
     const [dropdownProfileActive, setDropdownProfileActive] = useState(false);
     const [dropdownNotificationActive, setDropdownNotificationActive] = useState(false);
+    const [dropdownSearchActive, setDropdownSearchActive] = useState(false);
 
     return (
         <div className="app-bar">
@@ -101,7 +139,9 @@ export default function AppBar(props) {
                         <img src={require("../../res/logos/CryptoViewLogo.png")}  alt="logo-cryptoview" height={50} width={50} />
                     </Link>
                     </Icon>
-                    <SearchField />
+
+                    <SearchField onClick={() => setDropdownSearchActive(!dropdownSearchActive)}/>
+
                     <div className="spacer" />
                     <Icon className="search-icon" style={{display: 'none'}} onClick={() => {props.setSearchMobileOpen(true)}}>
                         <img src={require("../../res/logos/search.png")} width={20} height={20}/>
@@ -126,6 +166,10 @@ export default function AppBar(props) {
                     <DropdownNotification class={dropdownNotificationActive ? ' drop-active': ''} />
                     <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} />
                 </React.Fragment>
+            )}
+
+            {dropdownSearchActive && (
+                <DropdownSearchPanel />
             )}
         </div>
     );

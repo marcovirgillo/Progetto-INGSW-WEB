@@ -40,6 +40,10 @@ public class CryptoDaoJDBC extends CryptoDao {
 		return cryptosMap.keySet();
 	}
 	
+	public List<Crypto> getAllSupportedCrypto() {
+		return new ArrayList<Crypto>(cryptosMap.values());
+	}
+	
 	private void fillCripto() throws SQLException {
 		Statement stm = DBConnection.getInstance().getConnection().createStatement();
 		ResultSet rs = stm.executeQuery(getAllQuery);
@@ -77,5 +81,32 @@ public class CryptoDaoJDBC extends CryptoDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	//Questo metodo deve essere eseguito SOLO per aggiornare le cripto supportate
+	/*public void updateSupportedCrypto() throws SQLException {
+		String query = "insert into crypto values(?,?,?,?) ON CONFLICT DO NOTHING";		
+		JSONArray cryptos = TopCryptoFetcher.getInstance().fetch(200);
+		
+		for(int i = 0; i < cryptos.size(); ++i) {
+			PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(query);
+			JSONObject obj = (JSONObject) cryptos.get(i);
+			
+			CryptoDetail crypto = CryptoDetail.parseFromResponse(obj);
+			
+			stm.setString(1, crypto.getTicker());
+			stm.setString(2, crypto.getName());
+			stm.setInt(3, getIdFromLogo(crypto.getLogo()));
+			stm.setString(4, crypto.getId());
+			
+			stm.execute();
+			stm.close();
+		}
+	}
+	
+	private Integer getIdFromLogo(String chart) {
+		chart = chart.substring(42, chart.length());
+		chart = chart.substring(0, chart.indexOf("/"));
+		return Integer.parseInt(chart);
+	}*/
 
 }

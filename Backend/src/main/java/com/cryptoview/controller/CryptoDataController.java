@@ -1,5 +1,6 @@
 package com.cryptoview.controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,8 +19,10 @@ import com.cryptoview.model.Exchanges;
 import com.cryptoview.model.News;
 import com.cryptoview.model.Stats;
 import com.cryptoview.model.api.TopCryptoFetcher;
+import com.cryptoview.persistence.dao.CryptoDaoJDBC;
 import com.cryptoview.persistence.dao.PortfolioDaoJDBC;
 import com.cryptoview.persistence.dao.TransactionDaoJDBC;
+import com.cryptoview.persistence.model.Crypto;
 import com.cryptoview.persistence.model.Portfolio;
 import com.cryptoview.persistence.model.Transaction;
 import com.cryptoview.service.LatestNews;
@@ -56,6 +59,11 @@ public class CryptoDataController {
 	@GetMapping("/latestNewsExchanges")
 	private List<News> getLatestExchangesNews(){
 		return LatestNews.getInstance().getLatestExchangesNews();
+	}
+	
+	@GetMapping("/supportedCrypto")
+	private List<Crypto> getSupportedCripto() {
+		return CryptoDaoJDBC.getInstance().getAllSupportedCrypto();
 	}
 	
 	@GetMapping("/marketStats")

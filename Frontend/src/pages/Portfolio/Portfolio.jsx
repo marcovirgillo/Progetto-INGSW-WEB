@@ -45,15 +45,15 @@ const Portfolio = () => {
             headers: myheaders
         })
         .then((res) => res.json())
-        .then((result) => processData(result))
-        .then((error) => console.log("error"));
+        .then((result) => processData(result),
+              (error) => console.log("error"));
     }
 
     const fetcherInfo = () => {
         fetch(portfolioInfoUrl)
         .then((res) => res.json())
-        .then((result) => setPortfolioInfo(result))
-        .then((error) => console.log("error"));
+        .then((result) => setPortfolioInfo(result),
+              (error) => console.log("error"));
     }
 
     useEffect(() => {
