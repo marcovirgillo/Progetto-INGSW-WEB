@@ -3,12 +3,13 @@ import { TableBody, Table, TableCell, TableHead, TableRow, Icon } from '@mui/mat
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import { useInterval } from '../../components/Hooks.js';
-import { Link, Navigate  } from 'react-router-dom'
+import { useLocation } from 'react-router';
 import { address } from './../../assets/globalVar.js';
 
 const interval_fetch = 1000 * 120;
 
 export default function ExchangesTable() {
+    const [cryptoTable, setCryptoTable] = useState([]);
     const [exchangesTable, setExchangesTable] = useState([]);
     const [order, setOrder] = useState("ASC");
     const [itemActive, setItemActive] = useState(null);
@@ -57,23 +58,38 @@ export default function ExchangesTable() {
         return str.substring(0, str.length - 3);
     }
 
+    const [exchangeData, setExchangeData] = useState([]);
+
+    const location = useLocation()
+    const exchangeID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
+
+    const fetcher = () => {
+        fetch(`https://api.coingecko.com/api/v3/exchanges/${exchangeID}/tickers`)
+        .then((res) => res.json())
+        .then((result) => setExchangeData(result.tickers),
+        (error) => alert("Error fetching exchange"));
+        
+    }
+
+    useEffect(() => {
+        fetcher();
+    }, []);
+
     const fetchData = () => {
-        fetch(`http://${address}:8080/getTop100Exchanges`)
+        fetch(`http://${address}:8080/getTop100`)
             .then((res) => res.json())
-            .then((result) => setExchangesTable(result),
-                  (error) => alert("Error fetching top 100 exchanges"));
+            .then((result) => setCryptoTable(result),
+                  (error) => alert("Error fetching top 100 cryptos"));
     };
 
     useEffect(fetchData, []);
 
     useInterval(() => fetchData, interval_fetch);
 
-
     return (
         <Table className="table" sx={{maxWidth: '95%', marginTop: '30px'}}>
             <TableHead>
                 <TableRow>
-                    <TableCell className="table-attribute">#</TableCell>
                     <TableCell className="table-attribute">Coin</TableCell>
                     <TableCell className="table-attribute"onClick={() => {sorting("trust_score"); setItemActive("trust_score")}} style={{cursor: 'pointer'}}>
                     {  <span className="table-header-list">
@@ -83,15 +99,15 @@ export default function ExchangesTable() {
                     </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("change"); setItemActive("volume_24h")}} style={{cursor: 'pointer'}}>
                        {  <span className="table-header-list">
-                            Price
+                            Last price
                             { isArrowActive(order, "volume_24h") }
                          </span> }
                         
                     </TableCell>
-                    <TableCell className="table-attribute"> Spread </TableCell>
+                    <TableCell className="table-attribute"> Volume </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("yearEstabilished"); setItemActive("yearEstabilished")}} style={{cursor: 'pointer'}}>
                         {  <span className="table-header-list">
-                                +2% Depth
+                                Spread
                                 {isArrowActive(order, "yearEstabilished")}
                             </span> }
                     </TableCell>
@@ -102,34 +118,31 @@ export default function ExchangesTable() {
             </TableHead>
             <TableBody>
                 {
-                    exchangesTable.map((item, val) => (
+                    exchangeData.map((item, val) => (
                             <TableRow key={val}>
                                     <TableCell className="table-item-exchange">
-
+                                        {item.coin_id} / {item.target_coin_id}
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                       
+                                        {item.base} / {item.target}
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                        
+                                        {getPriceWithCurrency(item.converted_last.usd)}
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                        
+                                        {getPriceWithCurrency(item.converted_volume.usd)}
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                       
+                                        {item.bid_ask_spread_percentage}%
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                       
+                                    {item.base}
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                        
+                                    {item.base}
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-
-                                    </TableCell>
-                                    <TableCell className="table-item-exchange">
-                                        
+                                    {item.base}
                                     </TableCell>
                             </TableRow>
                     ))

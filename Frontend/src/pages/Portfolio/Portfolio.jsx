@@ -134,7 +134,7 @@ const Portfolio = () => {
                     <h3 className="current-balance-label">Current Balance</h3>
                     <ul className="inline-list">
                         <p className="current-balance">
-                            {formatProfitDollar(portfolioInfo.balance)}
+                            {formatProfitDollar(portfolioInfo.balance).substring(2)}
                         </p>
                         <IndicatorRectangle price_change={portfolioChange.balance_change_24h_percentage}/>
                     </ul>

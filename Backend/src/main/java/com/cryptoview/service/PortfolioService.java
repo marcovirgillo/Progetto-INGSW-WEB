@@ -185,7 +185,7 @@ public class PortfolioService {
 			portfolioValueOverTime.add(item);
 		}
 		
-		if(timestamp == "1")
+		if(timestamp.equals("1"))
 			portfolioValue24hOld.put(user, (Double) ((JSONObject) portfolioValueOverTime.get(0)).get("value"));
 		
 		JSONObject resp = new JSONObject();
@@ -202,7 +202,8 @@ public class PortfolioService {
 		Double portfolioChange24h = actualBalance - oldBalance;
 		
 		obj.put("balance_change_24h", round(portfolioChange24h, 2));
-		obj.put("balance_change_24h_percentage", round(portfolioChange24h / oldBalance * 100, 2));
+		Double percentage_change_24h = portfolioChange24h / oldBalance * 100;
+		obj.put("balance_change_24h_percentage", round(percentage_change_24h, 2));
 	}
 	
 	private Double calculatePortfolioBalance(Portfolio portfolio) {
