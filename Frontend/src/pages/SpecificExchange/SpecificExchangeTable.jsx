@@ -3,13 +3,13 @@ import { TableBody, Table, TableCell, TableHead, TableRow, Icon } from '@mui/mat
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import { useInterval } from '../../components/Hooks.js';
-import { Link, Navigate  } from 'react-router-dom'
-import "./Exchanges.css"
+import { useLocation } from 'react-router';
 import { address } from './../../assets/globalVar.js';
 
 const interval_fetch = 1000 * 120;
 
 export default function ExchangesTable() {
+    const [cryptoTable, setCryptoTable] = useState([]);
     const [exchangesTable, setExchangesTable] = useState([]);
     const [order, setOrder] = useState("ASC");
     const [itemActive, setItemActive] = useState(null);
@@ -58,76 +58,91 @@ export default function ExchangesTable() {
         return str.substring(0, str.length - 3);
     }
 
+    const [exchangeData, setExchangeData] = useState([]);
+
+    const location = useLocation()
+    const exchangeID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
+
+    const fetcher = () => {
+        fetch(`https://api.coingecko.com/api/v3/exchanges/${exchangeID}/tickers`)
+        .then((res) => res.json())
+        .then((result) => setExchangeData(result.tickers),
+        (error) => alert("Error fetching exchange"));
+        
+    }
+
+    useEffect(() => {
+        fetcher();
+    }, []);
+
     const fetchData = () => {
-        fetch(`http://${address}:8080/getTop100Exchanges`)
+        fetch(`http://${address}:8080/getTop100`)
             .then((res) => res.json())
-            .then((result) => setExchangesTable(result),
-                  (error) => alert("Error fetching top 100 exchanges"));
+            .then((result) => setCryptoTable(result),
+                  (error) => alert("Error fetching top 100 cryptos"));
     };
 
     useEffect(fetchData, []);
 
     useInterval(() => fetchData, interval_fetch);
 
-
     return (
         <Table className="table" sx={{maxWidth: '95%', marginTop: '30px'}}>
             <TableHead>
                 <TableRow>
-                    <TableCell className="table-attribute">#</TableCell>
-                    <TableCell className="table-attribute">Exchange</TableCell>
+                    <TableCell className="table-attribute">Coin</TableCell>
                     <TableCell className="table-attribute"onClick={() => {sorting("trust_score"); setItemActive("trust_score")}} style={{cursor: 'pointer'}}>
                     {  <span className="table-header-list">
-                            Trust score
+                            Pair
                             { isArrowActive(order, "trust_score") }
                          </span> }
                     </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("change"); setItemActive("volume_24h")}} style={{cursor: 'pointer'}}>
                        {  <span className="table-header-list">
-                            Volume (24h)
+                            Last price
                             { isArrowActive(order, "volume_24h") }
                          </span> }
                         
                     </TableCell>
-                    <TableCell className="table-attribute"> Country </TableCell>
+                    <TableCell className="table-attribute"> Volume </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("yearEstabilished"); setItemActive("yearEstabilished")}} style={{cursor: 'pointer'}}>
                         {  <span className="table-header-list">
-                                Year established
+                                Spread
                                 {isArrowActive(order, "yearEstabilished")}
                             </span> }
                     </TableCell>
-                    <TableCell className="table-attribute">7d Chart</TableCell>
+                    <TableCell className="table-attribute">-2% Depth</TableCell>
+                    <TableCell className="table-attribute">24h volume</TableCell>
+                    <TableCell className="table-attribute">Volume %</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 {
-                    exchangesTable.map((item, val) => (
+                    exchangeData.map((item, val) => (
                             <TableRow key={val}>
-                                    <TableCell className="table-item-exchange">{item.rank}</TableCell>
                                     <TableCell className="table-item-exchange">
-                                        <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
-                                            <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
-                                            <Link to={`/exchange/${item.id}`} state={{ id: item.id }} className="item-name-exchange">
-                                                <p>{item.name}</p>
-                                            </Link>
-                                        </ul>
+                                        {item.coin_id} / {item.target_coin_id}
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                        <div class="trust-bar-exchange">
-                                            <div class={setColor(item.trust_score)}> <div className="trust_score"> {item.trust_score} </div> </div>
-                                        </div>
+                                        {item.base} / {item.target}
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                        {getPriceWithCurrency(item.volume)}
+                                        {getPriceWithCurrency(item.converted_last.usd)}
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                        {item.country} 
+                                        {getPriceWithCurrency(item.converted_volume.usd)}
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                       {item.yearEstabilished}
+                                        {item.bid_ask_spread_percentage}%
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                        <img src={item.chart_7d} />
+                                    {item.base}
+                                    </TableCell>
+                                    <TableCell className="table-item-exchange">
+                                    {item.base}
+                                    </TableCell>
+                                    <TableCell className="table-item-exchange">
+                                    {item.base}
                                     </TableCell>
                             </TableRow>
                     ))

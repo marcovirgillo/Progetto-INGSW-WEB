@@ -5,23 +5,10 @@ import "./../../App.css";
 import { Grid    } from '@mui/material'
 import { info } from './TestData.js';
 
-const HeaderSection = () => {
+const HeaderSection = (props) => {
     const [screenSize, setScreenSize] = useState(null);
-    const [cryptoData, setCryptoData] = useState([]);
 
-    const location = useLocation()
-    const cryptoID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
-
-    const fetcher = () => {
-        fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}`)
-        .then((res) => res.json())
-        .then((result) => setCryptoData(result),
-        (error) => alert("Error fetching crypto"));
-    }
-
-    useEffect(() => {
-        fetcher();
-    }, []);
+    const cryptoData = props.data;
 
     useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
@@ -38,6 +25,13 @@ const HeaderSection = () => {
             return formatter.format(price);
         else 
             return "$" + price;
+    }
+
+    function getNormalFormat(value){
+        if(value.toString().search("e") === -1)
+            return value;
+        
+        return value.toFixed(value.toString().split('-')[1]);
     }
 
     function getChangeClass(change){
@@ -109,13 +103,13 @@ const HeaderSection = () => {
                 </ul>
                 <ul>
                     <ul className="container-title">
-                        <p className="p-crypto" style={{color:'#ABABAB', marginLeft:'18px', marginTop:'0px'}}>{cryptoData.market_data.current_price.btc} BTC</p>
+                        <p className="p-crypto" style={{color:'#ABABAB', marginLeft:'18px', marginTop:'0px'}}>{getNormalFormat(cryptoData.market_data.current_price.btc)} BTC</p>
                         <p className={getChangeClassWithoutContainer(cryptoData.market_data.price_change_percentage_24h_in_currency.btc)} style={{marginLeft:'18px', marginTop:'0px'}}>{change(cryptoData.market_data.price_change_percentage_24h_in_currency.btc)}%</p>
                     </ul>
                 </ul>
                 <ul>
                     <ul className="container-title" style={{marginTop:'-20px'}}>
-                        <p className="p-crypto" style={{color:'#ABABAB', marginLeft:'18px', marginTop:'0px'}}>{cryptoData.market_data.current_price.eth} ETH</p>
+                        <p className="p-crypto" style={{color:'#ABABAB', marginLeft:'18px', marginTop:'0px'}}>{getNormalFormat(cryptoData.market_data.current_price.eth)} ETH</p>
                         <p className={getChangeClassWithoutContainer(cryptoData.market_data.price_change_percentage_24h_in_currency.eth)} style={{marginLeft:'18px', marginTop:'0px'}}>{change(cryptoData.market_data.price_change_percentage_24h_in_currency.eth)}%</p>
                     </ul>
                 </ul>
@@ -181,6 +175,7 @@ const HeaderSection = () => {
                             <Grid item className="xs-spacer-crypto" sx={{display:'none'}} sm={1} xs={1} />
                         )
                     }
+                    
                     <Grid className="item" item xl={6} lg={12} md={12} sm={12} xs={5}> 
                     
                     {
