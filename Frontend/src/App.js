@@ -30,7 +30,7 @@ export default function App() {
                 <div className="layout-content">
                     <AppBar setSideBarEnabled={setSideBarEnabled} setSearchMobileOpen={setSearchMobileOpen} isSearchFieldOpen={searchMobileOpen} />
                     <div className="layout-content-main">
-                        <AppRoutes />
+                        <AppRoutes /> 
                     </div>
                 </div>
             </div>

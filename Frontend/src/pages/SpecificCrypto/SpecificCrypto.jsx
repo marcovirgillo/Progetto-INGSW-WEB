@@ -43,8 +43,19 @@ const SpecificCrypto = () => {
                 <div style={{paddingTop:'20px'}}/>
                 <HeaderSection data={cryptoData}/>
                 <div style={{paddingTop:'20px'}}/>
-                <StatisticsSection data={cryptoData} />
+                {
+                    screenSize>600 && (
+                        <StatisticsSection data={cryptoData} />
+                    )
+                }
                 <ChartSection />
+                <div style={{paddingTop:'50px'}}/>
+                {
+                    screenSize<=600 && (
+
+                        <StatisticsSection data={cryptoData} />
+                    )
+                }
             </div>
             
         </div>
