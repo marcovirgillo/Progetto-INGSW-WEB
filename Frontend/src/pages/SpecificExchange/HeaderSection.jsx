@@ -10,7 +10,6 @@ const HeaderSection = () => {
     const exchangeID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
 
     const fetcher = () => {
-        console.log(exchangeID);
         fetch(`https://api.coingecko.com/api/v3/exchanges/${exchangeID}`)
         .then((res) => res.json())
         .then((result) => setExchangeData(result),
@@ -65,9 +64,7 @@ const HeaderSection = () => {
             exchangeDataSize() && (
                 <Grid container columnSpacing={{xl:5, lg:5, md:2, sm:1, xs:2}} columns={{xl:20, lg:28, md:28, sm:28, xs:7}} > 
                     <Grid item xl={1} lg={1} md={1} sm={1} xs={1} /> 
-                    
                         <MainDetailsSection />
-                  
                 </Grid>                 
             )
         }
