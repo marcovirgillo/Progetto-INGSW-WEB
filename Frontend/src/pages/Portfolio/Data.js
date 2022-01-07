@@ -1,10 +1,22 @@
-export const PortfolioData = {
+export const PlaceholderInfo = {
     portfolio_name: "My Portfolio",
     balance: 0,
-    balance_change_24h_percentage: '+ 0%',
-    balance_change_24h : '+ $0.00',
+    assets: []
+}
+
+export const PlaceholderBalanceChange = {
+    balance_change_24h_percentage: 0.0,
+    balance_change_24h : 0.00,
+}
+
+
+/*export const PortfolioData = {
+    /*portfolio_name: "My Portfolio",
+    balance: 0,
+    balance_change_24h_percentage: 0.0,
+    balance_change_24h : 0.00,
     assets: [
-        /*{
+        {
             id: 'bitcoin',
             logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png",
             name: "Bitcoin",
@@ -45,6 +57,6 @@ export const PortfolioData = {
             avg_buy_price: 2389.90,
             profit_dollar: -56.91,
             profit_percentage: -23.11,
-        },*/
+        },
     ]
-}
+}*/

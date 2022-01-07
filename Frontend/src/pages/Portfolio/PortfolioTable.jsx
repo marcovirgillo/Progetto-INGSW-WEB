@@ -2,14 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { TableBody, Table, TableCell, TableHead, TableRow } from '@mui/material';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
-import { PortfolioData } from './Data.js';
 import "./Portfolio.css"
 import { Link  } from 'react-router-dom'
-import { address } from '../../assets/globalVar.js';
 
 const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
-
-const portfolioInfoUrl = "http://localhost:8080/portfolioInfo";
 
 function getPriceClass(price) {
     let className = 'table-item ';
@@ -25,43 +21,48 @@ function getFormattedPrice(price) {
 }
 
 function formatPercentage(change) {
-    if(change > 0){
+    if(change >= 0){
         return "+" + change.toFixed(2) + " %";
     }
     
     return change.toFixed(2) + " %";
 }
 
-function formatProfitDollar(change) {
-    if(change > 0)
-        return "+ " + getFormattedPrice(change);
+export const formatProfitDollar = (price) => {
+    if(price >= 0)
+        return "+ " + getFormattedPrice(price);
     else {
-        let price = getFormattedPrice(change);
-        return "- $" + price.substring(2);
+        let priceF = "- " + getFormattedPrice(price * -1);
+        return priceF;
     }
 }
 
 export default function CriptoTable(props) {
-    const [cryptoTable, setCryptoTable] = useState(props.data);
+    const { data } = props;
     const [order, setOrder] = useState("ASC");
+    const [tableData, setTableData] = useState(data);
 
     //itemactive è un'etichetta che dice chi è l'elemento che ha fatto il sorting
     const [itemActive, setItemActive] = useState(null);
+    
+    useEffect(() => {
+        setTableData(data);
+    }, [data]);
 
     //il parametro è l'elemento del json sul quale fare l'ordinamento
     const sorting = (col) => {
         if(order === "ASC"){
-            const sorted = [...cryptoTable].sort((a,b) => 
+            const sorted = [...props.data].sort((a,b) => 
                 a[col] > b[col] ? 1 : -1     
             );
-            setCryptoTable(sorted)
+            setTableData(sorted)
             setOrder("DSC")
         }
         if(order === "DSC"){
-            const sorted = [...cryptoTable].sort((a,b) => 
+            const sorted = [...props.data].sort((a,b) => 
                 a[col] < b[col] ? 1 : -1     
             );
-            setCryptoTable(sorted)
+            setTableData(sorted)
             setOrder("ASC")
         }
     }
@@ -92,14 +93,14 @@ export default function CriptoTable(props) {
                     <TableCell className="table-attribute" onClick={() => {sorting("price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
                         <TableCellArrow content="Price" arrowChecker="price" />
                     </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("change"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
+                    <TableCell className="table-attribute" onClick={() => {sorting("change_24h"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
                         <TableCellArrow content="24h" arrowChecker="24h" />
                     </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("change_7d"); setItemActive("7d")}} style={{cursor: 'pointer'}}>
                         <TableCellArrow content="7d" arrowChecker="7d" />
                     </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("holding_dollar"); setItemActive("holdings")}} style={{cursor: 'pointer'}}>
-                        <TableCellArrow content="Holdings" arrowChecker="holdings" />
+                    <TableCell className="table-attribute" onClick={() => {sorting("holding_dollar"); setItemActive("holding")}} style={{cursor: 'pointer'}}>
+                        <TableCellArrow content="Holdings" arrowChecker="holding" />
                     </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("avg_buy_price"); setItemActive("avg-buy-price"); }} style={{cursor: 'pointer'}}>
                         <TableCellArrow content="Avg. Buy Price" arrowChecker="avg-buy-price" />
@@ -111,8 +112,8 @@ export default function CriptoTable(props) {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {props.data.length > 0 && (
-                    props.data.map((item, val) => (
+                {tableData.length > 0 && (
+                    tableData.map((item, val) => (
                         <TableRow key={val}>
                                 <TableCell className="table-item">
                                     <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
@@ -144,7 +145,7 @@ export default function CriptoTable(props) {
                                 <TableCell className="table-item">
                                     <ul className="table-item-list">
                                         <li>{formatProfitDollar(item.profit_dollar)}</li>
-                                        <li className={"profit " + getPriceClass(item.profit_percentage)}>
+                                        <li className={"profit " + getPriceClass(item.profit_dollar)}>
                                             {item.profit_percentage} %
                                         </li>
                                     </ul>
