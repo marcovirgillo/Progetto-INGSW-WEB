@@ -45,6 +45,7 @@ public class TopExchanges {
 				exchange.setRank((Long) obj.get("trust_score_rank"));
 				exchange.setLogo((String) obj.get("image"));
 				exchange.setChart_7d(getExchangeChart((String) obj.get("image")));
+				exchange.setID((String) obj.get("id"));
 				
 				if (obj.get("country") != null) {
 					exchange.setCountry((String) obj.get("country"));

@@ -4,7 +4,6 @@ import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import { useInterval } from '../../components/Hooks.js';
 import { Link, Navigate  } from 'react-router-dom'
-import "./Exchanges.css"
 import { address } from './../../assets/globalVar.js';
 
 const interval_fetch = 1000 * 120;
@@ -75,59 +74,62 @@ export default function ExchangesTable() {
             <TableHead>
                 <TableRow>
                     <TableCell className="table-attribute">#</TableCell>
-                    <TableCell className="table-attribute">Exchange</TableCell>
+                    <TableCell className="table-attribute">Coin</TableCell>
                     <TableCell className="table-attribute"onClick={() => {sorting("trust_score"); setItemActive("trust_score")}} style={{cursor: 'pointer'}}>
                     {  <span className="table-header-list">
-                            Trust score
+                            Pair
                             { isArrowActive(order, "trust_score") }
                          </span> }
                     </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("change"); setItemActive("volume_24h")}} style={{cursor: 'pointer'}}>
                        {  <span className="table-header-list">
-                            Volume (24h)
+                            Price
                             { isArrowActive(order, "volume_24h") }
                          </span> }
                         
                     </TableCell>
-                    <TableCell className="table-attribute"> Country </TableCell>
+                    <TableCell className="table-attribute"> Spread </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("yearEstabilished"); setItemActive("yearEstabilished")}} style={{cursor: 'pointer'}}>
                         {  <span className="table-header-list">
-                                Year established
+                                +2% Depth
                                 {isArrowActive(order, "yearEstabilished")}
                             </span> }
                     </TableCell>
-                    <TableCell className="table-attribute">7d Chart</TableCell>
+                    <TableCell className="table-attribute">-2% Depth</TableCell>
+                    <TableCell className="table-attribute">24h volume</TableCell>
+                    <TableCell className="table-attribute">Volume %</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 {
                     exchangesTable.map((item, val) => (
                             <TableRow key={val}>
-                                    <TableCell className="table-item-exchange">{item.rank}</TableCell>
                                     <TableCell className="table-item-exchange">
-                                        <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
-                                            <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
-                                            <Link to={`/exchange/${item.id}`} state={{ id: item.id }} className="item-name-exchange">
-                                                <p>{item.name}</p>
-                                            </Link>
-                                        </ul>
+
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                        <div class="trust-bar-exchange">
-                                            <div class={setColor(item.trust_score)}> <div className="trust_score"> {item.trust_score} </div> </div>
-                                        </div>
+                                       
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                        {getPriceWithCurrency(item.volume)}
+                                        
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                        {item.country} 
+                                        
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                       {item.yearEstabilished}
+                                       
                                     </TableCell>
                                     <TableCell className="table-item-exchange">
-                                        <img src={item.chart_7d} />
+                                       
+                                    </TableCell>
+                                    <TableCell className="table-item-exchange">
+                                        
+                                    </TableCell>
+                                    <TableCell className="table-item-exchange">
+
+                                    </TableCell>
+                                    <TableCell className="table-item-exchange">
+                                        
                                     </TableCell>
                             </TableRow>
                     ))

@@ -9,6 +9,7 @@ public class Exchanges {
 	private String country;
 	private Long year_established;
 	private String chart_7d;
+	private String id;
 	
 	public Exchanges() {}
 	
@@ -59,6 +60,12 @@ public class Exchanges {
 	}
 	public void setChart_7d(String chart_7d) {
 		this.chart_7d = chart_7d;
+	}
+	public String getID() {
+		return id;
+	}
+	public void setID(String id) {
+		this.id = id;
 	}
 	
 }
