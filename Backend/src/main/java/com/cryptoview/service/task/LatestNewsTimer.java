@@ -41,6 +41,14 @@ public class LatestNewsTimer implements DisposableBean, Runnable {
 		System.out.println(java.time.LocalDateTime.now() + " UPDATE Latest exchanges news");
 		LatestNews.getInstance().fetchExchangesData();
 		System.out.println(java.time.LocalDateTime.now() + " FETCHED Lastest exchanges news");
+		
+		System.out.println(java.time.LocalDateTime.now() + " UPDATE Popular news");
+		LatestNews.getInstance().fetchPopularNewsData();
+		System.out.println(java.time.LocalDateTime.now() + " FETCHED Popular news");
+		
+		System.out.println(java.time.LocalDateTime.now() + " UPDATE All latest news");
+		LatestNews.getInstance().fetchAllLatestNewsData();
+		System.out.println(java.time.LocalDateTime.now() + " FETCHED All latest news");
 	}
 
 

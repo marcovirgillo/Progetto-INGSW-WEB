@@ -113,4 +113,15 @@ public class CryptoDataController {
 		return PortfolioService.getInstance().getPortfolioInfo("prova");
 	}
 	
+	
+	@GetMapping("/popularNews")
+	private List<News> getPopularNews(){
+		return LatestNews.getInstance().getPopularNews();
+	}
+	
+	@GetMapping("/allLatestNews")
+	private List<News> getAllLatestNews(){
+		return LatestNews.getInstance().getAllLatestNews();
+	}
+	
 }
