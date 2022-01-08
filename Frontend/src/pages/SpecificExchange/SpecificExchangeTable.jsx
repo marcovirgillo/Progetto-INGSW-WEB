@@ -1,5 +1,5 @@
-import React, { Component, useState, useEffect } from 'react'
-import { TableBody, Table, TableCell, TableHead, TableRow, Icon } from '@mui/material';
+import React, { useState, useEffect } from 'react'
+import { TableBody, Table, TableCell, TableHead, TableRow } from '@mui/material';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import { useInterval } from '../../components/Hooks.js';
@@ -32,26 +32,14 @@ export default function ExchangesTable() {
     }
 
     const isArrowActive = (order, type) => {
-        if(itemActive == type) {
-            if(order == "DSC")
+        if(itemActive === type) {
+            if(order === "DSC")
                 return <ArrowDropUpRoundedIcon/>;
-                
-
             return <ArrowDropDownRoundedIcon />;
         }
     }
 
     const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
-
-    function setColor(price) {
-        let className = 'table-item ';
-        if (price >= 8)
-            return className += 'item-green-exchange';
-        if (price >= 6)
-            return className += 'item-yellow-exchange';
-
-        return className += 'item-red-exchange';
-    }
 
     function getPriceWithCurrency(price) {
         let str = formatter.format(price);
@@ -87,7 +75,7 @@ export default function ExchangesTable() {
     useInterval(() => fetchData, interval_fetch);
 
     function check(string) {
-        if (string == undefined)
+        if (string === undefined)
             return string
         string = string.replace(/-/, ' ')
         return string.toUpperCase()
@@ -95,12 +83,16 @@ export default function ExchangesTable() {
 
     function getImageOfCrypto(ticker_id){
         ticker_id = ticker_id.toLowerCase()
-        let crypto = cryptoTable.find(({ticker}) => ticker == ticker_id);
+        let crypto = cryptoTable.find(({ticker}) => ticker === ticker_id);
         
-        if(crypto != undefined)
+        if(crypto !== undefined)
             return crypto.logo;
         
         return require("../../res/logos/change.png");
+    }
+
+    function changeColor(color) {
+        return 'table-item item-' + color + '-exchange';
     }
 
     return (
@@ -109,7 +101,7 @@ export default function ExchangesTable() {
                 <TableRow>
                     <TableCell className="table-attribute">Coin</TableCell>
                     <TableCell className="table-attribute">Pair</TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("converted_last.usd"); setItemActive("last_price")}} style={{cursor: 'pointer'}}>
+                    <TableCell className="table-attribute" onClick={() => {sorting("change"); setItemActive("last_price")}} style={{cursor: 'pointer'}}>
                        {  <span className="table-header-list">
                             Last price
                             { isArrowActive(order, "last_price") }
@@ -117,46 +109,40 @@ export default function ExchangesTable() {
                         
                     </TableCell>
                     <TableCell className="table-attribute"> Volume </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("yearEstabilished"); setItemActive("yearEstabilished")}} style={{cursor: 'pointer'}}>
+                    <TableCell className="table-attribute" onClick={() => {sorting("change"); setItemActive("spread")}} style={{cursor: 'pointer'}}>
                         {  <span className="table-header-list">
                                 Spread
-                                {isArrowActive(order, "yearEstabilished")}
+                                {isArrowActive(order, "spread")}
                             </span> }
                     </TableCell>
-                    <TableCell className="table-attribute">-2% Depth</TableCell>
-                    <TableCell className="table-attribute">24h volume</TableCell>
-                    <TableCell className="table-attribute">Volume %</TableCell>
+                    <TableCell className="table-attribute">Trust score</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 {
                     exchangeData.map((item, val) => (
                             <TableRow key={val}>
-                                    <TableCell className="table-item-exchange">
+                                    <TableCell className="table-item-exchange-specific">
                                         <div className="image-coin">
                                             <img src= {getImageOfCrypto(item.base)} width={24} height={24} style={{marginRight: 10}}/>{item.coin_id}  / <img src= {getImageOfCrypto(item.target)} width={24} height={24} style={{marginRight: 10, marginLeft:5}}/>{item.target_coin_id}
                                         </div>
                                     </TableCell>
-                                    <TableCell className="table-item-exchange">
+                                    <TableCell className="table-item-exchange-specific">
                                         {item.base.startsWith("0X") ? item.coin_id.toUpperCase() : item.base} / {item.target.startsWith("0X") ? check(item.target_coin_id) : item.target}
                                     </TableCell>
-                                    <TableCell className="table-item-exchange">
+                                    <TableCell className="table-item-exchange-specific">
                                         {getPriceWithCurrency(item.converted_last.usd)}
                                     </TableCell>
-                                    <TableCell className="table-item-exchange">
+                                    <TableCell className="table-item-exchange-specific">
                                         {getPriceWithCurrency(item.converted_volume.usd)}
                                     </TableCell>
-                                    <TableCell className="table-item-exchange">
+                                    <TableCell className="table-item-exchange-specific">
                                         {item.bid_ask_spread_percentage}%
                                     </TableCell>
-                                    <TableCell className="table-item-exchange">
-                                    {item.bid_ask_spread_percentage}%
-                                    </TableCell>
-                                    <TableCell className="table-item-exchange">
-                                    {item.bid_ask_spread_percentage}%
-                                    </TableCell>
-                                    <TableCell className="table-item-exchange">
-                                    {item.bid_ask_spread_percentage}%
+                                    <TableCell className="table-item-exchange-specific">
+                                        <div className="trust-bar-exchange">
+                                            <div className={changeColor(item.trust_score)}> <div className="trust_score"> </div> </div>
+                                        </div>
                                     </TableCell>
                             </TableRow>
                     ))
