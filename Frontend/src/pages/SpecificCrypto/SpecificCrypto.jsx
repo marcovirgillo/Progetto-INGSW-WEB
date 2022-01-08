@@ -4,12 +4,10 @@ import "./../../App.css";
 import ChartSection from './ChartSection'
 import HeaderSection from './HeaderSection'
 import StatisticsSection from './StatisticsSection'
-import { Grid } from '@mui/material'
 import { useLocation } from 'react-router';
 import { TableBody, Table, TableCell, TableHead, TableRow, Icon } from '@mui/material';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
-import { Link } from 'react-router-dom'
 import { address } from './../../assets/globalVar.js';
 
 const SpecificCrypto = () => {
@@ -18,7 +16,6 @@ const SpecificCrypto = () => {
     const [exchanges, setExchanges] = useState([]);
 
     const [order, setOrder] = useState("ASC");
-
     const [itemActive, setItemActive] = useState(null);
 
 /*     const sorting = (col) => {
@@ -55,10 +52,13 @@ const SpecificCrypto = () => {
         (error) => console.log("Error fetching exchanges in specific crypto"));
     }
 
-    useEffect(() => {
+    const fetchData = () => {
         fetcher();
         exchangesFetcher();
-    }, []);
+    }
+
+    useEffect(fetchData, []);
+    useEffect(fetchData, [cryptoID]);
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -67,7 +67,6 @@ const SpecificCrypto = () => {
     useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
         window.addEventListener('resize', handleResize);
-        /* handleResize(); */
         
         return () => window.removeEventListener('resize', handleResize);
     });

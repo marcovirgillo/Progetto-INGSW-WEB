@@ -119,8 +119,8 @@ input[type=text] {
 }
 
 .dropdown-search {
-    left: calc(var(--side-bar-min-width) + 20px);
-    width: 320px;
+    left: calc(var(--side-bar-min-width) + 15px);
+    width: 400px;
     transition: transform 0.2s ease 0s !important;
 }
 
