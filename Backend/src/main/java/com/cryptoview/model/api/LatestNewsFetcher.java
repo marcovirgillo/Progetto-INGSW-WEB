@@ -20,7 +20,7 @@ public class LatestNewsFetcher {
 	
 	public JSONArray fetch(String type) {
 		try {
-			if (type == "crypto") {
+			if (type.equals("crypto")) {
 				String response = Fetcher.getInstance().fetch(API.getInstance().getNewsAPI(8), "ERROR fetching latest news.");
 			    
 			    JSONParser parser = new JSONParser();
@@ -31,7 +31,7 @@ public class LatestNewsFetcher {
 			    return news;
 			}
 			
-			if (type == "exchanges") {
+			if (type.equals("exchanges")) {
 				String response = Fetcher.getInstance().fetch(API.getInstance().getNewsExchangesAPI(), "ERROR fetching latest news.");
 			    
 			    JSONParser parser = new JSONParser();
@@ -41,6 +41,31 @@ public class LatestNewsFetcher {
 			    
 			    return news;
 			}
+			
+			
+			if(type.equals("popular")) {
+				String response = Fetcher.getInstance().fetch(API.getInstance().getPopularNewsKey(), "ERROR fetching popular news.");
+			    
+			    JSONParser parser = new JSONParser();
+			    JSONObject result = (JSONObject) parser.parse(response); 
+			    
+			    JSONArray news = (JSONArray) result.get("articles");
+			    
+			    return news;
+			}
+			
+			
+			if(type.equals("all")) {
+				String response = Fetcher.getInstance().fetch(API.getInstance().getAllNewsKey(), "ERROR fetching popular news.");
+			    
+			    JSONParser parser = new JSONParser();
+			    JSONObject result = (JSONObject) parser.parse(response); 
+			    
+			    JSONArray news = (JSONArray) result.get("articles");
+			    
+			    return news;
+			}
+				
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

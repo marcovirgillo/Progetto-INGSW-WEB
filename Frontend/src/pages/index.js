@@ -4,3 +4,4 @@ export { default as Exchanges } from './Exchange/Exchanges';
 export { default as News } from './News/News';
 export { default as Portfolio } from './Portfolio/Portfolio';
 export { default as Profile } from './Profile/Profile';
+export { default as AboutUs} from './AboutUs/AboutUs';
