@@ -477,118 +477,116 @@ export const CriptoData = [
 
 export const NewsData = [
     {
-        title: "How to store Crypto in 2022",
-        content: "Secondo quanto segnalato dagli utenti, Solana è andato offline per quattro ore. Malgrado ciò, Solana. Status mostra che non si sono verificati problemi sulla rete.",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS9zdG9yYWdlL3VwbG9hZHMvdmlldy80MThlODJiNTcwMjk3YmQ4ZGQ0OTMxMTE3MmY3OGE5NS5qcGc=.jpg",
-        link: "https://cointelegraph.com/explained/how-to-store-crypto-in-2022-explained"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     },
     {
-        title: "BTC can hit $333k 'parabolically'",
-        content: " change of course from the FED could ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvYTJmOGQwZjQtNzhmMy00ZWM1LTllZjYtMmZlNWJiZWVmYzcwLmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/bitcoin-can-hit-333k-parabolically-if-this-btc-price-fractal-plays-out"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     },
     {
-        title: "Finance Redefined: Binance leads $60M Multichain funding",
-        content: "Binance Labs was the lead founder in a ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvNTViOWRiZmYtNjIxMi00MTdkLWFlMWUtNDlhYTI1MTQzZTI5LmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/finance-redefined-binance-leads-60m-multichain-funding-interlay-raises-6-5m-dec-17-24"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     },
     {
-        title: "How to store Crypto in 2022",
-        content: "As new cryptocurrency storage ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS9zdG9yYWdlL3VwbG9hZHMvdmlldy80MThlODJiNTcwMjk3YmQ4ZGQ0OTMxMTE3MmY3OGE5NS5qcGc=.jpg",
-        link: "https://cointelegraph.com/explained/how-to-store-crypto-in-2022-explained"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     },
     {
-        title: "BTC can hit $333k 'parabolically'",
-        content: " change of course from the FED could ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvYTJmOGQwZjQtNzhmMy00ZWM1LTllZjYtMmZlNWJiZWVmYzcwLmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/bitcoin-can-hit-333k-parabolically-if-this-btc-price-fractal-plays-out"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     },
     {
-        title: "Finance Redefined: Binance leads $60M Multichain funding",
-        content: "Binance Labs was the lead founder in a ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvNTViOWRiZmYtNjIxMi00MTdkLWFlMWUtNDlhYTI1MTQzZTI5LmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/finance-redefined-binance-leads-60m-multichain-funding-interlay-raises-6-5m-dec-17-24"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     },
     {
-        title: "BTC can hit $333k 'parabolically'",
-        content: " change of course from the FED could ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvYTJmOGQwZjQtNzhmMy00ZWM1LTllZjYtMmZlNWJiZWVmYzcwLmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/bitcoin-can-hit-333k-parabolically-if-this-btc-price-fractal-plays-out"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     },
     {
-        title: "BTC can hit $333k 'parabolically'",
-        content: " change of course from the FED could ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvYTJmOGQwZjQtNzhmMy00ZWM1LTllZjYtMmZlNWJiZWVmYzcwLmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/bitcoin-can-hit-333k-parabolically-if-this-btc-price-fractal-plays-out"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     },
     {
-        title: "Finance Redefined: Binance leads $60M Multichain funding",
-        content: "Binance Labs was the lead founder in a ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvNTViOWRiZmYtNjIxMi00MTdkLWFlMWUtNDlhYTI1MTQzZTI5LmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/finance-redefined-binance-leads-60m-multichain-funding-interlay-raises-6-5m-dec-17-24"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     },
     {
-        title: "BTC can hit $333k 'parabolically'",
-        content: " change of course from the FED could ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvYTJmOGQwZjQtNzhmMy00ZWM1LTllZjYtMmZlNWJiZWVmYzcwLmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/bitcoin-can-hit-333k-parabolically-if-this-btc-price-fractal-plays-out"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     },
     {
-        title: "BTC can hit $333k 'parabolically'",
-        content: " change of course from the FED could ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvYTJmOGQwZjQtNzhmMy00ZWM1LTllZjYtMmZlNWJiZWVmYzcwLmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/bitcoin-can-hit-333k-parabolically-if-this-btc-price-fractal-plays-out"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     },
     {
-        title: "Finance Redefined: Binance leads $60M Multichain funding",
-        content: "Binance Labs was the lead founder in a ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvNTViOWRiZmYtNjIxMi00MTdkLWFlMWUtNDlhYTI1MTQzZTI5LmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/finance-redefined-binance-leads-60m-multichain-funding-interlay-raises-6-5m-dec-17-24"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     },
     {
-        title: "BTC can hit $333k 'parabolically'",
-        content: " change of course from the FED could ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvYTJmOGQwZjQtNzhmMy00ZWM1LTllZjYtMmZlNWJiZWVmYzcwLmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/bitcoin-can-hit-333k-parabolically-if-this-btc-price-fractal-plays-out"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     },
     {
-        title: "BTC can hit $333k 'parabolically'",
-        content: " change of course from the FED could ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvYTJmOGQwZjQtNzhmMy00ZWM1LTllZjYtMmZlNWJiZWVmYzcwLmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/bitcoin-can-hit-333k-parabolically-if-this-btc-price-fractal-plays-out"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     },
     {
-        title: "Finance Redefined: Binance leads $60M Multichain funding",
-        content: "Binance Labs was the lead founder in a ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvNTViOWRiZmYtNjIxMi00MTdkLWFlMWUtNDlhYTI1MTQzZTI5LmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/finance-redefined-binance-leads-60m-multichain-funding-interlay-raises-6-5m-dec-17-24"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     },
     {
-        title: "BTC can hit $333k 'parabolically'",
-        content: " change of course from the FED could ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvYTJmOGQwZjQtNzhmMy00ZWM1LTllZjYtMmZlNWJiZWVmYzcwLmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/bitcoin-can-hit-333k-parabolically-if-this-btc-price-fractal-plays-out"
-    },
-    {
-        title: "BTC can hit $333k 'parabolically'",
-        content: " change of course from the FED could ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvYTJmOGQwZjQtNzhmMy00ZWM1LTllZjYtMmZlNWJiZWVmYzcwLmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/bitcoin-can-hit-333k-parabolically-if-this-btc-price-fractal-plays-out"
-    },
-    {
-        title: "Finance Redefined: Binance leads $60M Multichain funding",
-        content: "Binance Labs was the lead founder in a ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvNTViOWRiZmYtNjIxMi00MTdkLWFlMWUtNDlhYTI1MTQzZTI5LmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/finance-redefined-binance-leads-60m-multichain-funding-interlay-raises-6-5m-dec-17-24"
-    },
-    {
-        title: "BTC can hit $333k 'parabolically'",
-        content: " change of course from the FED could ...",
-        image: "https://images.cointelegraph.com/images/370_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjEtMTIvYTJmOGQwZjQtNzhmMy00ZWM1LTllZjYtMmZlNWJiZWVmYzcwLmpwZw==.jpg",
-        link: "https://cointelegraph.com/news/bitcoin-can-hit-333k-parabolically-if-this-btc-price-fractal-plays-out"
+        title: "GameStop shares jump 26% in after-hours trade after NFT division unveiled",
+        content: "GameStop has reportedly hired 20 members for its new NFT division and is close to securing partnerships with two crypto firms for NFT game development.",
+        image: "https://images.cointelegraph.com/images/717_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjItMDEvNzc2NWJjZDUtMDhkNS00NzU1LTlmOTYtZDMxYzM1MTg3ZWM4LmpwZw==.jpg",
+        link: "https://cointelegraph.com",
+        date: "07/01/2022"
     }
 ]
 
