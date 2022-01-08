@@ -80,8 +80,8 @@ function DropdownSearchPanel(props) {
                 {props.data.slice(0, 6).map((item, val) => (
                     <ul key={val} className="h-list-item">
                         <img src={item.logo} width={30} alt="crypto logo"/>
-                        <Link style={{display:'flex', flexDirection:'row'}} to={`/crypto/${item.id}`} 
-                                onClick={() => props.setDropdownActive(false)}
+                        <Link style={{display:'flex', flexDirection:'row'}} 
+                                to={`/crypto/${item.id}`}  onClick={() => (props.setDropdownActive(false))}
                         >
                             <p>{item.name}</p>
                             <p className="ticker">{item.ticker.toUpperCase()}</p>
@@ -98,7 +98,7 @@ function SearchField(props) {
         <div className="app-bar-search-field">
             <img className="app-bar-search-icon" alt="search icon"
                 src={require("../../res/logos/search.png")} width={18} height={18}/>
-            <input className="app-bar-search" type="text" placeholder="Cerca.." 
+            <input className="app-bar-search" type="text" placeholder="Search.." 
                 onChange={(ev) => props.queryData(ev.target.value)}
                 onFocus={() => props.setDropdownActive(true)} 
                 onBlur={() => props.setDropdownActive(false)}
@@ -112,7 +112,7 @@ function SearchFieldMobile(props) {
         <div className="app-bar-search-field-mobile">
             <img className="app-bar-search-icon" alt="search icon"
                 src={require("../../res/logos/search.png")} width={18} height={18}/>
-            <input className="app-bar-search-mobile" type="text" placeholder="Cerca.." 
+            <input className="app-bar-search-mobile" type="text" placeholder="Search.." 
                     onChange={(ev) => props.queryData(ev.target.value)} 
                     onFocus={() => props.setDropdownActive(true)} 
                     onBlur={() => props.setDropdownActive(false)}
@@ -142,7 +142,7 @@ export default function AppBar(props) {
         let allCryptoCopy = [];
 
         allCryptos.forEach((item) => {
-            if((item.name.toLowerCase()).includes(str.toLowerCase()))
+            if((item.name.toLowerCase()).includes(str.toLowerCase()) || (item.ticker.toLowerCase()).includes(str.toLowerCase()))
                 allCryptoCopy.push(item);
         })
 

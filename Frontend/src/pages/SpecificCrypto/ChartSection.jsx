@@ -29,6 +29,10 @@ const ChartSection = () => {
         fetcher();
     }, []);
 
+    useEffect(() => {
+        fetcher();
+    }, [cryptoID]);
+
     //se cambia l'intervallo di tempo, fetcho i dati nuovi
     useEffect(() =>{
         fetcher();
@@ -61,8 +65,6 @@ const ChartSection = () => {
     }
 
     function processData(res) {
-        console.log(res)
-
         crypto_prices = [];
         market_caps = [];
         volumes = [];
