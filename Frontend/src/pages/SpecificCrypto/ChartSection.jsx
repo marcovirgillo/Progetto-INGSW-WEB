@@ -9,6 +9,7 @@ let market_caps = [];
 let volumes = [];
 
 const ChartSection = () => {
+    const [screenSize, setScreenSize] = useState(window.innerWidth);
     const [chartType, setChartType] = useState("price");
     const [chartInterval, setChartInterval] = useState("1");
 
@@ -24,6 +25,13 @@ const ChartSection = () => {
         .then((res) => res.json())
         .then((result) => processData(result));
     }
+    
+    useEffect(() => {
+        const handleResize = () => setScreenSize(window.innerWidth);
+        window.addEventListener('resize', handleResize);
+        
+        return () => window.removeEventListener('resize', handleResize);
+    });
 
     useEffect(() => {
         fetcher();
@@ -104,6 +112,12 @@ const ChartSection = () => {
         return (name === chartInterval ? 'btn-active' : '');
     }
 
+    function chartHeight(){
+        if(screenSize<=600)
+            return "100%";
+        return "160%";
+    }
+
     const ChartButtons = (props) => {
         return (
             <ul className={"btn-container chart-btn-controller " + props.className}>
@@ -132,7 +146,7 @@ const ChartSection = () => {
             <CryptoChart 
                 className="chart"
                 width="100%" 
-                height="160%"
+                height={chartHeight()}
                 data={chartData} 
                 timestamps={chartDatetime} 
                 color="#32C0FF"
