@@ -61,6 +61,8 @@ const ChartSection = () => {
     }
 
     function processData(res) {
+        console.log(res)
+
         crypto_prices = [];
         market_caps = [];
         volumes = [];
@@ -80,11 +82,11 @@ const ChartSection = () => {
         
 
         caps.forEach((item) => {
-            market_caps.push(item[1].toFixed(2));
+            market_caps.push(item[1]);
         })
 
         vols.forEach((item) => {
-            volumes.push(item[1].toFixed(2));
+            volumes.push(item[1]);
         })
 
         setChartDatetime(times);
@@ -128,7 +130,7 @@ const ChartSection = () => {
             <CryptoChart 
                 className="chart"
                 width="100%" 
-                heigth="100%"
+                height="160%"
                 data={chartData} 
                 timestamps={chartDatetime} 
                 color="#32C0FF"
