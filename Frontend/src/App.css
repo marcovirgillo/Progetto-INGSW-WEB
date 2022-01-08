@@ -7,6 +7,10 @@
         transform: translateX(-100%); 
     } 
 
+    .dropdown-search {
+        left: 135px !important;
+    }
+
     .side-bar-active {
         transform: translateX(0) !important;
     }
@@ -61,6 +65,11 @@
     .app-bar-search-field {
         display: none !important;
     }
+
+    .dropdown-search {
+        left: 20px !important;
+    }
+
 }
 
 

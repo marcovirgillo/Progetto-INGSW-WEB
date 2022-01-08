@@ -123,7 +123,7 @@ export default function CriptoTable() {
                                     <TableCell className="table-item">
                                         <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
                                             <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
-                                            <Link to={`/crypto/${item.id}`} state={{ id: item.id }} className="item-name">
+                                            <Link to={`/crypto/${item.id}`} className="item-name">
                                                 <p>{item.name}</p>
                                             </Link>
                                             <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker.toUpperCase()})</p>

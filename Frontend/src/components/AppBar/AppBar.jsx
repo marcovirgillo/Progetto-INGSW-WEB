@@ -32,40 +32,6 @@ function DropdownProfile(props) {
     );
 }
 
-
-function getLogoUrl(idNum, idApi) {
-    let url = `http://assets.coingecko.com/coins/images/${idNum}/small/${idApi}.png`;
-    console.log(url);
-    return url;
-}
-
-function DropdownSearchPanel() {
-    console.log("aa");
-    const [allCryptos, setAllCryptos] = useState([]);
-
-    useEffect(() => {
-        fetch(allCryptoUrl)
-            .then((res) => res.json())
-            .then((result) => setAllCryptos(result),
-                   (error) => console.log("error"));
-    }, []);
-
-    return(
-        <div className="dropdown dropdown-search drop-active">
-            <ul className="search-list">
-                {
-                    allCryptos.slice(0, 6).map((item, val) => (
-                        <ul key={val} className="h-list-item">
-                            <img src={getLogoUrl(item.idGraphic, item.idApi)} width={24}/>
-                            {item.name}
-                        </ul>
-                    ))
-                }
-            </ul>
-        </div>
-    )
-}
-
 function DropdownNotification(props) {
     const [notificationList, setNotificationList] = useState(Notifications);
 
@@ -97,11 +63,38 @@ function DropdownNotification(props) {
     );
 }
 
+function DropdownSearchPanel(props) {
+    const getClassName = isActive => {
+        let cName = "dropdown dropdown-search ";
+        if(isActive)
+            cName = cName + "search-active";
+
+        return cName;
+    }
+
+    return(
+        <div className={getClassName(props.isActive)}>
+            <ul className="search-list">
+                <p className="label">Consigliate</p>
+                {props.data.slice(0, 6).map((item, val) => (
+                    <ul key={val} className="h-list-item">
+                        <img src={item.logo} width={30}/>
+                        <Link style={{display:'flex', flexDirection:'row'}} to={`/crypto/${item.id}`} onClick={() => props.setDropdownActive(false)}>
+                            <p>{item.name}</p>
+                            <p className="ticker">{item.ticker.toUpperCase()}</p>
+                        </Link>
+                    </ul>
+                ))}
+            </ul>
+        </div>
+    )
+}
+
 function SearchField(props) {
     return (
         <div className="app-bar-search-field" onClick={props.onClick}>
             <img className="app-bar-search-icon" src={require("../../res/logos/search.png")} width={18} height={18}/>
-            <input className="app-bar-search" type="text" placeholder="Cerca.."/>
+            <input className="app-bar-search" type="text" placeholder="Cerca.." onChange={(ev) => props.queryData(ev.target.value)}/>
         </div>
     );
 }
@@ -110,9 +103,11 @@ function SearchFieldMobile(props) {
     return (
         <div className="app-bar-search-field-mobile">
             <img className="app-bar-search-icon" src={require("../../res/logos/search.png")} width={18} height={18}/>
-            <input className="app-bar-search-mobile" type="text" placeholder="Cerca.."/>
+            <input className="app-bar-search-mobile" type="text" placeholder="Cerca.." 
+                    onChange={(ev) => props.queryData(ev.target.value)} onClick={() => props.setDropdownOpen(!props.dropdownIsOpen)}/>
             <div className="spacer" />
-            <CloseRoundedIcon className="close-btn" sx={{color: 'white', fontSize: 32}} onClick={() => {props.setSearchMobileOpen(false)}}/>
+            <CloseRoundedIcon className="close-btn" sx={{color: 'white', fontSize: 32}} 
+                onClick={() => {props.setSearchMobileOpen(false); props.setDropdownOpen(false)}}/>
         </div>
     );
 }
@@ -121,11 +116,33 @@ export default function AppBar(props) {
     const [dropdownProfileActive, setDropdownProfileActive] = useState(false);
     const [dropdownNotificationActive, setDropdownNotificationActive] = useState(false);
     const [dropdownSearchActive, setDropdownSearchActive] = useState(false);
+    const [allCryptos, setAllCryptos] = useState([]);
+    const [queryedData, setQueryedData] = useState([]);
+
+    useEffect(() => {
+        fetch(allCryptoUrl)
+            .then((res) => res.json())
+            .then((result) => {setAllCryptos(result); setQueryedData(result)},
+                   (error) => console.log("error"));
+    }, []);
+
+    const queryData = (str) => {
+        let allCryptoCopy = [];
+
+        allCryptos.forEach((item) => {
+            if((item.name.toLowerCase()).includes(str.toLowerCase()))
+                allCryptoCopy.push(item);
+        })
+
+        setQueryedData(allCryptoCopy);
+    }
 
     return (
         <div className="app-bar">
             {props.isSearchFieldOpen && (
-                <SearchFieldMobile setSearchMobileOpen={props.setSearchMobileOpen} />
+                <SearchFieldMobile queryData={queryData} setSearchMobileOpen={props.setSearchMobileOpen} 
+                                    setDropdownOpen={setDropdownSearchActive} dropdownIsOpen={dropdownSearchActive}
+                />
             )}
             {!props.isSearchFieldOpen && (
                 <React.Fragment>
@@ -140,7 +157,7 @@ export default function AppBar(props) {
                     </Link>
                     </Icon>
 
-                    <SearchField onClick={() => setDropdownSearchActive(!dropdownSearchActive)}/>
+                    <SearchField queryData={queryData} onClick={() => setDropdownSearchActive(!dropdownSearchActive)}/>
 
                     <div className="spacer" />
                     <Icon className="search-icon" style={{display: 'none'}} onClick={() => {props.setSearchMobileOpen(true)}}>
@@ -168,9 +185,8 @@ export default function AppBar(props) {
                 </React.Fragment>
             )}
 
-            {dropdownSearchActive && (
-                <DropdownSearchPanel />
-            )}
+            <DropdownSearchPanel data={queryedData} isActive={dropdownSearchActive} setDropdownActive={setDropdownSearchActive} />
+            
         </div>
     );
 }

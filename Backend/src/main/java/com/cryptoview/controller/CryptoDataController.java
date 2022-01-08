@@ -62,8 +62,8 @@ public class CryptoDataController {
 	}
 	
 	@GetMapping("/supportedCrypto")
-	private List<Crypto> getSupportedCripto() {
-		return CryptoDaoJDBC.getInstance().getAllSupportedCrypto();
+	private List<CryptoDetail> getSupportedCripto() {
+		return TopCryptos.getInstance().getAllSupportedCrypto();
 	}
 	
 	@GetMapping("/marketStats")
