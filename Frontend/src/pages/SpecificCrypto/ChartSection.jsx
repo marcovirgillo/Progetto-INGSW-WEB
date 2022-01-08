@@ -128,7 +128,7 @@ const ChartSection = () => {
             <CryptoChart 
                 className="chart"
                 width="100%" 
-                heigth="100%"
+                height="160%"
                 data={chartData} 
                 timestamps={chartDatetime} 
                 color="#32C0FF"
