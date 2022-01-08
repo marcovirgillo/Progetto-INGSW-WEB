@@ -75,11 +75,11 @@ function DropdownSearchPanel(props) {
     return(
         <div className={getClassName(props.isActive)}>
             <ul className="search-list">
-                <p className="label">Consigliate</p>
+                <p className="label">Results</p>
                 {props.data.slice(0, 6).map((item, val) => (
                     <ul key={val} className="h-list-item">
                         <img src={item.logo} width={30}/>
-                        <Link style={{display:'flex', flexDirection:'row'}} to={`/crypto/${item.id}`} onClick={() => props.setDropdownActive(false)}>
+                        <Link style={{display:'flex', flexDirection:'row'}} to={`/crypto/${item.id}`} onClick={() => (props.setDropdownActive(false), this.forceUpdate)}>
                             <p>{item.name}</p>
                             <p className="ticker">{item.ticker.toUpperCase()}</p>
                         </Link>
@@ -142,6 +142,28 @@ export default function AppBar(props) {
         })
 
         setQueryedData(allCryptoCopy);
+    }
+
+    function SearchField(props) {
+        return (
+            <div className="app-bar-search-field" onClick={props.onClick}>
+                <img className="app-bar-search-icon" src={require("../../res/logos/search.png")} width={18} height={18}/>
+                <input className="app-bar-search" type="text" placeholder="Search..." onChange={(ev) => props.queryData(ev.target.value)} onFocus={() => setDropdownSearchActive(true)} onBlur={() => setDropdownSearchActive(false)}/>
+            </div>
+        );
+    }
+
+    function SearchFieldMobile(props) {
+        return (
+            <div className="app-bar-search-field-mobile">
+                <img className="app-bar-search-icon" src={require("../../res/logos/search.png")} width={18} height={18}/>
+                <input className="app-bar-search-mobile" type="text" placeholder="Search..." 
+                        onChange={(ev) => props.queryData(ev.target.value)} onFocus={() => setDropdownSearchActive(true)} onBlur={() => setDropdownSearchActive(false)}/>
+                <div className="spacer" />
+                <CloseRoundedIcon className="close-btn" sx={{color: 'white', fontSize: 32}} 
+                    onClick={() => {props.setSearchMobileOpen(false); props.setDropdownOpen(false)}}/>
+            </div>
+        );
     }
 
     return (

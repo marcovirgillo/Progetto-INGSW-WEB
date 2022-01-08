@@ -34,6 +34,17 @@
     padding: 10px 0px 10px 15px !important;
     font-weight: bold !important;
     font-size: 13px !important;
+    
+}
+
+.table-item-exchange-specific {
+    color: white !important;
+    text-align: left !important;
+    text-transform: capitalize !important;
+    padding: 30px 30px 30px 15px !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+    
 }
 
 .item-name-exchange {
@@ -64,5 +75,15 @@
 
 .trust_score {
     text-indent: 25px;
+}
+
+.image-coin {
+    font-weight: bold !important;
+    font-size: 15px !important;
+    display: flex;
+    margin: 0; 
+    padding: 0; 
+    flex-direction: row; 
+    align-items:'center'
 }
 
