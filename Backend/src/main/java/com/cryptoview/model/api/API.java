@@ -34,7 +34,7 @@ public class API {
 	}
 	
 	public String getNewsAPI(int number) {
-		return newsAPIPart1 + number + newsAPIPart2 + newsAPIKey[1];
+		return newsAPIPart1 + number + newsAPIPart2 + newsAPIKey[0];
 	}
 	
 	public String getTopAPI(int number) {
@@ -58,7 +58,7 @@ public class API {
 	}
 	
 	public String getNewsExchangesAPI() {
-		return newsExchangesAPI + newsAPIKey[1];
+		return newsExchangesAPI + newsAPIKey[0];
 	}
 	
 	public String getPopularNewsKey() {
