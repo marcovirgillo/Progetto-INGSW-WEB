@@ -2,7 +2,6 @@ import React, { Component, useState, useEffect } from 'react'
 import { TableBody, Table, TableCell, TableHead, TableRow, Icon } from '@mui/material';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
-import { CriptoData } from "./TestData.js"
 import "./Home.css"
 import { useInterval } from '../../components/Hooks.js';
 import { Link, Navigate  } from 'react-router-dom'

@@ -29,6 +29,10 @@ const ChartSection = () => {
         fetcher();
     }, []);
 
+    useEffect(() => {
+        fetcher();
+    }, [cryptoID]);
+
     //se cambia l'intervallo di tempo, fetcho i dati nuovi
     useEffect(() =>{
         fetcher();
@@ -80,11 +84,11 @@ const ChartSection = () => {
         
 
         caps.forEach((item) => {
-            market_caps.push(item[1].toFixed(2));
+            market_caps.push(item[1]);
         })
 
         vols.forEach((item) => {
-            volumes.push(item[1].toFixed(2));
+            volumes.push(item[1]);
         })
 
         setChartDatetime(times);
