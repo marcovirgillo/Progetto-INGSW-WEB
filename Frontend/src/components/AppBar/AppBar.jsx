@@ -92,9 +92,13 @@ function DropdownSearchPanel(props) {
 
 function SearchField(props) {
     return (
-        <div className="app-bar-search-field" onClick={props.onClick}>
+        <div className="app-bar-search-field">
             <img className="app-bar-search-icon" src={require("../../res/logos/search.png")} width={18} height={18}/>
-            <input className="app-bar-search" type="text" placeholder="Cerca.." onChange={(ev) => props.queryData(ev.target.value)}/>
+            <input className="app-bar-search" type="text" placeholder="Cerca.." 
+                onChange={(ev) => props.queryData(ev.target.value)}
+                onFocus={() => props.setDropdownActive(true)} 
+                onBlur={() => props.setDropdownActive(false)}
+            />
         </div>
     );
 }
@@ -104,10 +108,13 @@ function SearchFieldMobile(props) {
         <div className="app-bar-search-field-mobile">
             <img className="app-bar-search-icon" src={require("../../res/logos/search.png")} width={18} height={18}/>
             <input className="app-bar-search-mobile" type="text" placeholder="Cerca.." 
-                    onChange={(ev) => props.queryData(ev.target.value)} onClick={() => props.setDropdownOpen(!props.dropdownIsOpen)}/>
+                    onChange={(ev) => props.queryData(ev.target.value)} 
+                    onFocus={() => props.setDropdownActive(true)} 
+                    onBlur={() => props.setDropdownActive(false)}
+            />
             <div className="spacer" />
             <CloseRoundedIcon className="close-btn" sx={{color: 'white', fontSize: 32}} 
-                onClick={() => {props.setSearchMobileOpen(false); props.setDropdownOpen(false)}}/>
+                onClick={() => {props.setSearchMobileOpen(false); props.setDropdownActive(false)}}/>
         </div>
     );
 }
@@ -141,7 +148,7 @@ export default function AppBar(props) {
         <div className="app-bar">
             {props.isSearchFieldOpen && (
                 <SearchFieldMobile queryData={queryData} setSearchMobileOpen={props.setSearchMobileOpen} 
-                                    setDropdownOpen={setDropdownSearchActive} dropdownIsOpen={dropdownSearchActive}
+                                setDropdownActive={setDropdownSearchActive} dropdownIsOpen={dropdownSearchActive}
                 />
             )}
             {!props.isSearchFieldOpen && (
@@ -157,7 +164,7 @@ export default function AppBar(props) {
                     </Link>
                     </Icon>
 
-                    <SearchField queryData={queryData} onClick={() => setDropdownSearchActive(!dropdownSearchActive)}/>
+                    <SearchField queryData={queryData} setDropdownActive={setDropdownSearchActive}/>
 
                     <div className="spacer" />
                     <Icon className="search-icon" style={{display: 'none'}} onClick={() => {props.setSearchMobileOpen(true)}}>
@@ -185,7 +192,7 @@ export default function AppBar(props) {
                 </React.Fragment>
             )}
 
-            <DropdownSearchPanel data={queryedData} isActive={dropdownSearchActive} setDropdownActive={setDropdownSearchActive} />
+            <DropdownSearchPanel data={queryedData} isActive={dropdownSearchActive}/>
             
         </div>
     );
