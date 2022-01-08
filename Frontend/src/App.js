@@ -29,7 +29,8 @@ export default function App() {
             <div className="layout-main">
                 <SideBar setSideBarEnabled={setSideBarEnabled} sideBarClass={sideBarClass}/>
                 <div className="layout-content">
-                    <AppBar setSideBarEnabled={setSideBarEnabled} setSearchMobileOpen={setSearchMobileOpen} isSearchFieldOpen={searchMobileOpen} />
+                    <AppBar setSideBarEnabled={setSideBarEnabled} setSearchMobileOpen={setSearchMobileOpen} 
+                            isMobileOpen={searchMobileOpen} isSearchFieldOpen={searchMobileOpen} />
                     <div className="layout-content-main">
                         <AppRoutes /> 
                         <Footer />

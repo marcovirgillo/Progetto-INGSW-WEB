@@ -73,6 +73,13 @@ function DropdownSearchPanel(props) {
         return cName;
     }
 
+    const linkClicked = (ev) => {
+        console.log("clicked"); 
+
+        if(props.isMobileOpen) 
+            props.setMobileFieldOpen(false);
+    }
+
     return(
         <div className={getClassName(props.isActive)}>
             <ul className="search-list">
@@ -83,7 +90,8 @@ function DropdownSearchPanel(props) {
                         <Link to={`/crypto/${item.id}`} style={{display:'flex', flexDirection:'row'}}>
                             <p>{item.name}</p>
                             <p className="ticker">{item.ticker.toUpperCase()}</p>
-                        </Link>
+                            </Link>
+                        </div>
                     </ul>
                 ))}
             </ul>
@@ -196,7 +204,8 @@ export default function AppBar(props) {
                 </React.Fragment>
             )}
 
-            <DropdownSearchPanel data={queryedData} isActive={dropdownSearchActive} setDropdownActive={setDropdownSearchActive}/>
+            <DropdownSearchPanel data={queryedData} isActive={dropdownSearchActive} isMobileOpen={props.isMobileOpen}
+                                setDropdownActive={setDropdownSearchActive} setMobileFieldOpen={props.setSearchMobileOpen}/>
             
         </div>
     );

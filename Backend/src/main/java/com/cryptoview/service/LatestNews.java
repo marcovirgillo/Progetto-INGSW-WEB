@@ -11,12 +11,16 @@ import com.cryptoview.model.api.LatestNewsFetcher;
 public class LatestNews {
 	private ArrayList <News> latestCryptoNews;
 	private ArrayList <News> latestExchangesNews;
+	private ArrayList <News> popularNews;
+	private ArrayList <News> allLatestNews;
 	
 	private static LatestNews instance = null;
 	
 	private LatestNews() {
 		latestCryptoNews = new ArrayList<News>();
 		latestExchangesNews = new ArrayList<News>();
+		popularNews = new ArrayList<News>();
+		allLatestNews = new ArrayList<News>();
 	}
 	
 	public static LatestNews getInstance() {
@@ -66,6 +70,54 @@ public class LatestNews {
 		}
 	}
 	
+	public void fetchPopularNewsData() {
+		JSONArray popularNewsJSON = LatestNewsFetcher.getInstance().fetch("popular");
+
+		synchronized (this) {
+			popularNews.clear();
+			
+			for(int i = 0; i < popularNewsJSON.size(); ++i) {
+				JSONObject obj = (JSONObject) popularNewsJSON.get(i);
+
+				News news = new News();
+				news.setUrl((String) obj.get("url"));
+				news.setImageUrl((String) obj.get("urlToImage")) ;
+				news.setTitle((String) obj.get("title"));
+				news.setContent((String) obj.get("content"));
+				
+				String publishedAt = ((String) obj.get("publishedAt")).substring(0, 10);
+				news.setPublishedAt(publishedAt);
+				
+				popularNews.add(news);
+
+			}
+		}
+	}
+	
+	public void fetchAllLatestNewsData() {
+		JSONArray allLatestNewsJSON = LatestNewsFetcher.getInstance().fetch("all");
+
+		synchronized (this) {
+			allLatestNews.clear();
+			
+			for(int i = 0; i <  allLatestNewsJSON.size(); ++i) {
+				JSONObject obj = (JSONObject) allLatestNewsJSON.get(i);
+
+				News news = new News();
+				news.setUrl((String) obj.get("url"));
+				news.setImageUrl((String) obj.get("urlToImage")) ;
+				news.setTitle((String) obj.get("title"));
+				news.setContent((String) obj.get("content"));
+				
+				String publishedAt = ((String) obj.get("publishedAt")).substring(0, 10);
+				news.setPublishedAt(publishedAt);
+				
+				allLatestNews.add(news);
+
+			}
+		}
+	}
+	
 	public ArrayList<News> getLatestCryptoNews() {
 		return latestCryptoNews;
 	}
@@ -73,4 +125,12 @@ public class LatestNews {
 	public ArrayList<News> getLatestExchangesNews() {
 		return latestExchangesNews;
 	}
+	
+	public ArrayList<News> getPopularNews() {
+		return popularNews;
+	}
+	
+	public ArrayList<News> getAllLatestNews() {
+		return allLatestNews;
+	} 
 }

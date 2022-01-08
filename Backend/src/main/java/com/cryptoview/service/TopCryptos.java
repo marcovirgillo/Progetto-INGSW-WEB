@@ -159,5 +159,4 @@ public class TopCryptos {
 		Collections.shuffle(list);
 		return list;
 	}
-	
 }
