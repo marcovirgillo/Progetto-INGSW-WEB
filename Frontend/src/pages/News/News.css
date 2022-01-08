@@ -23,12 +23,13 @@
 
 .big-news-container {
     background-color: #414141;
-    width: 40%;
+    width: 45%;
     border-radius: 35px;
     padding: 0;
     margin: 0;
     padding: 10px;
     margin-left: 50px;
+    height: min-content;
 }
 
 .big-news-list {
@@ -183,15 +184,17 @@
     font-size: 14px;
 }
 
-
-
+.popular-label-and-search {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
 
 
 @media only screen and (max-width: 1215px) {
 
     .big-news-container {
-        max-height: 550px;
-        width: 55%;
+        width: 50%;
     }
 
     .three-side-news-container {
@@ -246,7 +249,7 @@
     .three-side-news-container {
         padding-top: 30px;
         width: 70%;
-        margin-left: 15%;
+        margin-left: 16%;
     }
 
     .side-news-title {
@@ -256,11 +259,7 @@
     .side-news-date {
         font-size: 12px;
     }
+
 }
 
 
-.popular-label-and-search {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 40px;
-}
