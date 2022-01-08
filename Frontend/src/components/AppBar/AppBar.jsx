@@ -75,11 +75,11 @@ function DropdownSearchPanel(props) {
     return(
         <div className={getClassName(props.isActive)}>
             <ul className="search-list">
-                <p className="label">Consigliate</p>
+                <p className="label">Results</p>
                 {props.data.slice(0, 6).map((item, val) => (
                     <ul key={val} className="h-list-item">
                         <img src={item.logo} width={30}/>
-                        <Link style={{display:'flex', flexDirection:'row'}} to={`/crypto/${item.id}`} onClick={() => props.setDropdownActive(false)}>
+                        <Link style={{display:'flex', flexDirection:'row'}} to={`/crypto/${item.id}`} onClick={() => (props.setDropdownActive(false), this.forceUpdate)}>
                             <p>{item.name}</p>
                             <p className="ticker">{item.ticker.toUpperCase()}</p>
                         </Link>
