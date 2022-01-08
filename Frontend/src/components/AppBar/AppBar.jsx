@@ -73,6 +73,13 @@ function DropdownSearchPanel(props) {
         return cName;
     }
 
+    const linkClicked = (ev) => {
+        console.log("clicked"); 
+
+        if(props.isMobileOpen) 
+            props.setMobileFieldOpen(false);
+    }
+
     return(
         <div className={getClassName(props.isActive)}>
             <ul className="search-list">
@@ -80,12 +87,14 @@ function DropdownSearchPanel(props) {
                 {props.data.slice(0, 6).map((item, val) => (
                     <ul key={val} className="h-list-item">
                         <img src={item.logo} width={30} alt="crypto logo"/>
-                        <Link style={{display:'flex', flexDirection:'row'}} 
-                                to={`/crypto/${item.id}`}  onClick={() => {props.setDropdownActive(false); props.setMobileFieldOpen(false)}}
-                        >
+                        <div onClick={(ev) => linkClicked(ev)}>
+                            <Link style={{display:'flex', flexDirection:'row'}} 
+                                to={`/crypto/${item.id}`} onClick={(ev) => linkClicked(ev)}
+                            >
                             <p>{item.name}</p>
                             <p className="ticker">{item.ticker.toUpperCase()}</p>
-                        </Link>
+                            </Link>
+                        </div>
                     </ul>
                 ))}
             </ul>
@@ -198,8 +207,8 @@ export default function AppBar(props) {
                 </React.Fragment>
             )}
 
-            <DropdownSearchPanel data={queryedData} isActive={dropdownSearchActive} 
-                                setDropdownActive={setDropdownSearchActive} setMobileFieldOpen={props.setMobileFieldOpen}/>
+            <DropdownSearchPanel data={queryedData} isActive={dropdownSearchActive} isMobileOpen={props.isMobileOpen}
+                                setDropdownActive={setDropdownSearchActive} setMobileFieldOpen={props.setSearchMobileOpen}/>
             
         </div>
     );
