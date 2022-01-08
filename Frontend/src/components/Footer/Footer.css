@@ -1,0 +1,24 @@
+.footer {
+    background-color: var(--bg-color-dark);
+}
+
+.footer-logo-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    max-width: 240px;
+    margin: 0 auto;
+    text-align: center; 
+    list-style: inside;
+}
+
+.footer-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    max-width: 200px;
+    margin: 0 auto;
+}

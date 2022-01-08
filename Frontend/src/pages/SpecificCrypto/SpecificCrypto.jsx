@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom'
 import { address } from './../../assets/globalVar.js';
 
 const SpecificCrypto = () => {
-    const [screenSize, setScreenSize] = useState(null);
+    const [screenSize, setScreenSize] = useState(window.innerWidth);
     const [cryptoData, setCryptoData] = useState([]);
     const [exchanges, setExchanges] = useState([]);
 
@@ -67,7 +67,7 @@ const SpecificCrypto = () => {
     useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
         window.addEventListener('resize', handleResize);
-        handleResize();
+        /* handleResize(); */
         
         return () => window.removeEventListener('resize', handleResize);
     });

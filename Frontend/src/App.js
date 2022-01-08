@@ -4,6 +4,7 @@ import './assets/main.css'
 import { BrowserRouter, Route } from 'react-router-dom';
 import AppRoutes from './components/AppRoutes';
 import AppBar from './components/AppBar/AppBar';
+import Footer from './components/Footer/Footer';
 import React, { useState, useEffect } from 'react';
 
 
@@ -31,6 +32,7 @@ export default function App() {
                     <AppBar setSideBarEnabled={setSideBarEnabled} setSearchMobileOpen={setSearchMobileOpen} isSearchFieldOpen={searchMobileOpen} />
                     <div className="layout-content-main">
                         <AppRoutes /> 
+                        <Footer />
                     </div>
                 </div>
             </div>
