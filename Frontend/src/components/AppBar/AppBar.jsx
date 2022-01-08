@@ -90,8 +90,7 @@ function DropdownSearchPanel(props) {
                         <Link to={`/crypto/${item.id}`} style={{display:'flex', flexDirection:'row'}}>
                             <p>{item.name}</p>
                             <p className="ticker">{item.ticker.toUpperCase()}</p>
-                            </Link>
-                        </div>
+                        </Link>
                     </ul>
                 ))}
             </ul>
