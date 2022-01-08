@@ -1,6 +1,6 @@
-import React, { Component, useEffect, useState, useRef } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import { Grid, Icon } from '@mui/material'
-import { topPerformers, WorstGainers, Stats } from './TestData'
+import { Link } from 'react-router-dom'
 import "./Home.css"
 import { address } from './../../assets/globalVar.js';
 
@@ -11,7 +11,7 @@ export default function GainersSection() {
 
     //Serve per fetchare da spring
     useEffect(() => {
-
+        console.log("QUA");
         fetch(`http://${address}:8080/topGainers`)
             .then(res => res.json())
             .then((result) => setTopPerformers(result),
@@ -71,9 +71,13 @@ export default function GainersSection() {
                             topPerformers.map((item, val) => (
                                 <ul key={val} className="list-item">
                                     <p className="list-number">{val+1}</p>
-                                    <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.logo} width={18} height={18}/> </Icon>
-                                    <p className="list-name">{item.name}</p>
-                                    <p className="list-ticker">{item.ticker.toUpperCase()}</p>
+                                    <Link to={`/crypto/${item.id}`} style={{display:'flex', flexDirection:'row', alignItems: 'center'}} >
+                                        <Icon sx={{width:18, height:18, fontSize:'1em'}}> 
+                                            <img src={item.logo} width={18} height={18}/> 
+                                        </Icon>
+                                        <p className="list-name">{item.name}</p>
+                                        <p className="list-ticker">{item.ticker.toUpperCase()}</p>
+                                    </Link>
                                     <div className="spacer"> </div>
                                     <p className="list-change-green">{change(item.change)}%</p>
                                 </ul>
@@ -93,13 +97,15 @@ export default function GainersSection() {
                         </ul>
                         {
                             worstPerformers.map((item, val) => (
-                                <ul key={val} className="list-item">
+                                <ul key={5 + val} className="list-item">
                                     <p className="list-number">{val+1}</p>
-                                    <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.logo} width={18} height={18}/> </Icon>
-                                    <p className="list-name">{item.name}</p>
-                                    <p className="list-ticker">{item.ticker.toUpperCase()}</p>
+                                    <Link to={`/crypto/${item.id}`} style={{display:'flex', flexDirection:'row', alignItems: 'center'}} >
+                                        <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.logo} width={18} height={18}/> </Icon>
+                                        <p className="list-name">{item.name}</p>
+                                        <p className="list-ticker">{item.ticker.toUpperCase()}</p>
+                                    </Link>
                                     <div className="spacer"> </div>
-                                    <p className="list-change-red">{change(item.change)}%</p> {/* item.change>0 ? "+".concat(String(item.change.toFixed(2))) : item.change.toFixed(2) */}
+                                    <p className="list-change-red">{change(item.change)}%</p>
                                 </ul>
                             ))
                         }
