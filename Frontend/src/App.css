@@ -55,6 +55,11 @@
     .layout-content-main {
         margin-left: 0px !important;
     }
+
+    .choose-crypto-div {
+        left: 20% !important;
+        width: 60% !important;
+    }
 }
 
 @media only screen and (max-width: 600px) {
@@ -67,9 +72,19 @@
     }
 
     .dropdown-search {
-        left: 15px !important;
+        left: 10px !important;
+        width: 92% !important;
     }
 
+    .choose-crypto-div {
+        top: 20% !important;
+        left: 5% !important;
+        width: 90% !important;
+    }
+
+    .choose-crypto-div .app-bar-search-field {
+        display: flex !important;
+    }
 }
 
 

@@ -5,6 +5,7 @@
     min-height: 100%;
     width: var(--side-bar-min-width);
     background-color: var(--bg-color-dark);
+    z-index: 600 !important;
 }
 
 ul {

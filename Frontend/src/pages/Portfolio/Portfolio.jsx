@@ -6,6 +6,7 @@ import "./../../App.css";
 import "./Portfolio.css";
 import plus_icon from "./../../res/logos/plus.png";
 import { address } from '../../assets/globalVar';
+import ChooseCrypto from './ChooseCrypto';
 
 const greenColor = "#46C95B";
 const redColor = "#E05757";
@@ -32,10 +33,9 @@ const Portfolio = () => {
     const [chartDatetime, setChartDatetime] = useState([]);
     const [portfolioInfo, setPortfolioInfo] = useState(PlaceholderInfo);
     const [portfolioChange, setPortfolioChange] = useState(PlaceholderBalanceChange);
-    const [authToken, setAuthToken] = useState("");
+    const [chooseCryptoPageActive, setChooseCryptoPageActive] = useState(false);
 
     let myheaders = {
-        "authToken": authToken,
         "timeStamp": chartInterval
     }
 
@@ -46,14 +46,14 @@ const Portfolio = () => {
         })
         .then((res) => res.json())
         .then((result) => processData(result),
-              (error) => console.log("error"));
+              (error) => console.log(error));
     }
 
     const fetcherInfo = () => {
         fetch(portfolioInfoUrl)
         .then((res) => res.json())
         .then((result) => setPortfolioInfo(result),
-              (error) => console.log("error"));
+              (error) => console.log(error));
     }
 
     useEffect(() => {
@@ -95,6 +95,14 @@ const Portfolio = () => {
         return (price >= 0 ? 'label-green' : 'label-red');
     }
 
+    function getCryptoDialogClass() {
+        let cName = "choose-crypto-div ";
+        if(chooseCryptoPageActive)
+            cName = cName + " div-active";
+
+        return cName;
+    }
+
     function isBtnActive(name) {
         return (name === chartType ? 'btn-active' : '');
     }
@@ -115,10 +123,10 @@ const Portfolio = () => {
         )
     }
 
-    const ButtonAddNewAsset = () => {
+    const ButtonAddNewAsset = (props) => {
         return (
             <div className="add-new-btn">
-                <ul className="inline-list">
+                <ul className="inline-list" onClick={() => props.setCryptoDialogOpen(true)}>
                     <img src={plus_icon} width={24} height={24} alt="icon"/>
                     <p className="white-label btn-label">Add New</p>
                 </ul>
@@ -169,12 +177,14 @@ const Portfolio = () => {
                 <ul className="assets-list">
                     <p className="white-label assets-label">My Assets</p>
                     <div className="h-spacer-assets" />
-                    <ButtonAddNewAsset />
+                    <ButtonAddNewAsset setCryptoDialogOpen={setChooseCryptoPageActive}/>
                 </ul>
                 <ul style={{display: 'flex', flexDirection: 'columns', padding: 0, margin: 0,
                             justifyContent: 'center', alignItems: 'flex-start'}}>
                     <PortfolioTable data={portfolioInfo.assets}/>
                 </ul>
+
+                <ChooseCrypto className={getCryptoDialogClass()} setDialogOpen={setChooseCryptoPageActive}/>
             </div>
         </div>
     )

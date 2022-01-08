@@ -81,7 +81,7 @@ function DropdownSearchPanel(props) {
                     <ul key={val} className="h-list-item">
                         <img src={item.logo} width={30} alt="crypto logo"/>
                         <Link style={{display:'flex', flexDirection:'row'}} 
-                                to={`/crypto/${item.id}`}  onClick={() => (props.setDropdownActive(false))}
+                                to={`/crypto/${item.id}`}  onClick={() => {props.setDropdownActive(false); props.setMobileFieldOpen(false)}}
                         >
                             <p>{item.name}</p>
                             <p className="ticker">{item.ticker.toUpperCase()}</p>
@@ -198,7 +198,8 @@ export default function AppBar(props) {
                 </React.Fragment>
             )}
 
-            <DropdownSearchPanel data={queryedData} isActive={dropdownSearchActive} setDropdownActive={setDropdownSearchActive}/>
+            <DropdownSearchPanel data={queryedData} isActive={dropdownSearchActive} 
+                                setDropdownActive={setDropdownSearchActive} setMobileFieldOpen={props.setMobileFieldOpen}/>
             
         </div>
     );

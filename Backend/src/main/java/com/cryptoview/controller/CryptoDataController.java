@@ -1,14 +1,13 @@
 package com.cryptoview.controller;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,17 +17,13 @@ import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.model.Exchanges;
 import com.cryptoview.model.News;
 import com.cryptoview.model.Stats;
-import com.cryptoview.model.api.TopCryptoFetcher;
-import com.cryptoview.persistence.dao.CryptoDaoJDBC;
 import com.cryptoview.persistence.dao.PortfolioDaoJDBC;
 import com.cryptoview.persistence.dao.TransactionDaoJDBC;
-import com.cryptoview.persistence.model.Crypto;
 import com.cryptoview.persistence.model.Portfolio;
 import com.cryptoview.persistence.model.Transaction;
 import com.cryptoview.service.LatestNews;
 import com.cryptoview.service.MarketStats;
 import com.cryptoview.service.PortfolioService;
-import com.cryptoview.service.PortfolioService.Pair;
 import com.cryptoview.service.TopCryptos;
 import com.cryptoview.service.TopExchanges;
 
@@ -64,6 +59,18 @@ public class CryptoDataController {
 	@GetMapping("/supportedCrypto")
 	private List<CryptoDetail> getSupportedCripto() {
 		return TopCryptos.getInstance().getAllSupportedCrypto();
+	}
+	
+	@GetMapping("/supportedCryptoSorted")
+	private List<CryptoDetail> getSupportedCriptoSorted() {
+		List <CryptoDetail> list = TopCryptos.getInstance().getAllSupportedCrypto();
+		Collections.sort(list, new Comparator<CryptoDetail>() {
+			public int compare(CryptoDetail o1, CryptoDetail o2) {
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
+		
+		return list;
 	}
 	
 	@GetMapping("/marketStats")
