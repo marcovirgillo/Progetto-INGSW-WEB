@@ -178,7 +178,7 @@ const SpecificCrypto = () => {
                                     <TableCell className="table-item">
                                         <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
                                             <img src= {getImageOfExchange(item.market.identifier)} width={24} height={24} style={{marginRight: 10}}/>
-                                            <a href={'www.google.com'} className="item-name"  >
+                                            <a href={item.trade_url} className="item-name"  >
                                                 <p>{item.market.name}</p>
                                             </a>
                                         </ul>
