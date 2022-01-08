@@ -1,9 +1,9 @@
-import React, { Component, useState, useEffect } from 'react'
-import { TableBody, Table, TableCell, TableHead, TableRow, Icon } from '@mui/material';
+import React, { useState, useEffect } from 'react'
+import { TableBody, Table, TableCell, TableHead, TableRow } from '@mui/material';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import { useInterval } from '../../components/Hooks.js';
-import { Link, Navigate  } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import "./Exchanges.css"
 import { address } from './../../assets/globalVar.js';
 
@@ -32,12 +32,11 @@ export default function ExchangesTable() {
     }
 
     const isArrowActive = (order, type) => {
-        if(itemActive == type) {
-            if(order == "DSC")
+        if(itemActive === type) {
+            if(order === "DSC")
                 return <ArrowDropUpRoundedIcon/>;
                 
-
-            return <ArrowDropDownRoundedIcon />;
+          return <ArrowDropDownRoundedIcon />;
         }
     }
 
