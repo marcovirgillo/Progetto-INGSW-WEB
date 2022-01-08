@@ -6,6 +6,7 @@ const Footer = () => {
 
     return (
         <div className='footer'>
+            <div style={{paddingTop:'20px'}} />
             <div className="footer-title">
                 <div className="footer-logo">
                     <div className="footer-logo-list">
@@ -14,6 +15,7 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
+            <div style={{paddingTop:'20px'}} />
             <div className="footer-pages">
                 <div className="footer-list-pages">
                     <Link to=""><span className="footer-pages-text" style={{cursor:'pointer'}}>Home</span></Link>

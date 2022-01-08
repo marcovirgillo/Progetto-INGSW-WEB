@@ -80,9 +80,7 @@ function DropdownSearchPanel(props) {
                 {props.data.slice(0, 6).map((item, val) => (
                     <ul key={val} className="h-list-item">
                         <img src={item.logo} width={30} alt="crypto logo"/>
-                        <Link style={{display:'flex', flexDirection:'row'}} 
-                                to={`/crypto/${item.id}`}  onClick={() => (props.setDropdownActive(false))}
-                        >
+                        <Link to={`/crypto/${item.id}`} style={{display:'flex', flexDirection:'row'}}>
                             <p>{item.name}</p>
                             <p className="ticker">{item.ticker.toUpperCase()}</p>
                         </Link>
@@ -101,7 +99,7 @@ function SearchField(props) {
             <input className="app-bar-search" type="text" placeholder="Search.." 
                 onChange={(ev) => props.queryData(ev.target.value)}
                 onFocus={() => props.setDropdownActive(true)} 
-                onBlur={() => props.setDropdownActive(false)}
+               onBlur={() => setTimeout(() => props.setDropdownActive(false), 100)}
             />
         </div>
     );
@@ -115,7 +113,7 @@ function SearchFieldMobile(props) {
             <input className="app-bar-search-mobile" type="text" placeholder="Search.." 
                     onChange={(ev) => props.queryData(ev.target.value)} 
                     onFocus={() => props.setDropdownActive(true)} 
-                    onBlur={() => props.setDropdownActive(false)}
+                    onBlur={() => setTimeout(() => props.setDropdownActive(false), 100)}
             />
             <div className="spacer" />
             <CloseRoundedIcon className="close-btn" sx={{color: 'white', fontSize: 32, cursor: 'pointer'}} 
