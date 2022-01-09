@@ -91,8 +91,15 @@ export default function ExchangesTable() {
         return require("../../res/logos/change.png");
     }
 
-    function changeColor(color) {
-        return 'table-item item-' + color + '-exchange';
+    function getTrustScoreClass(trust_score){
+        if(trust_score === "green")
+            return "trust-score-container-green";
+        if(trust_score === "yellow")
+            return "trust-score-container-yellow"
+        if(trust_score === "red")
+            return "trust-score-container-red";
+        
+        return "trust-score-container-yellow"
     }
 
     return (
@@ -141,7 +148,7 @@ export default function ExchangesTable() {
                                     </TableCell>
                                     <TableCell className="table-item-exchange-specific">
                                         <div className="trust-bar-exchange">
-                                            <div className={changeColor(item.trust_score)}> <div className="trust_score"> </div> </div>
+                                            <span className={getTrustScoreClass(item.trust_score)} style={{marginLeft:'35px'}}></span>
                                         </div>
                                     </TableCell>
                             </TableRow>
