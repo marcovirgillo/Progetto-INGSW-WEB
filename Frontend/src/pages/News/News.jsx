@@ -94,14 +94,16 @@ export default function News() {
  
     
     const containsText = (title, content, text) => {
-        if(title.includes(text) || content.includes(text))
+        let titleLowerCase = title.toLowerCase();
+        let contentLowerCase = content.toLowerCase();
+        if(titleLowerCase.includes(text) || contentLowerCase.includes(text))
             return true;
         return false;
     }
 
     const getSearchFieldContent = (value) => {
         let trimmedValue = value.trim();
-        setSearchFieldContent(trimmedValue);
+        setSearchFieldContent(trimmedValue.toLowerCase());
     }
 
     const [searchFieldContent, setSearchFieldContent] = useState("");
