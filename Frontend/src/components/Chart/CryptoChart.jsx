@@ -41,7 +41,7 @@ export default function CryptoChart(props) {
                 formatter: (value) => format(value),
             },
         },
-        grid: {    // you can either change hear to disable all grids
+        grid: {  
             xaxis: {
               lines: {
                 show: false  //or just here to disable only x axis grids

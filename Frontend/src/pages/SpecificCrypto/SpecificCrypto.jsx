@@ -10,15 +10,13 @@ import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import { address } from './../../assets/globalVar.js';
 
-let cryptoMarkets = [];
-
 const SpecificCrypto = () => {
     const [screenSize, setScreenSize] = useState(window.innerWidth);
     const [cryptoData, setCryptoData] = useState([]);
     const [exchanges, setExchanges] = useState([]);
     const [markets, setMarkets] = useState([]);
 
-    const [order, setOrder] = useState("ASC");
+    const [order, setOrder] = useState("DSC");
     const [itemActive, setItemActive] = useState(null);
 
     const sorting = (col) => {
@@ -38,6 +36,23 @@ const SpecificCrypto = () => {
         }
     }
 
+    const sortingVolume = (col,id) =>{
+        if(order === "ASC"){
+            const sorted = [...markets].sort((a,b) => 
+                a[col][id] > b[col][id] ? 1 : -1     
+            );
+            setMarkets(sorted)
+            setOrder("DSC")
+        }
+        if(order === "DSC"){
+            const sorted = [...markets].sort((a,b) => 
+                a[col][id] < b[col][id] ? 1 : -1     
+            );
+            setMarkets(sorted)
+            setOrder("ASC")
+        }
+    }
+
     const location = useLocation()
     const cryptoID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
 
@@ -51,7 +66,6 @@ const SpecificCrypto = () => {
     function setData(data){
         setCryptoData(data);
         setMarkets(data.tickers);
-        /* console.log(cryptoMarkets) */
     }
 
     const exchangesFetcher = () => {
@@ -157,6 +171,56 @@ const SpecificCrypto = () => {
         return {fontSize:'13px', marginRight:'55px', fontWeight:'300'};
     }
 
+    const MarketsSection = () => {
+        return (
+            <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                <Table className="table" sx={{maxWidth: '93%', marginTop: '10px'}}>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell className="table-attribute">Pair</TableCell>
+                            <TableCell className="table-attribute">Market</TableCell>
+                            <TableCell className="table-attribute" onClick={() => {sorting("last"); setItemActive("last")}} style={{cursor: 'pointer'}}>
+                                <TableCellArrow content="Last price" arrowChecker="last" />
+                            </TableCell>
+                            <TableCell className="table-attribute" onClick={() => {sortingVolume("converted_volume","usd"); setItemActive("volume")}} style={{cursor: 'pointer'}}>
+                                <TableCellArrow content="Volume" arrowChecker="volume" />
+                            </TableCell>
+                            <TableCell className="table-attribute">Trust score</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {   
+                        fetchedData() && (
+                            ((markets).slice(0,20)).map((item, val) => (
+                            <TableRow key={val}>
+                                <TableCell className="table-item">
+                                    {renderItemTicker(item.base, "base", item)}/{renderItemTicker(item.target, "target", item)}
+                                </TableCell>
+                                <TableCell className="table-item">
+                                    <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
+                                        <img src= {getImageOfExchange(item.market.identifier)} width={24} height={24} style={{marginRight: 10}}/>
+                                        <a href={item.trade_url} className="item-name"  >
+                                            <p>{item.market.name}</p>
+                                        </a>
+                                    </ul>
+                                </TableCell>
+                                <TableCell className="table-item">{getFormattedPrice(item.converted_last.usd)}</TableCell>
+                                <TableCell className="table-item">{getFormattedPrice(item.converted_volume.usd)}</TableCell>
+                                <TableCell className="table-item">
+                                <div>
+                                    <span className={getTrustScoreClass(item.trust_score)} style={{marginLeft:'35px'}}></span>
+                                </div>
+                                </TableCell>
+                            </TableRow>
+                            ))
+                        )
+                    }
+                    </TableBody>
+                </Table>
+            </ul>
+        )
+    }
+
     return (    
         <div className="specific-crypto">
             <div className="paper-grey">
@@ -182,53 +246,8 @@ const SpecificCrypto = () => {
                 )}
                 <div style={{paddingTop:'20px'}}/>
                 <p className="cripto-title">{cryptoData.name} Markets</p>
-                <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    <Table className="table" sx={{maxWidth: '93%', marginTop: '10px'}}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell className="table-attribute">Pair</TableCell>
-                                <TableCell className="table-attribute">Market</TableCell>
-                                <TableCell className="table-attribute" onClick={() => {sorting("last"); setItemActive("last")}} style={{cursor: 'pointer'}}>
-                                    <TableCellArrow content="Last price" arrowChecker="last" />
-                                </TableCell>
-                                <TableCell className="table-attribute" onClick={() => {sorting("volume"); setItemActive("volume")}} style={{cursor: 'pointer'}}>
-                                    <TableCellArrow content="Volume" arrowChecker="volume" />
-                                </TableCell>
-                                <TableCell className="table-attribute">Trust score</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {   
-                            fetchedData() && (
-                                ((markets).slice(0,20)).map((item, val) => (
-                                <TableRow key={val}>
-                                    <TableCell className="table-item">
-                                        {renderItemTicker(item.base, "base", item)}/{renderItemTicker(item.target, "target", item)}
-                                    </TableCell>
-                                    <TableCell className="table-item">
-                                        <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
-                                            <img src= {getImageOfExchange(item.market.identifier)} width={24} height={24} style={{marginRight: 10}}/>
-                                            <a href={item.trade_url} className="item-name"  >
-                                                <p>{item.market.name}</p>
-                                            </a>
-                                        </ul>
-                                    </TableCell>
-                                    <TableCell className="table-item">{getFormattedPrice(item.converted_last.usd)}</TableCell>
-                                    <TableCell className="table-item">{getFormattedPrice(item.converted_volume.usd)}</TableCell>
-                                    <TableCell className="table-item">
-                                    <div>
-                                        <span className={getTrustScoreClass(item.trust_score)} style={{marginLeft:'35px'}}></span>
-                                    </div>
-                                    </TableCell>
-                                </TableRow>
-                                ))
-                            )
-                        }
-                        </TableBody>
-                    </Table>
-                </ul>
+                <MarketsSection />
             </div>
-            
         </div>
     );
 }
