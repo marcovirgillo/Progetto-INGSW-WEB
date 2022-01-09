@@ -22,8 +22,8 @@ public class API {
 	private final String criptoHistoryAPIPart1 = "https://api.coingecko.com/api/v3/coins/";
 	private final String cryptoHistoryAPIPart2 = "/market_chart?vs_currency=usd&days=";
 	
-	private final String popularNewsKey = "https://newsapi.org/v2/everything?domains=cointelegraph.com,coindesk.com&pageSize=4&sortBy=popularity&apiKey=5b515b57ab5945328c3e6b2a0456aded";
-	private final String allLatestNewsKey = "https://newsapi.org/v2/everything?domains=cointelegraph.com,coindesk.com&pageSize=100&sortBy=publishedAt&apiKey=5b515b57ab5945328c3e6b2a0456aded";		
+	private final String popularNewsKey = "https://newsapi.org/v2/everything?domains=cointelegraph.com,coindesk.com&pageSize=4&sortBy=popularity&apiKey=";
+	private final String allLatestNewsKey = "https://newsapi.org/v2/everything?domains=cointelegraph.com,coindesk.com&pageSize=100&sortBy=publishedAt&apiKey=";		
 	
 	private API() {}
 	
@@ -62,10 +62,10 @@ public class API {
 	}
 	
 	public String getPopularNewsKey() {
-		return popularNewsKey;
+		return popularNewsKey + newsAPIKey[1];
 	}
 	
 	public String getAllNewsKey() {
-		return allLatestNewsKey;
+		return allLatestNewsKey + newsAPIKey[1];
 	}
 }
