@@ -73,9 +73,7 @@ function DropdownSearchPanel(props) {
         return cName;
     }
 
-    const linkClicked = (ev) => {
-        console.log("clicked"); 
-
+    const linkClicked = () => {
         if(props.isMobileOpen) 
             props.setMobileFieldOpen(false);
     }
@@ -87,7 +85,8 @@ function DropdownSearchPanel(props) {
                 {props.data.slice(0, 6).map((item, val) => (
                     <ul key={val} className="h-list-item">
                         <img src={item.logo} width={30} alt="crypto logo"/>
-                        <Link to={`/crypto/${item.id}`} style={{display:'flex', flexDirection:'row'}}>
+                        <Link to={`/crypto/${item.id}`} style={{display:'flex', flexDirection:'row'}} 
+                              onClick={linkClicked}>
                             <p>{item.name}</p>
                             <p className="ticker">{item.ticker.toUpperCase()}</p>
                         </Link>
@@ -106,7 +105,7 @@ function SearchField(props) {
             <input className="app-bar-search" type="text" placeholder="Search.." 
                 onChange={(ev) => props.queryData(ev.target.value)}
                 onFocus={() => props.setDropdownActive(true)} 
-               onBlur={() => setTimeout(() => props.setDropdownActive(false), 100)}
+                onBlur={() => setTimeout(() => props.setDropdownActive(false), 100)}
             />
         </div>
     );

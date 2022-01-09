@@ -128,8 +128,10 @@ public class TopCryptos {
 		if(cryptosList.isEmpty())
 			return Arrays.asList();
 		
-		List <CryptoDetail> tmp = cryptosList.subList(cryptosList.size() - 3, cryptosList.size());
-		Collections.reverse(tmp);
+		List <CryptoDetail> tmp = new ArrayList<>();
+		for(int i = cryptosList.size() - 1; i >= cryptosList.size() - 3; --i)
+			tmp.add(cryptosList.get(i));
+		
 		return tmp;
 	}
 	
