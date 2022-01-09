@@ -18,12 +18,14 @@ const Footer = () => {
             <div style={{paddingTop:'20px'}} />
             <div className="footer-pages">
                 <div className="footer-list-pages">
-                    <Link to=""><span className="footer-pages-text" style={{cursor:'pointer'}}>Home</span></Link>
-                    <Link to="/portfolio"><span className="footer-pages-text" style={{cursor:'pointer'}}>Portfolio</span></Link>
-                    <Link to="/dashboard"><span className="footer-pages-text" style={{cursor:'pointer'}}>My Dashboard</span></Link>
-                    <Link to="/news"><span className="footer-pages-text" style={{cursor:'pointer'}}>News</span></Link>
-                    <Link to="/exchanges"><span className="footer-pages-text" style={{cursor:'pointer'}}>Exchanges</span></Link>
-                    <Link to="/aboutus"><span className="footer-pages-text" style={{cursor:'pointer'}}>About us</span></Link>
+                    <span className="footer-list-pages" style={{marginLeft:'20px', marginRight:'20px'}}>
+                        <Link to=""><span className="footer-pages-text" style={{cursor:'pointer'}}>Home</span></Link>
+                        <Link to="/portfolio"><span className="footer-pages-text" style={{cursor:'pointer'}}>Portfolio</span></Link>
+                        <Link to="/dashboard"><span className="footer-pages-text" style={{cursor:'pointer'}}>My Dashboard</span></Link>
+                        <Link to="/news"><span className="footer-pages-text" style={{cursor:'pointer'}}>News</span></Link>
+                        <Link to="/exchanges"><span className="footer-pages-text" style={{cursor:'pointer'}}>Exchanges</span></Link>
+                        <Link to="/aboutus"><span className="footer-pages-text" style={{cursor:'pointer'}}>About us</span></Link>
+                    </span>
                 </div>
             </div>
             <div style={{paddingTop:'20px'}} />
