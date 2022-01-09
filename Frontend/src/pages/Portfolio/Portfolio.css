@@ -274,8 +274,7 @@
 
 .portfolio .choose-crypto-div {
     width: 30%;
-    height: 400px;
-    top: 25%;
+    top: 20%;
     left: 42%;
     background-color: var(--bg-color-dark);
     border-radius: 12px;
@@ -286,7 +285,7 @@
 }
 
 .portfolio .select-list {
-    margin: 10px 18px 0px 18px;
+    margin: 10px 18px 0px 30px;
 }
 
 .portfolio .search-list {
@@ -294,7 +293,15 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 80%;
+    overflow-y: scroll;
+    height: 360px;
+}
+
+.portfolio .crypto-list {
+    margin-top: 10px;
+    width: 92%;
+    align-items: flex-start;
+    cursor: pointer;
 }
 
 .portfolio .app-bar-search-field {
@@ -304,14 +311,6 @@
 
 .portfolio .app-bar-search {
     width: 100%;
-}
-
-.portfolio .crypto-list {
-    margin-top: 10px;
-    height: 100%;
-    width: 92%;
-    overflow-y: scroll;
-    align-items: flex-start;
 }
 
 .portfolio .crypto-list-item {
@@ -324,6 +323,7 @@
     align-items: center;
     flex: 1 0 0;
     width: 93%;
+    max-height: 52px;
     border-radius: 10px;
 }
 
@@ -343,5 +343,149 @@
 .portfolio .div-active {
     transform: scale(1);
     transition: transform 0.3s ease 0s;
-    backdrop-filter: blur(200px) !important;
 }
+
+.transaction-div-list .btn-container {
+    width: 90%;
+    justify-content: space-around;
+}
+
+.transactions-btn-container p {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.portfolio .transaction-item {
+    margin-top: 20px;
+    border: 1px solid var(--light-gray-color);
+    width: 85%;
+}
+
+.portfolio .transaction-item:hover {
+    background-color: transparent !important;
+}
+
+.portfolio .field-container {
+    padding: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 88%;
+}
+
+.field {
+    width: 100%;
+}
+
+input {
+    width: 90%;
+}
+
+.portfolio .field {    
+    padding: 0px;
+}
+
+.field p {
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: white;
+}
+
+.field input[type=number] {
+    border-radius: 10px;
+    border: 1px solid var(--bg-color-dark);
+    padding: 12px 8px 12px 8px;
+    background-color: var(--bg-color-gray);
+    color: white;
+}
+
+.field input[type=number]:hover {
+    border: 1px solid black !important;
+}
+
+.field .dollar-symbol {
+    color: white;
+    position: absolute;
+    left: 10px;
+    bottom: 14px;
+    font-size: 0.9em;
+}
+
+.portfolio .price-field {
+    position: relative;
+} 
+
+.price-field input[type=number] {
+    padding-left: 25px;
+    width: 90%;
+}
+
+.portfolio .picker-ul {
+    padding: 0;
+    margin-left: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.portfolio .transaction-div-list {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.MuiFormControl-root {
+    background-color: var(--bg-color-gray) !important;
+    border-radius: 10px !important;
+    border: none !important;
+}
+
+.MuiOutlinedInput-input {
+    padding: 11px 0px 8px 10px !important;
+}
+
+.total-label {
+    color: var(--light-gray-color);
+    margin: 0px;
+    margin-left: 40px;
+    margin-top: 20px;
+}
+
+.total-dollar {
+    margin: 10px 0px 0px 40px;
+    color: white;
+    font-weight: 600px;
+    font-size: 1.5em;
+}
+
+.add-transaction-btn {
+    width: 88%;
+    background: #1C91C6;
+    border-radius: 10px;
+    padding: 1px 0px 1px 0px;
+    margin: 15px 0px 30px 0px;
+    cursor: pointer;
+}
+
+.add-transaction-btn:hover {
+    background: #187ead;
+}
+
+.add-transaction-btn p {
+    text-align: center;
+    color: white;
+    font-weight: 600;
+}
+
+.portfolio .btn-ul {
+    width: 100%;
+    padding: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+

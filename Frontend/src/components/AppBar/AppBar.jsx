@@ -164,7 +164,7 @@ export default function AppBar(props) {
             {!props.isSearchFieldOpen && (
                 <React.Fragment>
                     <Icon className="menu-button" 
-                        sx={{marginLeft: 2, marginTop: '-8px', color: 'white', display: 'none'}}
+                        sx={{marginLeft: 2, marginTop: '-8px', color: 'white', display: 'none', cursor: 'pointer'}}
                         onClick={() => {props.setSideBarEnabled(true)}} > 
                         <MenuRoundedIcon style={{fontSize:32}} /> 
                     </Icon>

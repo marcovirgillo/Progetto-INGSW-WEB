@@ -170,6 +170,7 @@ const Portfolio = () => {
                         height="120%"
                         data={chartData} 
                         timestamps={chartDatetime} 
+                        showYlines={true}
                     />
                     )}
                     { chartType === 'chart' && (<ChartButtons className="chart-btns-mobile"/>) }
