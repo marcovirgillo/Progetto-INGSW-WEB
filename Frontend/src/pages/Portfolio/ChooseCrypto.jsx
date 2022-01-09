@@ -98,7 +98,7 @@ export default function ChooseCrypto(props) {
 
     const closeTransactionPanel = () => {
         props.setDialogOpen(false);
-        setTransactionPanelActive(false);
+        setTimeout(() => setTransactionPanelActive(false), 100);
     }
 
 

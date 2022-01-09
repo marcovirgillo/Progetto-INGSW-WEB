@@ -150,6 +150,7 @@ const ChartSection = () => {
                 data={chartData} 
                 timestamps={chartDatetime} 
                 color="#32C0FF"
+                showYlines={false}
             />  
             <ChartButtons className="chart-btns-mobile"/>
         </div>
