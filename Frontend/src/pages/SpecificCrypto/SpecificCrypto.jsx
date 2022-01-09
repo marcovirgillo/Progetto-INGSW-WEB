@@ -14,26 +14,44 @@ const SpecificCrypto = () => {
     const [screenSize, setScreenSize] = useState(window.innerWidth);
     const [cryptoData, setCryptoData] = useState([]);
     const [exchanges, setExchanges] = useState([]);
+    const [markets, setMarkets] = useState([]);
 
-    const [order, setOrder] = useState("ASC");
+    const [order, setOrder] = useState("DSC");
     const [itemActive, setItemActive] = useState(null);
 
-/*     const sorting = (col) => {
+    const sorting = (col) => {
         if(order === "ASC"){
-            const sorted = [...cryptoMarkets].sort((a,b) => 
+            const sorted = [...markets].sort((a,b) => 
                 a[col] > b[col] ? 1 : -1     
             );
-            setCryptoMarkets(sorted)
+            setMarkets(sorted)
             setOrder("DSC")
         }
         if(order === "DSC"){
-            const sorted = [...cryptoMarkets].sort((a,b) => 
+            const sorted = [...markets].sort((a,b) => 
                 a[col] < b[col] ? 1 : -1     
             );
-            setCryptoMarkets(sorted)
+            setMarkets(sorted)
             setOrder("ASC")
         }
-    } */
+    }
+
+    const sortingVolume = (col,id) =>{
+        if(order === "ASC"){
+            const sorted = [...markets].sort((a,b) => 
+                a[col][id] > b[col][id] ? 1 : -1     
+            );
+            setMarkets(sorted)
+            setOrder("DSC")
+        }
+        if(order === "DSC"){
+            const sorted = [...markets].sort((a,b) => 
+                a[col][id] < b[col][id] ? 1 : -1     
+            );
+            setMarkets(sorted)
+            setOrder("ASC")
+        }
+    }
 
     const location = useLocation()
     const cryptoID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
@@ -41,8 +59,13 @@ const SpecificCrypto = () => {
     const fetcher = () => {
         fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}`)
         .then((res) => res.json())
-        .then((result) => setCryptoData(result),
+        .then((result) => setData(result)/* setCryptoData(result) */, 
         (error) => console.log("Error fetching crypto"));
+    }
+
+    function setData(data){
+        setCryptoData(data);
+        setMarkets(data.tickers);
     }
 
     const exchangesFetcher = () => {
@@ -102,11 +125,17 @@ const SpecificCrypto = () => {
             return "$" + price;
     }
 
-    function renderItemTicker(market){
+    function renderItemTicker(market, base, item){
         if(market == '0XC02AAA39B223FE8D0A0E5C4F27EAD9083C756CC2')
             return  'WETH';
         if(market.startsWith("0X"))
             return cryptoData.symbol.toUpperCase();
+        if(market.length > 20){
+            if(base === "base" && item.coin_id != undefined)
+                return item.coin_id;
+            if(base === "target" && item.target_coin_id != undefined)
+                return item.target_coin_id;
+        }
         return market;
     }
 
@@ -130,7 +159,69 @@ const SpecificCrypto = () => {
         return "trust-score-container-yellow"
     }
 
-    return (
+    function getDescription(desc){
+        let tmp = document.createElement("DIV");
+        tmp.innerHTML = desc;
+        return tmp.textContent || tmp.innerText || "";
+    }
+
+    function descriptionStyle(){
+        if(screenSize>600)
+            return {fontSize:'15px', marginRight:'55px', fontWeight:'300'};
+        return {fontSize:'13px', marginRight:'55px', fontWeight:'300'};
+    }
+
+    const MarketsSection = () => {
+        return (
+            <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                <Table className="table" sx={{maxWidth: '93%', marginTop: '10px'}}>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell className="table-attribute">Pair</TableCell>
+                            <TableCell className="table-attribute">Market</TableCell>
+                            <TableCell className="table-attribute" onClick={() => {sorting("last"); setItemActive("last")}} style={{cursor: 'pointer'}}>
+                                <TableCellArrow content="Last price" arrowChecker="last" />
+                            </TableCell>
+                            <TableCell className="table-attribute" onClick={() => {sortingVolume("converted_volume","usd"); setItemActive("volume")}} style={{cursor: 'pointer'}}>
+                                <TableCellArrow content="Volume" arrowChecker="volume" />
+                            </TableCell>
+                            <TableCell className="table-attribute">Trust score</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {   
+                        fetchedData() && (
+                            ((markets).slice(0,20)).map((item, val) => (
+                            <TableRow key={val}>
+                                <TableCell className="table-item">
+                                    {renderItemTicker(item.base, "base", item)}/{renderItemTicker(item.target, "target", item)}
+                                </TableCell>
+                                <TableCell className="table-item">
+                                    <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
+                                        <img src= {getImageOfExchange(item.market.identifier)} width={24} height={24} style={{marginRight: 10}}/>
+                                        <a href={item.trade_url} className="item-name"  >
+                                            <p>{item.market.name}</p>
+                                        </a>
+                                    </ul>
+                                </TableCell>
+                                <TableCell className="table-item">{getFormattedPrice(item.converted_last.usd)}</TableCell>
+                                <TableCell className="table-item">{getFormattedPrice(item.converted_volume.usd)}</TableCell>
+                                <TableCell className="table-item">
+                                <div>
+                                    <span className={getTrustScoreClass(item.trust_score)} style={{marginLeft:'35px'}}></span>
+                                </div>
+                                </TableCell>
+                            </TableRow>
+                            ))
+                        )
+                    }
+                    </TableBody>
+                </Table>
+            </ul>
+        )
+    }
+
+    return (    
         <div className="specific-crypto">
             <div className="paper-grey">
                 <div style={{paddingTop:'20px'}}/>
@@ -148,56 +239,15 @@ const SpecificCrypto = () => {
                         <StatisticsSection data={cryptoData} />
                     )
                 } 
+                <div style={{paddingTop:'20px'}}/>
+                <p className="cripto-title">About {cryptoData.name}</p>
+                {fetchedData() && (
+                    <p className="cripto-title" style={descriptionStyle()}>{getDescription(cryptoData.description.en)}</p>
+                )}
+                <div style={{paddingTop:'20px'}}/>
                 <p className="cripto-title">{cryptoData.name} Markets</p>
-                <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    <Table className="table" sx={{maxWidth: '93%', marginTop: '10px'}}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell className="table-attribute">Pair</TableCell>
-                                <TableCell className="table-attribute">Market</TableCell>
-                                <TableCell className="table-attribute" /* onClick={() => {sorting("price"); setItemActive("price")}} */ style={{cursor: 'pointer'}}>
-                                    <TableCellArrow content="Last price" arrowChecker="price" />
-                                </TableCell>
-                                <TableCell className="table-attribute" /* onClick={() => {sorting("price"); setItemActive("price")}} */ style={{cursor: 'pointer'}}>
-                                    <TableCellArrow content="Volume" arrowChecker="volume" />
-                                </TableCell>
-                                <TableCell className="table-attribute" /* onClick={() => {sorting("price"); setItemActive("price")}} */ style={{cursor: 'pointer', width:'15%'}}>
-                                    <TableCellArrow content="Trust score" arrowChecker="trust score" />
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {   
-                            fetchedData() && (
-                                ((cryptoData.tickers).slice(0,20)).map((item, val) => (
-                                <TableRow key={val}>
-                                    <TableCell className="table-item">
-                                        {renderItemTicker(item.base)}/{renderItemTicker(item.target)}
-                                    </TableCell>
-                                    <TableCell className="table-item">
-                                        <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
-                                            <img src= {getImageOfExchange(item.market.identifier)} width={24} height={24} style={{marginRight: 10}}/>
-                                            <a href={item.trade_url} className="item-name"  >
-                                                <p>{item.market.name}</p>
-                                            </a>
-                                        </ul>
-                                    </TableCell>
-                                    <TableCell className="table-item">{getFormattedPrice(item.converted_last.usd)}</TableCell>
-                                    <TableCell className="table-item">{getFormattedPrice(item.converted_volume.usd)}</TableCell>
-                                    <TableCell className="table-item">
-                                    <div>
-                                        <span className={getTrustScoreClass(item.trust_score)} style={{marginLeft:'35px'}}></span>
-                                    </div>
-                                    </TableCell>
-                                </TableRow>
-                                ))
-                            )
-                        }
-                        </TableBody>
-                    </Table>
-                </ul>
+                <MarketsSection />
             </div>
-            
         </div>
     );
 }

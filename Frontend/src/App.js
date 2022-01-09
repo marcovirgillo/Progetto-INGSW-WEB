@@ -27,7 +27,7 @@ export default function App() {
     return (
         <BrowserRouter>
             <div className="layout-main">
-                <SideBar setSideBarEnabled={setSideBarEnabled} sideBarClass={sideBarClass}/>
+                <SideBar sideBarEnabled={sideBarEnabled} setSideBarEnabled={setSideBarEnabled} sideBarClass={sideBarClass}/>
                 <div className="layout-content">
                     <AppBar setSideBarEnabled={setSideBarEnabled} setSearchMobileOpen={setSearchMobileOpen} 
                             isMobileOpen={searchMobileOpen} isSearchFieldOpen={searchMobileOpen} />

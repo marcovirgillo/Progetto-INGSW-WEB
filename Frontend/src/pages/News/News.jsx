@@ -3,7 +3,6 @@ import "./News.css"
 import { Grid } from '@mui/material'
 import { address } from './../../assets/globalVar.js';
 
-const interval_fetch = 1000 * 120; //60 secondi
 
 const BigNewsBox = (props) => {
     return (
@@ -56,9 +55,9 @@ const StandardNewsBox = (props) => {
 
 const SearchField = (props) => {
     return (
-        <div className="app-bar-search-field">
-            <img className="app-bar-search-icon" src={require("../../res/logos/search.png")} width={18} height={18}/>
-            <input className="app-bar-search" type="text" placeholder="Cerca.." onChange={(ev) => props.getSearchFieldContent(ev.target.value)}/>
+        <div className="news-search-field">
+            <img className="news-search-icon" src={require("../../res/logos/search.png")} width={18} height={18}/>
+            <input className="news-search" type="text" placeholder="Cerca.." onChange={(ev) => props.getSearchFieldContent(ev.target.value)}/>
         </div>
     );
 }
@@ -109,70 +108,74 @@ export default function News() {
 
     return (
         <div className='news-page'>
-            <h4 className='news-label'> Popular News</h4>
+            
             <div className='paper-grey-news-top'>
-               
-               {/* Single big news*/}
-               {
-                    popularNewsData.map((item, index) => (
-                        (index == 0) && (<BigNewsBox
+                <h4 className='news-label'> Popular News</h4>
 
-                            key = {index}
-                            imagePath = {item.imageUrl}
-                            title = {item.title}
-                            content = {item.content}
-                            publishedAt = {item.publishedAt}
-                            url = {item.url}
-
-                        />)
-                    ))
-               }
-
-
-               
-              {/* Three side news*/}
-              <div className='three-side-news-container'>
+                <div className='container-news-top'>
+                    {/* Single big news*/}
                     {
                         popularNewsData.map((item, index) => (
-                            (index > 0) && (<SideNewsBox
+                            (index == 0) && (<BigNewsBox
+
                                 key = {index}
-                                title = {item.title}
                                 imagePath = {item.imageUrl}
+                                title = {item.title}
+                                content = {item.content}
                                 publishedAt = {item.publishedAt}
                                 url = {item.url}
+
                             />)
                         ))
                     }
+
+
+                
+                    {/* Three side news*/}
+                    <div className='three-side-news-container'>
+                        {
+                            popularNewsData.map((item, index) => (
+                                (index > 0) && (<SideNewsBox
+                                    key = {index}
+                                    title = {item.title}
+                                    imagePath = {item.imageUrl}
+                                    publishedAt = {item.publishedAt}
+                                    url = {item.url}
+                                />)
+                            ))
+                        }
+                    </div>
                 </div>
 
             </div>
 
 
             
-            <div className = 'popular-label-and-search'>
-                <h4 className='news-label'> Latest News</h4>
-                <SearchField 
-                    getSearchFieldContent = {getSearchFieldContent}
-                />
-            </div>
+               
+            <SearchField 
+                getSearchFieldContent = {getSearchFieldContent}
+            />
 
           
 
             {/*  Standard news */}
-            <Grid container className='paper-grey-news-bottom' columnSpacing={4}>  
-                {
-                    latestNewsData.map((item, index) => (
-                        (containsText(item.title, item.content, searchFieldContent)) && <StandardNewsBox
-                            key = {index}
-                            title = {item.title}
-                            imagePath = {item.imageUrl}
-                            content = {item.content}
-                            publishedAt = {item.publishedAt}
-                            url = {item.url}
-                        />
-                    ))
-                }  
-            </Grid>  
+            <div className='paper-grey-news-bottom'>
+                <h4 className='news-label'> Latest News</h4>
+                <Grid container className='container-news-bottom' columnSpacing={4}>  
+                    {
+                        latestNewsData.map((item, index) => (
+                            (containsText(item.title, item.content, searchFieldContent)) && <StandardNewsBox
+                                key = {index}
+                                title = {item.title}
+                                imagePath = {item.imageUrl}
+                                content = {item.content}
+                                publishedAt = {item.publishedAt}
+                                url = {item.url}
+                            />
+                        ))
+                    }  
+                </Grid>  
+            </div>
         
         </div>
     );

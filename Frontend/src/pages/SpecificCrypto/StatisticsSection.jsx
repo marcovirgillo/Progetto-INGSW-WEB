@@ -23,6 +23,10 @@ const StatisticsSection = (props) => {
 
     useEffect(() => {
         volumeFetcher();
+    }, [cryptoID]);
+
+    useEffect(() => {
+        volumeFetcher();
     }, []);
 
     useEffect(() => {

@@ -1,3 +1,4 @@
+import { FOCUSABLE_SELECTOR } from '@testing-library/user-event/dist/utils';
 import React, { Component } from 'react'
 import Chart from "react-apexcharts";
 
@@ -24,6 +25,9 @@ export default function CryptoChart(props) {
         if(value >= Math.pow(10,12) && value < Math.pow(10,15))
             return value / Math.pow(10,12) + " T";
 
+        if(value<1)
+            return value.toFixed(6);
+
         return value.toFixed(2);
     }
 
@@ -36,6 +40,18 @@ export default function CryptoChart(props) {
             labels: {
                 formatter: (value) => format(value),
             },
+        },
+        grid: {  
+            xaxis: {
+              lines: {
+                show: false  //or just here to disable only x axis grids
+               }
+             },  
+            yaxis: {
+              lines: { 
+                show: false  //or just here to disable only y axis
+               }
+             },   
         },
         tooltip: {
             x: {
