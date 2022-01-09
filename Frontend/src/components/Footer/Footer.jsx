@@ -29,9 +29,15 @@ const Footer = () => {
             <div style={{paddingTop:'20px'}} />
             <div className="footer-socials">
                 <div className="footer-list">
-                    <img src={require("../../res/logos/twitter-social.png")}  alt="twitter-cryptoview" height={32} width={32}/> 
-                    <img src={require("../../res/logos/instagram-social.png")}  alt="instagram-cryptoview" height={32} width={32} style={{marginLeft:'10px'}}/> 
-                    <img src={require("../../res/logos/paypal.png")}  alt="paypal-cryptoview" height={32} width={32} style={{marginLeft:'10px'}}/> 
+                    <a href="https://twitter.com/CryptoView__">
+                        <img src={require("../../res/logos/twitter-social.png")}  alt="twitter-cryptoview" height={32} width={32}/> 
+                    </a>
+                    <a href="https://www.instagram.com/cryptoview_/ ">
+                        <img src={require("../../res/logos/instagram-social.png")}  alt="instagram-cryptoview" height={32} width={32} style={{marginLeft:'10px'}}/> 
+                    </a>
+                    <a href="https://www.paypal.me/CryptoView">
+                        <img src={require("../../res/logos/paypal.png")}  alt="paypal-cryptoview" height={32} width={32} style={{marginLeft:'10px'}}/> 
+                    </a>
                 </div>
             </div>
             <div style={{paddingTop:'20px'}} />
