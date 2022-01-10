@@ -51,9 +51,10 @@ function CryptoTransactions(props) {
     //state per i valori dei field
     const [cryptoQuantField, setCryptoQuantField] = useState(0.0);
     const [cryptoPriceField, setCryptoPriceField] = useState(props.crypto.price);
+    const [total, setTotal] = useState(0);
 
-    console.log(cryptoQuantField);
-    console.log(cryptoPriceField);
+    useEffect(() => setTotal(cryptoPriceField * cryptoQuantField), [cryptoPriceField]);
+    useEffect(() => setTotal(cryptoPriceField * cryptoQuantField), [cryptoQuantField]);
 
     const getClassName = (elem) => {
         if(elem === itemActive)
@@ -74,7 +75,11 @@ function CryptoTransactions(props) {
         const val = ev.target.value;
         const key = ev.key;
 
-        if(key === ".") {
+        if(key === " ") {
+            ev.preventDefault();
+            return;
+        }
+        else if(key === ".") {
             if(val.includes(".")) {
                 ev.preventDefault();
                 return;
@@ -89,8 +94,6 @@ function CryptoTransactions(props) {
     }
 
     const updateField = (ev, fun) => {
-        const val = ev.target.value;
-        console.log(val);
         fun(ev.target.value);
     }
 
@@ -124,7 +127,7 @@ function CryptoTransactions(props) {
                         <ul className="field">
                             <p>Quantity</p>
                             <input value={cryptoQuantField} onKeyPress={(ev) => checkNumbers(ev)} onChange={(ev) => updateField(ev, setCryptoQuantField)}  
-                                    type="number" placeholder="0.0" lang="en"
+                                    onPaste={(ev) => ev.preventDefault()} type="number" placeholder="0.0" lang="en"
                             />
                         </ul>
                         {itemActive != "transfer" && (
@@ -132,7 +135,7 @@ function CryptoTransactions(props) {
                                 <p>Price per coin</p>
                                 <span className="dollar-symbol">$</span>
                                 <input value={cryptoPriceField} onKeyPress={(ev) => checkNumbers(ev)} onChange={(ev) => updateField(ev, setCryptoPriceField)} 
-                                        type="number" lang="en"
+                                       onPaste={(ev) => ev.preventDefault()} type="number" lang="en"
                                 />
                             </ul>
                         )}
@@ -161,14 +164,13 @@ function CryptoTransactions(props) {
                                 value={value}
                                 onChange={handleChange}
                                 renderInput={(params) => <TextField {...params} sx={{svg: { color:'white' }}} />}
-                                sx={{border: '1 px solid red'}}
                             />
                         </LocalizationProvider>
                     </ul>
                 {itemActive != "transfer" && (
                     <React.Fragment>
                         <p className="total-label">Total</p>
-                        <p className="total-dollar">$ 0</p>
+                        <p className="total-dollar">$ {total}</p>
                     </React.Fragment>
                 )}
                 </ul>

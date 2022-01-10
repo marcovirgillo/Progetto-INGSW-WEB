@@ -10,23 +10,23 @@ const interval_fetch = 1000 * 120;
 
 export default function ExchangesTable() {
     const [cryptoTable, setCryptoTable] = useState([]);
-    const [exchangesTable, setExchangesTable] = useState([]);
+    const [exchangeData, setExchangeData] = useState([]);
     const [order, setOrder] = useState("ASC");
     const [itemActive, setItemActive] = useState(null);
 
     const sorting = (col) => {
         if(order === "ASC"){
-            const sorted = [...exchangesTable].sort((a,b) => 
+            const sorted = [...exchangeData].sort((a,b) => 
                 a[col] > b[col] ? 1 : -1     
             );
-            setExchangesTable(sorted)
+            setExchangeData(sorted)
             setOrder("DSC")
         }
         if(order === "DSC"){
-            const sorted = [...exchangesTable].sort((a,b) => 
+            const sorted = [...exchangeData].sort((a,b) => 
                 a[col] < b[col] ? 1 : -1     
             );
-            setExchangesTable(sorted)
+            setExchangeData(sorted)
             setOrder("ASC")
         }
     }
@@ -45,8 +45,6 @@ export default function ExchangesTable() {
         let str = formatter.format(price);
         return str.substring(0, str.length - 3);
     }
-
-    const [exchangeData, setExchangeData] = useState([]);
 
     const location = useLocation()
     const exchangeID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
