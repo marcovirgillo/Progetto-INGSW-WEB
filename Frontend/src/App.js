@@ -14,6 +14,7 @@ export default function App() {
     const [sideBarClass, setSideBarClass] = useState("");
     const [sideBarEnabled, setSideBarEnabled] = useState(false);
     const [searchMobileOpen, setSearchMobileOpen] = useState(false);
+    const [logged, setLogged] = useState(true);
     
     //quando il toggle cambia, cambio lo stato della sidebar class, per capire se deve essere aperta o no
     useEffect(() => {
@@ -30,7 +31,7 @@ export default function App() {
                 <SideBar sideBarEnabled={sideBarEnabled} setSideBarEnabled={setSideBarEnabled} sideBarClass={sideBarClass}/>
                 <div className="layout-content">
                     <AppBar setSideBarEnabled={setSideBarEnabled} setSearchMobileOpen={setSearchMobileOpen} 
-                            isMobileOpen={searchMobileOpen} isSearchFieldOpen={searchMobileOpen} />
+                            isMobileOpen={searchMobileOpen} isSearchFieldOpen={searchMobileOpen} logged={logged} setLogged={setLogged}/>
                     <div className="layout-content-main">
                         <AppRoutes /> 
                         <Footer />

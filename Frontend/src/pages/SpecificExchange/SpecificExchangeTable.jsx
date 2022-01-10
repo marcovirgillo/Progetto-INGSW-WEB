@@ -10,23 +10,23 @@ const interval_fetch = 1000 * 120;
 
 export default function ExchangesTable() {
     const [cryptoTable, setCryptoTable] = useState([]);
-    const [exchangesTable, setExchangesTable] = useState([]);
     const [order, setOrder] = useState("ASC");
     const [itemActive, setItemActive] = useState(null);
+    const [exchangeData, setExchangeData] = useState([]);
 
     const sorting = (col) => {
         if(order === "ASC"){
-            const sorted = [...exchangesTable].sort((a,b) => 
+            const sorted = [...exchangeData].sort((a,b) => 
                 a[col] > b[col] ? 1 : -1     
             );
-            setExchangesTable(sorted)
+            setExchangeData(sorted)
             setOrder("DSC")
         }
         if(order === "DSC"){
-            const sorted = [...exchangesTable].sort((a,b) => 
+            const sorted = [...exchangeData].sort((a,b) => 
                 a[col] < b[col] ? 1 : -1     
             );
-            setExchangesTable(sorted)
+            setExchangeData(sorted)
             setOrder("ASC")
         }
     }
@@ -46,7 +46,7 @@ export default function ExchangesTable() {
         return str.substring(0, str.length - 3);
     }
 
-    const [exchangeData, setExchangeData] = useState([]);
+    
 
     const location = useLocation()
     const exchangeID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
@@ -108,20 +108,20 @@ export default function ExchangesTable() {
                 <TableRow>
                     <TableCell className="table-attribute">Coin</TableCell>
                     <TableCell className="table-attribute">Pair</TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("change"); setItemActive("last_price")}} style={{cursor: 'pointer'}}>
-                       {  <span className="table-header-list">
+                    <TableCell className="table-attribute" onClick={() => {sorting("item.bid_ask_spread_percentage"); setItemActive("last_price")}} style={{cursor: 'pointer'}}>
+                       {  <span className="table-header-list">  
                             Last price
                             { isArrowActive(order, "last_price") }
                          </span> }
                         
                     </TableCell>
-                    <TableCell className="table-attribute"> Volume </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("change"); setItemActive("spread")}} style={{cursor: 'pointer'}}>
-                        {  <span className="table-header-list">
-                                Spread
-                                {isArrowActive(order, "spread")}
-                            </span> }
+                    <TableCell className="table-attribute" onClick={() => {sorting("item.bid_ask_spread_percentage"); setItemActive("volume")}} style={{cursor: 'pointer'}}> 
+                    {  <span className="table-header-list">  
+                            Volume
+                            { isArrowActive(order, "volume") }
+                         </span> }
                     </TableCell>
+                    <TableCell className="table-attribute"> Spread </TableCell>
                     <TableCell className="table-attribute">Trust score</TableCell>
                 </TableRow>
             </TableHead>
