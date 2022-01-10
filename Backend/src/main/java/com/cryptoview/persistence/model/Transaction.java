@@ -16,7 +16,9 @@ public class Transaction implements Comparable<Transaction> {
 	@JsonIgnore
 	public static final char SELL = 's';
 	@JsonIgnore
-	public static final char TRANSFER = 't';
+	public static final char TRANSFER_IN = 'i';
+	@JsonIgnore
+	public static final char TRANSFER_OUT = 'o';
 	
 	private String portfolioOwner;
 	private String cryptoTicker;
