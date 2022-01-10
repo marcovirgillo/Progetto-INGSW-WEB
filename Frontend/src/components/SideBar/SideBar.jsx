@@ -70,7 +70,7 @@ export default function SideBar(props) {
                     <div className="sidebar-logo-text"> <Link to="" onClick={()=>{setItemActive("/")}}>CryptoView</Link> </div>
                     <ArrowBackIosNewRoundedIcon className="side-bar-back-btn"
                                                 onClick = {() => {props.setSideBarEnabled(false)}}
-                                                sx={{color: 'white', fontSize: 32, marginLeft: 5, display: 'none'}}
+                                                sx={{color: 'white', fontSize: 32, marginLeft: 5, display: 'none', cursor: 'pointer'}}
                     />
                 </ul>
 

@@ -49,7 +49,7 @@ export default function CryptoChart(props) {
              },  
             yaxis: {
               lines: { 
-                show: false  //or just here to disable only y axis
+                show: props.showYlines  //or just here to disable only y axis
                }
              },   
         },
