@@ -61,4 +61,5 @@ public class Portfolio {
 		portfolio.setPortfolioName(rs.getString("portfolio_name"));
 		return portfolio;
 	}
+
 }
