@@ -61,6 +61,7 @@ public class TransactionDaoJDBC extends TransactionDao{
 		stm.setDouble(8, totalUsdSpent);
 		
 		stm.executeQuery();
+		stm.close();
 	}
 
 	@Override
@@ -74,7 +75,8 @@ public class TransactionDaoJDBC extends TransactionDao{
 			Transaction transaction = Transaction.parseFromDB(rs);
 			transactionList.add(transaction);
 		}
-		
+		stm.close();
+		rs.close();
 		Collections.sort(transactionList);
 		return transactionList;
 	}
