@@ -6,8 +6,8 @@ import { address } from './../../assets/globalVar.js';
 
 const BigNewsBox = (props) => {
     return (
-        <a href={props.url} className='big-news-container'>
-            <div>
+        <a href={props.url} className='big-news-container' >
+            <div >
                 <ul className='big-news-list'>
                     <img src={props.imagePath} className='big-news-image'/>
                     <p className='big-news-title'> {props.title} </p>
@@ -35,8 +35,8 @@ const SideNewsBox = (props) => {
 
 const StandardNewsBox = (props) => {
     return (  
-        <Grid item lg={4} md={6} sm={12} xs={12}>
-            <a href={props.url} >
+        <Grid item lg={4} md={6} sm={12} xs={12} >
+            <a href={props.url}>
                 <div className='standard-news-container'>
                     <ul className='standard-news-list-title-content'>
                         <p className='standard-news-title'> {props.title} </p>
@@ -54,10 +54,11 @@ const StandardNewsBox = (props) => {
 }
 
 const SearchField = (props) => {
+    const onNewsPage = window.location.pathname === `/news`;
     return (
         <div className="news-search-field">
             <img className="news-search-icon" src={require("../../res/logos/search.png")} width={18} height={18}/>
-            <input className="news-search" type="text" placeholder="Cerca.." onChange={(ev) => props.getSearchFieldContent(ev.target.value)}/>
+            <input className="news-search" type="text" placeholder="Cerca.." onChange={(ev) => props.getSearchFieldContent(ev.target.value)} onBlur={(ev) => { if(onNewsPage == false) ev.target.value = "";}} />
         </div>
     );
 }
@@ -66,7 +67,7 @@ const SearchField = (props) => {
 
 export default function News() {
     useEffect(() => {
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
     }, [])
 
 
@@ -96,7 +97,7 @@ export default function News() {
     const containsText = (title, content, text) => {
         let titleLowerCase = title.toLowerCase();
         let contentLowerCase = content.toLowerCase();
-        if(titleLowerCase.includes(text) || contentLowerCase.includes(text))
+        if(titleLowerCase.includes(searchFieldContent) || contentLowerCase.includes(searchFieldContent))
             return true;
         return false;
     }
@@ -107,6 +108,7 @@ export default function News() {
     }
 
     const [searchFieldContent, setSearchFieldContent] = useState("");
+    
 
     return (
         <div className='news-page'>
@@ -126,7 +128,6 @@ export default function News() {
                                 content = {item.content}
                                 publishedAt = {item.publishedAt}
                                 url = {item.url}
-
                             />)
                         ))
                     }
@@ -143,6 +144,7 @@ export default function News() {
                                     imagePath = {item.imageUrl}
                                     publishedAt = {item.publishedAt}
                                     url = {item.url}
+                                    
                                 />)
                             ))
                         }
@@ -152,9 +154,8 @@ export default function News() {
             </div>
 
 
-            
-               
-            <SearchField 
+        
+            <SearchField
                 getSearchFieldContent = {getSearchFieldContent}
             />
 
@@ -166,13 +167,14 @@ export default function News() {
                 <Grid container className='container-news-bottom' columnSpacing={4}>  
                     {
                         latestNewsData.map((item, index) => (
-                            (containsText(item.title, item.content, searchFieldContent)) && <StandardNewsBox
+                            (containsText(item.title, item.content)) && <StandardNewsBox
                                 key = {index}
                                 title = {item.title}
                                 imagePath = {item.imageUrl}
                                 content = {item.content}
                                 publishedAt = {item.publishedAt}
                                 url = {item.url}
+                                
                             />
                         ))
                     }  

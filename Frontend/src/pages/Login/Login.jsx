@@ -1,0 +1,114 @@
+import React, { useEffect, useState } from 'react'
+import './Login.css'
+
+const Login = () => {
+    const [screenSize, setScreenSize] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => setScreenSize(window.innerWidth);
+        window.addEventListener('resize', handleResize);
+        
+        return () => window.removeEventListener('resize', handleResize);
+    });
+
+    function titleStyle(color){
+        if(screenSize<600)
+            if(color==="blue")
+                return {color:'#32C0FF', fontSize:'22px'};
+            else
+                return {color:'white', fontSize:'22px'};
+        
+        if(color==="blue") return {color:'#32C0FF'};
+        
+        return {color:'white'};
+    }
+
+    function subtitle(){
+        if(screenSize<600)
+            return {fontSize:'16px'}
+        return {fontSize:'18px'}
+    }
+
+    function fieldFont(){
+        if(screenSize<600)
+            return {fontSize:'14px'}
+        return {fontSize:'16px'}
+    }
+
+    function loginEndingStyle(color){
+        if(screenSize<600)
+            if(color==="blue")
+                return {color:'#32C0FF', fontSize:'14px', cursor:'pointer'};
+            else
+                return {color:'white', fontSize:'14px'};
+    
+        if(color==="blue") return {color:'#32C0FF', fontSize:'16px', cursor:'pointer'};
+    
+        return {color:'white', fontSize:'16px'};
+    }
+
+    function loginButtonTextStyle(type){
+        if(screenSize<600 && type=="google")
+            return {fontSize:'16px', paddingTop:'5px'};
+        if(screenSize<600 && type=="normal")
+            return {fontSize:'16px', paddingTop:'9px'};
+        return {fontSize:'18px'};
+    }
+
+    return (
+        <div className="login">
+            <div className="paper-grey">
+                <div style={{paddingTop:'30px'}} />
+                <div className="login-logo">
+                    <img src={require("../../res/logos/CryptoViewLogo.png")}  alt="logo-cryptoview" height={100} width={100} />
+                </div>
+                <div style={{paddingTop:'20px'}} />
+                <div className="login-list"> 
+                    <span className="login-header-title" style={titleStyle("blue")}>Log in</span>
+                    <span className="login-header-title" style={titleStyle("white")}> to your </span>
+                    <span className="login-header-title" style={titleStyle("blue")}>Cryptoview</span>
+                </div>
+                <div style={{paddingTop:'15px'}} />
+                <div> 
+                    <span className="login-header-subtitle" style={subtitle()}>Use your credentials that you entered during registration.</span>
+                </div>
+                <div style={{paddingTop:'20px'}} />
+                <span className="field-title" style={fieldFont()}>Your username</span>
+                <div className="login-field">
+                    <input className="login-field-style" type="text" placeholder='userexample' style={fieldFont()}/>
+                </div>
+                <div style={{paddingTop:'20px'}} />
+                <span className="field-title" style={fieldFont()}>Password</span>
+                <div className="login-field">
+                    <input className="login-field-style" type="password" placeholder='At least 8 characters' style={fieldFont()}/>
+                </div>
+                <div style={{paddingTop:'20px'}} />
+                <div className="login-field">
+                    <span className="login-button-style" style={fieldFont()}>
+                        <div className='login-button-text' style={loginButtonTextStyle("normal")}>Log in</div>
+                    </span>
+                </div>
+                <div style={{paddingTop:'8px'}} />
+                <div className="login-field">
+                    <span className="login-button-style-google" style={fieldFont()}>
+                        <span className="google-field-list">
+                            <img src={require("../../res/logos/google.png")}  alt="google-login" height={25} width={25} style={{paddingTop:'7px'}}/> 
+                            <div className='login-button-text-google' style={loginButtonTextStyle("google")}>Log in with Google</div>
+                        </span>
+                    </span>
+                </div>
+                <div style={{paddingTop:'20px'}} />
+                <div className="login-ending-list"> 
+                    <span className="login-ending" style={loginEndingStyle("white")}>Don't have an account?</span>
+                    <span className="login-ending" style={loginEndingStyle("blue")}>Sign up!</span>
+                </div>
+                <div style={{paddingTop:'20px'}} />
+                <div className="login-ending-list"> 
+                    <span className="login-ending" style={loginEndingStyle("blue")}>Forgot your password?</span>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Login
