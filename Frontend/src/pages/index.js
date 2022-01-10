@@ -5,3 +5,5 @@ export { default as News } from './News/News';
 export { default as Portfolio } from './Portfolio/Portfolio';
 export { default as Profile } from './Profile/Profile';
 export { default as AboutUs} from './AboutUs/AboutUs';
+export { default as Login } from './Login/Login';
+export { default as Signup } from './Signup/Signup';
