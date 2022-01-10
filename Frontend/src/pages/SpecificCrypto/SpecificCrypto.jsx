@@ -167,8 +167,8 @@ const SpecificCrypto = () => {
 
     function descriptionStyle(){
         if(screenSize>600)
-            return {fontSize:'15px', marginRight:'55px', fontWeight:'500'};
-        return {fontSize:'13px', marginRight:'55px', fontWeight:'400'};
+            return {fontSize:'15px', marginRight:'55px', fontWeight:'500', color:'#DBDBDB'};
+        return {fontSize:'13px', marginRight:'55px', fontWeight:'500', color:'#DBDBDB'};
     }
 
     const MarketsSection = () => {
