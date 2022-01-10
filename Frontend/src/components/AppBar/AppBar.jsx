@@ -6,36 +6,25 @@ import "./AppBar.css"
 import { Link } from 'react-router-dom'
 import { Notifications } from "./../../pages/Home/TestData.js";
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import { address } from "./../../assets/globalVar.js";
+import { address, login } from "./../../assets/globalVar.js";
+import LoggedAccount from './LoggedAccount.jsx'
+import AccessAccount from './AccessAccount.jsx'
 
 const allCryptoUrl = `http://${address}:8080/supportedCrypto`;
 
+
 function DropdownProfile(props) {
+    console.log(props.logged)
     return (
         <div className={"dropdown dropdown-profile " + props.class}>
-            <ul className="dropdown-profile-list">
-                <ul className="dropdown-list-item-horizontal">
-                    <img src={require("../../res/images/avatar.jpg")} alt="propfile_icon"
-                        width={42} height={42} style={{borderRadius: '100%'}}/>
-                    <p className="dropdown-text" >piero_gay</p>
-                </ul>
-                <div className="dropdown-divider" />
-                <ul className="dropdown-list-item-horizontal dropdown-button">      
-                    <img src={require("../../res/logos/settings.png")} width={36} height={36} alt="settings"/>
-                    <p className="dropdown-text">Settings</p>
-                </ul>
-                <ul className="dropdown-list-item-horizontal dropdown-button">
-                    <img src={require("../../res/logos/logout.png")} width={34} height={34} alt="logout" />
-                    <p className="dropdown-text">Logout</p>
-                </ul>
-            </ul>
+            
+            {props.logged == true ? <LoggedAccount setLogged={props.setLogged} /> : <AccessAccount /> }
         </div>
     );
 }
 
 function DropdownNotification(props) {
     const [notificationList, setNotificationList] = useState(Notifications);
-
     const deleteNotification = idx => {
         let notif = [...notificationList.slice(0, idx), ...notificationList.slice(idx+1)]
         setNotificationList(notif);
@@ -135,6 +124,7 @@ export default function AppBar(props) {
     const [allCryptos, setAllCryptos] = useState([]);
     const [queryedData, setQueryedData] = useState([]);
 
+
     useEffect(() => {
         fetch(allCryptoUrl)
             .then((res) => res.json())
@@ -183,7 +173,7 @@ export default function AppBar(props) {
                     <Icon className="notification-icon" 
                             onClick={()=>{ if(dropdownProfileActive)
                                                 setDropdownProfileActive(false);
-
+                                        
                                             setDropdownNotificationActive(!dropdownNotificationActive)}}
                     >
                         <img src={require("../../res/logos/bell.png")} width={24} height={24} alt="bell"/>
@@ -198,7 +188,7 @@ export default function AppBar(props) {
                     </Icon>
 
                     <DropdownNotification class={dropdownNotificationActive ? ' drop-active': ''} />
-                    <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} />
+                    <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} logged={props.logged} setLogged={props.setLogged}/>
                 </React.Fragment>
             )}
 

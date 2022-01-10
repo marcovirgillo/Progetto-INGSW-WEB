@@ -10,9 +10,13 @@ const interval_fetch = 1000 * 120;
 
 export default function ExchangesTable() {
     const [cryptoTable, setCryptoTable] = useState([]);
+<<<<<<< HEAD
     const [exchangeData, setExchangeData] = useState([]);
+=======
+>>>>>>> 1635b47228774e79f25fc0874c11c9a2e22ed8d8
     const [order, setOrder] = useState("ASC");
     const [itemActive, setItemActive] = useState(null);
+    const [exchangeData, setExchangeData] = useState([]);
 
     const sorting = (col) => {
         if(order === "ASC"){
@@ -106,20 +110,20 @@ export default function ExchangesTable() {
                 <TableRow>
                     <TableCell className="table-attribute">Coin</TableCell>
                     <TableCell className="table-attribute">Pair</TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("change"); setItemActive("last_price")}} style={{cursor: 'pointer'}}>
-                       {  <span className="table-header-list">
+                    <TableCell className="table-attribute" onClick={() => {sorting("item.bid_ask_spread_percentage"); setItemActive("last_price")}} style={{cursor: 'pointer'}}>
+                       {  <span className="table-header-list">  
                             Last price
                             { isArrowActive(order, "last_price") }
                          </span> }
                         
                     </TableCell>
-                    <TableCell className="table-attribute"> Volume </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("change"); setItemActive("spread")}} style={{cursor: 'pointer'}}>
-                        {  <span className="table-header-list">
-                                Spread
-                                {isArrowActive(order, "spread")}
-                            </span> }
+                    <TableCell className="table-attribute" onClick={() => {sorting("item.bid_ask_spread_percentage"); setItemActive("volume")}} style={{cursor: 'pointer'}}> 
+                    {  <span className="table-header-list">  
+                            Volume
+                            { isArrowActive(order, "volume") }
+                         </span> }
                     </TableCell>
+                    <TableCell className="table-attribute"> Spread </TableCell>
                     <TableCell className="table-attribute">Trust score</TableCell>
                 </TableRow>
             </TableHead>
