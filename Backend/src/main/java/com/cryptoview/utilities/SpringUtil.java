@@ -8,7 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 public class SpringUtil {
 	private static final SecureRandom secureRandom = new SecureRandom(); //threadsafe
 	private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder(); //threadsafe
-
+	
 	public static String generateNewToken() {
 	    byte[] randomBytes = new byte[24];
 	    secureRandom.nextBytes(randomBytes);
@@ -22,4 +22,5 @@ public class SpringUtil {
 	public static boolean checkPassword(String hashPw, String plainPw) {
 		return BCrypt.checkpw(plainPw, hashPw);
 	}
+	
 }

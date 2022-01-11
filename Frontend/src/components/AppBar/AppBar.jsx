@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { Icon } from '@mui/material';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
@@ -11,14 +11,55 @@ import LoggedAccount from './LoggedAccount.jsx'
 import AccessAccount from './AccessAccount.jsx'
 
 const allCryptoUrl = `http://${address}:8080/supportedCrypto`;
+const checkLoginAddress = `http://${address}:8080/checkLogin`;
 
+function isEmptyObject(obj) {
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop)){
+            return false;
+        }
+    }
 
-const DropdownProfile = React.forwardRef((props, ref) => (
-    <div ref={ref} className={"dropdown dropdown-profile " + props.class}>
-        {props.logged == true ? <LoggedAccount setLogged={props.setLogged} /> : <AccessAccount /> }
-    </div>
-    
-));
+    return true;
+}
+
+const DropdownProfile = React.forwardRef((props, ref) => {
+    const [userLogged, setUserLogged] = useState({});
+    console.log("token appbar:", props.accessToken);
+
+    const req_options = {
+        method: 'GET',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken
+        }
+    };
+
+    const parseResult = res => {
+        if(res.status === 200) {
+            console.log("Login con token da appbar success")
+            res.json().then(result => setUserLogged(result['user']));
+        }
+        else {
+            console.log("Errore durante il login da appbar:")
+            res.json().then((val) => console.log(val));
+        }
+    }
+
+    useEffect(() => {
+        fetch(checkLoginAddress, req_options)
+            .then(res => parseResult(res));
+        
+    }, []);
+
+    return (
+        <div ref={ref} className={"dropdown dropdown-profile " + props.class}>
+            {!isEmptyObject(userLogged) ? <LoggedAccount setAccessToken={props.setAccessToken} user={userLogged} accessToken={props.accessToken} /> 
+                                            : <AccessAccount setAccessToken={props.setAccessToken}/> }
+        </div>
+    );
+});
 
 const DropdownNotification = React.forwardRef((props, ref) => {
     const [notificationList, setNotificationList] = useState(Notifications);
@@ -219,8 +260,9 @@ export default function AppBar(props) {
                         <img src={require("../../res/logos/profile.png")} width={20} height={20} alt="profile"/>
                     </Icon>
 
+
                     <DropdownNotification ref={wrapperRefNotification} class={dropdownNotificationActive ? ' drop-active': ''} />
-                    <DropdownProfile ref={wrapperRefProfile} class={dropdownProfileActive ? ' drop-active' : ''} tabIndex={0} logged={props.logged} setLogged={props.setLogged} />
+                    <DropdownProfile ref={wrapperRefProfile} class={dropdownProfileActive ? ' drop-active' : ''} accessToken={props.accessToken} setAccessToken={props.setAccessToken}/>
                 </React.Fragment>
             )}
 

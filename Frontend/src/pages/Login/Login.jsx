@@ -1,9 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import './Login.css'
 import { Link } from 'react-router-dom'
+import { address } from '../../assets/globalVar'
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const loginLink = `http://${address}:8080/login`;
+
+const Login = (props) => {
     const [screenSize, setScreenSize] = useState(window.innerWidth);
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const navigate = useNavigate();
+
+    const loginOptions = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'username': username,
+            'password': password,
+        }),
+    };
 
     useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
@@ -11,6 +31,24 @@ const Login = () => {
         
         return () => window.removeEventListener('resize', handleResize);
     });
+
+    function parseResult(res) {
+        if(res.status === 200) {
+            res.json().then((result) => props.setAccessToken(result['key']));
+            console.log("Accesso effettuato");
+            console.log(props);
+            navigate("/");
+        }
+        else {
+            res.json().then((result) => console.log(result));
+        }
+    }
+
+    const doLogin = () => {
+        console.log("sto loggando!");
+        fetch(loginLink, loginOptions)
+        .then((res) => parseResult(res));
+    }
 
     function titleStyle(color){
         if(screenSize<600)
@@ -79,22 +117,29 @@ const Login = () => {
                     <span className="login-header-subtitle" style={subtitle()}>Use your credentials that you entered during registration.</span>
                 </div>
                 <div style={{paddingTop:'20px'}} />
+
                 <span className="field-title" style={fieldFont()}>Your username</span>
                 <div className="login-field">
-                    <input className="login-field-style" type="text" placeholder='userexample' style={fieldFont()}/>
+                    <input className="login-field-style" value={username} onChange={(ev) => setUsername(ev.target.value)}
+                        type="text" placeholder='userexample' style={fieldFont()}/>
                 </div>
+
                 <div style={{paddingTop:'20px'}} />
                 <span className="field-title" style={fieldFont()}>Password</span>
                 <div className="login-field">
-                    <input className="login-field-style" type="password" placeholder='At least 8 characters' style={fieldFont()}/>
+                    <input className="login-field-style" value={password} onChange={(ev) => setPassword(ev.target.value)}
+                        type="password" placeholder='At least 8 characters' style={fieldFont()}
+                    />
+
                 </div>
                 <div style={{paddingTop:'20px'}} />
                 <div className="login-field">
                     <span className="login-button-style" style={fieldFont()}>
-                        <div className='login-button-text' style={loginButtonTextStyle("normal")}>Log in</div>
+                        <div onClick={doLogin} className='login-button-text' style={loginButtonTextStyle("normal")}>Log in</div>
                     </span>
                 </div>
                 <div style={{paddingTop:'8px'}} />
+
                 <div className="login-field">
                     <span className="login-button-style-google" style={fieldFont()}>
                         <span className="google-field-list">
@@ -103,6 +148,7 @@ const Login = () => {
                         </span>
                     </span>
                 </div>
+
                 <div style={{paddingTop:'20px'}} />
                 <div className="login-ending-list"> 
                     <span className="login-ending" style={loginEndingStyle("white")}>Don't have an account?</span>
