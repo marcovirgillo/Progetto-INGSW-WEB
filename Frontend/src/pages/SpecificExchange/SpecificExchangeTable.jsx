@@ -10,10 +10,6 @@ const interval_fetch = 1000 * 120;
 
 export default function ExchangesTable() {
     const [cryptoTable, setCryptoTable] = useState([]);
-<<<<<<< HEAD
-    const [exchangeData, setExchangeData] = useState([]);
-=======
->>>>>>> 1635b47228774e79f25fc0874c11c9a2e22ed8d8
     const [order, setOrder] = useState("ASC");
     const [itemActive, setItemActive] = useState(null);
     const [exchangeData, setExchangeData] = useState([]);
