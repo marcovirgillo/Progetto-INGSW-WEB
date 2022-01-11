@@ -11,14 +11,52 @@ import LoggedAccount from './LoggedAccount.jsx'
 import AccessAccount from './AccessAccount.jsx'
 
 const allCryptoUrl = `http://${address}:8080/supportedCrypto`;
+const checkLoginAddress = `http://${address}:8080/checkLogin`;
 
+function isEmptyObject(obj) {
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop)){
+            return false;
+        }
+    }
+
+    return true;
+}
 
 function DropdownProfile(props) {
-    console.log(props.logged)
+    const [userLogged, setUserLogged] = useState({});
+    console.log("token appbar:", props.accessToken);
+
+    const req_options = {
+        method: 'GET',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken
+        }
+    };
+
+    const parseResult = res => {
+        if(res.status === 200) {
+            console.log("Login con token da appbar success")
+            res.json().then(result => setUserLogged(result['user']));
+        }
+        else {
+            console.log("Errore durante il login da appbar:")
+            res.json().then((val) => console.log(val));
+        }
+    }
+
+    useEffect(() => {
+        fetch(checkLoginAddress, req_options)
+            .then(res => parseResult(res));
+        
+    }, []);
+
     return (
         <div className={"dropdown dropdown-profile " + props.class}>
-            
-            {props.logged == true ? <LoggedAccount setLogged={props.setLogged} /> : <AccessAccount /> }
+            {!isEmptyObject(userLogged) ? <LoggedAccount setAccessToken={props.setAccessToken} user={userLogged} accessToken={props.accessToken} /> 
+                                            : <AccessAccount setAccessToken={props.setAccessToken}/> }
         </div>
     );
 }
@@ -188,7 +226,7 @@ export default function AppBar(props) {
                     </Icon>
 
                     <DropdownNotification class={dropdownNotificationActive ? ' drop-active': ''} />
-                    <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} logged={props.logged} setLogged={props.setLogged}/>
+                    <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} accessToken={props.accessToken} setAccessToken={props.setAccessToken}/>
                 </React.Fragment>
             )}
 

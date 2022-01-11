@@ -1,4 +1,7 @@
 import { Link } from 'react-router-dom'
+import { address } from '../../assets/globalVar';
+
+const logInLink = `http://${address}:8080/login`;
 
 export default function AccessAccount() {
     return (
