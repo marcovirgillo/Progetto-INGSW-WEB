@@ -1,0 +1,36 @@
+.registration {
+    background-color: var(--bg-color-dark);
+    padding: 0px 10px 10px 10px;
+}
+
+.signup-header-title {
+    font-weight: 700;
+    font-size: 28px;
+    color: white;
+    padding-right: 10px;
+}
+
+.terms-and-conditions{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-flow: row wrap;
+    max-width: 400px;
+    margin: 0 auto;
+    padding-left: 20px;
+}
+
+.terms-text {
+    font-weight: 500;
+    font-size: 15px;
+    color: white;
+    padding-right: 10px;
+}
+
+.signup-ending-list{
+    padding: 0;
+    display: flex;
+    justify-content: space-evenly;
+    max-width: 220px;
+    margin: 0 auto;
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './Login.css'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
     const [screenSize, setScreenSize] = useState(window.innerWidth);
@@ -32,17 +33,17 @@ const Login = () => {
     function fieldFont(){
         if(screenSize<600)
             return {fontSize:'14px'}
-        return {fontSize:'16px'}
+        return {fontSize:'15px'}
     }
 
     function loginEndingStyle(color){
         if(screenSize<600)
             if(color==="blue")
-                return {color:'#32C0FF', fontSize:'14px', cursor:'pointer'};
+                return {color:'#32C0FF', fontSize:'14px', cursor:'pointer', display:'flex', flexDirection:'row'};
             else
                 return {color:'white', fontSize:'14px'};
     
-        if(color==="blue") return {color:'#32C0FF', fontSize:'16px', cursor:'pointer'};
+        if(color==="blue") return {color:'#32C0FF', fontSize:'16px', cursor:'pointer', display:'flex', flexDirection:'row'};
     
         return {color:'white', fontSize:'16px'};
     }
@@ -55,9 +56,14 @@ const Login = () => {
         return {fontSize:'18px'};
     }
 
+    function minHeight(){
+        if(screenSize<600)
+            return {minHeight:'100vh'}
+    }
+
     return (
         <div className="login">
-            <div className="paper-grey">
+            <div className="paper-grey" style={minHeight()}>
                 <div style={{paddingTop:'30px'}} />
                 <div className="login-logo">
                     <img src={require("../../res/logos/CryptoViewLogo.png")}  alt="logo-cryptoview" height={100} width={100} />
@@ -100,11 +106,11 @@ const Login = () => {
                 <div style={{paddingTop:'20px'}} />
                 <div className="login-ending-list"> 
                     <span className="login-ending" style={loginEndingStyle("white")}>Don't have an account?</span>
-                    <span className="login-ending" style={loginEndingStyle("blue")}>Sign up!</span>
+                    <span className="login-ending" ><Link to="/signup" style={loginEndingStyle("blue")}>Sign up!</Link></span>
                 </div>
                 <div style={{paddingTop:'20px'}} />
                 <div className="login-ending-list"> 
-                    <span className="login-ending" style={loginEndingStyle("blue")}>Forgot your password?</span>
+                    <span className="login-ending"><Link to="/forgotpassword" style={loginEndingStyle("blue")}>Forgot your password?</Link></span>
                 </div>
             </div>
         </div>

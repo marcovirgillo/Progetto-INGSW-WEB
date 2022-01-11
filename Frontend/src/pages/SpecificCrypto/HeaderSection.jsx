@@ -120,14 +120,22 @@ const HeaderSection = (props) => {
     const MainDetailsSection = () => {
         return (
             <div className="container-header">
-                <ul>
+                {/* <ul>
                     <ul className="container-title">
                         <img src={cryptoData.image.small} />
                         <div className='crypto-title'>{cryptoData.name}</div>
                         <p className='grey-container' style={{marginLeft:'10px'}}>{cryptoData.symbol.toUpperCase()}</p>
                         <p className="p-crypto" style={{marginLeft:'15px'}}>{screenSize>600 ? 'Rank' : ''} #{cryptoData.market_cap_rank}</p>
                     </ul>
-                </ul>
+                </ul> */}
+                <div>
+                    <div className="container-title-test" style={{maxWidth:'80vh'}}>
+                        <img src={cryptoData.image.small} />
+                        <div className='crypto-title'>{cryptoData.name}</div>
+                        <p className='grey-container' style={{marginLeft:'10px'}}>{cryptoData.symbol.toUpperCase()}</p>
+                        <p className="p-crypto" style={{marginLeft:'15px'}}>{/* {screenSize>600 ? 'Rank' : ''} */}Rank #{cryptoData.market_cap_rank}</p>
+                    </div>
+                </div>
                 <ul>
                     <ul className="container-title" style={{marginTop:'25px'}}>
                         <p className='specific-crypto-primary-btn container-title' style={{marginLeft:'10px', cursor:'pointer'}}>
