@@ -21,6 +21,8 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 	private final String getUserPortfolio = "select * from portfolio where username_owner=?";
 	//private final String insertPortfolio = "insert into portfolio values(?, now(), ?);";
 	
+	private PortfolioDaoJDBC() {}
+	
 	public static PortfolioDaoJDBC getInstance() {
 		if(instance == null)
 			instance = new PortfolioDaoJDBC();
@@ -57,37 +59,12 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 		ResultSet rs = stm.executeQuery();
 		if(rs.next()) {
 			portfolio = Portfolio.parseFromDB(rs);
-			fillTransaction(portfolio, owner);
-			getActualCripto(portfolio);
+			portfolio.setTransactionList(TransactionDaoJDBC.getInstance().getUserTransaction(owner));
+			portfolio.setCryptoMap(CryptoDaoJDBC.getInstance().getCryptoInPortfolio(owner));
 		}
 		
 		rs.close();
 		
 		return portfolio;
-	}
-
-	private void fillTransaction(Portfolio portfolio, String owner) throws SQLException {
-		List <Transaction> transactionList = TransactionDaoJDBC.getInstance().getUserTransaction(owner);
-		portfolio.setTransactionList(transactionList);
-	}
-	
-	private void getActualCripto(Portfolio portfolio) throws SQLException {
-		Map <Crypto, Double> cryptoMap = new HashMap <Crypto, Double>();
-		for(Transaction transaction : portfolio.getTransactionList()) {
-			Crypto crypto = CryptoDaoJDBC.getInstance().getCrypto(transaction.getCryptoTicker());
-			
-			if(cryptoMap.containsKey(crypto)) {
-				if(transaction.getType() == Transaction.BUY)
-					cryptoMap.put(crypto, cryptoMap.get(crypto) + transaction.getQuantity());
-				else 
-					cryptoMap.put(crypto, cryptoMap.get(crypto) - transaction.getQuantity());
-			}
-			else {
-				if(transaction.getType() == Transaction.BUY)
-					cryptoMap.put(crypto, transaction.getQuantity());
-			}
-		}
-		
-		portfolio.setCryptoMap(cryptoMap);
 	}
 }

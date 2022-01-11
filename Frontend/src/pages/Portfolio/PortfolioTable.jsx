@@ -16,8 +16,21 @@ function getPriceClass(price) {
 function getFormattedPrice(price) {
     if(price > 1)
         return formatter.format(price);
-    else 
-        return "$" + price;
+    else if(price === 0) {
+        return "$" + 0.0;
+    }
+    else {
+        var decimals = 0;
+        var priceTmp = price;
+        while(priceTmp < 1) {
+            console.log(priceTmp);
+            priceTmp *= 10;
+            decimals++;
+        }
+
+        return "$" + price.toFixed(decimals + 2);
+    } 
+        
 }
 
 function formatPercentage(change) {

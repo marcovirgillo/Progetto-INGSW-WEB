@@ -18,6 +18,8 @@ public class TransactionDaoJDBC extends TransactionDao{
 	private final String queryTransactionUser = "select * from transaction where portfolio_owner=?";
 	private final String insertTransaction = "insert into transaction values (nextval('transaction_ids'), ?, ?, ?, ?, ?, ?, ?, ?)";
 	
+	private TransactionDaoJDBC() {}
+	
 	public static TransactionDao getInstance() {
 		if(instance == null)
 			instance = new TransactionDaoJDBC();

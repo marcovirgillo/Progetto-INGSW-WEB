@@ -243,7 +243,7 @@ public class PortfolioService {
 			cryptoObj.put("price", TopCryptos.getInstance().getSupportedCryptoPrice(crypto.getTicker()));
 			cryptoObj.put("change_24h", TopCryptos.getInstance().getSupportedCrypto24hChange(crypto.getTicker()));
 			cryptoObj.put("change_7d", TopCryptos.getInstance().getSupportedCrypto7dChange(crypto.getTicker()));
-			cryptoObj.put("holdings", round(portfolio.getCryptoMap().get(crypto), 6) + " " + crypto.getTicker().toUpperCase());
+			cryptoObj.put("holdings", roundHoldings(portfolio.getCryptoMap().get(crypto)) + " " + crypto.getTicker().toUpperCase());
 			cryptoObj.put("holding_dollar", portfolio.getCryptoMap().get(crypto) * TopCryptos.getInstance().getSupportedCryptoPrice(crypto.getTicker()));
 			cryptoObj.put("avg_buy_price", avgPrices.get(crypto.getTicker()));
 			cryptoObj.put("profit_dollar", dollarProfit.get(crypto.getTicker()));
@@ -277,15 +277,16 @@ public class PortfolioService {
 			
 			if(transaction.getType() == Transaction.SELL) {
 				totalBalance.put(ticker, totalBalance.getOrDefault(ticker, 0.0) + transaction.getTotalUsdSpent());
-				totalCryptoInPortfolio.put(ticker, totalCryptoInPortfolio.get(ticker) - transaction.getQuantity());
+				totalCryptoInPortfolio.put(ticker, totalCryptoInPortfolio.getOrDefault(ticker, 0.0) - transaction.getQuantity());
 			}
 			
-			//TODO fix
-			/*if(transaction.getType() == Transaction.TRANSFER) {
-				totalCryptoInPortfolio.put(ticker, totalCryptoInPortfolio.get(ticker) - transaction.getQuantity());
+			if(transaction.getType() == Transaction.TRANSFER_OUT) {
+				totalCryptoInPortfolio.put(ticker, totalCryptoInPortfolio.getOrDefault(ticker, 0.0) - transaction.getQuantity());
 			}
 			
-			*/
+			if(transaction.getType() == Transaction.TRANSFER_IN) {
+				totalCryptoInPortfolio.put(ticker, totalCryptoInPortfolio.getOrDefault(ticker, 0.0) + transaction.getQuantity());
+			}
 		}
 		
 		for(String ticker : dollarSpent.keySet()) {
@@ -313,5 +314,17 @@ public class PortfolioService {
 	    BigDecimal bd = new BigDecimal(Double.toString(value));
 	    bd = bd.setScale(places, RoundingMode.HALF_UP);
 	    return bd.doubleValue();
+	}
+	
+	private double roundHoldings(double val) {
+		System.out.println(val);
+		if(val < 1)
+			return round(val, 6);
+		else if (val < 1000)
+			return round(val, 4);
+		else if(val < 1000000)
+			return round(val, 2);
+		else 
+			return round(val, 1);
 	}
 }

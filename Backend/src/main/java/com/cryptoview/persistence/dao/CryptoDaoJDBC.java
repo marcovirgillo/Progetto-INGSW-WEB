@@ -1,5 +1,6 @@
 package com.cryptoview.persistence.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,9 +21,9 @@ public class CryptoDaoJDBC extends CryptoDao {
 	
 	private final String getAllQuery = "select * from crypto;";
 	private final String insertCrypto = "insert into crypto values(?,?,?,?);";
-	private final String getCryptoPortfolio = "";
+	private final String getCryptoPortfolio = "select * from criptoinportfolio where username=?";
 	
-	public CryptoDaoJDBC() {
+	private CryptoDaoJDBC() {
 		cryptosMap = new HashMap<>();
 		
 		try {
@@ -73,9 +74,22 @@ public class CryptoDaoJDBC extends CryptoDao {
 	}
 
 	@Override
-	public List<Crypto> getCryptoInPortfolio(String owner) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<Crypto, Double> getCryptoInPortfolio(String owner) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(getCryptoPortfolio);
+		stm.setString(1, owner);
+		
+		ResultSet rs = stm.executeQuery();
+		Map <Crypto, Double> map = new HashMap<>();
+		while(rs.next()) {
+			Crypto crypto = CryptoDaoJDBC.getInstance().getCrypto(rs.getString("ticker"));
+			Double quant = rs.getDouble("quantity");
+			map.put(crypto, quant);
+		}
+		
+		rs.close();
+		stm.close();
+		
+		return map;
 	}
 	
 	//Questo metodo deve essere eseguito SOLO per aggiornare le cripto supportate
