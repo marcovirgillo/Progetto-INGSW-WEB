@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import { Route, Routes } from 'react-router-dom'
-import { Home, Dashboard, Exchanges, News, Portfolio, Profile, AboutUs, Login, Signup } from '../pages'
+import { Home, Dashboard, Exchanges, News, Portfolio, Profile, AboutUs, Login, Signup, ForgotPassword } from '../pages'
 import SpecificCrypto from '../pages/SpecificCrypto/SpecificCrypto'
 import SpecificExchange from '../pages/SpecificExchange/SpecificExchange'
 
@@ -19,6 +19,7 @@ export default function AppRoutes() {
             <Route path="/aboutus" exact element={<AboutUs />} />
             <Route path="/login" exact element={<Login />} />
             <Route path="/signup" exact element={<Signup />} />
+            <Route path="/forgotpassword" exact element={<ForgotPassword />} />
         </Routes>
     )
 }
