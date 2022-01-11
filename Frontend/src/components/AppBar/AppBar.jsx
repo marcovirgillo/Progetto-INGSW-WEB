@@ -23,7 +23,7 @@ function isEmptyObject(obj) {
     return true;
 }
 
-const DropdownProfile = React.forwardRef((props, ref) => {
+function DropdownProfile(props) {
     const [userLogged, setUserLogged] = useState({});
     console.log("token appbar:", props.accessToken);
 
@@ -54,14 +54,14 @@ const DropdownProfile = React.forwardRef((props, ref) => {
     }, []);
 
     return (
-        <div ref={ref} className={"dropdown dropdown-profile " + props.class}>
+        <div className={"dropdown dropdown-profile " + props.class}>
             {!isEmptyObject(userLogged) ? <LoggedAccount setAccessToken={props.setAccessToken} user={userLogged} accessToken={props.accessToken} /> 
                                             : <AccessAccount setAccessToken={props.setAccessToken}/> }
         </div>
     );
-});
+}
 
-const DropdownNotification = React.forwardRef((props, ref) => {
+function DropdownNotification(props) {
     const [notificationList, setNotificationList] = useState(Notifications);
     const deleteNotification = idx => {
         let notif = [...notificationList.slice(0, idx), ...notificationList.slice(idx+1)]
@@ -69,7 +69,7 @@ const DropdownNotification = React.forwardRef((props, ref) => {
     }
 
     return (
-        <div ref={ref} className={"dropdown dropdown-notification " + props.class}>
+        <div className={"dropdown dropdown-notification " + props.class}>
             <div className="dropdown-wrapper">
                 <ul className="dropdown-notification-list">
                     {notificationList.length > 0 && (notificationList.map((item, val) => (
@@ -89,7 +89,7 @@ const DropdownNotification = React.forwardRef((props, ref) => {
             </div>
         </div>
     );
-});
+}
 
 function DropdownSearchPanel(props) {
     const getClassName = isActive => {
@@ -179,10 +179,10 @@ export default function AppBar(props) {
          */
         
         function handleClickOutside(event) {
+            console.log(event.target);
             if (ref.current && !ref.current.contains(event.target)) {
-
                 if(component === "Profile")
-                    setDropdownProfileActive(false);
+                    setDropdownProfileActive(false);            
 
                 else if(component === "Notification")
                     setDropdownNotificationActive(false);
@@ -243,26 +243,26 @@ export default function AppBar(props) {
                     <Icon className="search-icon" style={{display: 'none'}} onClick={() => {props.setSearchMobileOpen(true)}}>
                         <img src={require("../../res/logos/search.png")} alt="search icon" width={20} height={20}/>
                     </Icon>
-                    <Icon className="notification-icon" 
-                            onClick={()=>{ if(dropdownProfileActive)
+                    <Icon ref={wrapperRefNotification} className="notification-icon" 
+                            onClick={()=>{ if(dropdownProfileActive) 
                                                 setDropdownProfileActive(false);
                                         
                                             setDropdownNotificationActive(!dropdownNotificationActive)}}
                     >
                         <img src={require("../../res/logos/bell.png")} width={24} height={24} alt="bell"/>
                     </Icon>
-                    <Icon className="profile-icon" style={{display: 'revert'}} 
+                    <Icon ref={wrapperRefProfile} className="profile-icon" style={{display: 'revert'}} 
                             onClick={()=>{  if(dropdownNotificationActive)
-                                                setDropdownNotificationActive(false);
+                                                    setDropdownNotificationActive(false);
 
-                                            setDropdownProfileActive(!dropdownProfileActive)}}
+                                            setDropdownProfileActive(!dropdownProfileActive); }}
                     >
                         <img src={require("../../res/logos/profile.png")} width={20} height={20} alt="profile"/>
                     </Icon>
 
 
-                    <DropdownNotification ref={wrapperRefNotification} class={dropdownNotificationActive ? ' drop-active': ''} />
-                    <DropdownProfile ref={wrapperRefProfile} class={dropdownProfileActive ? ' drop-active' : ''} accessToken={props.accessToken} setAccessToken={props.setAccessToken}/>
+                    <DropdownNotification class={dropdownNotificationActive ? ' drop-active': ''} />
+                    <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} accessToken={props.accessToken} setAccessToken={props.setAccessToken}/>
                 </React.Fragment>
             )}
 
