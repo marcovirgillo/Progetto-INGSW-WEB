@@ -243,7 +243,7 @@ public class PortfolioService {
 			cryptoObj.put("price", TopCryptos.getInstance().getSupportedCryptoPrice(crypto.getTicker()));
 			cryptoObj.put("change_24h", TopCryptos.getInstance().getSupportedCrypto24hChange(crypto.getTicker()));
 			cryptoObj.put("change_7d", TopCryptos.getInstance().getSupportedCrypto7dChange(crypto.getTicker()));
-			cryptoObj.put("holdings", roundHoldings(portfolio.getCryptoMap().get(crypto)) + " " + crypto.getTicker().toUpperCase());
+			cryptoObj.put("holdings", formatHoldingStr(portfolio.getCryptoMap().get(crypto)) + " " + crypto.getTicker().toUpperCase());
 			cryptoObj.put("holding_dollar", portfolio.getCryptoMap().get(crypto) * TopCryptos.getInstance().getSupportedCryptoPrice(crypto.getTicker()));
 			cryptoObj.put("avg_buy_price", avgPrices.get(crypto.getTicker()));
 			cryptoObj.put("profit_dollar", dollarProfit.get(crypto.getTicker()));
@@ -316,15 +316,45 @@ public class PortfolioService {
 	    return bd.doubleValue();
 	}
 	
-	private double roundHoldings(double val) {
-		System.out.println(val);
-		if(val < 1)
-			return round(val, 6);
-		else if (val < 1000)
-			return round(val, 4);
-		else if(val < 1000000)
-			return round(val, 2);
-		else 
-			return round(val, 1);
+	private String formatHoldingStr(double value) {
+		String str = roundHoldings(value);
+		String val = str.replace(",", ".");
+		int dotPos = val.indexOf('.');
+		int positions = 0;
+		for(int i = dotPos; i > 0; --i) {
+			if(positions >= 3) {
+				val = val.substring(0, i) + "," + val.substring(i);
+				positions = 0;
+			}
+			
+			positions++;
+		}
+		
+		return val;
+	}
+	
+	private String roundHoldings(double val) {
+		if(val == 0)
+			return "0.0";
+		else if (val >= 1) {
+			if(val < 10000)
+				return String.valueOf(round(val, 4));
+			else if(val < 1000000)
+				return String.format("%." + 2 + "f", val);
+			
+			return String.format("%." + 1 + "f", val);
+		} 
+		else if (val < 1) {
+			double valTmp = val;
+			int decimals = 0;
+			while(valTmp < 1) {
+				valTmp *= 10;
+				decimals++;
+			}
+			
+			return String.format("%." + (decimals + 1) + "f", val);
+		}
+		
+		return "";
 	}
 }
