@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { Icon } from '@mui/material';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
@@ -11,19 +11,57 @@ import LoggedAccount from './LoggedAccount.jsx'
 import AccessAccount from './AccessAccount.jsx'
 
 const allCryptoUrl = `http://${address}:8080/supportedCrypto`;
+const checkLoginAddress = `http://${address}:8080/checkLogin`;
 
+function isEmptyObject(obj) {
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop)){
+            return false;
+        }
+    }
 
-function DropdownProfile(props) {
-    console.log(props.logged)
-    return (
-        <div className={"dropdown dropdown-profile " + props.class}>
-            
-            {props.logged == true ? <LoggedAccount setLogged={props.setLogged} /> : <AccessAccount /> }
-        </div>
-    );
+    return true;
 }
 
-function DropdownNotification(props) {
+const DropdownProfile = React.forwardRef((props, ref) => {
+    const [userLogged, setUserLogged] = useState({});
+    console.log("token appbar:", props.accessToken);
+
+    const req_options = {
+        method: 'GET',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken
+        }
+    };
+
+    const parseResult = res => {
+        if(res.status === 200) {
+            console.log("Login con token da appbar success")
+            res.json().then(result => setUserLogged(result['user']));
+        }
+        else {
+            console.log("Errore durante il login da appbar:")
+            res.json().then((val) => console.log(val));
+        }
+    }
+
+    useEffect(() => {
+        fetch(checkLoginAddress, req_options)
+            .then(res => parseResult(res));
+        
+    }, []);
+
+    return (
+        <div ref={ref} className={"dropdown dropdown-profile " + props.class}>
+            {!isEmptyObject(userLogged) ? <LoggedAccount setAccessToken={props.setAccessToken} user={userLogged} accessToken={props.accessToken} /> 
+                                            : <AccessAccount setAccessToken={props.setAccessToken}/> }
+        </div>
+    );
+});
+
+const DropdownNotification = React.forwardRef((props, ref) => {
     const [notificationList, setNotificationList] = useState(Notifications);
     const deleteNotification = idx => {
         let notif = [...notificationList.slice(0, idx), ...notificationList.slice(idx+1)]
@@ -31,7 +69,7 @@ function DropdownNotification(props) {
     }
 
     return (
-        <div className={"dropdown dropdown-notification " + props.class}>
+        <div ref={ref} className={"dropdown dropdown-notification " + props.class}>
             <div className="dropdown-wrapper">
                 <ul className="dropdown-notification-list">
                     {notificationList.length > 0 && (notificationList.map((item, val) => (
@@ -51,7 +89,7 @@ function DropdownNotification(props) {
             </div>
         </div>
     );
-}
+});
 
 function DropdownSearchPanel(props) {
     const getClassName = isActive => {
@@ -117,6 +155,8 @@ function SearchFieldMobile(props) {
     );
 }
 
+
+
 export default function AppBar(props) {
     const [dropdownProfileActive, setDropdownProfileActive] = useState(false);
     const [dropdownNotificationActive, setDropdownNotificationActive] = useState(false);
@@ -124,6 +164,39 @@ export default function AppBar(props) {
     const [allCryptos, setAllCryptos] = useState([]);
     const [queryedData, setQueryedData] = useState([]);
 
+    {/* https://it.reactjs.org/docs/forwarding-refs.html */}
+    
+    const wrapperRefProfile = useRef(null);
+    useOutsideAlerter(wrapperRefProfile, "Profile");
+
+    const wrapperRefNotification = useRef(null);
+    useOutsideAlerter(wrapperRefNotification, "Notification");
+
+    function useOutsideAlerter(ref, component) {
+    useEffect(() => {
+        /**
+         * Alert if clicked on outside of element
+         */
+        
+        function handleClickOutside(event) {
+            if (ref.current && !ref.current.contains(event.target)) {
+
+                if(component === "Profile")
+                    setDropdownProfileActive(false);
+
+                else if(component === "Notification")
+                    setDropdownNotificationActive(false);
+            }
+        }
+
+        // Bind the event listener
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [ref]);
+}
 
     useEffect(() => {
         fetch(allCryptoUrl)
@@ -187,8 +260,9 @@ export default function AppBar(props) {
                         <img src={require("../../res/logos/profile.png")} width={20} height={20} alt="profile"/>
                     </Icon>
 
-                    <DropdownNotification class={dropdownNotificationActive ? ' drop-active': ''} />
-                    <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} logged={props.logged} setLogged={props.setLogged}/>
+
+                    <DropdownNotification ref={wrapperRefNotification} class={dropdownNotificationActive ? ' drop-active': ''} />
+                    <DropdownProfile ref={wrapperRefProfile} class={dropdownProfileActive ? ' drop-active' : ''} accessToken={props.accessToken} setAccessToken={props.setAccessToken}/>
                 </React.Fragment>
             )}
 

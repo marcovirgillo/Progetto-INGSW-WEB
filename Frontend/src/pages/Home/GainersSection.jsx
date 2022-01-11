@@ -11,7 +11,6 @@ export default function GainersSection() {
 
     //Serve per fetchare da spring
     useEffect(() => {
-        console.log("QUA");
         fetch(`http://${address}:8080/topGainers`)
             .then(res => res.json())
             .then((result) => setTopPerformers(result),

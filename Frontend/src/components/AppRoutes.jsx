@@ -5,7 +5,7 @@ import { Home, Dashboard, Exchanges, News, Portfolio, Profile, AboutUs, Login, S
 import SpecificCrypto from '../pages/SpecificCrypto/SpecificCrypto'
 import SpecificExchange from '../pages/SpecificExchange/SpecificExchange'
 
-export default function AppRoutes() {
+export default function AppRoutes(props) {
     return (
         <Routes>
             <Route path="/" exact element={<Home />} />
@@ -17,7 +17,7 @@ export default function AppRoutes() {
             <Route path="/crypto/:name" exact element={<SpecificCrypto />} />
             <Route path="/exchange/:name" exact element={<SpecificExchange />} />
             <Route path="/aboutus" exact element={<AboutUs />} />
-            <Route path="/login" exact element={<Login />} />
+            <Route path="/login" exact element={<Login setAccessToken={props.setAccessToken}/>} />
             <Route path="/signup" exact element={<Signup />} />
             <Route path="/forgotpassword" exact element={<ForgotPassword />} />
         </Routes>
