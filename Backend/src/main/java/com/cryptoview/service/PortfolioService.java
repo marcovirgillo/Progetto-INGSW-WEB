@@ -280,9 +280,12 @@ public class PortfolioService {
 				totalCryptoInPortfolio.put(ticker, totalCryptoInPortfolio.get(ticker) - transaction.getQuantity());
 			}
 			
-			if(transaction.getType() == Transaction.TRANSFER) {
+			//TODO fix
+			/*if(transaction.getType() == Transaction.TRANSFER) {
 				totalCryptoInPortfolio.put(ticker, totalCryptoInPortfolio.get(ticker) - transaction.getQuantity());
 			}
+			
+			*/
 		}
 		
 		for(String ticker : dollarSpent.keySet()) {

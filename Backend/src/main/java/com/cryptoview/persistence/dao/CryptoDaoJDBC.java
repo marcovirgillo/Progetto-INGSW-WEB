@@ -22,7 +22,7 @@ public class CryptoDaoJDBC extends CryptoDao {
 	private final String insertCrypto = "insert into crypto values(?,?,?,?);";
 	private final String getCryptoPortfolio = "";
 	
-	public CryptoDaoJDBC() {
+	private CryptoDaoJDBC() {
 		cryptosMap = new HashMap<>();
 		
 		try {

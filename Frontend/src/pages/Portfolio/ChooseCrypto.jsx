@@ -6,6 +6,8 @@ import DateTimePicker from '@mui/lab/DateTimePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { TextField } from '@mui/material';
+import  ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
+import  ArrowDropUpRoundedIcon  from '@mui/icons-material/ArrowDropUpRounded';
 
 const allCryptoUrl = `http://${address}:8080/supportedCryptoSorted`;
 
@@ -19,9 +21,40 @@ function SearchField(props) {
     );
 }
 
+function CustomSelectDropown(props) {
+    const getClassName = () => {
+        if(props.isActive)
+            return "custom-dropdown-select drop-select-active";
+
+        return "custom-dropdown-select"
+    }
+
+    const itemClicked = (item) => {
+        props.setItemClicked(item);
+        props.setActive(false);
+    }
+
+    return (
+        <div className={getClassName()}>
+            <p onClick={() => itemClicked("i")}>Transfer In</p>
+            <p onClick={() => itemClicked("o")}>Transfer Out</p>
+        </div>
+    )
+}
+
 function CryptoTransactions(props) {
     const [itemActive, setItemActive] = useState("buy");
     const [value, setValue] = React.useState(new Date());
+    const [currentTransferType, setCurrentTransferType] = useState("i");
+    const [selectDropdownActive, setSelectDropdownActive] = useState(false);
+
+    //state per i valori dei field
+    const [cryptoQuantField, setCryptoQuantField] = useState(0.0);
+    const [cryptoPriceField, setCryptoPriceField] = useState(props.crypto.price);
+    const [total, setTotal] = useState(0);
+
+    useEffect(() => setTotal(cryptoPriceField * cryptoQuantField), [cryptoPriceField]);
+    useEffect(() => setTotal(cryptoPriceField * cryptoQuantField), [cryptoQuantField]);
 
     const getClassName = (elem) => {
         if(elem === itemActive)
@@ -29,8 +62,47 @@ function CryptoTransactions(props) {
     }
 
     const handleChange = (newValue) => {
+        console.log("a");
         setValue(newValue);
-      };
+    };
+
+    const addTransactionClicked = () => {
+
+    }
+
+    //faccio in modo che solo i numeri possono essere digitati nell'input field
+    const checkNumbers = (ev) => {
+        const val = ev.target.value;
+        const key = ev.key;
+
+        if(key === " ") {
+            ev.preventDefault();
+            return;
+        }
+        else if(key === ".") {
+            if(val.includes(".")) {
+                ev.preventDefault();
+                return;
+            }
+        }
+        else {
+            if(isNaN(ev.key)) {
+                ev.preventDefault();
+                return;
+            }
+        }
+    }
+
+    const updateField = (ev, fun) => {
+        fun(ev.target.value);
+    }
+
+    const getTransactionLabel = () => {
+        if(currentTransferType === "i")
+            return "Transfer In";
+        
+        return "Transfer Out"; 
+    }
 
     return (
         <React.Fragment>
@@ -51,37 +123,61 @@ function CryptoTransactions(props) {
                     <p>{props.crypto.name}</p>
                     <p className="ticker">{props.crypto.ticker.toUpperCase()}</p>
                 </ul>
-                <ul className="field-container">
+                    <ul className="field-container">
+                        <ul className="field">
+                            <p>Quantity</p>
+                            <input value={cryptoQuantField} onKeyPress={(ev) => checkNumbers(ev)} onChange={(ev) => updateField(ev, setCryptoQuantField)}  
+                                    onPaste={(ev) => ev.preventDefault()} type="number" placeholder="0.0" lang="en"
+                            />
+                        </ul>
+                        {itemActive != "transfer" && (
+                            <ul className="field price-field">
+                                <p>Price per coin</p>
+                                <span className="dollar-symbol">$</span>
+                                <input value={cryptoPriceField} onKeyPress={(ev) => checkNumbers(ev)} onChange={(ev) => updateField(ev, setCryptoPriceField)} 
+                                       onPaste={(ev) => ev.preventDefault()} type="number" lang="en"
+                                />
+                            </ul>
+                        )}
+                        {itemActive === "transfer" && (
+                           <ul className="field">
+                                <p>Transfer Type</p>
+                                <div className="custom-select" onClick={() => setSelectDropdownActive(!selectDropdownActive)}>
+                                    <p>{getTransactionLabel()}</p> 
+                                    <div className="h-spacer-choose-crypto" />
+                                    {selectDropdownActive && (<ArrowDropUpRoundedIcon />)}
+                                    {!selectDropdownActive && (<ArrowDropDownRoundedIcon />)}
+                                </div>
+                                <CustomSelectDropown isActive={selectDropdownActive} setItemClicked={setCurrentTransferType}
+                                                     setActive={setSelectDropdownActive} />
+                            </ul>
+                        )}
+                    </ul>
+            </ul>
+            <ul className="bottom-container">
+                <ul className="wrapper">
                     <ul className="field">
-                        <p>Quantity</p>
-                        <input type="number" placeholder="0.0" lang="en"/>
+                        <p>Transaction Date</p>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DateTimePicker
+                                disableFuture
+                                value={value}
+                                onChange={handleChange}
+                                renderInput={(params) => <TextField {...params} sx={{svg: { color:'white' }}} />}
+                            />
+                        </LocalizationProvider>
                     </ul>
-                    <ul className="field price-field">
-                        <p>Price per coin</p>
-                        <span className="dollar-symbol">$</span>
-                        <input type="number" lang="en" defaultValue={props.crypto.price}/>
-                    </ul>
+                {itemActive != "transfer" && (
+                    <React.Fragment>
+                        <p className="total-label">Total</p>
+                        <p className="total-dollar">$ {total}</p>
+                    </React.Fragment>
+                )}
                 </ul>
             </ul>
-            <ul className="picker-ul">
-                <ul className="field">
-                    <p>Transaction Date</p>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
-                            disableFuture
-                            value={value}
-                            onChange={handleChange}
-                            renderInput={(params) => <TextField {...params} sx={{svg: { color:'white' }}} />}
-                            sx={{border: '1 px solid red'}}
-                        />
-                    </LocalizationProvider>
-                </ul>
-            </ul>
-            <p className="total-label">Total</p>
-            <p className="total-dollar">$ 0</p>
             <ul className="btn-ul">
                 <div className="add-transaction-btn">
-                    <p>Add Transaction</p>
+                    <p onClick={addTransactionClicked}>Add Transaction</p>
                 </div>
             </ul>
            

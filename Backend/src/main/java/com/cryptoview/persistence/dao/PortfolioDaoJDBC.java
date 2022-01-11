@@ -21,6 +21,8 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 	private final String getUserPortfolio = "select * from portfolio where username_owner=?";
 	//private final String insertPortfolio = "insert into portfolio values(?, now(), ?);";
 	
+	private PortfolioDaoJDBC() {}
+	
 	public static PortfolioDaoJDBC getInstance() {
 		if(instance == null)
 			instance = new PortfolioDaoJDBC();

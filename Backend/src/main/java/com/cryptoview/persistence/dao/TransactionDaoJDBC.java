@@ -16,6 +16,9 @@ public class TransactionDaoJDBC extends TransactionDao{
 	
 	private final String getAllQuery = "select * from Transaction;";
 	private final String queryTransactionUser = "select * from transaction where portfolio_owner=?";
+	private final String insertTransaction = "insert into transaction values (nextval('transaction_ids'), ?, ?, ?, ?, ?, ?, ?, ?)";
+	
+	private TransactionDaoJDBC() {}
 	
 	public static TransactionDao getInstance() {
 		if(instance == null)
@@ -40,8 +43,27 @@ public class TransactionDaoJDBC extends TransactionDao{
 
 	@Override
 	public void save(Transaction obj) throws SQLException {
-		// TODO Auto-generated method stub
+		String portfolioOwner = obj.getPortfolioOwner();
+		String cryptoTicker = obj.getCryptoTicker();
+		char transactionType = obj.getType();
+		double quantity = obj.getQuantity();
+		double priceUsdCrypto = obj.getPriceUsdCrypto();
+		String transactionDate = obj.getTransactionDate();
+		String transactionTime = obj.getTransactionTime();
+		double totalUsdSpent = quantity * priceUsdCrypto;
 		
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(insertTransaction);
+		stm.setString(1, portfolioOwner);
+		stm.setString(2, cryptoTicker);
+		stm.setString(3, String.valueOf(transactionType));
+		stm.setDouble(4, quantity);
+		stm.setDouble(5, priceUsdCrypto);
+		stm.setString(6,  transactionDate);
+		stm.setString(7, transactionTime);
+		stm.setDouble(8, totalUsdSpent);
+		
+		stm.executeQuery();
+		stm.close();
 	}
 
 	@Override
@@ -55,7 +77,8 @@ public class TransactionDaoJDBC extends TransactionDao{
 			Transaction transaction = Transaction.parseFromDB(rs);
 			transactionList.add(transaction);
 		}
-		
+		stm.close();
+		rs.close();
 		Collections.sort(transactionList);
 		return transactionList;
 	}
