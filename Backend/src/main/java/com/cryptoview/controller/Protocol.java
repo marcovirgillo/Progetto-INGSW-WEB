@@ -9,4 +9,6 @@ public class Protocol {
 	//la combinazione user/pass è sbagliata
 	public static final int WRONG_CREDENTIAL = 401;
 	public static final int PORTFOLIO_DOESNT_EXISTS = 5010;
+	public static final int INVALID_DATA = 5020;
+	public static final int TRANSACTION_ERROR = 5030;
 }

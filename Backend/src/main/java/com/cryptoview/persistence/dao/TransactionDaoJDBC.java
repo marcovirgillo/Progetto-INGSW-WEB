@@ -43,26 +43,17 @@ public class TransactionDaoJDBC extends TransactionDao{
 
 	@Override
 	public void save(Transaction obj) throws SQLException {
-		String portfolioOwner = obj.getPortfolioOwner();
-		String cryptoTicker = obj.getCryptoTicker();
-		char transactionType = obj.getType();
-		double quantity = obj.getQuantity();
-		double priceUsdCrypto = obj.getPriceUsdCrypto();
-		String transactionDate = obj.getTransactionDate();
-		String transactionTime = obj.getTransactionTime();
-		double totalUsdSpent = quantity * priceUsdCrypto;
-		
 		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(insertTransaction);
-		stm.setString(1, portfolioOwner);
-		stm.setString(2, cryptoTicker);
-		stm.setString(3, String.valueOf(transactionType));
-		stm.setDouble(4, quantity);
-		stm.setDouble(5, priceUsdCrypto);
-		stm.setString(6,  transactionDate);
-		stm.setString(7, transactionTime);
-		stm.setDouble(8, totalUsdSpent);
+		stm.setString(1, obj.getPortfolioOwner());
+		stm.setString(2, obj.getCryptoTicker());
+		stm.setString(3, String.valueOf(obj.getType()));
+		stm.setDouble(4, obj.getQuantity());
+		stm.setDouble(5, obj.getPriceUsdCrypto());
+		stm.setDate(6, java.sql.Date.valueOf(obj.getTransactionDate()));
+		stm.setTime(7, java.sql.Time.valueOf(obj.getTransactionTime()));
+		stm.setDouble(8, obj.getTotalUsdSpent());
 		
-		stm.executeQuery();
+		stm.execute();
 		stm.close();
 	}
 
