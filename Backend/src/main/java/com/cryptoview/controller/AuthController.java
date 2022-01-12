@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cryptoview.controller.request.Credentials;
+import com.cryptoview.controller.request.FullCredentials;
 import com.cryptoview.persistence.dao.UserDaoJDBC;
 import com.cryptoview.persistence.model.User;
 import com.cryptoview.persistence.model.domain.Email;

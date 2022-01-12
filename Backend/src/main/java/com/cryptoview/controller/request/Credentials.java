@@ -1,4 +1,4 @@
-package com.cryptoview.controller;
+package com.cryptoview.controller.request;
 
 public class Credentials {
 	public String username;

@@ -33,7 +33,7 @@ export default function Account(props) {
     return (
         <ul className="dropdown-profile-list">
                 <ul className="dropdown-list-item-horizontal">
-                    <img src={require("../../res/images/avatar.jpg")} alt="propfile_icon"
+                    <img src={require("../../res/logos/profile-dark.png")} alt="propfile_icon"
                         width={42} height={42} style={{borderRadius: '100%'}}/>
                     <p className="dropdown-text" >{props.user.username}</p>
                 </ul>
