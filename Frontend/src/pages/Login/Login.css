@@ -156,3 +156,10 @@
     margin: 0 auto;
 }
 
+.password-list {
+    display: flex;
+    justify-content: flex-start !important;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 0;
+}

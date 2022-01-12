@@ -8,6 +8,10 @@ import { Link } from 'react-router-dom'
 const Signup = () => {
     const [screenSize, setScreenSize] = useState(window.innerWidth);
 
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+
     useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
         window.addEventListener('resize', handleResize);
@@ -78,6 +82,27 @@ const Signup = () => {
         return {color:'white', fontSize:'16px'};
     }
 
+    function isCharacterALetter(char) {
+        return (/[a-zA-Z]/).test(char)
+    }
+
+    function checkUsernameConstraints(ev){
+        const key = ev.key;
+
+        if(key === " ") {
+            ev.preventDefault();
+            return;
+        }
+        if(key === "."){
+            ev.preventDefault();
+            return;
+        }
+        if(isNaN(key) && !isCharacterALetter(key)){
+            ev.preventDefault();
+            return;
+        }
+    }
+
     return (
         <div className="registration">
             <div className="paper-grey" style={minHeight()}>
@@ -98,17 +123,25 @@ const Signup = () => {
                 <div style={{paddingTop:'20px'}} />
                 <span className="field-title" style={fieldFont()}>Your username</span>
                 <div className="login-field">
-                    <input className="login-field-style" type="text" placeholder='userexample' style={fieldFont()}/>
+                    <input className="login-field-style" type="text" placeholder='userexample' style={fieldFont()}
+                        onKeyPress={(ev) => checkUsernameConstraints(ev)} onChange={(ev) => setUsername(ev.target.value)}
+                        onPaste={(ev) => ev.preventDefault()}
+                    />
                 </div>
                 <div style={{paddingTop:'20px'}} />
                 <span className="field-title" style={fieldFont()}>Your email</span>
                 <div className="login-field">
-                    <input className="login-field-style" type="text" placeholder='name@domain' style={fieldFont()}/>
+                    <input className="login-field-style" type="text" placeholder='name@domain' style={fieldFont()}
+                        onChange={(ev) => setEmail(ev.target.value)}
+                    />
                 </div>
                 <div style={{paddingTop:'20px'}} />
                 <span className="field-title" style={fieldFont()}>Password</span>
                 <div className="login-field">
-                    <input className="login-field-style" type="password" placeholder='At least 8 characters' style={fieldFont()}/>
+                    <input className="login-field-style" type="password" placeholder='At least 8 characters' style={fieldFont()}
+                        onChange={(ev) => setPassword(ev.target.value)}
+                        onPaste={(ev) => ev.preventDefault()}
+                    />
                 </div>
                 <div style={{paddingTop:'20px'}} />
                 <div className="login-field">
@@ -134,7 +167,7 @@ const Signup = () => {
                 <div style={{paddingTop:'20px'}} />
                 <div className="signup-ending-list"> 
                     <span className="login-ending" style={loginEndingStyle("white")}>Already a member?</span>
-                    <span className="login-ending"><Link to="/login" style={loginEndingStyle("blue")}>Log in!</Link></span>
+                    <span className="login-ending"><Link to="/login" style={loginEndingStyle("blue")} /* onClick={() => } */>Log in!</Link></span>
                 </div>
             </div>
         </div>
