@@ -375,11 +375,11 @@
     width: 88%;
 }
 
-.field {
+.portfolio .field {
     width: 100%;
 }
 
-input {
+.portfolio input {
     width: 90%;
 }
 
@@ -387,13 +387,13 @@ input {
     padding: 0px;
 }
 
-.field p {
+.portfolio .field p {
     margin-bottom: 10px;
     font-weight: 500;
     color: white;
 }
 
-.field input[type=number] {
+.portfolio .field input[type=number] {
     border-radius: 10px;
     border: 1px solid var(--bg-color-dark);
     padding: 14px 8px 14px 8px;
@@ -401,11 +401,11 @@ input {
     color: white;
 }
 
-.field input[type=number]:hover {
+.portfolio .field input[type=number]:hover {
     border: 1px solid black !important;
 }
 
-.field .dollar-symbol {
+.portfolio .field .dollar-symbol {
     color: white;
     position: absolute;
     left: 10px;
@@ -417,7 +417,7 @@ input {
     position: relative;
 } 
 
-.price-field input[type=number] {
+.portfolio .price-field input[type=number] {
     padding-left: 25px;
     width: 90%;
 }
@@ -440,20 +440,20 @@ input {
     padding: 11px 0px 8px 10px !important;
 }
 
-.total-label {
+.portfolio .total-label {
     color: var(--light-gray-color);
     margin: 0px;
     margin-top: 20px;
 }
 
-.total-dollar {
+.portfolio .total-dollar {
     margin: 10px 0px 0px 0px;
     color: white;
     font-weight: 600px;
     font-size: 1.5em;
 }
 
-.add-transaction-btn {
+.portfolio .add-transaction-btn {
     width: 88%;
     background: var(--color-cyan);
     border-radius: 10px;
@@ -462,11 +462,11 @@ input {
     cursor: pointer;
 }
 
-.add-transaction-btn:hover {
+.portfolio .add-transaction-btn:hover {
     background: var(--color-cyan-dark);
 }
 
-.add-transaction-btn p {
+.portfolio .add-transaction-btn p {
     text-align: center;
     color: white;
     font-weight: 600;
@@ -480,15 +480,15 @@ input {
     justify-content: center;
 }
 
-.field select * {
+.portfolio .field select * {
     font-weight: 600;
 }
 
-.field select:hover {
+.portfolio .field select:hover {
     border: 2px solid black;
 }
 
-.option-item {
+.portfolio .option-item {
     padding: 10px 0px 10px 0px;
 }
 
@@ -541,7 +541,7 @@ input {
     transition: transform 0.3s ease 0s;
 }
 
-.bottom-container {
+.portfolio .bottom-container {
     padding: 0px;
     width: 100%;
     display: flex;

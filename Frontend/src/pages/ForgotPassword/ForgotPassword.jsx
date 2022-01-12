@@ -49,7 +49,7 @@ export default function ForgotPassword() {
         return {color:'white', fontSize:'16px'};
     }
 
-    function loginButtonTextStyle(type){
+    function sendButtonTextStyle(type){
         if(screenSize<600 && type=="normal")
             return {fontSize:'16px', paddingTop:'9px'};
         return {fontSize:'18px'};
@@ -65,32 +65,32 @@ export default function ForgotPassword() {
         <div className="forgot-password">
             <div className="paper-grey" style={minHeight()}>
                 <div style={{paddingTop:'30px'}} />
-                <div className="login-logo">
+                <div className="forgot-password-logo">
                     <img src={require("../../res/logos/CryptoViewLogo.png")}  alt="logo-cryptoview" height={100} width={100} />
                 </div>
                 <div style={{paddingTop:'20px'}} />
-                <div className="login-list"> 
-                    <span className="login-header-title" style={titleStyle("blue")}>Forgot your password?</span>
+                <div className="forgot-password-list"> 
+                    <span className="forgot-password-header-title" style={titleStyle("blue")}>Forgot your password?</span>
                 </div>
                 <div style={{paddingTop:'15px'}} />
                 <div> 
-                    <span className="login-header-subtitle" style={subtitle()}>Don't worry! Resetting your password is easy. Just type in the email you registered to CryptoView</span>
+                    <span className="forgot-password-header-subtitle" style={subtitle()}>Don't worry! Resetting your password is easy. Just type in the email you registered to CryptoView</span>
                 </div>
                 <div style={{paddingTop:'20px'}} />
-                <span className="field-title" style={fieldFont()}>Email</span>
-                <div className="login-field">
-                    <input className="login-field-style" type="text" placeholder='Enter your email address' style={fieldFont()}/>
+                <span className="forgot-password-field-title" style={fieldFont()}>Email</span>
+                <div className="forgot-password-field">
+                    <input className="forgot-password-field-style" type="text" placeholder='Enter your email address' style={fieldFont()}/>
                 </div>
                 <div style={{paddingTop:'20px'}} />
-                <div className="login-field">
-                    <span className="login-button-style" style={fieldFont()}>
-                        <div className='login-button-text' style={loginButtonTextStyle("normal")}>Send</div>
+                <div className="forgot-password-field">
+                    <span className="send-button-style" style={fieldFont()}>
+                        <div className='send-button-text' style={sendButtonTextStyle("normal")}>Send</div>
                     </span>
                 </div>
                 <div style={{paddingTop:'20px'}} />
-                <div className="login-ending-list"> 
-                    <span className="login-ending" style={loginEndingStyle("white")}>Do you remember your password?</span>
-                    <span className="login-ending" ><Link to="/login" style={loginEndingStyle("blue")}>Try logging in</Link></span>
+                <div className="forgot-password-ending-list"> 
+                    <span className="forgot-password-ending" style={loginEndingStyle("white")}>Do you remember your password?</span>
+                    <span className="forgot-password-ending" ><Link to="/login" style={loginEndingStyle("blue")}>Try logging in</Link></span>
                 </div>
             </div>
         </div>

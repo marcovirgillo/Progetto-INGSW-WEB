@@ -81,7 +81,7 @@ export default function CriptoTable() {
         fetch(`http://${address}:8080/getTop100`)
             .then((res) => res.json())
             .then((result) => setCryptoTable(result),
-                  (error) => alert("Error fetching top 100 cryptos"));
+                  (error) => console.log("Error fetching top 100 cryptos"));
     };
 
     useEffect(fetchData, []);
@@ -115,7 +115,7 @@ export default function CriptoTable() {
             </TableHead>
             <TableBody>
                 {
-                    cryptoTable.map((item, val) => (
+                    (cryptoTable.slice(0, 10)).map((item, val) => (
                             <TableRow key={val}>
                                     <TableCell className="table-item">{item.rank}</TableCell>
                                     <TableCell className="table-item">

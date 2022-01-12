@@ -4,9 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.cryptoview.persistence.model.domain.Email;
+import com.cryptoview.persistence.model.domain.Password;
 import com.cryptoview.persistence.model.domain.Username;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class User {
+	
+	@JsonIgnore
+	private Password password;
 	
 	private Email email;
 	private Username username;
@@ -32,6 +37,14 @@ public class User {
 	
 	public byte[] getAvatar() {
 		return avatar;
+	}
+	
+	public void setPassword(Password password) {
+		this.password = password;
+	}
+	
+	public String getPassword() {
+		return password.toString();
 	}
 	
 	public void setAvatar(byte[] avatar) {
