@@ -84,8 +84,9 @@ const ChartSection = () => {
         prices.forEach((item) => {
             if(item[1]>1)
                 crypto_prices.push(item[1].toFixed(2));
-            else
-                crypto_prices.push(item[1].toFixed(6));
+            else{
+                crypto_prices.push(item[1]);
+            }
 
             times.push(item[0]);
         })

@@ -25,8 +25,11 @@ export default function CryptoChart(props) {
         if(value >= Math.pow(10,12) && value < Math.pow(10,15))
             return value / Math.pow(10,12) + " T";
 
-        if(value<1)
+        if(value<1){
+            if(value < Math.pow(10,-8))
+                return value.toFixed(9);
             return value.toFixed(6);
+        }
 
         return value.toFixed(2);
     }
