@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cryptoview.persistence.dao.UserDaoJDBC;
@@ -17,11 +18,11 @@ import com.cryptoview.utilities.SpringUtil;
 public class AuthController {
 	
 	@PostMapping("/login")
-	public User doLogin(@RequestBody String username, @RequestBody String password, HttpServletResponse response) {
+	public User doLogin(@RequestBody Test test, HttpServletResponse response) {
 		User utente;
 		
 		try {
-			utente = UserDaoJDBC.getInstance().checkCredentials(username, password);
+			utente = UserDaoJDBC.getInstance().checkCredentials(test.getUsername(), test.getPassword());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.setStatus(500);
