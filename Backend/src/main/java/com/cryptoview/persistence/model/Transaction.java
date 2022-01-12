@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 
+import com.cryptoview.controller.transfers.TransactionData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Transaction implements Comparable<Transaction> {
@@ -70,14 +71,9 @@ public class Transaction implements Comparable<Transaction> {
 		return transactionDatestamp;
 	}
 	
-	public void calculateDateStamp() {
-		try {
-			SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-			transactionDatestamp = formatter.parse(transactionDate + " " + transactionTime);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			transactionDatestamp = Date.from(Instant.EPOCH);
-		}
+	public void calculateDateStamp() throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		transactionDatestamp = formatter.parse(transactionDate + " " + transactionTime);
 	}
 	
 	public void setPriceUsdCrypto(double priceUsdCrypto) {
@@ -104,6 +100,10 @@ public class Transaction implements Comparable<Transaction> {
 		return transactionTime;
 	}
 	
+	public void setTransactionDatestamp(Date transactionDatestamp) {
+		this.transactionDatestamp = transactionDatestamp;
+	}
+	
 	public void setTransactionTime(String transactionTime) {
 		this.transactionTime = transactionTime;
 	}
@@ -118,7 +118,11 @@ public class Transaction implements Comparable<Transaction> {
 		transaction.setTransactionDate(rs.getString("transaction_date"));
 		transaction.setTransactionTime(rs.getString("transaction_time"));
 		transaction.setTotalUsdSpent(rs.getDouble("total_usd_spent"));
-		transaction.calculateDateStamp();
+		try {
+			transaction.calculateDateStamp();
+		} catch (ParseException e) {
+			transaction.setTransactionDatestamp(Date.from(Instant.now()));
+		}
 		return transaction;
 	}
 
@@ -131,6 +135,39 @@ public class Transaction implements Comparable<Transaction> {
 			return 1;
 		
 		return 0;
+	}
+
+	public static Transaction parseFromdata(TransactionData transaction) throws IllegalArgumentException {
+		Transaction transfer = new Transaction();
+		transfer.setCryptoTicker(transaction.ticker);
+		
+		if(transaction.quantity < 0)
+			throw new IllegalArgumentException();
+		
+		transfer.setQuantity(transaction.quantity);
+		
+		if(transaction.price_usd_crypto < 0)
+			throw new IllegalArgumentException();
+		
+		transfer.setPriceUsdCrypto(transaction.price_usd_crypto);
+		
+		if(transaction.type != BUY && transaction.type != SELL && transaction.type != TRANSFER_IN && transaction.type != TRANSFER_OUT)
+			throw new IllegalArgumentException();
+		
+		transfer.setType(transaction.type);
+				
+		transfer.setTransactionDate(transaction.transaction_date);
+		transfer.setTransactionTime(transaction.transaction_time.split("\\.")[0]);
+		
+		try {
+			transfer.calculateDateStamp();
+		} catch (ParseException e) {
+			throw new IllegalArgumentException();
+		}
+		
+		transfer.setTotalUsdSpent(transfer.priceUsdCrypto * transfer.quantity);
+		
+		return transfer;
 	}
 	
 }

@@ -215,7 +215,8 @@ const Portfolio = (props) => {
                     <PortfolioTable data={portfolioInfo.assets}/>
                 </ul>
 
-                <ChooseCrypto className={getCryptoDialogClass()} setDialogOpen={setChooseCryptoPageActive}/>
+                <ChooseCrypto fetchChart={fetcherChart} fetchInfo={fetcherInfo} accessToken={props.accessToken} 
+                    className={getCryptoDialogClass()} setDialogOpen={setChooseCryptoPageActive}/>
             </div>
         </div>
     )

@@ -8,7 +8,6 @@ export default function OverviewSection() {
     const [worstPerformers, setWorstPerformers] = useState([]);
     const [marketStats, setMarketStats] = useState([]);
 
-    //Serve per fetchare da spring
     useEffect(() => {
         console.log("QUA");
         fetch(`http://${address}:8080/topGainers`)
@@ -42,8 +41,9 @@ export default function OverviewSection() {
                 <div className="container stats">
                     <ul style={{paddingLeft: '50px'}}>
                         <ul className="container-title">
-                            <img src={require("../../res/logos/stats-icon.png")} width={32} height={32} className="container-title-icon" style={{marginRight:'20px', marginTop:'7px'}}/>
+                            <img src={require("../../res/logos/portfolio-dashboard.png")} width={32} height={32} className="container-title-icon" style={{marginRight:'20px', marginTop:'7px'}}/>
                             <div className="list-title">Your portfolio</div>
+                            <div className="dashboard-spacer"></div>
                             <Link to="/portfolio"><div className="show-more-button">Show more</div></ Link>
                         </ul>
                         {

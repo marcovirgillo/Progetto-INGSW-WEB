@@ -13,12 +13,12 @@ const Dashboard = () => {
                 <p className="dashboard-title">Your favourite assets</p>
                 <div className="button-container" style={{marginRight:'0px', marginTop:'0px', marginBottom:'0px'}}>
                     <ul className="alert-container-title">
-                        <img src={require("../../res/logos/stats-icon.png")} width={35} height={35}  style={{marginRight:'20px', marginTop:'1px'}}/>
-                        <p>View Alerts</p>
+                        <img className="favourite-image" src={require("../../res/logos/notifiche.png")} width={35} height={35}  style={{marginRight:'20px', marginTop:'1px'}}/>
+                        <p className="edit-alert">View Alerts</p>
                     </ul>
                     <ul className="favourite-container-title">
-                        <img src={require("../../res/logos/stats-icon.png")} width={35} height={35}  style={{marginRight:'20px', marginTop:'1px'}}/>
-                        <p>Edit Favourites</p> 
+                        <img className='plus-image' src={require("../../res/logos/plus.png")} width={35} height={35}  style={{marginRight:'20px', marginTop:'1px'}}/>
+                        <p className='edit-favourites'>Edit Favourites</p> 
                     </ul>
                 </div>
                 <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>

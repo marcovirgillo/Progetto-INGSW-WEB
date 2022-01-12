@@ -23,7 +23,6 @@ function getFormattedPrice(price) {
         var decimals = 0;
         var priceTmp = price;
         while(priceTmp < 1) {
-            console.log(priceTmp);
             priceTmp *= 10;
             decimals++;
         }

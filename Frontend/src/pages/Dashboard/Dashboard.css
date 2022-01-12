@@ -8,7 +8,6 @@
     background-color: var(--bg-color-gray);
     border-radius: 8px;
     width: 100%;
-    padding-bottom: 40px;
 }
 
 .overview-label {
@@ -19,16 +18,8 @@
     font-weight: 500;
 }
 
-.cripto-title {
-    color: white;
-    margin-left: 70px;
-    font-weight: bold;
-    font-size: 18px;
-}
-
 .show-more-button {
     color: white;
-    margin-left: 50px;
     font-weight: bold;
     font-size: 13px;
     background-color:   #607390;
@@ -36,6 +27,17 @@
     padding: 3px 5px 6px 5px;
     text-align: center;
     cursor: pointer;
+    margin-right: 20px;
+}
+
+.container-title {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.dashboard-spacer {
+    flex: 1 0 0;
 }
 
 .button-container {
@@ -55,11 +57,43 @@
 
 @media only screen and (max-width: 600px) {
     .dashboard-page {
-        padding: 0px;
+        padding: 0;
     }
 
     .paper-gray {
         border-radius: 0px;
+    }
+
+    .alert-container-title {
+        width: 100px;
+        height: 55px;
+        padding-left: 10px !important;
+        padding-right: 35px !important;
+        text-align: left !important;
+    }
+
+    .favourite-container-title {
+        width: 100px !important;
+        height: 55px;
+        padding-left: 10px !important;
+        padding-right: 35px !important;
+        text-align: left !important;
+    }
+
+    .plus-image {
+        margin-right: 5px !important;
+    }
+
+    .favourite-image {
+        margin-right: 5px !important;
+    }
+
+    .edit-alert {
+        padding-left: 10px !important;
+    }
+
+    .edit-favourites {
+        padding-left: 3px !important;
     }
 }
 
@@ -94,14 +128,8 @@
     cursor: pointer;
     margin-right: 3 0px;
     padding: 0px 20px 0px 20px;
+    margin-right: 45px;
 }
-
-
-
-
-
-
-
 
 .favourite-assets-news-label {
     margin: 50px 0px 10px 0px;
@@ -122,9 +150,6 @@
     padding-bottom: 20px;
 
 }
-
-
-
 
 .dashboard-big-news-container {
     background-color: #575757;
@@ -182,11 +207,6 @@
     font-size: 16px;
 }
 
-
-
-
-
-
 .dashboard-three-side-news-container {
     margin-right: 5%;
     width: 35%;
@@ -231,8 +251,6 @@
     font-weight: bold;
     font-size: 14px;
 }
-
-
 
 @media only screen and (max-width: 1215px) {
 
