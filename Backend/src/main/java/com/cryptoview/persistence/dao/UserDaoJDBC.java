@@ -17,7 +17,7 @@ public class UserDaoJDBC extends UserDao {
 	private String findByTokenQuery = "select * from utente where token=?";
 	private String checkCredentialsQuery = "select * from utente where username=?";
 	private String saveTokenQuery = "update utente set token=? where username=?";
-	private String saveUserQuery = "insert into utente values(?,?, null, null, ?)";
+	private String saveUserQuery = "insert into utente values(?,?, null, '', ?)";
 	
 	private UserDaoJDBC() {}
 	
@@ -72,11 +72,9 @@ public class UserDaoJDBC extends UserDao {
 		User utente = null;
 		if(rs.next()) {
 			String dbPassword = rs.getString("password");
-			if (password.toString().equals(dbPassword))
-				utente = User.parseFromDB(rs);
 			
-			/*if(SpringUtil.checkPassword(possiblePass, password))
-				utente = User.parseFromDB(rs);*/
+			if(SpringUtil.checkPassword(dbPassword, password.toString()))
+				utente = User.parseFromDB(rs);
 		}
 		
 		rs.close();

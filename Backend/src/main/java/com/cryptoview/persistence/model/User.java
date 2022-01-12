@@ -53,7 +53,7 @@ public class User {
 	
 	public static User parseFromDB(ResultSet rs) throws SQLException, IllegalArgumentException, NullPointerException {
 		User user = new User();
-		user.setAvatar(null);
+		user.setAvatar(rs.getBytes("avatar"));
 		user.setEmail(new Email(rs.getString("email")));
 		user.setUsername(new Username(rs.getString("username")));
 		

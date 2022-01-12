@@ -25,7 +25,7 @@ function IndicatorRectangle(props) {
     );
 }
 
-const Portfolio = () => {
+const Portfolio = (props) => {
     const [chartType, setChartType] = useState("chart");
     const [chartInterval, setChartInterval] = useState("1");
 
@@ -35,25 +35,55 @@ const Portfolio = () => {
     const [portfolioChange, setPortfolioChange] = useState(PlaceholderBalanceChange);
     const [chooseCryptoPageActive, setChooseCryptoPageActive] = useState(false);
 
-    let myheaders = {
-        "timeStamp": chartInterval
+    const optionsChart = {
+        method: 'GET',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken,
+            'timeStamp': chartInterval
+        }
+    }
+
+    const optionsInfo = {
+        method: 'GET',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken,
+        }
+    }
+
+    const processInfo = res => {
+        if(res.status === 200) {
+            res.json()
+                .then((result) => setPortfolioInfo(result),
+                      (error) => console.log(error));
+        }
+        else if(res.status === 5010) {
+            console.log("Portfolio doesn't exists");
+        }
+    }
+
+    const processValue = res => {
+        if(res.status === 200) {
+            res.json()
+                .then((result) => processData(result),
+                    (error) => console.log(error));
+        }
+        else if(res.status === 5010) {
+            console.log("Portfolio doesn't exists");
+        }
     }
 
     const fetcherChart = () => {
-        fetch(portfolioChartUrl, {
-            method: 'GET',
-            headers: myheaders
-        })
-        .then((res) => res.json())
-        .then((result) => processData(result),
-              (error) => console.log(error));
+        fetch(portfolioChartUrl, optionsChart)
+        .then((res) => processValue(res));
     }
 
     const fetcherInfo = () => {
-        fetch(portfolioInfoUrl)
-        .then((res) => res.json())
-        .then((result) => setPortfolioInfo(result),
-              (error) => console.log(error));
+        fetch(portfolioInfoUrl, optionsInfo)
+        .then((res) => processInfo(res));
     }
 
     useEffect(() => {

@@ -3,6 +3,7 @@ import { address } from "../../assets/globalVar";
 const logoutLink = `http://${address}:8080/logout`;
 
 export default function Account(props) {
+    
     const req_options = {
         method: 'GET',
         headers: { 
@@ -30,10 +31,17 @@ export default function Account(props) {
             .then(res => parseResponse(res));
     }
 
+    const getProfilePic = () => {
+        if(props.user.avatar === null)
+            return require("../../res/images/defaultSinglePic.png");
+        else 
+            return "data:image/png;base64," + props.user.avatar;
+    }
+
     return (
         <ul className="dropdown-profile-list">
                 <ul className="dropdown-list-item-horizontal">
-                    <img src={require("../../res/images/avatar.jpg")} alt="propfile_icon"
+                    <img src={getProfilePic()} alt="propfile_icon"
                         width={42} height={42} style={{borderRadius: '100%'}}/>
                     <p className="dropdown-text" >{props.user.username}</p>
                 </ul>
