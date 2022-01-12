@@ -13,7 +13,7 @@ const HeaderSection = () => {
         fetch(`https://api.coingecko.com/api/v3/exchanges/${exchangeID}`)
         .then((res) => res.json())
         .then((result) => setExchangeData(result),
-        (error) => alert("Error fetching exchange"));
+        (error) => console.log("Error fetching exchange"));
     }
 
     useEffect(() => {

@@ -202,7 +202,7 @@ export default function AppBar(props) {
         fetch(allCryptoUrl)
             .then((res) => res.json())
             .then((result) => {setAllCryptos(result); setQueryedData(result)},
-                   (error) => console.log("error"));
+                   (error) => console.log("Error fetching supported crypto "));
     }, []);
 
     const queryData = (str) => {
