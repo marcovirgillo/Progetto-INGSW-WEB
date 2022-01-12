@@ -5,6 +5,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { blue } from '@mui/material/colors';
 import { Link } from 'react-router-dom'
 import { address } from '../../assets/globalVar';
+import { useNavigate } from "react-router-dom";
 
 const signupAddress = `http://${address}:8080/registration`;
 
@@ -17,6 +18,8 @@ const Signup = () => {
 
     const [passwordInfoActive, setPasswordInfoActive] = useState(false);
     const [termsChecked, setTermsChecked] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
@@ -40,6 +43,7 @@ const Signup = () => {
     const parseResponse = res => {
         if(res.status === 200) {
             console.log("signup successful");
+            navigate("/login");
         }
         else {
             console.log("error during signup");

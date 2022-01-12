@@ -240,7 +240,7 @@ public class CryptoDataController {
 	@SuppressWarnings("unchecked")
 	private int portfolioDoesnExist(JSONObject resp) {
 		resp.put("msg", "The user doesn't have a portfolio");
-		return Protocol.PORTFOLIO_DOESNT_EXIST;
+		return Protocol.PORTFOLIO_DOESNT_EXISTS;
 	}
 
 	@GetMapping("/popularNews")
