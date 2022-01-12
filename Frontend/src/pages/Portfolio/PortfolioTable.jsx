@@ -49,17 +49,72 @@ export const formatProfitDollar = (price) => {
     }
 }
 
+function DropdownOptions(props) {
+    return (
+        <div className={props.className}>
+            <ul className="options-list">
+                <ul className="option-item">
+                    <img src={require("../../res/logos/plus-nocircle.png")} width={24}/>
+                    <p>Add Transaction</p>
+                </ul>
+                <ul className="option-item">
+                    <img src={require("../../res/logos/transaction.png")} width={24}/>
+                    <p>All Transactions</p>
+                </ul>
+                <ul className="option-item">
+                    <img src={require("../../res/logos/remove.png")} width={24}/>
+                    <p>Remove Asset</p>
+                </ul>
+            </ul>
+        </div>
+    )
+}
+
 export default function CriptoTable(props) {
     const { data } = props;
     const [order, setOrder] = useState("ASC");
     const [tableData, setTableData] = useState(data);
+    //è un array di valori 1/0 che dice se la riga i della tabella ha il dropdown attivo
+    const [dropdownsActive, setDropdownsActive] = useState([]);
 
     //itemactive è un'etichetta che dice chi è l'elemento che ha fatto il sorting
     const [itemActive, setItemActive] = useState(null);
     
     useEffect(() => {
         setTableData(data);
+        resetDropdowns();
     }, [data]);
+
+    const resetDropdowns = () => {
+        let arr = [];
+        for(var i = 0; i < data.length; ++i)
+            arr.push(0);
+
+        setDropdownsActive(arr);
+    }
+
+    const setThisDropdownActive = (idx) => {
+        let arr = [];
+        for(var i = 0; i < data.length; ++i) {
+            if(i != idx)
+                arr.push(0);
+            else {
+                if(dropdownsActive[i] === 0)
+                    arr.push(1);
+                else
+                    arr.push(0);
+            }
+        }
+
+        setDropdownsActive(arr);
+    }
+
+    const getDropdownClassName = (idx) => {
+        if(dropdownsActive [idx] === 1)
+            return "dropdown-options drop-opt-active";
+        else
+            return "dropdown-options"; 
+    }
 
     //il parametro è l'elemento del json sul quale fare l'ordinamento
     const sorting = (col) => {
@@ -161,6 +216,12 @@ export default function CriptoTable(props) {
                                             {item.profit_percentage} %
                                         </li>
                                     </ul>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="options-btn" onClick={() => setThisDropdownActive(val)}>
+                                        <img src={require("../../res/logos/3-dots.png")} width={21}/>
+                                    </div>
+                                    <DropdownOptions className={getDropdownClassName(val)}/>
                                 </TableCell>
                         </TableRow>
                     ))

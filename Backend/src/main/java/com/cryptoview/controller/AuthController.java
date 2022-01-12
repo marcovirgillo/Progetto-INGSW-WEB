@@ -53,10 +53,19 @@ public class AuthController {
 			return resp;
 		}
 		
-		String token = SpringUtil.generateNewToken();
+		String token = "";
 		
 		try {
-			UserDaoJDBC.getInstance().saveToken(credentials.username, token);
+			token = UserDaoJDBC.getInstance().getToken(credentials.username);
+			
+			//se il token è vuoto, ne genero uno nuovo
+			if(token.isBlank()) {
+				String newToken = SpringUtil.generateNewToken();
+				UserDaoJDBC.getInstance().saveToken(credentials.username, newToken);
+				
+				token = newToken;
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.setStatus(Protocol.SERVER_ERROR);
