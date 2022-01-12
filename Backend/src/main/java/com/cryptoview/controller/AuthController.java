@@ -1,10 +1,6 @@
 package com.cryptoview.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cryptoview.persistence.dao.UserDaoJDBC;
 import com.cryptoview.persistence.model.User;
+import com.cryptoview.persistence.model.domain.Email;
 import com.cryptoview.persistence.model.domain.Password;
 import com.cryptoview.persistence.model.domain.Username;
 import com.cryptoview.utilities.SpringUtil;
@@ -42,7 +39,7 @@ public class AuthController {
 		} catch (IllegalArgumentException | NullPointerException e2) {
 			e2.printStackTrace();
 			response.setStatus(403);
-			resp.put("msg", "The provided credentials are  not valid");
+			resp.put("msg", "The provided credentials are not valid");
 			
 			return resp;
 		}
@@ -77,7 +74,6 @@ public class AuthController {
 	@GetMapping("/checkLogin")
 	public JSONObject checkLogin(HttpServletRequest request, HttpServletResponse response) {
 		String token = request.getHeader("Authorization");
-		System.out.println(token);
 		JSONObject resp = new JSONObject();
 		
 		if(token != null && !token.isBlank()) {
@@ -114,5 +110,79 @@ public class AuthController {
 		
 		return resp;
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	@GetMapping("/logout")
+	public JSONObject doLogout(HttpServletRequest request, HttpServletResponse response) {
+		JSONObject resp = new JSONObject();
+		String token = request.getHeader("Authorization");
+		
+		if(token != null && !token.isBlank()) {
+			try {
+				//cerco l'utente che ha quel token di accesso
+				User user = UserDaoJDBC.getInstance().findByToken(token);
+				
+				//se non trovo l'utente, rispondo con error 5000
+				if(user == null) {
+					response.setStatus(5000);
+					resp.put("msg", "The auth token is not valid");
+					
+					return resp;
+				}
+				
+				//altrimenti invalido il token
+				UserDaoJDBC.getInstance().saveToken(user.getUsername(), "");
+				response.setStatus(200);
+				resp.put("msg", "logout successful");
+				
+				return resp;
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(500);
+				resp.put("msg", "Internal server error");
+				
+				return resp;
+			}
+		}
+		
+		//se non ho trovato il token, restituisco il codice di errore
+		response.setStatus(5000);
+		resp.put("msg", "The auth token is not valid");
+		
+		return resp;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@PostMapping("/registration")
+	public JSONObject doRegistration(@RequestBody FullCredentials credentials, HttpServletResponse response) {
+		JSONObject resp = new JSONObject();
+		
+		try {
+			User utente = new User();
+			
+			utente.setEmail(new Email(credentials.email));
+			utente.setPassword(new Password(credentials.password));
+			utente.setUsername(new Username(credentials.username));
+			
+			UserDaoJDBC.getInstance().save(utente);
+			
+			response.setStatus(200);
+			resp.put("msg", "Account created succesffully");
+			
+			return resp;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.setStatus(500);
+			resp.put("msg", "Internal server error");
+			
+			return resp;
+		} catch(IllegalArgumentException | NullPointerException e2) {
+			e2.printStackTrace();
+			response.setStatus(403);
+			resp.put("msg", "The provided credentials are not valid");
+			
+			return resp;
+		}
+	}
 }
