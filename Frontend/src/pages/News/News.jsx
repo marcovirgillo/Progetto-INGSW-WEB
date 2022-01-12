@@ -1,7 +1,7 @@
 import React, { useEffect, useState }  from 'react'
 import "./News.css"
 import { Grid } from '@mui/material'
-import { address } from './../../assets/globalVar.js';
+import { address } from './../../assets/globalVar.js'
 
 
 const BigNewsBox = (props) => {

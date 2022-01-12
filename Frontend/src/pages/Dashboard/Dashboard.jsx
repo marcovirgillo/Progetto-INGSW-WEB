@@ -2,6 +2,7 @@ import React from 'react'
 import OverviewSection from './OverviewSection'
 import "./Dashboard.css"
 import FavouriteTable from './FavouriteTable'
+import NewsSection from './NewsSection'
 
 const Dashboard = () => {
     return (
@@ -23,6 +24,8 @@ const Dashboard = () => {
                 <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                     <FavouriteTable /> 
                 </ul>
+
+                <NewsSection />
             </div>
         </div>
     )
