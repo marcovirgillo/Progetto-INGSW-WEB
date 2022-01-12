@@ -53,7 +53,7 @@ export default function ExchangesTable() {
         fetch(`https://api.coingecko.com/api/v3/exchanges/${exchangeID}/tickers`)
         .then((res) => res.json())
         .then((result) => setExchangeData(result.tickers),
-        (error) => alert("Error fetching exchange"));
+        (error) => console.log("Error fetching exchange"));
         
     }
 
@@ -65,7 +65,7 @@ export default function ExchangesTable() {
         fetch(`http://${address}:8080/getTop100`)
             .then((res) => res.json())
             .then((result) => setCryptoTable(result),
-                  (error) => alert("Error fetching top 100 cryptos"));
+                  (error) => console.log("Error fetching top 100 cryptos"));
     };
 
     useEffect(fetchData, []);

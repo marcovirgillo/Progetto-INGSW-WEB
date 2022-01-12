@@ -119,8 +119,8 @@ export default function News() {
                 <div className='container-news-top'>
                     {/* Single big news*/}
                     {
-                        popularNewsData.map((item, index) => (
-                            (index == 0) && (<BigNewsBox
+                        (popularNewsData.slice(0, 1)).map((item, index) => (
+                            <BigNewsBox
 
                                 key = {index}
                                 imagePath = {item.imageUrl}
@@ -128,7 +128,7 @@ export default function News() {
                                 content = {item.content}
                                 publishedAt = {item.publishedAt}
                                 url = {item.url}
-                            />)
+                            />
                         ))
                     }
 
@@ -137,15 +137,15 @@ export default function News() {
                     {/* Three side news*/}
                     <div className='three-side-news-container'>
                         {
-                            popularNewsData.map((item, index) => (
-                                (index > 0) && (<SideNewsBox
+                            (popularNewsData.slice(1, popularNewsData.length)).map((item, index) => (
+                                <SideNewsBox
                                     key = {index}
                                     title = {item.title}
                                     imagePath = {item.imageUrl}
                                     publishedAt = {item.publishedAt}
                                     url = {item.url}
                                     
-                                />)
+                                />
                             ))
                         }
                     </div>
