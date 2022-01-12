@@ -44,7 +44,18 @@ const Login = (props) => {
         }
     }
 
+    function checkConstraints(){
+        if(username=="" || password==""){
+            console.log("All fields need to be filled")
+            return false;
+        }
+        return true;
+    }
+
     const doLogin = () => {
+        if(!checkConstraints())
+            return;
+
         console.log("sto loggando!");
         fetch(loginLink, loginOptions)
         .then((res) => parseResult(res));
@@ -162,7 +173,6 @@ const Login = (props) => {
                     </span>
                 </div>
                 <div style={{paddingTop:'8px'}} />
-
                 <div className="login-field">
                     <span className="login-button-style-google" style={fieldFont()}>
                         <span className="google-field-list">

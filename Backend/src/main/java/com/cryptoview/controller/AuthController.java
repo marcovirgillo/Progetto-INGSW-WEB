@@ -47,7 +47,7 @@ public class AuthController {
 		}
 		
 		if(utente == null) {
-			response.setStatus(Protocol.WRONG_CREDENTIAL);
+			response.setStatus(Protocol.WRONG_CREDENTIALS);
 			resp.put("msg", "Invalid combination of username and password");
 			
 			return resp;

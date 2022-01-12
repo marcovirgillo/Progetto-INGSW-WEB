@@ -34,3 +34,15 @@
     max-width: 220px;
     margin: 0 auto;
 }
+
+.passwordInfo {
+    border-radius: 10px;
+    position: relative;
+    z-index: 500;
+    padding: 10px 0px 10px 0px;
+    transform: scale(0);
+}
+
+.active-info {
+    transform: scale(1);
+}
