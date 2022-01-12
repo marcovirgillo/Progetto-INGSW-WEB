@@ -18,6 +18,16 @@
     font-weight: 500;
 }
 
+.container-title {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.dashboard-spacer {
+    flex: 1 0 0;
+}
+
 .show-more-button {
     color: white;
     font-weight: bold;
@@ -30,23 +40,6 @@
     margin-right: 20px;
 }
 
-.container-title {
-    display:flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.dashboard-spacer {
-    flex: 1 0 0;
-}
-
-.button-container {
-    justify-content: flex-end;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
 .dashboard-title {    
     color: white;
     margin-left: 70px;
@@ -55,46 +48,11 @@
     display: inline;
 }
 
-@media only screen and (max-width: 600px) {
-    .dashboard-page {
-        padding: 0;
-    }
-
-    .paper-gray {
-        border-radius: 0px;
-    }
-
-    .alert-container-title {
-        width: 100px;
-        height: 55px;
-        padding-left: 10px !important;
-        padding-right: 35px !important;
-        text-align: left !important;
-    }
-
-    .favourite-container-title {
-        width: 100px !important;
-        height: 55px;
-        padding-left: 10px !important;
-        padding-right: 35px !important;
-        text-align: left !important;
-    }
-
-    .plus-image {
-        margin-right: 5px !important;
-    }
-
-    .favourite-image {
-        margin-right: 5px !important;
-    }
-
-    .edit-alert {
-        padding-left: 10px !important;
-    }
-
-    .edit-favourites {
-        padding-left: 3px !important;
-    }
+.button-container {
+    justify-content: flex-end;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .alert-container-title {
@@ -130,6 +88,49 @@
     padding: 0px 20px 0px 20px;
     margin-right: 45px;
 }
+
+@media only screen and (max-width: 600px) {
+    .dashboard-page {
+        padding: 0;
+    }
+
+    .paper-gray {
+        border-radius: 0px;
+    }
+
+    .alert-container-title {
+        width: 100px;
+        height: 55px;
+        padding-left: 10px !important;
+        padding-right: 35px !important;
+        text-align: left !important;
+    }
+
+    .favourite-image {
+        margin-right: 5px !important;
+    }
+
+    .edit-alert {
+        padding-left: 10px !important;
+    }
+
+    .favourite-container-title {
+        width: 100px !important;
+        height: 55px;
+        padding-left: 10px !important;
+        padding-right: 35px !important;
+        text-align: left !important;
+    }
+
+    .plus-image {
+        margin-right: 5px !important;
+    }
+
+    .edit-favourites {
+        padding-left: 3px !important;
+    }
+}
+
 
 .favourite-assets-news-label {
     margin: 50px 0px 10px 0px;
