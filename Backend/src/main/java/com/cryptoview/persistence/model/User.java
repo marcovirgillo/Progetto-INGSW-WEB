@@ -3,27 +3,30 @@ package com.cryptoview.persistence.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.cryptoview.persistence.model.domain.Email;
+import com.cryptoview.persistence.model.domain.Username;
+
 public class User {
 	
-	private String email;
-	private String username;
+	private Email email;
+	private Username username;
 	private byte[] avatar;
 	
 	public User() {}
 	
 	public String getEmail() {
-		return email;
+		return email.toString();
 	}
 	
-	public void setEmail(String email) {
+	public void setEmail(Email email) {
 		this.email = email;
 	}
 	
 	public String getUsername() {
-		return username;
+		return username.toString();
 	}
 	
-	public void setUsername(String username) {
+	public void setUsername(Username username) {
 		this.username = username;
 	}
 	
@@ -35,11 +38,11 @@ public class User {
 		this.avatar = avatar;
 	}
 	
-	public static User parseFromDB(ResultSet rs) throws SQLException {
+	public static User parseFromDB(ResultSet rs) throws SQLException, IllegalArgumentException, NullPointerException {
 		User user = new User();
 		user.setAvatar(null);
-		user.setEmail(rs.getString("email"));
-		user.setUsername(rs.getString("username"));
+		user.setEmail(new Email(rs.getString("email")));
+		user.setUsername(new Username(rs.getString("username")));
 		
 		return user;
 	}
