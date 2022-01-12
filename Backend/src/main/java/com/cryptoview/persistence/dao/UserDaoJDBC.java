@@ -18,6 +18,7 @@ public class UserDaoJDBC extends UserDao {
 	private String checkCredentialsQuery = "select * from utente where username=?";
 	private String saveTokenQuery = "update utente set token=? where username=?";
 	private String saveUserQuery = "insert into utente values(?,?, null, '', ?)";
+	private String getTokenQuery = "select token from utente where username=?";
 	
 	private UserDaoJDBC() {}
 	
@@ -93,5 +94,22 @@ public class UserDaoJDBC extends UserDao {
 		stm.execute();
 		
 		stm.close();
+	}
+
+	@Override
+	public String getToken(String username) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(getTokenQuery);
+		stm.setString(1, username);
+		
+		ResultSet rs = stm.executeQuery();
+		String token = "";
+		if(rs.next())
+			token = rs.getString("token");
+		
+		rs.close();
+		stm.close();
+		
+		return token;
+		
 	}
 }

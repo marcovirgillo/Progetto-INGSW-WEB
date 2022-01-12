@@ -555,3 +555,57 @@
     padding: 0px;
     width: 88%;
 }
+
+/* è il tasto 3-dot che fa aprire il dropdown */
+.portfolio .options-btn {
+    width: 24px;
+    border-radius: 50%;
+    padding: 10px 5px 2px 8px;
+    cursor: pointer;
+}
+
+.portfolio .options-btn:hover {
+    background-color: #5c5c5c;
+}
+
+.portfolio .dropdown-options {
+    border-radius: 10px;
+    background-color: var(--bg-color-dark);
+    position: absolute;
+    right: 40px;
+    transform: translateY(-50%) scaleY(0);
+}
+
+.portfolio .options-list {
+    padding: 10px 10px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 160px;
+}
+
+.portfolio .option-item:hover {
+    background-color: #5c5c5c;
+}
+
+.portfolio .options-list p {
+    color: white;
+    font-weight: 600;
+    margin-left: 5px;
+}
+
+.portfolio .option-item {
+    padding: 2px 5px 2px 5px;
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 95%;
+    border-radius: 10px;
+}
+
+.drop-opt-active {
+    transform: translateY(0%) scaleY(1) !important;
+    transition: transform 0.3s ease 0s;
+}
