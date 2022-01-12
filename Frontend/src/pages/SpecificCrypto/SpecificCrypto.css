@@ -85,6 +85,15 @@ a {
     margin-left: 15px;
 }
 
+.cripto-description {
+    color: #DBDBDB;
+    margin-left: 70px;
+    font-weight: bold;
+    font-size: 18px;
+    word-wrap:break-word;
+
+}
+
 .grey-container{
     background-color: #737373;
     color: white;

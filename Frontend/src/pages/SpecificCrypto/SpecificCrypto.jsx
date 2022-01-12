@@ -242,10 +242,10 @@ const SpecificCrypto = () => {
                 <div style={{paddingTop:'20px'}}/>
                 <p className="cripto-title">About {cryptoData.name}</p>
                 {fetchedData() && (
-                    <p className="cripto-title" style={descriptionStyle()}>{getDescription(cryptoData.description.en)}</p>
+                    <p className="cripto-description" style={descriptionStyle()}>{getDescription(cryptoData.description.en)}</p>
                 )}
                 <div style={{paddingTop:'20px'}}/>
-                <p className="cripto-title">{cryptoData.name} Markets</p>
+                <p className="cripto-description">{cryptoData.name} Markets</p>
                 <MarketsSection />
             </div>
         </div>
