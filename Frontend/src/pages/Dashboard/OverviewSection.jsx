@@ -8,7 +8,6 @@ export default function OverviewSection() {
     const [worstPerformers, setWorstPerformers] = useState([]);
     const [marketStats, setMarketStats] = useState([]);
 
-    //Serve per fetchare da spring
     useEffect(() => {
         console.log("QUA");
         fetch(`http://${address}:8080/topGainers`)
