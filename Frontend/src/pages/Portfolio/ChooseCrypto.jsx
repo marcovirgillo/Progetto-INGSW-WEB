@@ -10,6 +10,8 @@ import  ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded'
 import  ArrowDropUpRoundedIcon  from '@mui/icons-material/ArrowDropUpRounded';
 
 const allCryptoUrl = `http://${address}:8080/supportedCryptoSorted`;
+const addTransactionUrl = `http://${address}:8080/addTransaction`;
+
 
 function SearchField(props) {
     return (
@@ -44,7 +46,7 @@ function CustomSelectDropown(props) {
 
 function CryptoTransactions(props) {
     const [itemActive, setItemActive] = useState("buy");
-    const [value, setValue] = React.useState(new Date());
+    const [dateValue, setDateValue] = React.useState(new Date());
     const [currentTransferType, setCurrentTransferType] = useState("i");
     const [selectDropdownActive, setSelectDropdownActive] = useState(false);
 
@@ -62,12 +64,50 @@ function CryptoTransactions(props) {
     }
 
     const handleChange = (newValue) => {
-        console.log("a");
-        setValue(newValue);
+        setDateValue(newValue);
     };
 
-    const addTransactionClicked = () => {
+    let options = {
+        method: 'POST',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken,
+        },
+        body: {}
+    }
 
+    const addTransactionClicked = () => {
+        let transaction_type = itemActive[0];
+        if(itemActive === "transaction")
+            transaction_type = currentTransferType;
+
+        const body = {
+            'ticker': props.crypto.ticker,
+            'type': transaction_type,
+            'quantity': cryptoQuantField,
+            'price_usd_crypto': cryptoPriceField,
+            'total_usd_spent': total,
+            'transaction_date': dateValue.toISOString().split("T")[0],
+            'transaction_time': dateValue.toISOString().split("T")[1]
+        }
+
+        options.body = JSON.stringify(body);
+
+        console.log(options);
+        fetch(addTransactionUrl, options)
+            .then(res => parseResponse(res));
+    }
+
+    const parseResponse = res => {
+        if(res.status === 200) {
+            console.log("Transaction added !");
+            props.fetchInfo();
+            props.fetchChart();
+            props.closePanel();
+        }
+        else
+            res.json().then(result => console.log(result));
     }
 
     //faccio in modo che solo i numeri possono essere digitati nell'input field
@@ -161,7 +201,7 @@ function CryptoTransactions(props) {
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DateTimePicker
                                 disableFuture
-                                value={value}
+                                value={dateValue}
                                 onChange={handleChange}
                                 renderInput={(params) => <TextField {...params} sx={{svg: { color:'white' }}} />}
                             />
@@ -243,7 +283,8 @@ export default function ChooseCrypto(props) {
                 </React.Fragment>
             )}
             {transactionPanelActive && (
-                <CryptoTransactions crypto={lastSelectedCrypto} closePanel={closeTransactionPanel} />
+                <CryptoTransactions fetchChart={props.fetchChart} fetchInfo={props.fetchInfo} accessToken={props.accessToken} 
+                    crypto={lastSelectedCrypto} closePanel={closeTransactionPanel} />
             )}
         </div>
     )
