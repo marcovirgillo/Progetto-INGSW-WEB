@@ -15,6 +15,9 @@ const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const [passwordInfoActive, setPasswordInfoActive] = useState(false);
+    const [termsChecked, setTermsChecked] = useState(false);
+
     useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
         window.addEventListener('resize', handleResize);
@@ -44,7 +47,22 @@ const Signup = () => {
         }
     }
 
+    function signupContraints(){
+        if(!termsChecked || username==="" || email==="" || password===""){
+            console.log("NOT ALL FIELDS ARE FILLED/TERMS NOT ACCEPTED");
+            return false;
+        }
+        if(!password.match(/^(?=.*\d)(?=.*[@.?#$%^&+=!])(?=.*[a-z])(?=.*[A-Z]).{8,}$/))
+        {
+            console.log("Password doesn't match requirements");
+            return false;
+        }
+        return true;
+    }
+
     const doSignup = () => {
+        if(!signupContraints())
+            return;
         fetch(signupAddress, signUpOptions)
             .then(res => parseResponse(res));
     }
@@ -114,6 +132,63 @@ const Signup = () => {
         return {color:'white', fontSize:'16px'};
     }
 
+    function isCharacterALetter(char) {
+        return (/[a-zA-Z]/).test(char)
+    }
+
+    function checkUsernameConstraints(ev){
+        const key = ev.key;
+
+        if(key === " ") {
+            ev.preventDefault();
+            return;
+        }
+        if(key === "."){
+            ev.preventDefault();
+            return;
+        }
+        if(isNaN(key) && !isCharacterALetter(key)){
+            ev.preventDefault();
+            return;
+        }
+    }
+
+    function checkEmailConstraints(ev){
+        const key = ev.key;
+        const total = ev.target.value;
+
+        if(key === " ") {
+            ev.preventDefault();
+            return;
+        }
+
+        if(key === '@'){
+            if(total.includes("@")) {
+                ev.preventDefault();
+                return;
+            }
+        }
+
+        if(isNaN(key) && !isCharacterALetter(key) && key !== '@' && key !== '.'){
+            ev.preventDefault();
+            return;
+        }
+    }
+
+    function PasswordInfo(props){
+        return(
+            <div className={"passwordInfo " + props.class}>
+                <div className="requirements" style={{padding:'5px', paddingLeft:'10px', paddingRight:'10px'}}>
+                    <div className="pass-requirement">At least <span style={{color:'#32C0FF'}}>1 uppercase</span> letter</div>
+                    <div className="pass-requirement">At least <span style={{color:'#32C0FF'}}>1 lowercase</span> letter</div>
+                    <div className="pass-requirement">At least <span style={{color:'#32C0FF'}}>1 special character</span> (@ . ? # $ % ^ & + = !)</div>
+                    <div className="pass-requirement">At least <span style={{color:'#32C0FF'}}>8 characters</span></div>
+                    <div className="pass-requirement">At most <span style={{color:'#32C0FF'}}>40 characters</span></div>
+                </div>
+            </div>
+        )
+    } 
+
     return (
         <div className="registration">
             <div className="paper-grey" style={minHeight()}>
@@ -137,22 +212,36 @@ const Signup = () => {
 
                 <span className="field-title" style={fieldFont()}>Your username</span>
                 <div className="login-field">
-                    <input value={username} onChange={(ev) => setUsername(ev.target.value)}
-                        className="login-field-style" type="text" placeholder='userexample' style={fieldFont()}/>
+                    <input className="login-field-style" type="text" placeholder='userexample' style={fieldFont()}
+                        onKeyPress={(ev) => checkUsernameConstraints(ev)} onChange={(ev) => setUsername(ev.target.value)}
+                        onPaste={(ev) => ev.preventDefault()}
+                    />
                 </div>
 
                 <div style={{paddingTop:'20px'}} />
                 <span className="field-title" style={fieldFont()}>Your email</span>
                 <div className="login-field">
-                    <input value={email} onChange={(ev) => setEmail(ev.target.value)}
-                        className="login-field-style" type="text" placeholder='name@domain' style={fieldFont()}/>
+                    <input className="login-field-style" type="text" placeholder='name@domain' style={fieldFont()}
+                         onKeyPress={(ev) => checkEmailConstraints(ev)} onChange={(ev) => setEmail(ev.target.value)}
+                    />
                 </div>
 
                 <div style={{paddingTop:'20px'}} />
-                <span className="field-title" style={fieldFont()}>Password</span>
+                <div className="field-title" >
+                    <span style={fieldFont()}>Password</span>
+                    <img src={require("../../res/logos/info.png")}  alt="google-login" height={22} width={22} style={{paddingLeft:'5px', cursor:'pointer'}}
+                         onClick={() => setPasswordInfoActive(!passwordInfoActive)}/> 
+                    {
+                        passwordInfoActive && (
+                            <PasswordInfo class={passwordInfoActive ? "active-info" : ""}/>
+                        )
+                    }   
+                </div>
                 <div className="login-field">
-                    <input value={password} onChange={(ev) => setPassword(ev.target.value)}
-                        className="login-field-style" type="password" placeholder='At least 8 characters' style={fieldFont()}/>
+                    <input className="login-field-style" type="password" placeholder='At least 8 characters' style={fieldFont()}
+                        onChange={(ev) => setPassword(ev.target.value)}
+                        onPaste={(ev) => ev.preventDefault()}
+                    />
                 </div>
 
                 <div style={{paddingTop:'20px'}} />
@@ -168,13 +257,14 @@ const Signup = () => {
                 <div className="terms-and-conditions">
                     <Checkbox
                         {...label}
-                        defaultChecked
+                        defaultChecked={false}
                         sx={{
                             color: blue[300],
                             '&.Mui-checked': {
                                 color: blue[300],
                             },
                         }}
+                        onChange={() => setTermsChecked(!termsChecked)}
                     />
                     <span className="terms-text" style={termsStyle("white")}>I agree on the</span>
                     <span className="terms-text" ><Link to="/termsconditions" style={termsStyle("blue")}>Terms and Conditions</Link></span>
@@ -183,7 +273,7 @@ const Signup = () => {
                 <div style={{paddingTop:'20px'}} />
                 <div className="signup-ending-list"> 
                     <span className="login-ending" style={loginEndingStyle("white")}>Already a member?</span>
-                    <span className="login-ending"><Link to="/login" style={loginEndingStyle("blue")}>Log in!</Link></span>
+                    <span className="login-ending"><Link to="/login" style={loginEndingStyle("blue")} >Log in!</Link></span>
                 </div>
             </div>
         </div>

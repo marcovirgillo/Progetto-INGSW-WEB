@@ -44,7 +44,18 @@ const Login = (props) => {
         }
     }
 
+    function checkConstraints(){
+        if(username=="" || password==""){
+            console.log("All fields need to be filled")
+            return false;
+        }
+        return true;
+    }
+
     const doLogin = () => {
+        if(!checkConstraints())
+            return;
+
         console.log("sto loggando!");
         fetch(loginLink, loginOptions)
         .then((res) => parseResult(res));
@@ -99,6 +110,27 @@ const Login = (props) => {
             return {minHeight:'100vh'}
     }
 
+    function isCharacterALetter(char) {
+        return (/[a-zA-Z]/).test(char)
+    }
+
+    function checkUsernameConstraints(ev){
+        const key = ev.key;
+
+        if(key === " ") {
+            ev.preventDefault();
+            return;
+        }
+        if(key === "."){
+            ev.preventDefault();
+            return;
+        }
+        if(isNaN(key) && !isCharacterALetter(key)){
+            ev.preventDefault();
+            return;
+        }
+    }
+
     return (
         <div className="login">
             <div className="paper-grey" style={minHeight()}>
@@ -120,15 +152,17 @@ const Login = (props) => {
 
                 <span className="field-title" style={fieldFont()}>Your username</span>
                 <div className="login-field">
-                    <input className="login-field-style" value={username} onChange={(ev) => setUsername(ev.target.value)}
-                        type="text" placeholder='userexample' style={fieldFont()}/>
+                    <input className="login-field-style" value={username} onKeyPress={(ev) => checkUsernameConstraints(ev)} onChange={(ev) => setUsername(ev.target.value)}
+                        onPaste={(ev) => ev.preventDefault()} type="text" placeholder='userexample' style={fieldFont()}/>
                 </div>
 
                 <div style={{paddingTop:'20px'}} />
-                <span className="field-title" style={fieldFont()}>Password</span>
+                <div className="field-title">
+                    <span style={fieldFont()}>Password</span>
+                </div>
                 <div className="login-field">
                     <input className="login-field-style" value={password} onChange={(ev) => setPassword(ev.target.value)}
-                        type="password" placeholder='At least 8 characters' style={fieldFont()}
+                        onPaste={(ev) => ev.preventDefault()} type="password" placeholder='At least 8 characters' style={fieldFont()}
                     />
 
                 </div>
@@ -139,7 +173,6 @@ const Login = (props) => {
                     </span>
                 </div>
                 <div style={{paddingTop:'8px'}} />
-
                 <div className="login-field">
                     <span className="login-button-style-google" style={fieldFont()}>
                         <span className="google-field-list">
