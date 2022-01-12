@@ -45,7 +45,7 @@ const StatisticsSection = (props) => {
     const normalFormatter = new Intl.NumberFormat('en-US');
 
     function twoByTwoGrid() {
-        return screenSize > 600 && screenSize <= 1536;
+        return screenSize > 600 && screenSize < 1536;
     }
 
     function mobileGrid() {
@@ -53,7 +53,7 @@ const StatisticsSection = (props) => {
     }
 
     function setStyleContainer(position){
-        if(screenSize > 600 && screenSize <= 1536){
+        if(screenSize > 600 && screenSize < 1536){
             if(position==="left" || position==="first-left")
                 return {borderTopLeftRadius:'15px', borderBottomLeftRadius: '15px', borderRight:'2px solid #333333'};
             else if(position==="right" || position==="last-right")
@@ -154,6 +154,8 @@ const StatisticsSection = (props) => {
         )
     }
 
+    console.log(screenSize)
+
     return (
         <React.Fragment>
         {
@@ -200,6 +202,7 @@ const StatisticsSection = (props) => {
                 <Grid className="item" item xl={6} lg={12} md={12} sm={12} xs={5} style={{paddingLeft:'0px', paddingRight:'0px'}}> 
                     <CirculatingSupply />
                 </Grid>
+                <Grid item xl={2} lg={2} md={2} sm={2} xs={1} /> 
             </Grid>
             )
         }
