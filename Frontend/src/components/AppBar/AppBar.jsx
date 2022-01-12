@@ -6,7 +6,7 @@ import "./AppBar.css"
 import { Link } from 'react-router-dom'
 import { Notifications } from "./../../pages/Home/TestData.js";
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import { address, login } from "./../../assets/globalVar.js";
+import { address } from "./../../assets/globalVar.js";
 import LoggedAccount from './LoggedAccount.jsx'
 import AccessAccount from './AccessAccount.jsx'
 
@@ -25,8 +25,7 @@ function isEmptyObject(obj) {
 
 function DropdownProfile(props) {
     const [userLogged, setUserLogged] = useState({});
-    console.log("token appbar:", props.accessToken);
-
+   
     const req_options = {
         method: 'GET',
         headers: { 
@@ -36,6 +35,7 @@ function DropdownProfile(props) {
         }
     };
 
+    //controllo la risposta del server dopo il tentativo di login
     const parseResult = res => {
         if(res.status === 200) {
             console.log("Login con token da appbar success")
@@ -44,14 +44,18 @@ function DropdownProfile(props) {
         else {
             console.log("Errore durante il login da appbar:")
             res.json().then((val) => console.log(val));
+            setUserLogged({});
         }
     }
 
-    useEffect(() => {
+    //provo a vedere se il mio token per il login è valido
+    const fetchData = () => {
         fetch(checkLoginAddress, req_options)
-            .then(res => parseResult(res));
-        
-    }, []);
+            .then(res => parseResult(res));   
+    }
+
+    useEffect(fetchData, []);
+    useEffect(fetchData, [props.accessToken]);
 
     return (
         <div className={"dropdown dropdown-profile " + props.class}>
@@ -173,28 +177,23 @@ export default function AppBar(props) {
     useOutsideAlerter(wrapperRefNotification, "Notification");
 
     function useOutsideAlerter(ref, component) {
-    useEffect(() => {
-        /**
-         * Alert if clicked on outside of element
-         */
-        
-        function handleClickOutside(event) {
-            console.log(event.target);
-            if (ref.current && !ref.current.contains(event.target)) {
-                if(component === "Profile")
-                    setDropdownProfileActive(false);            
+        useEffect(() => {
+            function handleClickOutside(event) {
+                if (ref.current && !ref.current.contains(event.target)) {
+                    if(component === "Profile")
+                        setDropdownProfileActive(false);            
 
-                else if(component === "Notification")
-                    setDropdownNotificationActive(false);
+                    else if(component === "Notification")
+                        setDropdownNotificationActive(false);
+                }
             }
-        }
 
-        // Bind the event listener
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
+            // Bind the event listener
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => {
+                // Unbind the event listener on clean up
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
     }, [ref]);
 }
 

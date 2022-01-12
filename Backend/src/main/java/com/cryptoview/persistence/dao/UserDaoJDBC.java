@@ -8,6 +8,7 @@ import java.util.List;
 import com.cryptoview.persistence.model.User;
 import com.cryptoview.persistence.model.domain.Password;
 import com.cryptoview.persistence.model.domain.Username;
+import com.cryptoview.utilities.SpringUtil;
 
 public class UserDaoJDBC extends UserDao {
 
@@ -16,6 +17,7 @@ public class UserDaoJDBC extends UserDao {
 	private String findByTokenQuery = "select * from utente where token=?";
 	private String checkCredentialsQuery = "select * from utente where username=?";
 	private String saveTokenQuery = "update utente set token=? where username=?";
+	private String saveUserQuery = "insert into utente values(?,?, null, null, ?)";
 	
 	private UserDaoJDBC() {}
 	
@@ -34,7 +36,14 @@ public class UserDaoJDBC extends UserDao {
 
 	@Override
 	public void save(User obj) throws SQLException {
-		// TODO Auto-generated method stub	
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(saveUserQuery);
+		stm.setString(1, obj.getEmail());
+		stm.setString(2, SpringUtil.hashPassword(obj.getPassword()));
+		stm.setString(3, obj.getUsername());
+		
+		stm.execute();
+		
+		stm.close();
 	}
 
 	@Override
@@ -87,5 +96,4 @@ public class UserDaoJDBC extends UserDao {
 		
 		stm.close();
 	}
-
 }

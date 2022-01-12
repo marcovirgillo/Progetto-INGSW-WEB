@@ -96,6 +96,7 @@ public class PortfolioService {
 		ArrayList <Crypto> cryptoPortfolio = getCryptoEverPresentInPortfolio(userPortfolio);
 		ArrayList <Transaction> portfolioTransactions = (ArrayList<Transaction>) userPortfolio.getTransactionList();
 		
+		//TODO Fixare portfolio vuoto, senza cripto 
 		//per ogni cripto, mappo lo storico di prezzi
 		Map <String, ArrayList <Double>> cryptoPricesOverTime = new HashMap<>();
 		//è la lista con tutti i timestamp, per cui calcolo il valore del portfolio
