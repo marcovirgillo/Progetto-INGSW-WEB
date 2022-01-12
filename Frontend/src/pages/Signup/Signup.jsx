@@ -4,13 +4,21 @@ import '../Login/Login.css'
 import Checkbox from '@mui/material/Checkbox';
 import { blue } from '@mui/material/colors';
 import { Link } from 'react-router-dom'
+import { address } from '../../assets/globalVar';
+
+const signupAddress = `http://${address}:8080/registration`;
 
 const Signup = () => {
     const [screenSize, setScreenSize] = useState(window.innerWidth);
 
     const [username, setUsername] = useState("");
+<<<<<<< HEAD
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
+=======
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+>>>>>>> fd37c5e4c300cd0f3a1a79794ced90d8bf00d166
 
     useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
@@ -19,14 +27,41 @@ const Signup = () => {
         return () => window.removeEventListener('resize', handleResize);
     });
 
+    const signUpOptions = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'username': username,
+            'email' : email,
+            'password': password,
+        }),
+    };
+
+    const parseResponse = res => {
+        if(res.status === 200) {
+            console.log("signup successful");
+        }
+        else {
+            console.log("error during signup");
+            res.json().then(result => console.log(result));
+        }
+    }
+
+    const doSignup = () => {
+        fetch(signupAddress, signUpOptions)
+            .then(res => parseResponse(res));
+    }
+
     function minHeight(){
-        if(screenSize<600)
+        if(screenSize < 600)
             return {minHeight:'100vh'}
     }
 
     function titleStyle(color){
-        if(screenSize<600)
-            if(color==="blue")
+        if(screenSize < 600)
+            if(color === "blue")
                 return {color:'#32C0FF', fontSize:'22px'};
             else
                 return {color:'white', fontSize:'22px'};
@@ -49,21 +84,23 @@ const Signup = () => {
     }
 
     function signupButtonTextStyle(type){
-        if(screenSize<600 && type=="google")
+        if(screenSize < 600 && type === "google")
             return {fontSize:'16px', paddingTop:'5px'};
-        if(screenSize<600 && type=="normal")
+
+        if(screenSize < 600 && type === "normal")
             return {fontSize:'16px', paddingTop:'9px'};
+
         return {fontSize:'18px'};
     }
 
     function termsStyle(color){
-        if(screenSize<600){
-            if(color=="blue")
+        if(screenSize < 600){
+            if(color === "blue")
                 return {fontSize:'14px', color:'#32C0FF', cursor:'pointer', display:'flex', flexDirection:'row'}
             else
                 return {fontSize:'14px', color:'white'}
         }
-        if(color=="blue")
+        if(color === "blue")
                 return {fontSize:'15px', color:'#32C0FF', cursor:'pointer', display:'flex', flexDirection:'row'};
         return {fontSize:'15px', color:'white'};
     }
@@ -71,13 +108,13 @@ const Signup = () => {
     const label = { inputProps: { 'aria-label': 'Terms checkbox' } };
 
     function loginEndingStyle(color){
-        if(screenSize<600)
-            if(color==="blue")
+        if(screenSize < 600)
+            if(color === "blue")
                 return {color:'#32C0FF', fontSize:'14px', cursor:'pointer', display:'flex', flexDirection:'row'};
             else
                 return {color:'white', fontSize:'14px'};
     
-        if(color==="blue") return {color:'#32C0FF', fontSize:'16px', cursor:'pointer', display:'flex', flexDirection:'row'};
+        if(color === "blue") return {color:'#32C0FF', fontSize:'16px', cursor:'pointer', display:'flex', flexDirection:'row'};
     
         return {color:'white', fontSize:'16px'};
     }
@@ -111,16 +148,19 @@ const Signup = () => {
                     <img src={require("../../res/logos/CryptoViewLogo.png")}  alt="logo-cryptoview" height={100} width={100} />
                 </div>
                 <div style={{paddingTop:'20px'}} />
+
                 <div className="login-list"> 
                     <span className="signup-header-title" style={titleStyle("blue")}>Sign up</span>
                     <span className="signup-header-title" style={titleStyle("white")}> to your </span>
                     <span className="signup-header-title" style={titleStyle("blue")}>Cryptoview</span>
-                </div> 
+                </div>
+
                 <div style={{paddingTop:'15px'}} />
                 <div> 
                     <span className="login-header-subtitle" style={subtitle()}>We need a few details to create your CryptoView account!</span>
                 </div>
                 <div style={{paddingTop:'20px'}} />
+
                 <span className="field-title" style={fieldFont()}>Your username</span>
                 <div className="login-field">
                     <input className="login-field-style" type="text" placeholder='userexample' style={fieldFont()}
@@ -128,6 +168,7 @@ const Signup = () => {
                         onPaste={(ev) => ev.preventDefault()}
                     />
                 </div>
+
                 <div style={{paddingTop:'20px'}} />
                 <span className="field-title" style={fieldFont()}>Your email</span>
                 <div className="login-field">
@@ -135,6 +176,7 @@ const Signup = () => {
                         onChange={(ev) => setEmail(ev.target.value)}
                     />
                 </div>
+
                 <div style={{paddingTop:'20px'}} />
                 <span className="field-title" style={fieldFont()}>Password</span>
                 <div className="login-field">
@@ -143,27 +185,32 @@ const Signup = () => {
                         onPaste={(ev) => ev.preventDefault()}
                     />
                 </div>
+
                 <div style={{paddingTop:'20px'}} />
                 <div className="login-field">
                     <span className="login-button-style" style={fieldFont()}>
-                        <div className='login-button-text' style={signupButtonTextStyle("normal")}>Get started!</div>
+                        <div onClick={doSignup} className='login-button-text' style={signupButtonTextStyle("normal")}>
+                            Get started!
+                        </div>
                     </span>
                 </div>
+
                 <div style={{paddingTop:'8px'}} />
                 <div className="terms-and-conditions">
                     <Checkbox
                         {...label}
                         defaultChecked
                         sx={{
-                        color: blue[300],
-                        '&.Mui-checked': {
                             color: blue[300],
-                        },
+                            '&.Mui-checked': {
+                                color: blue[300],
+                            },
                         }}
                     />
                     <span className="terms-text" style={termsStyle("white")}>I agree on the</span>
                     <span className="terms-text" ><Link to="/termsconditions" style={termsStyle("blue")}>Terms and Conditions</Link></span>
                 </div>
+
                 <div style={{paddingTop:'20px'}} />
                 <div className="signup-ending-list"> 
                     <span className="login-ending" style={loginEndingStyle("white")}>Already a member?</span>

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cryptoview.controller.request.Credentials;
@@ -35,20 +34,20 @@ public class AuthController {
 			utente = UserDaoJDBC.getInstance().checkCredentials(new Username(credentials.username), new Password(credentials.password));
 		} catch (SQLException e) {
 			e.printStackTrace();
-			response.setStatus(500);
+			response.setStatus(Protocol.SERVER_ERROR);
 			resp.put("msg", "Internal server error");
 			
 			return resp;
 		} catch (IllegalArgumentException | NullPointerException e2) {
 			e2.printStackTrace();
-			response.setStatus(403);
+			response.setStatus(Protocol.INVALID_CREDENTIALS);
 			resp.put("msg", "The provided credentials are not valid");
 			
 			return resp;
 		}
 		
 		if(utente == null) {
-			response.setStatus(401);
+			response.setStatus(Protocol.WRONG_CREDENTIAL);
 			resp.put("msg", "Invalid combination of username and password");
 			
 			return resp;
@@ -60,7 +59,7 @@ public class AuthController {
 			UserDaoJDBC.getInstance().saveToken(credentials.username, token);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			response.setStatus(500);
+			response.setStatus(Protocol.SERVER_ERROR);
 			resp.put("msg", "Internal server error");
 			
 			return resp;
@@ -68,6 +67,7 @@ public class AuthController {
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
+		response.setStatus(Protocol.OK);
 		resp.put("key", token);
 		
 		return resp;
@@ -86,21 +86,21 @@ public class AuthController {
 				
 				//se non trovo l'utente, rispondo con error 5000
 				if(user == null) {
-					response.setStatus(5000);
+					response.setStatus(Protocol.INVALID_TOKEN);
 					resp.put("msg", "The auth token is not valid");
 					
 					return resp;
 				}
 				
 				//altrimenti, restituisco 200 e l'oggetto user
-				response.setStatus(200);
+				response.setStatus(Protocol.OK);
 				resp.put("user", user);
 				
 				return resp;
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
-				response.setStatus(500);
+				response.setStatus(Protocol.SERVER_ERROR);
 				resp.put("msg", "Internal server error");
 				
 				return resp;
@@ -108,7 +108,7 @@ public class AuthController {
 		}
 		
 		//se non ho trovato il token, restituisco il codice di errore
-		response.setStatus(5000);
+		response.setStatus(Protocol.INVALID_TOKEN);
 		resp.put("msg", "The auth token is not valid");
 		
 		return resp;
@@ -127,7 +127,7 @@ public class AuthController {
 				
 				//se non trovo l'utente, rispondo con error 5000
 				if(user == null) {
-					response.setStatus(5000);
+					response.setStatus(Protocol.INVALID_TOKEN);
 					resp.put("msg", "The auth token is not valid");
 					
 					return resp;
@@ -135,14 +135,14 @@ public class AuthController {
 				
 				//altrimenti invalido il token
 				UserDaoJDBC.getInstance().saveToken(user.getUsername(), "");
-				response.setStatus(200);
+				response.setStatus(Protocol.OK);
 				resp.put("msg", "logout successful");
 				
 				return resp;
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
-				response.setStatus(500);
+				response.setStatus(Protocol.SERVER_ERROR);
 				resp.put("msg", "Internal server error");
 				
 				return resp;
@@ -150,7 +150,7 @@ public class AuthController {
 		}
 		
 		//se non ho trovato il token, restituisco il codice di errore
-		response.setStatus(5000);
+		response.setStatus(Protocol.INVALID_TOKEN);
 		resp.put("msg", "The auth token is not valid");
 		
 		return resp;
@@ -170,19 +170,19 @@ public class AuthController {
 			
 			UserDaoJDBC.getInstance().save(utente);
 			
-			response.setStatus(200);
+			response.setStatus(Protocol.OK);
 			resp.put("msg", "Account created succesffully");
 			
 			return resp;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			response.setStatus(500);
+			response.setStatus(Protocol.SERVER_ERROR);
 			resp.put("msg", "Internal server error");
 			
 			return resp;
 		} catch(IllegalArgumentException | NullPointerException e2) {
 			e2.printStackTrace();
-			response.setStatus(403);
+			response.setStatus(Protocol.INVALID_CREDENTIALS);
 			resp.put("msg", "The provided credentials are not valid");
 			
 			return resp;

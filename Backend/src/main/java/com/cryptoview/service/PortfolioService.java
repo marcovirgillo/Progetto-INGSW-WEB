@@ -13,7 +13,6 @@ import org.json.simple.JSONObject;
 
 import com.cryptoview.model.api.TopCryptoFetcher;
 import com.cryptoview.persistence.dao.CryptoDaoJDBC;
-import com.cryptoview.persistence.dao.PortfolioDaoJDBC;
 import com.cryptoview.persistence.model.Crypto;
 import com.cryptoview.persistence.model.Portfolio;
 import com.cryptoview.persistence.model.Transaction;
@@ -39,64 +38,52 @@ public class PortfolioService {
 		return instance;
 	}
 	
-	private ArrayList<Crypto> getCryptoEverPresentInPortfolio(Portfolio userPortfolio) {
-		//prendo tutte le cripto che sono state presenti almeno una volta nel portfolio
-		ArrayList <String> tickerList = new ArrayList<>();
-		for(Transaction transaction : userPortfolio.getTransactionList()) {
-			if(!tickerList.contains(transaction.getCryptoTicker()))
-				tickerList.add(transaction.getCryptoTicker());
+	@SuppressWarnings("unchecked")
+	public JSONObject getPortfolioInfo(Portfolio portfolio) throws SQLException {
+		JSONObject response = new JSONObject();
+		Double actualBalance = calculatePortfolioBalance(portfolio);
+		
+		response.put("portfolio_name", portfolio.getPortfolioName());
+		response.put("balance", actualBalance);
+		
+		JSONArray assets = new JSONArray();
+		
+		Map <String, Double> avgPrices = new HashMap<>();
+		Map <String, Double> dollarProfit = new HashMap<>();
+		Map <String, Double> percentageProfit = new HashMap<>();
+		getPriceInfo((ArrayList<Transaction>) portfolio.getTransactionList(), dollarProfit, avgPrices, percentageProfit);
+		
+		for(Crypto crypto : portfolio.getCryptoMap().keySet()) {
+			JSONObject cryptoObj = new JSONObject();
+			cryptoObj.put("id", crypto.getIdApi());
+			cryptoObj.put("logo", TopCryptos.getInstance().getSupportedCryptoLogo(crypto.getTicker()));
+			cryptoObj.put("name", crypto.getName());
+			cryptoObj.put("ticker", crypto.getTicker());
+			cryptoObj.put("price", TopCryptos.getInstance().getSupportedCryptoPrice(crypto.getTicker()));
+			cryptoObj.put("change_24h", TopCryptos.getInstance().getSupportedCrypto24hChange(crypto.getTicker()));
+			cryptoObj.put("change_7d", TopCryptos.getInstance().getSupportedCrypto7dChange(crypto.getTicker()));
+			cryptoObj.put("holdings", formatHoldingStr(portfolio.getCryptoMap().get(crypto)) + " " + crypto.getTicker().toUpperCase());
+			cryptoObj.put("holding_dollar", portfolio.getCryptoMap().get(crypto) * TopCryptos.getInstance().getSupportedCryptoPrice(crypto.getTicker()));
+			cryptoObj.put("avg_buy_price", avgPrices.get(crypto.getTicker()));
+			cryptoObj.put("profit_dollar", dollarProfit.get(crypto.getTicker()));
+			cryptoObj.put("profit_percentage", percentageProfit.get(crypto.getTicker()));
+			
+			assets.add(cryptoObj);
 		}
 		
-		//mi serve l'oggetto cripto per l'id dell'api e altri dati
-		ArrayList <Crypto> cryptoList = new ArrayList<>();
-		for(String ticker : tickerList) 
-			cryptoList.add(CryptoDaoJDBC.getInstance().getCrypto(ticker));
+		response.put("assets", assets);
 		
-		return cryptoList;
+		return response;
 	}
 	
-	//questa funzione calcola la quantita di cripto presente nel portfolio all'istante timestampstart
-	private Map<String, Double> getCryptoQuantityAtTimeOfBeginning(Long timestampStart, ArrayList <Transaction> portfolioTransactions, ArrayList<Crypto> portfolioCripto) {
-		Map <String, Double> cryptoQuantityMap = new HashMap<>();
-		
-		for(Crypto cripto : portfolioCripto) {
-			cryptoQuantityMap.put(cripto.getTicker(), 0.0);
-		}
-		
-		//scorro le transazioni e considero quelle avvenute
-		Iterator<Transaction> transactionIterator = portfolioTransactions.iterator();
-		while(transactionIterator.hasNext()) {
-			Transaction transaction = transactionIterator.next();
-			Long transactionTime = transaction.getTransactionDatestamp().getTime();
-			
-			if(transactionTime > timestampStart)
-				continue;
-			
-			String ticker = transaction.getCryptoTicker();
-			
-			if(transaction.getType() == Transaction.BUY)
-				cryptoQuantityMap.put(ticker, cryptoQuantityMap.get(ticker) + transaction.getQuantity());
-			else 
-				cryptoQuantityMap.put(ticker, cryptoQuantityMap.get(ticker) - transaction.getQuantity());
-			
-			transactionIterator.remove();
-			
-		}
-		
-		return cryptoQuantityMap;
-	}	
-	
-	
-	
-	
 	@SuppressWarnings("unchecked")
-	public JSONObject getPortfolioValueTime(String user, String timestamp) throws SQLException {
-		Portfolio userPortfolio = PortfolioDaoJDBC.getInstance().get(user);
-		
+	public JSONObject getPortfolioValueTime(Portfolio userPortfolio, String timestamp) throws SQLException {
 		ArrayList <Crypto> cryptoPortfolio = getCryptoEverPresentInPortfolio(userPortfolio);
 		ArrayList <Transaction> portfolioTransactions = (ArrayList<Transaction>) userPortfolio.getTransactionList();
 		
-		//TODO Fixare portfolio vuoto, senza cripto 
+		if(portfolioTransactions.size() == 0)
+			return getEmptyPortfolioValue();
+		
 		//per ogni cripto, mappo lo storico di prezzi
 		Map <String, ArrayList <Double>> cryptoPricesOverTime = new HashMap<>();
 		//è la lista con tutti i timestamp, per cui calcolo il valore del portfolio
@@ -188,7 +175,7 @@ public class PortfolioService {
 		
 		//se sto calcolando l'andamento giornaliero, aggiorno il valore del portfolio 24h fa e le varie percentuali
 		if(timestamp.equals("1"))
-			portfolioValue24hOld.put(user, (Double) ((JSONObject) portfolioValueOverTime.get(0)).get("value"));
+			portfolioValue24hOld.put(userPortfolio.getUsernameOwner(), (Double) ((JSONObject) portfolioValueOverTime.get(0)).get("value"));
 		
 		JSONObject resp = new JSONObject();
 		insertPortfolioChangeData(resp, userPortfolio);
@@ -197,6 +184,64 @@ public class PortfolioService {
 		return resp;
 	}
 	
+	private ArrayList<Crypto> getCryptoEverPresentInPortfolio(Portfolio userPortfolio) {
+		//prendo tutte le cripto che sono state presenti almeno una volta nel portfolio
+		ArrayList <String> tickerList = new ArrayList<>();
+		for(Transaction transaction : userPortfolio.getTransactionList()) {
+			if(!tickerList.contains(transaction.getCryptoTicker()))
+				tickerList.add(transaction.getCryptoTicker());
+		}
+		
+		//mi serve l'oggetto cripto per l'id dell'api e altri dati
+		ArrayList <Crypto> cryptoList = new ArrayList<>();
+		for(String ticker : tickerList) 
+			cryptoList.add(CryptoDaoJDBC.getInstance().getCrypto(ticker));
+		
+		return cryptoList;
+	}
+	
+	//questa funzione calcola la quantita di cripto presente nel portfolio all'istante timestampstart
+	private Map<String, Double> getCryptoQuantityAtTimeOfBeginning(Long timestampStart, ArrayList <Transaction> portfolioTransactions, ArrayList<Crypto> portfolioCripto) {
+		Map <String, Double> cryptoQuantityMap = new HashMap<>();
+		
+		for(Crypto cripto : portfolioCripto) {
+			cryptoQuantityMap.put(cripto.getTicker(), 0.0);
+		}
+		
+		//scorro le transazioni e considero quelle avvenute
+		Iterator<Transaction> transactionIterator = portfolioTransactions.iterator();
+		while(transactionIterator.hasNext()) {
+			Transaction transaction = transactionIterator.next();
+			Long transactionTime = transaction.getTransactionDatestamp().getTime();
+			
+			if(transactionTime > timestampStart)
+				continue;
+			
+			String ticker = transaction.getCryptoTicker();
+			
+			if(transaction.getType() == Transaction.BUY)
+				cryptoQuantityMap.put(ticker, cryptoQuantityMap.get(ticker) + transaction.getQuantity());
+			else 
+				cryptoQuantityMap.put(ticker, cryptoQuantityMap.get(ticker) - transaction.getQuantity());
+			
+			transactionIterator.remove();
+			
+		}
+		
+		return cryptoQuantityMap;
+	}	
+	
+	
+	@SuppressWarnings("unchecked")
+	private JSONObject getEmptyPortfolioValue() {
+		JSONObject resp = new JSONObject();
+		resp.put("balance_change_24h", 0.0);
+		resp.put("balance_change_24h_percentage", 0.0);
+		resp.put("data", new JSONArray());
+		
+		return resp;
+	}
+
 	@SuppressWarnings("unchecked")
 	private void insertPortfolioChangeData(JSONObject obj, Portfolio portfolio) {
 		Double actualBalance = calculatePortfolioBalance(portfolio);
@@ -219,45 +264,7 @@ public class PortfolioService {
 		return totalValue;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public JSONObject getPortfolioInfo(String username) throws SQLException {
-		JSONObject response = new JSONObject();
-		Portfolio portfolio = PortfolioDaoJDBC.getInstance().get(username);
-		Double actualBalance = calculatePortfolioBalance(portfolio);
-		
-		response.put("portfolio_name", portfolio.getPortfolioName());
-		response.put("balance", actualBalance);
-		
-		JSONArray assets = new JSONArray();
-		
-		Map <String, Double> avgPrices = new HashMap<>();
-		Map <String, Double> dollarProfit = new HashMap<>();
-		Map <String, Double> percentageProfit = new HashMap<>();
-		getPriceInfo((ArrayList<Transaction>) portfolio.getTransactionList(), dollarProfit, avgPrices, percentageProfit);
-		
-		for(Crypto crypto : portfolio.getCryptoMap().keySet()) {
-			JSONObject cryptoObj = new JSONObject();
-			cryptoObj.put("id", crypto.getIdApi());
-			cryptoObj.put("logo", TopCryptos.getInstance().getSupportedCryptoLogo(crypto.getTicker()));
-			cryptoObj.put("name", crypto.getName());
-			cryptoObj.put("ticker", crypto.getTicker());
-			cryptoObj.put("price", TopCryptos.getInstance().getSupportedCryptoPrice(crypto.getTicker()));
-			cryptoObj.put("change_24h", TopCryptos.getInstance().getSupportedCrypto24hChange(crypto.getTicker()));
-			cryptoObj.put("change_7d", TopCryptos.getInstance().getSupportedCrypto7dChange(crypto.getTicker()));
-			cryptoObj.put("holdings", formatHoldingStr(portfolio.getCryptoMap().get(crypto)) + " " + crypto.getTicker().toUpperCase());
-			cryptoObj.put("holding_dollar", portfolio.getCryptoMap().get(crypto) * TopCryptos.getInstance().getSupportedCryptoPrice(crypto.getTicker()));
-			cryptoObj.put("avg_buy_price", avgPrices.get(crypto.getTicker()));
-			cryptoObj.put("profit_dollar", dollarProfit.get(crypto.getTicker()));
-			cryptoObj.put("profit_percentage", percentageProfit.get(crypto.getTicker()));
-			
-			assets.add(cryptoObj);
-		}
-		
-		response.put("assets", assets);
-		
-		return response;
-	}
-	
+
 	private void getPriceInfo(ArrayList<Transaction> transactionList, Map <String, Double> profitDollar,
 			                  Map <String, Double> avgPrices, Map <String, Double> profitPercentage) {
 		
