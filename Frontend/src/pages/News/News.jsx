@@ -1,7 +1,8 @@
-import React, { useEffect, useState }  from 'react'
+import React, { useEffect, useState, useRef }  from 'react'
 import "./News.css"
 import { Grid } from '@mui/material'
 import { address } from './../../assets/globalVar.js'
+import { RvHookup } from '@mui/icons-material'
 
 
 const BigNewsBox = (props) => {
@@ -54,11 +55,25 @@ const StandardNewsBox = (props) => {
 }
 
 const SearchField = (props) => {
-    const onNewsPage = window.location.pathname === `/news`;
+
     return (
         <div className="news-search-field">
             <img className="news-search-icon" src={require("../../res/logos/search.png")} width={18} height={18}/>
-            <input className="news-search" type="text" placeholder="Cerca.." onChange={(ev) => props.getSearchFieldContent(ev.target.value)} onBlur={(ev) => { if(onNewsPage == false) ev.target.value = "";}} />
+            <input id='search' className="news-search" type="text" placeholder="Cerca.." onChange={ (ev) => props.getInput(ev)}/> 
+                                            
+        </div>
+    );
+}
+
+const NewsPages = (props) => {
+    return (
+        <div className='news-pages-container'>
+            <ul className='news-pages-list'>
+                <p className='news-page-number' onClick={() => props.setCurrentPage(1)}>1</p>
+                <p className='news-page-number' onClick={() => props.setCurrentPage(2)}>2</p>
+                <p className='news-page-number' onClick={() => props.setCurrentPage(3)}>3</p>
+                <p className='news-page-number' onClick={() => props.setCurrentPage(4)}>4</p>
+            </ul>
         </div>
     );
 }
@@ -92,23 +107,48 @@ export default function News() {
     useEffect(fetchPopularNews, []);
     useEffect(fetchAllLatestNews, []);
 
- 
-    
-    const containsText = (title, content, text) => {
-        let titleLowerCase = title.toLowerCase();
-        let contentLowerCase = content.toLowerCase();
-        if(titleLowerCase.includes(searchFieldContent) || contentLowerCase.includes(searchFieldContent))
-            return true;
-        return false;
+    const newsSearched = () => {
+
+        let latestNewsDataCopy = [];
+        for(let i = 0; i < latestNewsData.length; ++i) {
+            const titleLowerCase = latestNewsData[i].title.toLowerCase();
+            const contentLowerCase = latestNewsData[i].content.toLowerCase();
+
+            if(titleLowerCase.includes(searchFieldContent) || contentLowerCase.includes(searchFieldContent))
+                latestNewsDataCopy.push(latestNewsData[i]);
+        }
+        return latestNewsDataCopy;
     }
 
-    const getSearchFieldContent = (value) => {
-        let trimmedValue = value.trim();
-        setSearchFieldContent(trimmedValue.toLowerCase());
+    const [currentPageSelected, setCurrentPageSelected] = useState(1);
+    
+    const setCurrentPage = (pageNumber) => {
+        setCurrentPageSelected(pageNumber);
+    }
+
+    const sliceLatestNewsDataInPages = () => {
+        let latestNewsDataCopy = latestNewsData;
+        if(currentPageSelected === 1)
+            return latestNewsDataCopy.slice(0, 25);
+        else if(currentPageSelected === 2)
+            return latestNewsDataCopy.slice(25, 50);
+        else if(currentPageSelected === 3)
+            return latestNewsDataCopy.slice(50, 75);    
+        else if(currentPageSelected === 4)
+            return latestNewsDataCopy.slice(75, 100);    
+    }
+
+    const getLatestNews = () => {
+        if(searchFieldContent === "")
+            return sliceLatestNewsDataInPages();
+        return newsSearched();
     }
 
     const [searchFieldContent, setSearchFieldContent] = useState("");
-    
+
+    const getInput = (ev) => {
+        setSearchFieldContent(ev.target.value);
+    }
 
     return (
         <div className='news-page'>
@@ -156,7 +196,7 @@ export default function News() {
 
         
             <SearchField
-                getSearchFieldContent = {getSearchFieldContent}
+                getInput = {getInput}
             />
 
           
@@ -166,8 +206,8 @@ export default function News() {
                 <h4 className='news-label'> Latest News</h4>
                 <Grid container className='container-news-bottom' columnSpacing={4}>  
                     {
-                        latestNewsData.map((item, index) => (
-                            (containsText(item.title, item.content)) && <StandardNewsBox
+                        getLatestNews().map((item, index) => (
+                           <StandardNewsBox
                                 key = {index}
                                 title = {item.title}
                                 imagePath = {item.imageUrl}
@@ -179,6 +219,10 @@ export default function News() {
                         ))
                     }  
                 </Grid>  
+
+                {searchFieldContent === "" && <NewsPages
+                    setCurrentPage = {setCurrentPage}
+                 />}
             </div>
         
         </div>
