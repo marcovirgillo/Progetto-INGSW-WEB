@@ -24,10 +24,10 @@ export default function NewsSection() {
         if(screenSize <= 600) 
             setNumItemNewsPage(1);
         
-        else if(screenSize > 600 && screenSize <= 900)
+        else if(screenSize > 600 && screenSize <= 1000)
             setNumItemNewsPage(2);
         
-        else if(screenSize > 900 && screenSize <= 1680) 
+        else if(screenSize > 1000 && screenSize <= 1680) 
             setNumItemNewsPage(3);
 
         else
