@@ -141,12 +141,12 @@ public class Transaction implements Comparable<Transaction> {
 		Transaction transfer = new Transaction();
 		transfer.setCryptoTicker(transaction.ticker);
 		
-		if(transaction.quantity < 0)
+		if(transaction.quantity <= 0)
 			throw new IllegalArgumentException();
 		
 		transfer.setQuantity(transaction.quantity);
 		
-		if(transaction.price_usd_crypto < 0)
+		if(transaction.price_usd_crypto <= 0)
 			throw new IllegalArgumentException();
 		
 		transfer.setPriceUsdCrypto(transaction.price_usd_crypto);
