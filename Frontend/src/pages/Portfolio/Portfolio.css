@@ -609,3 +609,28 @@
     transform: translateY(0%) scaleY(1) !important;
     transition: transform 0.3s ease 0s;
 }
+
+.portfolio .error-label {
+    position: absolute;
+    bottom: 52px;
+    background-color: red;
+    width: 80%;
+    height: 40px;
+    margin-left: 20px;
+    border-radius: 15px;
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.4s, transform 0.4s !important;
+    -webkit-transition: opacity 0.5s;
+}
+
+.portfolio .label-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: transform 0.4s;
+    -webkit-transition: opacity 0.5s;
+}
+
+.portfolio .error-label p {
+    margin: 10px 0px 0px 0px;
+}
