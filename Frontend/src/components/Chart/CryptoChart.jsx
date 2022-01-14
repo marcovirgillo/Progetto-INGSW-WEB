@@ -8,7 +8,7 @@ function getFormattedPrice(price) {
     if(price > 1)
         return formatter.format(price);
     else 
-        return "$" + price;
+        return "$" + price.toFixed(10);
 }
 
 export default function CryptoChart(props) {
