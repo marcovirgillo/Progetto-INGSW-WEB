@@ -68,6 +68,17 @@ a {
     padding-left:20px;
 }
 
+
+.container-title-price {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
 .container-title-crypto{
     margin-top: -10px;
     margin-left: -20px;

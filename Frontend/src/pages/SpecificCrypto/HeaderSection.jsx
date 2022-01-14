@@ -95,11 +95,16 @@ const HeaderSection = (props) => {
             <div className='prices-info-container'>
                 <ul>
                     <p className="p-crypto" style={{color:'#ABABAB'}}>{cryptoData.name} {cryptoData.symbol.toUpperCase()} Price</p>
-                    <ul className="container-title">
+                   {/*  <ul className="container-title">
                         <div className='crypto-title'>{getFormattedPrice(cryptoData.market_data.current_price.usd)}</div>
                         <p className={getChangeClass(cryptoData.market_data.price_change_percentage_24h)} style={{marginLeft:'10px'}}>{change(cryptoData.market_data.price_change_percentage_24h)}%</p>
                         <p className="p-crypto" style={{marginLeft:'15px'}}>24h</p>
-                    </ul>
+                    </ul> */}
+                    <div className="container-title-price">
+                        <div className='crypto-title' style={{marginLeft:'0px'}}>{getFormattedPrice(cryptoData.market_data.current_price.usd)}</div>
+                        <p className={getChangeClass(cryptoData.market_data.price_change_percentage_24h)} style={{marginLeft:'10px'}}>{change(cryptoData.market_data.price_change_percentage_24h)}%</p>
+                        <p className="p-crypto" style={{marginLeft:'15px'}}>24h</p>
+                    </div>
                 </ul>
                 <ul>
                     <ul className="container-title">
