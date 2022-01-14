@@ -4,15 +4,13 @@ import "./Dashboard.css";
 
 const BigNewsBox = (props) => {
     return (
-        <a href={props.url} className='dashboard-big-news-container' >
+        <a href={props.url} className='big-news-container' >
             <div >
-                <ul className='dashboard-big-news-list'>
-                    <div className='dashboard-big-news-image-container'>
-                        <img src={props.imagePath} className='dashboard-big-news-image'/>
-                    </div>
-                    <p className='dashboard-big-news-title'> {props.title} </p>
-                    <p className='dashboard-big-news-content'> {props.content} </p>
-                    <p className='dashboard-big-news-date'> {props.publishedAt} </p>
+                <ul className='big-news-list'>
+                    <img src={props.imagePath} className='big-news-image'/>
+                    <p className='big-news-title'> {props.title} </p>
+                    <p className='big-news-content'> {props.content} </p>
+                    <p className='big-news-date'> {props.publishedAt} </p>
                 </ul>
             </div>
         </a>
@@ -22,12 +20,12 @@ const BigNewsBox = (props) => {
 const SideNewsBox = (props) => {
     return (
         <a href={props.url} >
-            <div className='dashboard-single-side-news-container'>
-                <ul className='dashboard-single-side-news-list'>
-                    <p className='dashboard-side-news-title'> {props.title} </p>
-                    <p className='dashboard-side-news-content'> {props.content} </p>
-                    <p className='dashboard-side-news-date'> {props.publishedAt} </p>
+            <div className='single-side-news-container'>
+                <ul className='single-side-news-list'>
+                    <p className='side-news-title'> {props.title} </p>
+                    <p className='side-news-date'> {props.publishedAt} </p>
                 </ul>
+                <img src={props.imagePath} className='side-news-image'/>
             </div>
         </a>
     );
@@ -48,15 +46,14 @@ export default function NewsSection() {
     useEffect(fetchPopularNews, []);
 
     return (
-            
-        <div >
+        <div className='dashboard-news-container'>
             <h4 className='favourite-assets-news-label'> Favourite asset's news</h4>
 
-            <div className='dashboard-container-news'>
+            <div className='container-news-top'>
                 {/* Single big news*/}
                 {
-                    popularNewsData.map((item, index) => (
-                        (index == 0) && (<BigNewsBox
+                    (popularNewsData.slice(0, 1)).map((item, index) => (
+                        <BigNewsBox
 
                             key = {index}
                             imagePath = {item.imageUrl}
@@ -64,30 +61,28 @@ export default function NewsSection() {
                             content = {item.content}
                             publishedAt = {item.publishedAt}
                             url = {item.url}
-                        />)
+                        />
                     ))
                 }
 
 
             
                 {/* Three side news*/}
-                <div className='dashboard-three-side-news-container'>
+                <div className='three-side-news-container'>
                     {
-                        popularNewsData.map((item, index) => (
-                            (index > 0) && (<SideNewsBox
+                        (popularNewsData.slice(1, popularNewsData.length)).map((item, index) => (
+                            <SideNewsBox
                                 key = {index}
                                 title = {item.title}
-                                content = {item.content}
+                                imagePath = {item.imageUrl}
                                 publishedAt = {item.publishedAt}
                                 url = {item.url}
                                 
-                            />)
+                            />
                         ))
                     }
                 </div>
             </div>
-
-        </div>
-
+        </div>            
     );
 }
