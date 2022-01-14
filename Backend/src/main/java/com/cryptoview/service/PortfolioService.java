@@ -318,7 +318,7 @@ public class PortfolioService {
 	
 	private static double round(double value, int places) {
 	    if (places < 0) throw new IllegalArgumentException();
-
+	    // TODO Gestire caso in cui da Frontend si fa un Add Transaction e i campi sono vuoti
 	    BigDecimal bd = new BigDecimal(Double.toString(value));
 	    bd = bd.setScale(places, RoundingMode.HALF_UP);
 	    return bd.doubleValue();

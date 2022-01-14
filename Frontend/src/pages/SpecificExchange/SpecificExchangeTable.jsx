@@ -7,7 +7,7 @@ import { useLocation } from 'react-router';
 import { address } from './../../assets/globalVar.js';
 
 const interval_fetch = 1000 * 120;
-
+// TODO Rivedere immagine con frecce nella tabella di uno specifico exchange
 export default function ExchangesTable() {
     const [cryptoTable, setCryptoTable] = useState([]);
     const [order, setOrder] = useState("ASC");
