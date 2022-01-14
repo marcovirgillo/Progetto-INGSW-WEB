@@ -148,7 +148,7 @@ const Portfolio = (props) => {
                 <p className={isBtnChartActive("7")} onClick={() => setChartInterval("7")}>7D</p>
                 <p className={isBtnChartActive("30")} onClick={() => setChartInterval("30")}>30D</p>
                 <p className={isBtnChartActive("90")} onClick={() => setChartInterval("90")}>90D</p>
-                <p className={isBtnChartActive("max")} onClick={() => setChartInterval("max")}>ALL</p>
+                <p className={isBtnChartActive("360")} onClick={() => setChartInterval("360")}>1Y</p>
             </ul>
         )
     }

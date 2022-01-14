@@ -295,3 +295,26 @@
         width: 150px;
     }
 }
+
+
+.news-pages-container {
+    margin-left: 47%;
+}
+
+.news-pages-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    cursor: pointer;
+}
+
+.news-page-number {
+    background-color: var(--light-gray-color);
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 18px;
+    color: rgb(255, 255, 255);
+    padding: 5px 10px 5px 10px;
+    margin-right: 20px;
+}
