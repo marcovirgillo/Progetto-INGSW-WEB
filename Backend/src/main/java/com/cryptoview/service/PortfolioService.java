@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -25,6 +26,13 @@ public class PortfolioService {
 	public class Pair <T1, T2> {
 		public T1 first;
 		public T2 second;
+		
+		public Pair(T1 first, T2 second) {
+			this.first = first;
+			this.second = second;
+		}
+		
+		public Pair() {}
 	}
 	
 	private PortfolioService() {
@@ -84,34 +92,31 @@ public class PortfolioService {
 		if(portfolioTransactions.size() == 0)
 			return getEmptyPortfolioValue();
 		
-		//per ogni cripto, mappo lo storico di prezzi
-		Map <String, ArrayList <Double>> cryptoPricesOverTime = new HashMap<>();
+		//per ogni cripto, mappo lo storico di prezzi come coppia timestamp-prezzo
+		Map <String, ArrayList <Pair<Long, Double>>> cryptoPricesOverTime = new HashMap<>();
+		
 		//è la lista con tutti i timestamp, per cui calcolo il valore del portfolio
 		ArrayList <Long> timestampList = new ArrayList<>();
 				
-		//serve per riempire la timestamp list solo una votla
-		boolean filled = false;
 		for(Crypto crypto : cryptoPortfolio) {
 			JSONArray history = TopCryptoFetcher.getInstance().fetchCryptoHistoricprices(crypto.getIdApi(), timestamp);
 			
 			//per ogni cripto, recupero lo storico dei prezzi e lo inserisco nella mappa di liste
-			ArrayList <Double> cryptoPrices = new ArrayList<>();
+			ArrayList <Pair<Long, Double>> cryptoPrices = new ArrayList<>();
 			for(Object value : history) {
 				JSONArray arr = (JSONArray) value;
 				
 				Long cryptoTimestamp = (Long) arr.get(0);
 				Double price = (Double) arr.get(1);
 				
-				cryptoPrices.add(price);
-				
-				if(!filled)
-					timestampList.add(cryptoTimestamp);
+				cryptoPrices.add(new Pair <Long, Double>(cryptoTimestamp, price));
+				timestampList.add(cryptoTimestamp);
 			}
-			
-			filled = true;
 			
 			cryptoPricesOverTime.put(crypto.getTicker(), cryptoPrices);
 		}
+		
+		removeDuplicatesAndSort(timestampList, timestamp);
 		
 		//mi dice le quantitò di cripto che ho all'inizio del periodo di riferimento del portfolio
 		Map <String, Double> cryptoQuantity = getCryptoQuantityAtTimeOfBeginning(timestampList.get(0), portfolioTransactions, cryptoPortfolio);
@@ -148,18 +153,21 @@ public class PortfolioService {
 			}
 			
 			
-			boolean incomplete = false;
 			//per ogni cripto presente nel portfolio all'istante di tempo che sto considerando, calcolo il valore
 			//come quantità * prezzo storico, dove il prezzo storico è nella lista di prezzi storici
+			boolean incomplete = false;
 			for(String cryptoTicker : cryptoQuantity.keySet()) {
 				Double cryptoQuant = cryptoQuantity.get(cryptoTicker);
 				
-				ArrayList <Double> prices = cryptoPricesOverTime.get(cryptoTicker);
+				ArrayList <Pair<Long, Double>> cryptoPrices = cryptoPricesOverTime.get(cryptoTicker);				
+				Double price = findPrice(time, cryptoPrices);
 				
-				if(prices.size() > i)
-					valueAtTimeZeroDollar += cryptoQuant * prices.get(i);
-				else 
+				//se per una cripto trovo quantità diversa da zero, e prezzo zero, significa che ancora
+				//non c'è in prezzo in quel timestamp, e il calcolo è quindi incompleto
+				if(cryptoQuant != 0 && price == 0.0)
 					incomplete = true;
+
+				valueAtTimeZeroDollar += cryptoQuant * price;
 			}
 			
 			if(incomplete)
@@ -184,6 +192,47 @@ public class PortfolioService {
 		return resp;
 	}
 	
+	private Double findPrice(Long timeBeginning, ArrayList<Pair<Long, Double>> cryptoPrices) {
+		//prendo il primo prezzo superiore al timeBeginning, quindi quello piu' vicino
+		for(Pair <Long, Double> pair : cryptoPrices) {
+			if(pair.first >= timeBeginning)
+				return pair.second;
+		}
+		
+		return 0.0;
+	}
+
+	//per ogni chart interval, restituisco l'intervallo di tempo tra due valori
+	// es per un chart 24h, restituisco un intervallo di 60 secondi
+	private int getTimesInterval(String chartInterval) {
+		if(chartInterval.equals("1"))
+			return 60000; //sono 60 secondi, in millisecondi
+		else if(chartInterval.equals("7"))
+			return 1800000; //30 minuti
+		else if(chartInterval.equals("30"))
+			return 3600000; //un'ora
+		else if(chartInterval.equals("90"))
+			return 7200000; //due ore
+		else if(chartInterval.equals("360"))
+			return 86400000; //un giorno
+		
+		return 1000;
+		
+	}
+	
+	//ordino l'array di timestamp per il portfolio, e rimuovo i valori dentro l'intervallo per ridurre le operazioni da fare
+	private void removeDuplicatesAndSort(ArrayList<Long> timestampList, String chartInterval) {
+		Collections.sort(timestampList);
+		
+		//se due valori di tempo consecutivi sono troppo vicini, rimuovo il successivo
+		for(int i = 0; i < timestampList.size() - 1;) {
+			if(timestampList.get(i+1) - timestampList.get(i) <= getTimesInterval(chartInterval))
+				timestampList.remove(i+1);
+			else 
+				++i;
+		}
+	}
+
 	private ArrayList<Crypto> getCryptoEverPresentInPortfolio(Portfolio userPortfolio) {
 		//prendo tutte le cripto che sono state presenti almeno una volta nel portfolio
 		ArrayList <String> tickerList = new ArrayList<>();
@@ -201,6 +250,7 @@ public class PortfolioService {
 	}
 	
 	//questa funzione calcola la quantita di cripto presente nel portfolio all'istante timestampstart
+	//considero quindi tutte le transazione avvenute prima di quella data
 	private Map<String, Double> getCryptoQuantityAtTimeOfBeginning(Long timestampStart, ArrayList <Transaction> portfolioTransactions, ArrayList<Crypto> portfolioCripto) {
 		Map <String, Double> cryptoQuantityMap = new HashMap<>();
 		
@@ -318,7 +368,7 @@ public class PortfolioService {
 	
 	private static double round(double value, int places) {
 	    if (places < 0) throw new IllegalArgumentException();
-
+	 
 	    BigDecimal bd = new BigDecimal(Double.toString(value));
 	    bd = bd.setScale(places, RoundingMode.HALF_UP);
 	    return bd.doubleValue();

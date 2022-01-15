@@ -31,6 +31,23 @@ export default function ExchangesTable() {
         }
     }
 
+    const sortingChange = (col,id) =>{
+        if(order === "ASC"){
+            const sorted = [...exchangeData].sort((a,b) => 
+                a[col][id] > b[col][id] ? 1 : -1     
+            );
+            setExchangeData(sorted)
+            setOrder("DSC")
+        }
+        if(order === "DSC"){
+            const sorted = [...exchangeData].sort((a,b) => 
+                a[col][id] < b[col][id] ? 1 : -1     
+            );
+            setExchangeData(sorted)
+            setOrder("ASC")
+        }
+    }
+
     const isArrowActive = (order, type) => {
         if(itemActive === type) {
             if(order === "DSC")
@@ -82,11 +99,24 @@ export default function ExchangesTable() {
     function getImageOfCrypto(ticker_id){
         ticker_id = ticker_id.toLowerCase()
         let crypto = cryptoTable.find(({ticker}) => ticker === ticker_id);
+        console.log(ticker_id);
+
+        if (ticker_id === "eur")
+            return require("../../res/logos/euro.png");
+
+        if (ticker_id === "usd")
+            return require("../../res/logos/dollar.png");
+
+        if (ticker_id === "gbp")
+            return require("../../res/logos/pound.png");
+
+        if (ticker_id === "yen") 
+            return require("../../res/logos/yen.png");
         
         if(crypto !== undefined)
             return crypto.logo;
         
-        return require("../../res/logos/change.png");
+        return require("../../res/logos/genericCoin.png");
     }
 
     function getTrustScoreClass(trust_score){
@@ -106,20 +136,25 @@ export default function ExchangesTable() {
                 <TableRow>
                     <TableCell className="table-attribute">Coin</TableCell>
                     <TableCell className="table-attribute">Pair</TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("item.bid_ask_spread_percentage"); setItemActive("last_price")}} style={{cursor: 'pointer'}}>
+                    <TableCell className="table-attribute" onClick={() => {sortingChange("converted_last", "usd"); setItemActive("last_price")}} style={{cursor: 'pointer'}}>
                        {  <span className="table-header-list">  
                             Last price
                             { isArrowActive(order, "last_price") }
                          </span> }
                         
                     </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("item.bid_ask_spread_percentage"); setItemActive("volume")}} style={{cursor: 'pointer'}}> 
-                    {  <span className="table-header-list">  
+                    <TableCell className="table-attribute" onClick={() => {sortingChange("converted_volume", "usd"); setItemActive("volume")}} style={{cursor: 'pointer'}}> 
+                    {  <span className="table-header-list">
                             Volume
                             { isArrowActive(order, "volume") }
                          </span> }
                     </TableCell>
-                    <TableCell className="table-attribute"> Spread </TableCell>
+                    <TableCell className="table-attribute" onClick={() => {sorting("bid_ask_spread_percentage"); setItemActive("spread")}} style={{cursor: 'pointer'}}> 
+                    {  <span className="table-header-list">
+                            Spread
+                            { isArrowActive(order, "spread") }
+                         </span> }
+                    </TableCell>
                     <TableCell className="table-attribute">Trust score</TableCell>
                 </TableRow>
             </TableHead>
@@ -129,7 +164,7 @@ export default function ExchangesTable() {
                             <TableRow key={val}>
                                     <TableCell className="table-item-exchange-specific">
                                         <div className="image-coin">
-                                            <img src= {getImageOfCrypto(item.base)} width={24} height={24} style={{marginRight: 10}}/>{item.coin_id}  / <img src= {getImageOfCrypto(item.target)} width={24} height={24} style={{marginRight: 10, marginLeft:5}}/>{item.target_coin_id}
+                                            <img src= {getImageOfCrypto(item.base)} width={24} height={24} style={{marginRight: 10}}/>{item.coin_id}  / <img src= {getImageOfCrypto(item.target)} width={24} height={24} style={{marginRight: 10, marginLeft:5}}/>{item.target_coin_id != null ? item.target_coin_id : item.target}
                                         </div>
                                     </TableCell>
                                     <TableCell className="table-item-exchange-specific">

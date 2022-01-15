@@ -36,21 +36,25 @@ const SideNewsBox = (props) => {
 
 const StandardNewsBox = (props) => {
     return (  
-        <Grid item lg={4} md={6} sm={12} xs={12} >
-            <a href={props.url}>
-                <div className='standard-news-container'>
-                    <ul className='standard-news-list-title-content'>
-                        <p className='standard-news-title'> {props.title} </p>
-                        <img src={props.imagePath} className='standard-news-image'/>
-                    </ul>
-                    
-                    <ul className='standard-news-list-content-date'>
-                        <p className='standard-news-content'> {props.content} </p>
-                        <p className='standard-news-date'> {props.publishedAt} </p>
-                    </ul>
-                </div>
-            </a>
-        </Grid>
+        <React.Fragment>
+            <Grid className="bottom-news-spacer" sm={1} />
+            <Grid item lg={4} md={6} sm={10} xs={12} >
+                <a href={props.url}>
+                    <div className='standard-news-container'>
+                        <ul className='standard-news-list-title-content'>
+                            <p className='standard-news-title'> {props.title} </p>
+                            <img src={props.imagePath} className='standard-news-image'/>
+                        </ul>
+                        
+                        <ul className='standard-news-list-content-date'>
+                            <p className='standard-news-content'> {props.content} </p>
+                            <p className='standard-news-date'> {props.publishedAt} </p>
+                        </ul>
+                    </div>
+                </a>
+            </Grid>
+            <Grid className="bottom-news-spacer" sm={1} />
+        </React.Fragment>
     );
 }
 
