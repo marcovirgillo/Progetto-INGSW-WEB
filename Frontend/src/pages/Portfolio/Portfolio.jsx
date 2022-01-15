@@ -7,6 +7,7 @@ import "./Portfolio.css";
 import plus_icon from "./../../res/logos/plus.png";
 import { address } from '../../assets/globalVar';
 import ChooseCrypto from './ChooseCrypto';
+import { useNavigate } from "react-router-dom";
 
 const greenColor = "#46C95B";
 const redColor = "#E05757";

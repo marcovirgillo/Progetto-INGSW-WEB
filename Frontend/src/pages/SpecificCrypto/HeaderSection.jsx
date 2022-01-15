@@ -8,8 +8,6 @@ import { info } from './TestData.js';
 import { useNavigate } from "react-router-dom";
 
 const HeaderSection = (props) => {
-    console.log("Logged specific crypto: ", props.logged)
-
     const [screenSize, setScreenSize] = useState(null);
 
     const [preferredCripto, setPreferredCripto] = useState(false); //Se la cripto specifica è nei preferiti
@@ -126,7 +124,7 @@ const HeaderSection = (props) => {
     }
 
     function handleStar(){
-        if(props.logged == false){
+        if(props.accessToken === ""){
             return () => navigate("/login");
         }
         
@@ -138,8 +136,10 @@ const HeaderSection = (props) => {
             <div className="container-header">
                 <div>
                     <div className="container-title-test" style={{maxWidth:'80vh'}}>
-                        {preferredCripto ? <img src={require("../../res/logos/star-checked.png")} width={36} height={36}  style={{paddingRight:'15px', cursor:'pointer'}} onClick={handleStar()} />: 
-                            <img src={require("../../res/logos/star-unchecked.png")} width={36} height={36} style={{paddingRight:'15px', cursor:'pointer'}} onClick={handleStar()}/>}
+                        {
+                            preferredCripto ? <img src={require("../../res/logos/star-checked.png")} width={36} height={36}  style={{paddingRight:'15px', cursor:'pointer'}} onClick={handleStar()} /> : 
+                                              <img src={require("../../res/logos/star-unchecked.png")} width={36} height={36} style={{paddingRight:'15px', cursor:'pointer'}} onClick={handleStar()}/>
+                        }
                         <img src={cryptoData.image.small} />
                         <div className='crypto-title'>{cryptoData.name}</div>
                         <p className='grey-container' style={{marginLeft:'10px'}}>{cryptoData.symbol.toUpperCase()}</p>

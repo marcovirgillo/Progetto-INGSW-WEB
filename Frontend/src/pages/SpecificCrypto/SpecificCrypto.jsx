@@ -225,7 +225,7 @@ const SpecificCrypto = (props) => {
         <div className="specific-crypto">
             <div className="paper-grey">
                 <div style={{paddingTop:'20px'}}/>
-                <HeaderSection data={cryptoData} logged={props.logged}/>
+                <HeaderSection data={cryptoData} accessToken={props.accessToken}/>
                 <div style={{paddingTop:'20px'}}/>
                 {
                     screenSize>600 && (
