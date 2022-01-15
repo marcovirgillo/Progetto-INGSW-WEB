@@ -22,13 +22,14 @@ export default function Account(props) {
         else {
             console.log("Error during logout");
             res.json().then((result) => console.log(result));
-
         }
     }
 
     const doLogout = () => {
         fetch(logoutLink, req_options)
             .then(res => parseResponse(res));
+
+            
     }
 
     const getProfilePic = () => {

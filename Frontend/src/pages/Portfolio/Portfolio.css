@@ -638,6 +638,7 @@
 
 .portfolio .background-blurrer {
     position: fixed;
+    filter: blur(10px);
     top: 0px;
     left: 0px;
     width: 100vw;

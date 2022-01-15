@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router';
+import { Navigate } from 'react-router-dom';
 import './SpecificCrypto.css';
 import "./../../App.css";
 import { Grid    } from '@mui/material'
 import { info } from './TestData.js';
+import { useNavigate } from "react-router-dom";
 
 const HeaderSection = (props) => {
     const [screenSize, setScreenSize] = useState(null);
 
+    const [preferredCripto, setPreferredCripto] = useState(false); //Se la cripto specifica è nei preferiti
+
     const cryptoData = props.data;
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
@@ -95,11 +101,6 @@ const HeaderSection = (props) => {
             <div className='prices-info-container'>
                 <ul>
                     <p className="p-crypto" style={{color:'#ABABAB'}}>{cryptoData.name} {cryptoData.symbol.toUpperCase()} Price</p>
-                   {/*  <ul className="container-title">
-                        <div className='crypto-title'>{getFormattedPrice(cryptoData.market_data.current_price.usd)}</div>
-                        <p className={getChangeClass(cryptoData.market_data.price_change_percentage_24h)} style={{marginLeft:'10px'}}>{change(cryptoData.market_data.price_change_percentage_24h)}%</p>
-                        <p className="p-crypto" style={{marginLeft:'15px'}}>24h</p>
-                    </ul> */}
                     <div className="container-title-price">
                         <div className='crypto-title' style={{marginLeft:'0px'}}>{getFormattedPrice(cryptoData.market_data.current_price.usd)}</div>
                         <p className={getChangeClass(cryptoData.market_data.price_change_percentage_24h)} style={{marginLeft:'10px'}}>{change(cryptoData.market_data.price_change_percentage_24h)}%</p>
@@ -122,19 +123,23 @@ const HeaderSection = (props) => {
         )
     }
 
+    function handleStar(){
+        if(props.accessToken === ""){
+            return () => navigate("/login");
+        }
+        
+        return () => setPreferredCripto(!preferredCripto);
+    }
+
     const MainDetailsSection = () => {
         return (
             <div className="container-header">
-                {/* <ul>
-                    <ul className="container-title">
-                        <img src={cryptoData.image.small} />
-                        <div className='crypto-title'>{cryptoData.name}</div>
-                        <p className='grey-container' style={{marginLeft:'10px'}}>{cryptoData.symbol.toUpperCase()}</p>
-                        <p className="p-crypto" style={{marginLeft:'15px'}}>{screenSize>600 ? 'Rank' : ''} #{cryptoData.market_cap_rank}</p>
-                    </ul>
-                </ul> */}
                 <div>
                     <div className="container-title-test" style={{maxWidth:'80vh'}}>
+                        {
+                            preferredCripto ? <img src={require("../../res/logos/star-checked.png")} width={36} height={36}  style={{paddingRight:'15px', cursor:'pointer'}} onClick={handleStar()} /> : 
+                                              <img src={require("../../res/logos/star-unchecked.png")} width={36} height={36} style={{paddingRight:'15px', cursor:'pointer'}} onClick={handleStar()}/>
+                        }
                         <img src={cryptoData.image.small} />
                         <div className='crypto-title'>{cryptoData.name}</div>
                         <p className='grey-container' style={{marginLeft:'10px'}}>{cryptoData.symbol.toUpperCase()}</p>

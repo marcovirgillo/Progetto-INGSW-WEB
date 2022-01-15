@@ -5,13 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import com.cryptoview.persistence.model.Crypto;
 import com.cryptoview.persistence.model.Portfolio;
-import com.cryptoview.persistence.model.Transaction;
 
 public class PortfolioDaoJDBC extends PortfolioDao {
 	
@@ -19,6 +14,7 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 	
 	private final String getAllQuery = "select * from portfolio;";
 	private final String getUserPortfolio = "select * from portfolio where username_owner=?";
+	private final String removeCryptoQuery = "delete from criptoinportfolio where username=? and ticker=?";
 	//private final String insertPortfolio = "insert into portfolio values(?, now(), ?);";
 	
 	private PortfolioDaoJDBC() {}
@@ -64,7 +60,20 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 		}
 		
 		rs.close();
+		stm.close();
 		
 		return portfolio;
+	}
+
+	@Override
+	public boolean removeCrypto(String ticker, String portfolioOwner) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(removeCryptoQuery);
+		stm.setString(1, portfolioOwner);
+		stm.setString(2, ticker);
+		
+		boolean result = stm.execute();
+		stm.close();
+		
+		return result;
 	}
 }

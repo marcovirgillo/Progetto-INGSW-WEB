@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react'
+import React, { Component, useState, useEffect, useReducer } from 'react'
 import { TableBody, Table, TableCell, TableHead, TableRow, Icon } from '@mui/material';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
@@ -7,6 +7,8 @@ import { useInterval } from '../../components/Hooks.js';
 import { Link, Navigate  } from 'react-router-dom'
 import { address } from './../../assets/globalVar.js';
 
+import { Preferred } from './TestData.js';
+
 //https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 const interval_fetch = 1000 * 120; //60 secondi
 
@@ -14,6 +16,8 @@ export default function CriptoTable() {
     const [cryptoTable, setCryptoTable] = useState([]);
     const [order, setOrder] = useState("ASC");
     const [itemActive, setItemActive] = useState(null);
+
+    const [preferred, setPreferred] = useState(null);
 
     const sorting = (col) => {
         if(order === "ASC"){
@@ -83,12 +87,40 @@ export default function CriptoTable() {
             .then((res) => res.json())
             .then((result) => setCryptoTable(result),
                   (error) => console.log("Error fetching top 100 cryptos"));
+
+        //Fetch preferred crypto of the user
+        setPreferred(Preferred);
     };
 
     useEffect(fetchData, []);
 
     useInterval(() => fetchData, interval_fetch);
 
+    function findPreferred(name){
+        var item  = preferred.find(item=>item.name==name);
+        if(item != undefined) {
+            return true;
+        }
+        return false;
+    }
+
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+
+    function handlePreferred(flag, crypto){
+        if(flag === false){
+            var array  = preferred.filter(item => item.name != crypto);
+          /*   console.log(array) */
+            setPreferred(array);
+        }
+        else{
+            var newPref = {name: crypto};
+            var array = preferred;
+            array.push(newPref);
+           /*  console.log(array); */
+            setPreferred(array);
+            forceUpdate(); //DA VEDERE PERCHé
+        }
+    }
 
     return (
         <Table className="table" sx={{maxWidth: '95%', marginTop: '30px'}}>
@@ -121,6 +153,10 @@ export default function CriptoTable() {
                                     <TableCell className="table-item">{item.rank}</TableCell>
                                     <TableCell className="table-item">
                                         <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
+                                            {findPreferred(item.name) ? 
+                                                <img src={require("../../res/logos/star-checked.png")} width={22} height={22}  style={{paddingRight:'15px', cursor:'pointer'}} onClick={() => handlePreferred(false, item.name)}/> :
+                                                <img src={require("../../res/logos/star-unchecked.png")} width={22} height={22} style={{paddingRight:'15px', cursor:'pointer'}} onClick={() => handlePreferred(true, item.name)}/>
+                                            }
                                             <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
                                             <Link to={`/crypto/${item.id}`} className="item-name">
                                                 <p>{item.name}</p>

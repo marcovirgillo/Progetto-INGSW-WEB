@@ -30,7 +30,7 @@ const Login = (props) => {
         window.addEventListener('resize', handleResize);
         
         return () => window.removeEventListener('resize', handleResize);
-    });
+    }, []);
 
     function parseResult(res) {
         if(res.status === 200) {

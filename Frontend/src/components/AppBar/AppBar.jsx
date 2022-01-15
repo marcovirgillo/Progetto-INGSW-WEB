@@ -41,6 +41,9 @@ function DropdownProfile(props) {
             console.log("Login con token da appbar success")
             res.json().then(result => setUserLogged(result['user']));
         }
+        else if(res.status === 5000) {
+            //TODO popup rifai il login
+        }
         else {
             console.log("Errore durante il login da appbar:")
             res.json().then((val) => console.log(val));

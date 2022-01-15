@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,  } from 'react'
 import CryptoChart from '../../components/Chart/CryptoChart';
-import { PlaceholderBalanceChange, PlaceholderInfo, PortfolioData } from './Data.js';
+import { PlaceholderBalanceChange, PlaceholderInfo } from './Data.js';
 import PortfolioTable, { formatProfitDollar } from './PortfolioTable';
 import "./../../App.css";
 import "./Portfolio.css";
 import plus_icon from "./../../res/logos/plus.png";
 import { address } from '../../assets/globalVar';
 import ChooseCrypto from './ChooseCrypto';
+import { useNavigate } from "react-router-dom";
 
 const greenColor = "#46C95B";
 const redColor = "#E05757";
@@ -38,6 +39,8 @@ const Portfolio = (props) => {
     //è l'ultima cripto scelta, attraverso la tabella o il pannello aggiungi transazione
     const [lastSelectedCrypto, setLastSelectedCrypto] = useState({});
     const [transactionPanelActive, setTransactionPanelActive] = useState(false);
+
+    const navigate = useNavigate();
 
     const optionsChart = {
         method: 'GET',
@@ -81,18 +84,29 @@ const Portfolio = (props) => {
     }
 
     const fetcherChart = () => {
+        if(props.accessToken === null || props.accessToken === "")
+            return;
+
         fetch(portfolioChartUrl, optionsChart)
         .then((res) => processValue(res));
     }
 
     const fetcherInfo = () => {
+        if(props.accessToken === null || props.accessToken === "")
+            return;
+
         fetch(portfolioInfoUrl, optionsInfo)
         .then((res) => processInfo(res));
     }
 
     useEffect(() => {
-        fetcherChart();
-        fetcherInfo();
+        if(props.accessToken === null || props.accessToken === ""){
+            navigate("/login");
+        }
+        else {
+            fetcherChart();
+            fetcherInfo();
+        }
     }, []);
 
     //se cambia l'intervallo di tempo, fetcho i dati nuovi
@@ -176,6 +190,7 @@ const Portfolio = (props) => {
     }
 
     return (
+        <React.Fragment>
         <div className="portfolio">
             <div className="paper-grey">
                 <h4 className="name-label">{portfolioInfo.portfolio_name}</h4>
@@ -226,11 +241,12 @@ const Portfolio = (props) => {
                     <PortfolioTable data={portfolioInfo.assets} openAddTransaction={openAddTransaction}/>
                 </ul>
 
-                <ChooseCrypto fetchChart={fetcherChart} fetchInfo={fetcherInfo} accessToken={props.accessToken} lastSelectedCrypto={lastSelectedCrypto}
+                <ChooseCrypto accessToken={props.accessToken} fetchChart={fetcherChart} fetchInfo={fetcherInfo} accessToken={props.accessToken} lastSelectedCrypto={lastSelectedCrypto}
                     className={getCryptoDialogClass()} setDialogOpen={setChooseCryptoPageActive} setLastSelectedCrypto={setLastSelectedCrypto}
                     transactionPanelActive={transactionPanelActive} setTransactionPanelActive={setTransactionPanelActive} dialogActive={chooseCryptoPageActive}/>
             </div>
         </div>
+        </React.Fragment>
     )
 }
 

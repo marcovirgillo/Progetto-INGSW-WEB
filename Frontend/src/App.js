@@ -43,7 +43,7 @@ export default function App() {
                 <SideBar sideBarEnabled={sideBarEnabled} setSideBarEnabled={setSideBarEnabled} sideBarClass={sideBarClass}/>
                 <div className="layout-content">
                     <AppBar setSideBarEnabled={setSideBarEnabled} setSearchMobileOpen={setSearchMobileOpen} 
-                            isMobileOpen={searchMobileOpen} isSearchFieldOpen={searchMobileOpen} accessToken={accessToken} setAccessToken={saveToken}/>
+                            isMobileOpen={searchMobileOpen} isSearchFieldOpen={searchMobileOpen} accessToken={accessToken} setAccessToken={saveToken} />
                     <div className="layout-content-main">
                         <AppRoutes accessToken={accessToken} setAccessToken={saveToken}/> 
                         <Footer />

@@ -1,3 +1,27 @@
+export const Preferred = [
+    {
+        name: "Bitcoin"
+    },
+    {
+        name: "Ethereum"
+    },
+    {
+        name: "Binance Coin"
+    },
+    {
+        name: "Polkadot"
+    },
+    {
+        name: "Polygon"
+    },
+    {
+        name: "Chainlink"
+    },
+    {
+        name: "Stellar"
+    },
+]
+
 export const TopGainers = [
     {
         name: "Bitcoin",

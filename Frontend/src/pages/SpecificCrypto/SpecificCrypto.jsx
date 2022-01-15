@@ -10,7 +10,7 @@ import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import { address } from './../../assets/globalVar.js';
 
-const SpecificCrypto = () => {
+const SpecificCrypto = (props) => {
     const [screenSize, setScreenSize] = useState(window.innerWidth);
     const [cryptoData, setCryptoData] = useState([]);
     const [exchanges, setExchanges] = useState([]);
@@ -225,7 +225,7 @@ const SpecificCrypto = () => {
         <div className="specific-crypto">
             <div className="paper-grey">
                 <div style={{paddingTop:'20px'}}/>
-                <HeaderSection data={cryptoData}/>
+                <HeaderSection data={cryptoData} accessToken={props.accessToken}/>
                 <div style={{paddingTop:'20px'}}/>
                 {
                     screenSize>600 && (
