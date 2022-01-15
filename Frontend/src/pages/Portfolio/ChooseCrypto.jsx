@@ -19,12 +19,10 @@ function SearchField(props) {
 export default function ChooseCrypto(props) {
     const [allCryptos, setAllCryptos] = useState([]);
     const [queryedData, setQueryedData] = useState(allCryptos);
-    const [transactionPanelActive, setTransactionPanelActive] = useState(false);
-    const [lastSelectedCrypto, setLastSelectedCrypto] = useState({});
 
     const closeTransactionPanel = () => {
         props.setDialogOpen(false);
-        setTimeout(() => setTransactionPanelActive(false), 100);
+        setTimeout(() => props.setTransactionPanelActive(false), 100);
     }
 
 
@@ -47,9 +45,11 @@ export default function ChooseCrypto(props) {
     }
 
     return (
-        <div className={props.className}>
-            {!transactionPanelActive && (
-                <React.Fragment>
+        <React.Fragment>
+            {/* inserisco questo div che si sovrappone agli altri per non far cliccare i vari bottoni se il dialog è aperto */}
+            {props.dialogActive && (<div className="background-blurrer" />)}
+            {!props.transactionPanelActive && (
+                <div className={props.className}>
                     <ul className="inline-list select-list">
                         <h3 style={{color: 'white'}}>Select Coin</h3>
                         <div className="h-spacer-choose-crypto"/>
@@ -60,7 +60,7 @@ export default function ChooseCrypto(props) {
                         <SearchField queryData={queryData}/>
                         <ul className="search-list crypto-list">
                             {queryedData.map((item, val) => (
-                                <ul key={val} className="crypto-list-item" onClick={() => {setLastSelectedCrypto(item); setTransactionPanelActive(true)}}>
+                                <ul key={val} className="crypto-list-item" onClick={() => {props.setLastSelectedCrypto(item); props.setTransactionPanelActive(true)}}>
                                     <img src={item.logo} width={30} alt="crypto logo"/>  
                                     <p>{item.name}</p>
                                     <p className="ticker">{item.ticker.toUpperCase()}</p>
@@ -70,12 +70,14 @@ export default function ChooseCrypto(props) {
                             ))}
                         </ul>
                     </ul>
-                </React.Fragment>
+                </div>
             )}
-            {transactionPanelActive && (
-                <TransactionPanel fetchChart={props.fetchChart} fetchInfo={props.fetchInfo} accessToken={props.accessToken} 
-                    crypto={lastSelectedCrypto} closePanel={closeTransactionPanel} />
+            {props.transactionPanelActive && (
+                <div className={props.className}>
+                    <TransactionPanel fetchChart={props.fetchChart} fetchInfo={props.fetchInfo} accessToken={props.accessToken} 
+                        crypto={props.lastSelectedCrypto} closePanel={closeTransactionPanel} />
+                </div>
             )}
-        </div>
+        </React.Fragment>
     )
 }

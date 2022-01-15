@@ -274,12 +274,12 @@
 
 .portfolio .choose-crypto-div {
     width: 30%;
-    top: 20%;
+    top: 18%;
     left: 42%;
     background-color: var(--bg-color-dark);
     border-radius: 12px;
-    position: absolute;
-    z-index: 500;
+    position: fixed;
+    z-index: 600;
     transform: scale(0);
     transition: transform 0.3s ease 0s;
 }
@@ -492,6 +492,7 @@
 
 .portfolio .option-item {
     padding: 10px 0px 10px 0px;
+    cursor: pointer;
 }
 
 .portfolio .custom-select {
@@ -633,4 +634,15 @@
 
 .portfolio .error-label p {
     margin: 5px 0px 0px 0px;
+}
+
+.portfolio .background-blurrer {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    z-index: 500;
+    background-color: rgba(31, 31, 31, 0.5);
+    
 }

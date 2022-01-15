@@ -55,7 +55,7 @@ function DropdownOptions(props) {
             <ul className="options-list">
                 <ul className="option-item">
                     <img src={require("../../res/logos/plus-nocircle.png")} width={24}/>
-                    <p>Add Transaction</p>
+                    <p onClick={() => {props.openAddTransaction(props.cripto); props.closeDropdown(); }}>Add Transaction</p>
                 </ul>
                 <ul className="option-item">
                     <img src={require("../../res/logos/transaction.png")} width={24}/>
@@ -221,7 +221,8 @@ export default function CriptoTable(props) {
                                     <div className="options-btn" onClick={() => setThisDropdownActive(val)}>
                                         <img src={require("../../res/logos/3-dots.png")} width={21}/>
                                     </div>
-                                    <DropdownOptions className={getDropdownClassName(val)}/>
+                                    <DropdownOptions className={getDropdownClassName(val)} openAddTransaction={props.openAddTransaction} 
+                                        cripto={item} closeDropdown={() => setThisDropdownActive(-1)}/>
                                 </TableCell>
                         </TableRow>
                     ))
