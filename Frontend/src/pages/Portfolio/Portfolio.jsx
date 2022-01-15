@@ -14,6 +14,7 @@ const redColor = "#E05757";
 const portfolioChartUrl = `http://${address}:8080/portfolioValue`;
 const portfolioInfoUrl = `http://${address}:8080/portfolioInfo`;
 
+//è il rettangolo che mostra l'andamento percentuale delle 24h
 function IndicatorRectangle(props) {
     let classname = 'rectangle ';
     classname = classname + (props.price_change >= 0 ? 'rectangle-green' : 'rectangle-red');
@@ -34,6 +35,9 @@ const Portfolio = (props) => {
     const [portfolioInfo, setPortfolioInfo] = useState(PlaceholderInfo);
     const [portfolioChange, setPortfolioChange] = useState(PlaceholderBalanceChange);
     const [chooseCryptoPageActive, setChooseCryptoPageActive] = useState(false);
+    //è l'ultima cripto scelta, attraverso la tabella o il pannello aggiungi transazione
+    const [lastSelectedCrypto, setLastSelectedCrypto] = useState({});
+    const [transactionPanelActive, setTransactionPanelActive] = useState(false);
 
     const optionsChart = {
         method: 'GET',
@@ -164,6 +168,13 @@ const Portfolio = (props) => {
         );
     }
 
+    //data una cripto, apre direttamente il pannello aggiungi nuova cripto
+    const openAddTransaction = (cripto) => {
+        setTransactionPanelActive(true);
+        setLastSelectedCrypto(cripto);
+        setChooseCryptoPageActive(true);
+    }
+
     return (
         <div className="portfolio">
             <div className="paper-grey">
@@ -212,11 +223,12 @@ const Portfolio = (props) => {
                 </ul>
                 <ul style={{display: 'flex', flexDirection: 'columns', padding: 0, margin: 0,
                             justifyContent: 'center', alignItems: 'flex-start'}}>
-                    <PortfolioTable data={portfolioInfo.assets}/>
+                    <PortfolioTable data={portfolioInfo.assets} openAddTransaction={openAddTransaction}/>
                 </ul>
 
-                <ChooseCrypto fetchChart={fetcherChart} fetchInfo={fetcherInfo} accessToken={props.accessToken} 
-                    className={getCryptoDialogClass()} setDialogOpen={setChooseCryptoPageActive}/>
+                <ChooseCrypto fetchChart={fetcherChart} fetchInfo={fetcherInfo} accessToken={props.accessToken} lastSelectedCrypto={lastSelectedCrypto}
+                    className={getCryptoDialogClass()} setDialogOpen={setChooseCryptoPageActive} setLastSelectedCrypto={setLastSelectedCrypto}
+                    transactionPanelActive={transactionPanelActive} setTransactionPanelActive={setTransactionPanelActive} dialogActive={chooseCryptoPageActive}/>
             </div>
         </div>
     )
