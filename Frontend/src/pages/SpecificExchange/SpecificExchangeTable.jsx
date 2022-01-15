@@ -5,6 +5,7 @@ import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import { useInterval } from '../../components/Hooks.js';
 import { useLocation } from 'react-router';
 import { address } from './../../assets/globalVar.js';
+import { Link } from 'react-router-dom'
 
 const interval_fetch = 1000 * 120;
 
@@ -13,6 +14,7 @@ export default function ExchangesTable() {
     const [order, setOrder] = useState("ASC");
     const [itemActive, setItemActive] = useState(null);
     const [exchangeData, setExchangeData] = useState([]);
+
 
     const sorting = (col) => {
         if(order === "ASC"){
@@ -82,7 +84,7 @@ export default function ExchangesTable() {
         fetch(`http://${address}:8080/getTop100`)
             .then((res) => res.json())
             .then((result) => setCryptoTable(result),
-                  (error) => console.log("Error fetching top 100 cryptos"));
+                  (error) => console.lg("Error fetching top 100 cryptos"));
     };
 
     useEffect(fetchData, []);
@@ -164,7 +166,8 @@ export default function ExchangesTable() {
                             <TableRow key={val}>
                                     <TableCell className="table-item-exchange-specific">
                                         <div className="image-coin">
-                                            <img src= {getImageOfCrypto(item.base)} width={24} height={24} style={{marginRight: 10}}/>{item.coin_id}  / <img src= {getImageOfCrypto(item.target)} width={24} height={24} style={{marginRight: 10, marginLeft:5}}/>{item.target_coin_id != null ? item.target_coin_id : item.target}
+                                            <img src= {getImageOfCrypto(item.base)} width={24} height={24} style={{marginRight: 10}}/> <Link to={`/crypto/${item.coin_id}`} className="item-name-exchange"> {item.coin_id} </Link> / 
+                                            <img src= {getImageOfCrypto(item.target)} width={24} height={24} style={{marginRight: 10, marginLeft:5}}/>  {item.target_coin_id != null ? <Link to={`/crypto/${item.target_coin_id}`} className="item-name-exchange"> {item.target_coin_id} </Link> : item.target}
                                         </div>
                                     </TableCell>
                                     <TableCell className="table-item-exchange-specific">

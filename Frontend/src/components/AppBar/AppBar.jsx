@@ -65,7 +65,7 @@ function DropdownProfile(props) {
     );
 }
 
-function DropdownNotification(props) {
+const DropdownNotification = React.forwardRef((props, ref) => {
     const [notificationList, setNotificationList] = useState(Notifications);
     const deleteNotification = idx => {
         let notif = [...notificationList.slice(0, idx), ...notificationList.slice(idx+1)]
@@ -73,7 +73,7 @@ function DropdownNotification(props) {
     }
 
     return (
-        <div className={"dropdown dropdown-notification " + props.class}>
+        <div ref={ref} className={"dropdown dropdown-notification " + props.class}>
             <div className="dropdown-wrapper">
                 <ul className="dropdown-notification-list">
                     {notificationList.length > 0 && (notificationList.map((item, val) => (
@@ -93,7 +93,7 @@ function DropdownNotification(props) {
             </div>
         </div>
     );
-}
+})
 
 function DropdownSearchPanel(props) {
     const getClassName = isActive => {
@@ -168,23 +168,24 @@ export default function AppBar(props) {
     const [allCryptos, setAllCryptos] = useState([]);
     const [queryedData, setQueryedData] = useState([]);
 
-    {/* https://it.reactjs.org/docs/forwarding-refs.html */}
+    const wrapperRefNotificationDropdown = useRef(null);
+    useOutsideAlerter(wrapperRefNotificationDropdown, "Notification");
     
+    const wrapperRefNotification = useRef(null);
+
     const wrapperRefProfile = useRef(null);
     useOutsideAlerter(wrapperRefProfile, "Profile");
-
-    const wrapperRefNotification = useRef(null);
-    useOutsideAlerter(wrapperRefNotification, "Notification");
 
     function useOutsideAlerter(ref, component) {
         useEffect(() => {
             function handleClickOutside(event) {
-                if (ref.current && !ref.current.contains(event.target)) {
-                    if(component === "Profile")
-                        setDropdownProfileActive(false);            
-
-                    else if(component === "Notification")
+                if(component === "Notification") {
+                    if (ref.current && !ref.current.contains(event.target) && wrapperRefNotification && !wrapperRefNotification.current.contains(event.target))
                         setDropdownNotificationActive(false);
+                }
+                else if(component === "Profile") {
+                    if(ref.current && !ref.current.contains(event.target))
+                        setDropdownProfileActive(false);
                 }
             }
 
@@ -259,7 +260,7 @@ export default function AppBar(props) {
                     </Icon>
 
 
-                    <DropdownNotification class={dropdownNotificationActive ? ' drop-active': ''} />
+                    <DropdownNotification ref={wrapperRefNotificationDropdown} class={dropdownNotificationActive ? ' drop-active': ''} />
                     <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} accessToken={props.accessToken} setAccessToken={props.setAccessToken}/>
                 </React.Fragment>
             )}
