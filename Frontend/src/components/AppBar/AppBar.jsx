@@ -40,11 +40,15 @@ function DropdownProfile(props) {
         if(res.status === 200) {
             console.log("Login con token da appbar success")
             res.json().then(result => setUserLogged(result['user']));
+
+            props.setLogged(true);
         }
         else {
             console.log("Errore durante il login da appbar:")
             res.json().then((val) => console.log(val));
             setUserLogged({});
+
+            props.setLogged(false);
         }
     }
 
@@ -59,7 +63,7 @@ function DropdownProfile(props) {
 
     return (
         <div className={"dropdown dropdown-profile " + props.class}>
-            {!isEmptyObject(userLogged) ? <LoggedAccount setAccessToken={props.setAccessToken} user={userLogged} accessToken={props.accessToken} /> 
+            {!isEmptyObject(userLogged) ? <LoggedAccount setAccessToken={props.setAccessToken} user={userLogged} accessToken={props.accessToken} setLogged={props.setLogged}/> 
                                             : <AccessAccount setAccessToken={props.setAccessToken}/> }
         </div>
     );
@@ -260,7 +264,7 @@ export default function AppBar(props) {
 
 
                     <DropdownNotification class={dropdownNotificationActive ? ' drop-active': ''} />
-                    <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} accessToken={props.accessToken} setAccessToken={props.setAccessToken}/>
+                    <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} accessToken={props.accessToken} setAccessToken={props.setAccessToken} setLogged={props.setLogged}/>
                 </React.Fragment>
             )}
 

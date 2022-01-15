@@ -154,8 +154,6 @@ const StatisticsSection = (props) => {
         )
     }
 
-    console.log(screenSize)
-
     return (
         <React.Fragment>
         {

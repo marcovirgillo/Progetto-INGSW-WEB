@@ -14,6 +14,7 @@ export default function App() {
     const [sideBarEnabled, setSideBarEnabled] = useState(false);
     const [searchMobileOpen, setSearchMobileOpen] = useState(false);
     const [accessToken, setAccessToken] = useState(localStorage.getItem("Auth Token"));
+    const [logged, setLogged] = useState(false);
     
     useEffect(() => {
         if(accessToken === null)
@@ -37,15 +38,17 @@ export default function App() {
 
     }, [sideBarEnabled]);
 
+    console.log(logged)
+
     return (
         <BrowserRouter>
             <div className="layout-main">
                 <SideBar sideBarEnabled={sideBarEnabled} setSideBarEnabled={setSideBarEnabled} sideBarClass={sideBarClass}/>
                 <div className="layout-content">
                     <AppBar setSideBarEnabled={setSideBarEnabled} setSearchMobileOpen={setSearchMobileOpen} 
-                            isMobileOpen={searchMobileOpen} isSearchFieldOpen={searchMobileOpen} accessToken={accessToken} setAccessToken={saveToken}/>
+                            isMobileOpen={searchMobileOpen} isSearchFieldOpen={searchMobileOpen} accessToken={accessToken} setAccessToken={saveToken} setLogged={setLogged}/>
                     <div className="layout-content-main">
-                        <AppRoutes accessToken={accessToken} setAccessToken={saveToken}/> 
+                        <AppRoutes accessToken={accessToken} setAccessToken={saveToken} logged={logged}/> 
                         <Footer />
                     </div>
                 </div>
