@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 
 const Profile = (props) => {
-
     const navigate = useNavigate();
 
-    if(props.logged == false){
-        navigate("/login")
-    }
+    useEffect(() => {
+        if(props.accessToken === "") {
+            navigate("/login");
+        }
+
+    }, []);
 
     return (
         <div>

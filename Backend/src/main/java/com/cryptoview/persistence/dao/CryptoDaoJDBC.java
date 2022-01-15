@@ -20,7 +20,6 @@ public class CryptoDaoJDBC extends CryptoDao {
 	private final Map <String, Crypto> cryptosMap;
 	
 	private final String getAllQuery = "select * from crypto;";
-	private final String insertCrypto = "insert into crypto values(?,?,?,?);";
 	private final String getCryptoPortfolio = "select * from criptoinportfolio where username=?";
 	
 	private CryptoDaoJDBC() {
@@ -69,8 +68,7 @@ public class CryptoDaoJDBC extends CryptoDao {
 
 	@Override
 	public void save(Crypto obj) throws SQLException {
-		// TODO Auto-generated method stub
-		
+		//Non serve
 	}
 
 	@Override

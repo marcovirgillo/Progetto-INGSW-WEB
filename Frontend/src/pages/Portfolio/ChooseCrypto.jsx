@@ -27,10 +27,12 @@ export default function ChooseCrypto(props) {
 
 
     useEffect(() => {
-        fetch(allCryptoUrl)
-            .then((res) => res.json())
-            .then((result) => {setAllCryptos(result); setQueryedData(result)},
-                  (error) => console.log(error));
+        if(props.accessToken != null && props.accessToken != ""){
+            fetch(allCryptoUrl)
+                .then((res) => res.json())
+                .then((result) => {setAllCryptos(result); setQueryedData(result)},
+                    (error) => console.log(error));
+        }
     }, []);
 
     const queryData = (str) => {

@@ -18,8 +18,6 @@ export default function Account(props) {
             console.log("Logout successful");
             res.json().then((result) => console.log(result));
             props.setAccessToken("");
-
-            props.setLogged(false);
         }
         else {
             console.log("Error during logout");
