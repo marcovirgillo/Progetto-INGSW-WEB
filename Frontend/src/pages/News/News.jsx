@@ -37,7 +37,7 @@ const SideNewsBox = (props) => {
 const StandardNewsBox = (props) => {
     return (  
         <React.Fragment>
-            <Grid className="bottom-news-spacer" sm={1} />
+            <Grid item className="bottom-news-spacer" sm={1} />
             <Grid item lg={4} md={6} sm={10} xs={12} >
                 <a href={props.url}>
                     <div className='standard-news-container'>
@@ -53,7 +53,7 @@ const StandardNewsBox = (props) => {
                     </div>
                 </a>
             </Grid>
-            <Grid className="bottom-news-spacer" sm={1} />
+            <Grid item className="bottom-news-spacer" sm={1} />
         </React.Fragment>
     );
 }

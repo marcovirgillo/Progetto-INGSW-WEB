@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 
 const Profile = (props) => {
-
     const navigate = useNavigate();
 
 

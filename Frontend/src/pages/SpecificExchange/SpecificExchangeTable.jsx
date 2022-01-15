@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { TableBody, Table, TableCell, TableHead, TableRow } from '@mui/material';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
@@ -164,7 +165,7 @@ export default function ExchangesTable() {
                             <TableRow key={val}>
                                     <TableCell className="table-item-exchange-specific">
                                         <div className="image-coin">
-                                            <img src= {getImageOfCrypto(item.base)} width={24} height={24} style={{marginRight: 10}}/>{item.coin_id}  / <img src= {getImageOfCrypto(item.target)} width={24} height={24} style={{marginRight: 10, marginLeft:5}}/>{item.target_coin_id != null ? item.target_coin_id : item.target}
+                                            <img src= {getImageOfCrypto(item.base)} width={24} height={24} style={{marginRight: 10}}/><Link to={`/crypto/${item.coin_id}`}> {item.coin_id} </Link> / <img src= {getImageOfCrypto(item.target)} width={24} height={24} style={{marginRight: 10, marginLeft:5}}/>{item.target_coin_id != null ? <Link to={`/crypto/${item.target_coin_id}`}> {item.target_coin_id} </Link> : item.target}
                                         </div>
                                     </TableCell>
                                     <TableCell className="table-item-exchange-specific">
