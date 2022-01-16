@@ -41,8 +41,10 @@ function DropdownProfile(props) {
             console.log("Login con token da appbar success")
             res.json().then(result => setUserLogged(result['user']));
         }
-        else if(res.status === 5000) {
+        else if(res.status === 5000 && props.accessToken != "") {
             //TODO popup rifai il login
+            //In questo caso il token non nullo che ho salvato non è valido e devo rifare l'accesso
+            setUserLogged({});
         }
         else {
             console.log("Errore durante il login da appbar:")
@@ -53,6 +55,7 @@ function DropdownProfile(props) {
 
     //provo a vedere se il mio token per il login è valido
     const fetchData = () => {
+        console.log("Fetcho dal backend con token");
         fetch(checkLoginAddress, req_options)
             .then(res => parseResult(res));   
     }
