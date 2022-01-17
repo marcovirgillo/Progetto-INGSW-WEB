@@ -7,12 +7,29 @@ const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'U
 function getFormattedPrice(price) {
     if(price > 1)
         return formatter.format(price);
-    else 
-        return "$" + price.toFixed(10);
+    else {
+        if(price === 0)
+            return "$" + 0.0;
+
+        return "$" + price.toFixed(getDecimalPlaces(price) + 2);
+    }
+}
+
+const getDecimalPlaces = (number) => {
+    let decimal = 0;
+    while(number < 1) {
+        decimal++;
+        number *= 10;
+    }
+
+    return decimal;
 }
 
 export default function CryptoChart(props) {
     const format = (value) => {
+        if(value === 0)
+            return 0.0;
+
         if(value >= Math.pow(10,3) && value < Math.pow(10,6))
             return value / Math.pow(10,3) + " K";
 
@@ -25,10 +42,8 @@ export default function CryptoChart(props) {
         if(value >= Math.pow(10,12) && value < Math.pow(10,15))
             return value / Math.pow(10,12) + " T";
 
-        if(value<1){
-            if(value < Math.pow(10,-8))
-                return value.toFixed(9);
-            return value.toFixed(6);
+        if(value < 1){
+            return value.toFixed(getDecimalPlaces(value) + 2);
         }
 
         return value.toFixed(2);
@@ -47,12 +62,12 @@ export default function CryptoChart(props) {
         grid: {  
             xaxis: {
               lines: {
-                show: false  //or just here to disable only x axis grids
+                show: false  
                }
              },  
             yaxis: {
               lines: { 
-                show: props.showYlines  //or just here to disable only y axis
+                show: props.showYlines  
                }
              },   
         },

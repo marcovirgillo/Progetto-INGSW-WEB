@@ -4,7 +4,6 @@ export default function ConfirmPopup(props) {
     return (
         <div className="background-blurrer">
             <div className="confirm-popup">
-                
                 <ul className="popup-list">
                 <p className="popup-title">{props.title}</p>
                     <span className="popup-text">{props.text}</span>

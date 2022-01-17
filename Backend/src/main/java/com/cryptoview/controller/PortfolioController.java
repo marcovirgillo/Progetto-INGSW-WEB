@@ -20,6 +20,8 @@ import com.cryptoview.persistence.dao.UserDaoJDBC;
 import com.cryptoview.persistence.model.Portfolio;
 import com.cryptoview.persistence.model.Transaction;
 import com.cryptoview.persistence.model.User;
+import com.cryptoview.persistence.model.domain.PortfolioName;
+import com.cryptoview.persistence.model.domain.Username;
 import com.cryptoview.service.PortfolioService;
 
 @RestController
@@ -184,6 +186,57 @@ public class PortfolioController {
 			e.printStackTrace();
 			response.setStatus(Protocol.REMOVE_CRIPTO_ERROR);
 			resp.put("msg", "Cannot remove this asset");
+			
+			return resp;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@PostMapping("/createPortfolio")
+	public JSONObject createNewPortfolio(@RequestBody JSONObject body, HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("Authorization");
+		JSONObject resp = new JSONObject();
+		
+		try {
+			User user = UserDaoJDBC.getInstance().findByToken(token);
+			
+			if(user == null) {
+				response.setStatus(Protocol.INVALID_TOKEN);
+				resp.put("msg", "The auth token is not valid");
+				
+				return resp;
+			}
+			
+			Portfolio portfolio = PortfolioDaoJDBC.getInstance().get(user.getUsername());
+			
+			if(portfolio != null) {
+				response.setStatus(Protocol.PORTFOLIO_ALREADY_EXISTS);
+				resp.put("msg", "Portfolio already exists");
+				return resp;
+			}
+			else {
+				Portfolio newPortfolio = new Portfolio();
+				newPortfolio.setUsernameOwner(user.getUsername());
+				newPortfolio.setPortfolioName(new PortfolioName((String) body.get("name")));
+				
+				PortfolioDaoJDBC.getInstance().save(newPortfolio);
+				
+				response.setStatus(Protocol.OK);
+				resp.put("msg", "Portfolio created successfully");
+				
+				return resp;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.setStatus(Protocol.SERVER_ERROR);
+			resp.put("msg", "Internal server error");
+			
+			return resp;
+		} catch (IllegalArgumentException | NullPointerException e2) {
+			e2.printStackTrace();
+			response.setStatus(Protocol.INVALID_DATA);
+			resp.put("msg", "the portfolio name is not valid");
 			
 			return resp;
 		}

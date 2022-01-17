@@ -15,7 +15,7 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 	private final String getAllQuery = "select * from portfolio;";
 	private final String getUserPortfolio = "select * from portfolio where username_owner=?";
 	private final String removeCryptoQuery = "delete from criptoinportfolio where username=? and ticker=?";
-	//private final String insertPortfolio = "insert into portfolio values(?, now(), ?);";
+	private final String insertPortfolio = "insert into portfolio values(?, now(), ?)";
 	
 	private PortfolioDaoJDBC() {}
 	
@@ -42,8 +42,12 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 
 	@Override
 	public void save(Portfolio obj) throws SQLException {
-		// TODO Auto-generated method stub
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(insertPortfolio);
+		stm.setString(1, obj.getUsernameOwner());
+		stm.setString(2, obj.getPortfolioName());
 		
+		stm.execute();
+		stm.close();
 	}
 
 	@Override

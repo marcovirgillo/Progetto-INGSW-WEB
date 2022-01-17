@@ -131,11 +131,59 @@
     }
 }
 
-
 .favourite-assets-news-label {
     margin: 50px 0px 10px 0px;
     color: white;
     padding: 15px;
     margin-left: 40px;
     font-weight: 500;
+}
+
+
+.scrollable-side-news-container {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 530px;
+}
+
+.dashboard-news .single-side-news-container {
+    padding-bottom: 0;
+}
+
+.dashboard-news .single-side-news-list{
+    max-width: 100%;
+}
+
+.dashboard-news .side-news-title {
+    color: var(--bg-color-blue);
+    font-size: 16px;
+}
+
+.dashboard-news .side-news-content {
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.dashboard-news .side-news-date {
+    padding-top: 5px;
+}
+
+@media only screen and (max-width: 700px) {
+
+    .dashboard-news .single-side-news-list {
+        max-width: 90% !important;
+    }
+
+    .dashboard-news .single-side-news-container {
+        margin-right: 15px;
+        margin-left: 15px;
+    }
+}
+
+@media only screen and (max-width: 950px) {
+    .scrollable-side-news-container {
+        max-height: 480px;
+    }
 }
