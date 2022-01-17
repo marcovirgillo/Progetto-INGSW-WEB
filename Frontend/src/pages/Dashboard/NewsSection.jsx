@@ -23,6 +23,7 @@ const SideNewsBox = (props) => {
             <div className='single-side-news-container' style={{marginBottom: "20px"}}>
                 <ul className='single-side-news-list'>
                     <p className='side-news-title'> {props.title} </p>
+                    <p className='side-news-content'> {props.content} </p>
                     <p className='side-news-date'> {props.publishedAt} </p>
                 </ul>
             </div>
@@ -45,7 +46,7 @@ export default function NewsSection() {
     useEffect(fetchPopularNews, []);
 
     return (
-        <div className='dashboard-news-container'>
+        <div className='dashboard-news'>
             <h4 className='favourite-assets-news-label'> Favourite asset's news</h4>
 
             <div className='container-news-top'>
@@ -74,6 +75,7 @@ export default function NewsSection() {
                             <SideNewsBox
                                 key = {index}
                                 title = {item.title}
+                                content = {item.content}
                                 publishedAt = {item.publishedAt}
                                 url = {item.url}
                             />
