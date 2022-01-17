@@ -12,12 +12,59 @@ import { Preferred } from './TestData.js';
 //https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 const interval_fetch = 1000 * 120; //60 secondi
 
-export default function CriptoTable() {
+const getPreferencesUrl = `http://${address}:8080/getPreferences`;
+
+export default function CriptoTable(props) {
     const [cryptoTable, setCryptoTable] = useState([]);
     const [order, setOrder] = useState("ASC");
     const [itemActive, setItemActive] = useState(null);
 
     const [preferred, setPreferred] = useState([]);
+
+    console.log(props.accessToken)
+
+    const optionsPreferences = {
+        method: 'GET',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken
+        }
+    }
+
+    useEffect(() => {
+        if(props.accessToken === "")
+            setPreferred([]);
+        else{
+            fetcherPreferences();
+        }
+    }, [props.accessToken]); 
+
+    useEffect(() => {
+        if(props.accessToken !== null || props.accessToken !== ""){
+            console.log("Fetching preferences")
+            fetcherPreferences();
+        }
+    }, []);
+
+    const fetcherPreferences = () => {
+        if(props.accessToken === null || props.accessToken === "")
+            return;
+
+        fetch(getPreferencesUrl, optionsPreferences)
+        .then((res) => processPreferences(res));
+    }
+
+    const processPreferences = res => {
+        if(res.status === 200) {
+            res.json()
+                .then((result) => setPreferred(result.preferences),
+                      (error) => console.log(error));
+        }
+        else if(res.status === 6001) {
+            console.log("No preferences found");
+        }
+    }
 
     const sorting = (col) => {
         if(order === "ASC"){
@@ -87,9 +134,6 @@ export default function CriptoTable() {
             .then((res) => res.json())
             .then((result) => setCryptoTable(result),
                   (error) => console.log("Error fetching top 100 cryptos"));
-
-        //Fetch preferred crypto of the user
-        setPreferred(Preferred);
     };
 
     useEffect(fetchData, []);
@@ -97,6 +141,8 @@ export default function CriptoTable() {
     useInterval(() => fetchData, interval_fetch);
 
     function findPreferred(name){
+        if(preferred === undefined)
+            return false;
         var item  = preferred.find(item => item.id === name);
         if(item != undefined) {
             return true;
@@ -146,13 +192,17 @@ export default function CriptoTable() {
                 {
                     cryptoTable.map((item, val) => (
                             <TableRow key={val}>
-                                    <TableCell className="table-item">{item.rank}</TableCell>
                                     <TableCell className="table-item">
                                         <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
-                                            {findPreferred(item.id) ? 
-                                                <img src={require("../../res/logos/star-checked.png")} width={22} height={22}  style={{paddingRight:'15px', cursor:'pointer'}} onClick={() => handlePreferred(false, item.id)}/> :
-                                                <img src={require("../../res/logos/star-unchecked.png")} width={22} height={22} style={{paddingRight:'15px', cursor:'pointer'}} onClick={() => handlePreferred(true, item.id)}/>
+                                            {findPreferred(item.ticker) ? 
+                                                <img src={require("../../res/logos/star-checked.png")} width={18} height={18}  style={{paddingRight:'15px', cursor:'pointer', paddingBottom:'5px'}} onClick={() => handlePreferred(false, item.ticker)}/> :
+                                                <img src={require("../../res/logos/star-unchecked.png")} width={18} height={18} style={{paddingRight:'15px', cursor:'pointer', paddingBottom:'5px'}} onClick={() => handlePreferred(true, item.ticker)}/>
                                             }
+                                            {item.rank}
+                                        </ul>
+                                    </TableCell>
+                                    <TableCell className="table-item">
+                                        <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
                                             <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
                                             <Link to={`/crypto/${item.id}`} className="item-name">
                                                 <p>{item.name}</p>

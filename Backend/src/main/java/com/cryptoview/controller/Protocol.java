@@ -12,4 +12,7 @@ public class Protocol {
 	public static final int INVALID_DATA = 5020;
 	public static final int TRANSACTION_ERROR = 5030;
 	public static final int REMOVE_CRIPTO_ERROR = 5040;
+	
+	//Preferences 
+	public static final int NO_PREFERENCES_FOUND = 6001;
 }

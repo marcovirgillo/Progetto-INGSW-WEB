@@ -8,7 +8,7 @@ import SpecificExchange from '../pages/SpecificExchange/SpecificExchange'
 export default function AppRoutes(props) {
     return (
         <Routes>
-            <Route path="/" exact element={<Home />} />
+            <Route path="/" exact element={<Home accessToken={props.accessToken}/>} />
             <Route path="/portfolio" exact element={<Portfolio accessToken={props.accessToken}/>} />
             <Route path="/dashboard" exact element={<Dashboard />} />
             <Route path="/news" exact element={<News />} />

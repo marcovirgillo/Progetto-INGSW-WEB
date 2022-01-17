@@ -190,8 +190,9 @@ export default function AppBar(props) {
                         setDropdownNotificationActive(false);
                 }
                 else if(component === "Profile") {
-                    if(ref.current && !ref.current.contains(event.target))
-                        setDropdownProfileActive(false);
+                    if(ref.current && !ref.current.contains(event.target)){
+                        setTimeout(() => setDropdownProfileActive(false), 100);
+                    }
                 }
             }
 

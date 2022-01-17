@@ -10,7 +10,7 @@ import com.cryptoview.persistence.model.Portfolio;
 
 public class PortfolioDaoJDBC extends PortfolioDao {
 	
-	private static PortfolioDaoJDBC instance;
+	private static PortfolioDaoJDBC instance = null;
 	
 	private final String getAllQuery = "select * from portfolio;";
 	private final String getUserPortfolio = "select * from portfolio where username_owner=?";
