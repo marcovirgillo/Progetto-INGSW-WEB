@@ -20,12 +20,11 @@ const BigNewsBox = (props) => {
 const SideNewsBox = (props) => {
     return (
         <a href={props.url} >
-            <div className='single-side-news-container'>
+            <div className='single-side-news-container' style={{marginBottom: "20px"}}>
                 <ul className='single-side-news-list'>
                     <p className='side-news-title'> {props.title} </p>
                     <p className='side-news-date'> {props.publishedAt} </p>
                 </ul>
-                <img src={props.imagePath} className='side-news-image'/>
             </div>
         </a>
     );
@@ -37,7 +36,7 @@ export default function NewsSection() {
     const [popularNewsData, setPopularNewsData] = useState([]);
 
     const fetchPopularNews = () => {
-        fetch(`http://${address}:8080/popularNews`)
+        fetch(`http://${address}:8080/allLatestNews`)
             .then((res) => res.json())
             .then((result) => setPopularNewsData(result),
                   (error) => console.log("Error fetching popular news"));
@@ -69,18 +68,18 @@ export default function NewsSection() {
             
                 {/* Three side news*/}
                 <div className='three-side-news-container'>
+                    <div className='scrollable-side-news-container'>
                     {
-                        (popularNewsData.slice(1, popularNewsData.length)).map((item, index) => (
+                        (popularNewsData.slice(1, 10)).map((item, index) => (
                             <SideNewsBox
                                 key = {index}
                                 title = {item.title}
-                                imagePath = {item.imageUrl}
                                 publishedAt = {item.publishedAt}
                                 url = {item.url}
-                                
                             />
                         ))
                     }
+                    </div>
                 </div>
             </div>
         </div>            
