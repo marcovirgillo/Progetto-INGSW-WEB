@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -148,8 +149,8 @@ public class PortfolioController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@PostMapping("/removeCripto")
-	public JSONObject removeCriptoFromPortfolio(@RequestBody String cripto_ticker, HttpServletRequest request, HttpServletResponse response) {
+	@DeleteMapping("/removeCripto")
+	public JSONObject removeCriptoFromPortfolio(@RequestBody JSONObject obj, HttpServletRequest request, HttpServletResponse response) {
 		String token = request.getHeader("Authorization");
 		JSONObject resp = new JSONObject();
 		
@@ -166,10 +167,11 @@ public class PortfolioController {
 			Portfolio portfolio = PortfolioDaoJDBC.getInstance().get(user.getUsername());
 			
 			if(portfolio != null) {
+				String cripto_ticker = (String) obj.get("cripto_ticker");
 				PortfolioDaoJDBC.getInstance().removeCrypto(cripto_ticker, portfolio.getUsernameOwner());
 				
 				response.setStatus(Protocol.OK);
-				resp.put("msg", "Transaction added succesfully");
+				resp.put("msg", "Cripto removed successfully");
 				return resp;
 				
 			}

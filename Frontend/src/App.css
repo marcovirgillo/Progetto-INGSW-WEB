@@ -23,6 +23,10 @@
         display: revert !important;
     }
 
+    .portfolio .confirm-popup {
+        left: 34% !important;
+    }
+
     .side-bar-back-btn {
         display: revert !important;
     }
@@ -99,11 +103,15 @@
     .portfolio input {
         width: 96% !important;
     }
+
+    .portfolio .confirm-popup {
+        left: 12% !important;
+    }
 }
 
 @media only screen and (max-width: 800px)  {
     .choose-crypto-div {
-        top: 20% !important;
+        top: 14% !important;
         left: 5% !important;
         width: 90% !important;
     }

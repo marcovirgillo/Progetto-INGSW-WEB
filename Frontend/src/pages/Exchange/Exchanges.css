@@ -54,6 +54,10 @@
     text-decoration: none;
 }
 
+.item-name-exchange:hover {
+    color: #6ac0e2;
+}
+
 
 @media only screen and (max-width: 800px) {
     .exchanges-page {

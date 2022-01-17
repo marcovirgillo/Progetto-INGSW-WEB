@@ -238,7 +238,8 @@ const Portfolio = (props) => {
                 </ul>
                 <ul style={{display: 'flex', flexDirection: 'columns', padding: 0, margin: 0,
                             justifyContent: 'center', alignItems: 'flex-start'}}>
-                    <PortfolioTable data={portfolioInfo.assets} openAddTransaction={openAddTransaction}/>
+                    <PortfolioTable accessToken={props.accessToken} fetchChart={fetcherChart} fetchInfo={fetcherInfo} 
+                        data={portfolioInfo.assets} openAddTransaction={openAddTransaction}/>
                 </ul>
 
                 <ChooseCrypto accessToken={props.accessToken} fetchChart={fetcherChart} fetchInfo={fetcherInfo} accessToken={props.accessToken} lastSelectedCrypto={lastSelectedCrypto}

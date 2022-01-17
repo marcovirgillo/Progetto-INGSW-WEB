@@ -4,8 +4,11 @@ import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import "./Portfolio.css"
 import { Link  } from 'react-router-dom'
+import { address } from '../../assets/globalVar';
+import ConfirmPopup from './ConfirmPopup';
 
 const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
+const removeAssetUrl = `http://${address}:8080/removeCripto`;
 
 function getPriceClass(price) {
     let className = 'table-item ';
@@ -63,7 +66,7 @@ function DropdownOptions(props) {
                 </ul>
                 <ul className="option-item">
                     <img src={require("../../res/logos/remove.png")} width={24}/>
-                    <p>Remove Asset</p>
+                    <p onClick={props.openPopup}>Remove Asset</p>
                 </ul>
             </ul>
         </div>
@@ -79,6 +82,10 @@ export default function CriptoTable(props) {
 
     //itemactive è un'etichetta che dice chi è l'elemento che ha fatto il sorting
     const [itemActive, setItemActive] = useState(null);
+    //popupactive è lo state per il popup di conferma elimina transazione
+    const [popupActive, setPopupActive] = useState(false);
+    //è l'ultima cripto che ho scelto, serve per l'eliminazione dell'asset
+    const [selectedAsset, setSelectedAsset] = useState({ticker: ''});
     
     useEffect(() => {
         setTableData(data);
@@ -93,6 +100,7 @@ export default function CriptoTable(props) {
         setDropdownsActive(arr);
     }
 
+    //imposto il dropdown in posizione idx come l'unico dropdown attivo
     const setThisDropdownActive = (idx) => {
         let arr = [];
         for(var i = 0; i < data.length; ++i) {
@@ -114,6 +122,28 @@ export default function CriptoTable(props) {
             return "dropdown-options drop-opt-active";
         else
             return "dropdown-options"; 
+    }
+
+    const parseResult = res => {
+        if(res.status === 200) {
+            props.fetchChart(); 
+            props.fetchInfo();
+        }
+        else 
+            res.json().then(result => console.log(result));
+    }
+
+    const removeSelectedAsset = () => {
+        fetch(removeAssetUrl, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': props.accessToken
+                },
+                body: JSON.stringify({
+                    'cripto_ticker': selectedAsset.ticker
+                })
+            }).then(res => parseResult(res));
     }
 
     //il parametro è l'elemento del json sul quale fare l'ordinamento
@@ -153,81 +183,86 @@ export default function CriptoTable(props) {
     }
 
     return (
-        <Table className="table" sx={{maxWidth: '94%', marginTop: '30px'}}>
-            <TableHead>
-                <TableRow>
-                    <TableCell className="table-attribute">Name</TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
-                        <TableCellArrow content="Price" arrowChecker="price" />
-                    </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("change_24h"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
-                        <TableCellArrow content="24h" arrowChecker="24h" />
-                    </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("change_7d"); setItemActive("7d")}} style={{cursor: 'pointer'}}>
-                        <TableCellArrow content="7d" arrowChecker="7d" />
-                    </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("holding_dollar"); setItemActive("holding")}} style={{cursor: 'pointer'}}>
-                        <TableCellArrow content="Holdings" arrowChecker="holding" />
-                    </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("avg_buy_price"); setItemActive("avg-buy-price"); }} style={{cursor: 'pointer'}}>
-                        <TableCellArrow content="Avg. Buy Price" arrowChecker="avg-buy-price" />
-                    </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("profit_dollar"); setItemActive("profit"); }} style={{cursor: 'pointer'}}>
-                        <TableCellArrow content="Profit/Loss" arrowChecker="profit" />
-                    </TableCell>
-                    <TableCell className="table-attribute">Actions</TableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {tableData.length > 0 && (
-                    tableData.map((item, val) => (
-                        <TableRow key={val}>
-                                <TableCell className="table-item">
-                                    <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
-                                        <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
-                                        <Link to={`/crypto/${item.id}`} className="item-name">
-                                            <p>{item.name}</p>
-                                        </Link>
-                                        <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker.toUpperCase()})</p>
-                                    </ul>
-                                </TableCell>
-                                <TableCell className="table-item">
-                                    {getFormattedPrice(item.price)}
-                                </TableCell>
-                                <TableCell className={getPriceClass(item.change_24h)}>
-                                    {formatPercentage(item.change_24h)} 
-                                </TableCell>
-                                <TableCell className={getPriceClass(item.change_7d)}>
-                                    {formatPercentage(item.change_7d)} 
-                                </TableCell>
-                                <TableCell className="table-item">
-                                    <ul className="table-item-list">
-                                        <li>{item.holdings}</li>
-                                        <li className="item-grey">{getFormattedPrice(item.holding_dollar)}</li>
-                                    </ul>
-                                </TableCell>
-                                <TableCell className="table-item">
-                                    {getFormattedPrice(item.avg_buy_price)}
-                                </TableCell>
-                                <TableCell className="table-item">
-                                    <ul className="table-item-list">
-                                        <li>{formatProfitDollar(item.profit_dollar)}</li>
-                                        <li className={"profit " + getPriceClass(item.profit_dollar)}>
-                                            {item.profit_percentage} %
-                                        </li>
-                                    </ul>
-                                </TableCell>
-                                <TableCell>
-                                    <div className="options-btn" onClick={() => setThisDropdownActive(val)}>
-                                        <img src={require("../../res/logos/3-dots.png")} width={21}/>
-                                    </div>
-                                    <DropdownOptions className={getDropdownClassName(val)} openAddTransaction={props.openAddTransaction} 
-                                        cripto={item} closeDropdown={() => setThisDropdownActive(-1)}/>
-                                </TableCell>
-                        </TableRow>
-                    ))
-                )}
-            </TableBody>
-        </Table>
+        <React.Fragment>
+            <Table className="table" sx={{maxWidth: '94%', marginTop: '30px'}}>
+                <TableHead>
+                    <TableRow>
+                        <TableCell className="table-attribute">Name</TableCell>
+                        <TableCell className="table-attribute" onClick={() => {sorting("price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
+                            <TableCellArrow content="Price" arrowChecker="price" />
+                        </TableCell>
+                        <TableCell className="table-attribute" onClick={() => {sorting("change_24h"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
+                            <TableCellArrow content="24h" arrowChecker="24h" />
+                        </TableCell>
+                        <TableCell className="table-attribute" onClick={() => {sorting("change_7d"); setItemActive("7d")}} style={{cursor: 'pointer'}}>
+                            <TableCellArrow content="7d" arrowChecker="7d" />
+                        </TableCell>
+                        <TableCell className="table-attribute" onClick={() => {sorting("holding_dollar"); setItemActive("holding")}} style={{cursor: 'pointer'}}>
+                            <TableCellArrow content="Holdings" arrowChecker="holding" />
+                        </TableCell>
+                        <TableCell className="table-attribute" onClick={() => {sorting("avg_buy_price"); setItemActive("avg-buy-price"); }} style={{cursor: 'pointer'}}>
+                            <TableCellArrow content="Avg. Buy Price" arrowChecker="avg-buy-price" />
+                        </TableCell>
+                        <TableCell className="table-attribute" onClick={() => {sorting("profit_dollar"); setItemActive("profit"); }} style={{cursor: 'pointer'}}>
+                            <TableCellArrow content="Profit/Loss" arrowChecker="profit" />
+                        </TableCell>
+                        <TableCell className="table-attribute">Actions</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {tableData.length > 0 && (
+                        tableData.map((item, val) => (
+                            <TableRow key={val}>
+                                    <TableCell className="table-item">
+                                        <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
+                                            <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
+                                            <Link to={`/crypto/${item.id}`} className="item-name">
+                                                <p>{item.name}</p>
+                                            </Link>
+                                            <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker.toUpperCase()})</p>
+                                        </ul>
+                                    </TableCell>
+                                    <TableCell className="table-item">
+                                        {getFormattedPrice(item.price)}
+                                    </TableCell>
+                                    <TableCell className={getPriceClass(item.change_24h)}>
+                                        {formatPercentage(item.change_24h)} 
+                                    </TableCell>
+                                    <TableCell className={getPriceClass(item.change_7d)}>
+                                        {formatPercentage(item.change_7d)} 
+                                    </TableCell>
+                                    <TableCell className="table-item">
+                                        <ul className="table-item-list">
+                                            <li>{item.holdings}</li>
+                                            <li className="item-grey">{getFormattedPrice(item.holding_dollar)}</li>
+                                        </ul>
+                                    </TableCell>
+                                    <TableCell className="table-item">
+                                        {getFormattedPrice(item.avg_buy_price)}
+                                    </TableCell>
+                                    <TableCell className="table-item">
+                                        <ul className="table-item-list">
+                                            <li>{formatProfitDollar(item.profit_dollar)}</li>
+                                            <li className={"profit " + getPriceClass(item.profit_dollar)}>
+                                                {item.profit_percentage} %
+                                            </li>
+                                        </ul>
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className="options-btn" onClick={() => setThisDropdownActive(val)}>
+                                            <img src={require("../../res/logos/3-dots.png")} width={21}/>
+                                        </div>
+                                        <DropdownOptions className={getDropdownClassName(val)} openAddTransaction={props.openAddTransaction} 
+                                            cripto={item} closeDropdown={() => setThisDropdownActive(-1)} openPopup={() => {setPopupActive(true); setSelectedAsset(item);}}/>
+                                    </TableCell>
+                            </TableRow>
+                        ))
+                    )}
+                </TableBody>
+            </Table>
+            {popupActive && (<ConfirmPopup title="Remove Asset" text={"Are you sure? Every transaction related to this asset will be removed!"} 
+                                onConfirm={() => {removeSelectedAsset(); setPopupActive(false);}} 
+                                onCancel={() => setPopupActive(false)}/>)}
+        </React.Fragment>
     );
 }
