@@ -23,6 +23,10 @@
         display: revert !important;
     }
 
+    .portfolio .confirm-popup {
+        left: 34% !important;
+    }
+
     .side-bar-back-btn {
         display: revert !important;
     }
@@ -46,6 +50,10 @@
 
     .delete-icon {
         font-size: 20px !important;
+    }
+
+    .create-portfolio-popup { 
+        left: 32% !important;
     }
 
     .app-bar-logo {
@@ -99,13 +107,22 @@
     .portfolio input {
         width: 96% !important;
     }
+
+    .portfolio .confirm-popup {
+        left: 12% !important;
+    }
 }
 
 @media only screen and (max-width: 800px)  {
     .choose-crypto-div {
-        top: 20% !important;
+        top: 14% !important;
         left: 5% !important;
         width: 90% !important;
+    }
+
+    .create-portfolio-popup {
+        left: 10% !important;
+        width: 80% !important;
     }
 
     .choose-crypto-div .app-bar-search-field {

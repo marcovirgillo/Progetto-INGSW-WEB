@@ -8,6 +8,7 @@ import plus_icon from "./../../res/logos/plus.png";
 import { address } from '../../assets/globalVar';
 import ChooseCrypto from './ChooseCrypto';
 import { useNavigate } from "react-router-dom";
+import CreatePortfolio from './CreatePortfolio';
 
 const greenColor = "#46C95B";
 const redColor = "#E05757";
@@ -39,6 +40,7 @@ const Portfolio = (props) => {
     //è l'ultima cripto scelta, attraverso la tabella o il pannello aggiungi transazione
     const [lastSelectedCrypto, setLastSelectedCrypto] = useState({});
     const [transactionPanelActive, setTransactionPanelActive] = useState(false);
+    const [portfolioExists, setPortfolioExists] = useState(true);
 
     const navigate = useNavigate();
 
@@ -67,9 +69,13 @@ const Portfolio = (props) => {
                 .then((result) => setPortfolioInfo(result),
                       (error) => console.log(error));
         }
-        else if(res.status === 5010) {
+
+        if(res.status === 5010) {
             console.log("Portfolio doesn't exists");
+            setPortfolioExists(false);
         }
+        else 
+            setPortfolioExists(true);
     }
 
     const processValue = res => {
@@ -78,9 +84,13 @@ const Portfolio = (props) => {
                 .then((result) => processData(result),
                     (error) => console.log(error));
         }
-        else if(res.status === 5010) {
+
+        if(res.status === 5010) {
             console.log("Portfolio doesn't exists");
+            setPortfolioExists(false);
         }
+        else 
+            setPortfolioExists(true);
     }
 
     const fetcherChart = () => {
@@ -189,64 +199,71 @@ const Portfolio = (props) => {
         setChooseCryptoPageActive(true);
     }
 
-    return (
-        <React.Fragment>
-        <div className="portfolio">
-            <div className="paper-grey">
-                <h4 className="name-label">{portfolioInfo.portfolio_name}</h4>
-                <ul className="portfolio-list">
-                    <h3 className="current-balance-label">Current Balance</h3>
-                    <ul className="inline-list">
-                        <p className="current-balance">
-                            {formatProfitDollar(portfolioInfo.balance).substring(2)}
-                        </p>
-                        <IndicatorRectangle price_change={portfolioChange.balance_change_24h_percentage}/>
-                    </ul>
-                    <ul className="inline-list">
-                        <p className={getClassNameChange(portfolioChange.balance_change_24h)}>
-                            {formatProfitDollar(portfolioChange.balance_change_24h)}
-                        </p>
-                        <p className="label-24h">24h</p>
-                    </ul>
-                </ul>
-                <div className="chart-div" style={{marginTop: '20px'}}>
-                    <ul className="btn-containers-list">
-                        <ul className="btn-container">
-                            <p className={isBtnActive("chart")} onClick={() => setChartType("chart")}>Chart</p>
-                            <p className={isBtnActive("allocation")} onClick={() => setChartType("allocation")}>Allocation</p>
-                            <p className={isBtnActive("statistics")} onClick={() => setChartType("statistics")}>Statistics</p>
-                        </ul>
-                        <div className="h-spacer" />
-                        { chartType === 'chart' && (<ChartButtons className="chart-btns-desktop"/>) }
-                    </ul>
-                    {chartData [0].data.length > 1 && (
-                    <CryptoChart className="chart"
-                        color={portfolioChange.balance_change_24h >= 0 ? greenColor : redColor} 
-                        width="100%" 
-                        height="120%"
-                        data={chartData} 
-                        timestamps={chartDatetime} 
-                        showYlines={true}
-                    />
-                    )}
-                    { chartType === 'chart' && (<ChartButtons className="chart-btns-mobile"/>) }
-                </div>
-                <ul className="assets-list">
-                    <p className="white-label assets-label">My Assets</p>
-                    <div className="h-spacer-assets" />
-                    <ButtonAddNewAsset setCryptoDialogOpen={setChooseCryptoPageActive}/>
-                </ul>
-                <ul style={{display: 'flex', flexDirection: 'columns', padding: 0, margin: 0,
-                            justifyContent: 'center', alignItems: 'flex-start'}}>
-                    <PortfolioTable data={portfolioInfo.assets} openAddTransaction={openAddTransaction}/>
-                </ul>
+    const updateData = () => {
+        fetcherChart();
+        fetcherInfo();
+    }
 
-                <ChooseCrypto accessToken={props.accessToken} fetchChart={fetcherChart} fetchInfo={fetcherInfo} accessToken={props.accessToken} lastSelectedCrypto={lastSelectedCrypto}
-                    className={getCryptoDialogClass()} setDialogOpen={setChooseCryptoPageActive} setLastSelectedCrypto={setLastSelectedCrypto}
-                    transactionPanelActive={transactionPanelActive} setTransactionPanelActive={setTransactionPanelActive} dialogActive={chooseCryptoPageActive}/>
-            </div>
+    return (
+        <div className="portfolio">
+                {!portfolioExists && (<CreatePortfolio updateData={updateData} accessToken={props.accessToken}/>)}
+                {portfolioExists && (
+                    <div className="paper-grey">
+                        <h4 className="name-label">{portfolioInfo.portfolio_name}</h4>
+                        <ul className="portfolio-list">
+                            <h3 className="current-balance-label">Current Balance</h3>
+                            <ul className="inline-list">
+                                <p className="current-balance">
+                                    {formatProfitDollar(portfolioInfo.balance).substring(2)}
+                                </p>
+                                <IndicatorRectangle price_change={portfolioChange.balance_change_24h_percentage}/>
+                            </ul>
+                            <ul className="inline-list">
+                                <p className={getClassNameChange(portfolioChange.balance_change_24h)}>
+                                    {formatProfitDollar(portfolioChange.balance_change_24h)}
+                                </p>
+                                <p className="label-24h">24h</p>
+                            </ul>
+                        </ul>
+                        <div className="chart-div" style={{marginTop: '20px'}}>
+                            <ul className="btn-containers-list">
+                                <ul className="btn-container">
+                                    <p className={isBtnActive("chart")} onClick={() => setChartType("chart")}>Chart</p>
+                                    <p className={isBtnActive("allocation")} onClick={() => setChartType("allocation")}>Allocation</p>
+                                    <p className={isBtnActive("statistics")} onClick={() => setChartType("statistics")}>Statistics</p>
+                                </ul>
+                                <div className="h-spacer" />
+                                { chartType === 'chart' && (<ChartButtons className="chart-btns-desktop"/>) }
+                            </ul>
+                            {chartData [0].data.length > 1 && (
+                            <CryptoChart className="chart"
+                                color={portfolioChange.balance_change_24h >= 0 ? greenColor : redColor} 
+                                width="100%" 
+                                height="120%"
+                                data={chartData} 
+                                timestamps={chartDatetime} 
+                                showYlines={true}
+                            />
+                            )}
+                            { chartType === 'chart' && (<ChartButtons className="chart-btns-mobile"/>) }
+                        </div>
+                        <ul className="assets-list">
+                            <p className="white-label assets-label">My Assets</p>
+                            <div className="h-spacer-assets" />
+                            <ButtonAddNewAsset setCryptoDialogOpen={setChooseCryptoPageActive}/>
+                        </ul>
+                        <ul style={{display: 'flex', flexDirection: 'columns', padding: 0, margin: 0,
+                                    justifyContent: 'center', alignItems: 'flex-start'}}>
+                            <PortfolioTable accessToken={props.accessToken} fetchChart={fetcherChart} fetchInfo={fetcherInfo} 
+                                data={portfolioInfo.assets} openAddTransaction={openAddTransaction}/>
+                        </ul>
+
+                        <ChooseCrypto accessToken={props.accessToken} fetchChart={fetcherChart} fetchInfo={fetcherInfo} accessToken={props.accessToken} lastSelectedCrypto={lastSelectedCrypto}
+                            className={getCryptoDialogClass()} setDialogOpen={setChooseCryptoPageActive} setLastSelectedCrypto={setLastSelectedCrypto}
+                            transactionPanelActive={transactionPanelActive} setTransactionPanelActive={setTransactionPanelActive} dialogActive={chooseCryptoPageActive}/>
+                        </div>
+                    )}
         </div>
-        </React.Fragment>
     )
 }
 
