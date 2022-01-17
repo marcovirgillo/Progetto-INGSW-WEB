@@ -28,8 +28,6 @@ export default function Account(props) {
     const doLogout = () => {
         fetch(logoutLink, req_options)
             .then(res => parseResponse(res));
-
-            
     }
 
     const getProfilePic = () => {
