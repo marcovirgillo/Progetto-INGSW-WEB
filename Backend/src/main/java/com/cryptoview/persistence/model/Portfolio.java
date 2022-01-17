@@ -5,10 +5,12 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import com.cryptoview.persistence.model.domain.PortfolioName;
+
 public class Portfolio {
 	private String usernameOwner;
 	private String dateCreation;
-	private String portfolioName;
+	private PortfolioName portfolioName;
 	
 	private Map <Crypto, Double> cryptoMap;
 	private List <Transaction> transactionList;
@@ -31,7 +33,7 @@ public class Portfolio {
 	}
 
 	public String getPortfolioName() {
-		return portfolioName;
+		return portfolioName.toString();
 	}
 	
 	public void setTransactionList(List<Transaction> transactionList) {
@@ -50,15 +52,15 @@ public class Portfolio {
 		this.cryptoMap = cryptoMap;
 	}
 
-	public void setPortfolioName(String portfolioName) {
-		this.portfolioName = portfolioName;
+	public void setPortfolioName(PortfolioName name) {
+		this.portfolioName = name;
 	}
 
 	public static Portfolio parseFromDB(ResultSet rs) throws SQLException {
 		Portfolio portfolio = new Portfolio();
 		portfolio.setDateCreation(rs.getString("date_creation"));
 		portfolio.setUsernameOwner(rs.getString("username_owner"));
-		portfolio.setPortfolioName(rs.getString("portfolio_name"));
+		portfolio.setPortfolioName(new PortfolioName(rs.getString("portfolio_name")));
 		return portfolio;
 	}
 

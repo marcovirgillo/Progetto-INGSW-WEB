@@ -90,7 +90,7 @@ public class PortfolioService {
 		ArrayList <Transaction> portfolioTransactions = (ArrayList<Transaction>) userPortfolio.getTransactionList();
 		
 		if(portfolioTransactions.size() == 0)
-			return getEmptyPortfolioValue();
+			return getEmptyPortfolioValue(timestamp);
 		
 		//per ogni cripto, mappo lo storico di prezzi come coppia timestamp-prezzo
 		Map <String, ArrayList <Pair<Long, Double>>> cryptoPricesOverTime = new HashMap<>();
@@ -283,11 +283,23 @@ public class PortfolioService {
 	
 	
 	@SuppressWarnings("unchecked")
-	private JSONObject getEmptyPortfolioValue() {
+	private JSONObject getEmptyPortfolioValue(String timestamp) {
+		JSONArray history = TopCryptoFetcher.getInstance().fetchCryptoHistoricprices("bitcoin", timestamp);
+		JSONArray newArr = new JSONArray();
+		
+		for(Object obj : history) {
+			JSONArray arr = (JSONArray) obj;
+			JSONObject item = new JSONObject();
+			
+			item.put("time", (Long) arr.get(0));
+			item.put("value",  0.0);
+			
+			newArr.add(item);
+		}
 		JSONObject resp = new JSONObject();
 		resp.put("balance_change_24h", 0.0);
 		resp.put("balance_change_24h_percentage", 0.0);
-		resp.put("data", new JSONArray());
+		resp.put("data", newArr);
 		
 		return resp;
 	}
