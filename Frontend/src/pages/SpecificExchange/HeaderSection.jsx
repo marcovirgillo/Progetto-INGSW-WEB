@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router';
 import { Grid    } from '@mui/material'
+import './HeaderSection.css'
 
 const HeaderSection = () => {
     const [screenSize, setScreenSize] = useState(null);
@@ -39,7 +40,7 @@ const HeaderSection = () => {
             <div className="container-header">
                 <ul>
                     <ul className="container-title">
-                        <img src={exchangeData.image} />
+                        <img className="exchange-image" src={exchangeData.image} />
                         <div className='crypto-title'>{exchangeData.name}</div>
                         <p className="rank" style={{marginLeft:'18px', fontSize: '20px', color: 'white'}}> Rank #{exchangeData.trust_score_rank}</p>
                     </ul>
