@@ -1,12 +1,12 @@
 export const Preferred = [
     {
-        id: "bitcoin"
+        id: "btc"
     },
     {
-        id: "ethereum"
+        id: "eth"
     },
     {
-        id: "binancecoin"
+        id: "bnb"
     }
 ]
 
