@@ -14,33 +14,32 @@ const NameAndImage = (props) => {
 
 const AccountInfo = (props) => {
     return (
-        <div className='account-info-container'>
-            <div className='paper-gray-account-info'>
-                <div className='property-container'>
-                    <ul className='property-list'>
-                        <p className='property-title'>Display Name</p>
-                        <p className='property-content'> {props.name} </p>
-                    </ul>
-                    <span className='edit-button'> Edit </span>
-                </div>
+        <div className='paper-gray-account-info'>
+            <div className='property-container'>
+                <ul className='property-list'>
+                    <p className='property-title'>Display Name</p>
+                    <p className='property-content'> {props.name} </p>
+                </ul>
+                <p className='edit-button'> Edit </p>
+            </div>
 
-                <div className='property-container'>
-                    <ul className='property-list'>
-                        <p className='property-title'>Email</p>
-                        <p className='property-content'>{props.email} </p>
-                    </ul>
-                    <span className='edit-button'> Edit </span>
-                </div>
+            <div className='property-container'>
+                <ul className='property-list'>
+                    <p className='property-title'>Email</p>
+                    <p className='property-content'>{props.email} </p>
+                </ul>
+                <p className='edit-button'> Edit </p>
+            </div>
 
-                <div className='property-container'>
-                    <ul className='property-list'>
-                        <p className='property-title'>Password</p>
-                        <input className='password-content' type="password" readOnly value={"cryptoview"}/>
-                    </ul>
-                    <span className='edit-button'> Edit </span>
-                </div>
+            <div className='property-container'>
+                <ul className='property-list'>
+                    <p className='property-title'>Password</p>
+                    <input className='password-content' type="password" readOnly value={"cryptoview"}/>
+                </ul>
+                <p className='edit-button'> Edit </p>
             </div>
         </div>
+        
     );
 }
 
