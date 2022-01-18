@@ -167,7 +167,7 @@ public class UserPreferencesController {
 			
 			if(resultOfInsertion) {
 				JSONObject resp = new JSONObject();
-				resp.put("msg", "Preference successful added");
+				resp.put("msg", "Preference successfully added");
 				response.setStatus(Protocol.OK);
 				return resp;
 			}

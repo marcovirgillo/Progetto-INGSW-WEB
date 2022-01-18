@@ -4,7 +4,7 @@ import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import "./Home.css"
 import { useInterval } from '../../components/Hooks.js';
-import { Link, Navigate  } from 'react-router-dom'
+import { Link, useNavigate  } from 'react-router-dom'
 import { address } from './../../assets/globalVar.js';
 
 import { Preferred } from './TestData.js';
@@ -13,6 +13,8 @@ import { Preferred } from './TestData.js';
 const interval_fetch = 1000 * 120; //60 secondi
 
 const getPreferencesUrl = `http://${address}:8080/getPreferences`;
+const addPreferenceUrl = `http://${address}:8080/addPreference`;
+const removePreferenceUrl = `http://${address}:8080/removePreference`;
 
 export default function CriptoTable(props) {
     const [cryptoTable, setCryptoTable] = useState([]);
@@ -29,6 +31,59 @@ export default function CriptoTable(props) {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin' : '*',
             'Authorization': props.accessToken
+        }
+    }
+
+    let optionsAddPreference = {
+        method: 'PUT',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken,
+        },
+        body: {}
+    }
+
+    let optionsRemovePreference = {
+        method: 'DELETE',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken,
+        },
+        body: {}
+    }
+
+    const addPreference = (ticker_) => {
+        const body = {
+            'ticker': ticker_
+        }
+
+        optionsAddPreference.body = JSON.stringify(body);
+
+        fetch(addPreferenceUrl, optionsAddPreference)
+            .then(res => parseResponse(res));
+    }
+
+    const removePreference = (ticker_) => {
+        const body = {
+            'ticker': ticker_
+        }
+
+        optionsRemovePreference.body = JSON.stringify(body);
+
+        fetch(removePreferenceUrl, optionsRemovePreference)
+            .then(res => parseResponse(res));
+    }
+
+    const parseResponse = res => {
+        if(res.status === 200) {
+            console.log("Preference added/removed successfully!");
+        }
+        else if(res.status === 5020) {
+            console.log("Preference already existed")
+        } else {
+            res.json().then(result => console.log(result));
         }
     }
 
@@ -150,13 +205,21 @@ export default function CriptoTable(props) {
         return false;
     }
 
+    const navigate = useNavigate();
+
     function handlePreferred(flag, crypto){
+        if(props.accessToken === "" || props.accessToken === null){
+            navigate("/login");
+            return;
+        }
         if(flag === false){
+            removePreference(crypto);
             var array  = [...preferred].filter(item => item.id != crypto);
           /*   console.log(array) */
             setPreferred(array);
         }
         else{
+            addPreference(crypto);
             var newPref = {id: crypto};
             var array = [...preferred];
             array.push(newPref);
