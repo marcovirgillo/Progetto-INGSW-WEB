@@ -9,24 +9,71 @@ import { address } from './../../assets/globalVar.js';
 //https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 const interval_fetch = 1000 * 120; //60 secondi
 
-export default function CriptoTable() {
-    const [cryptoTable, setCryptoTable] = useState([]);
+const getPreferencesUrl = `http://${address}:8080/getPreferencesDashboard`;
+
+export default function CriptoTable(props) {
+    console.log(props.accessToken)
+    const [preferred, setPreferred] = useState([]);
     const [order, setOrder] = useState("ASC");
     const [itemActive, setItemActive] = useState(null);
 
+    const optionsPreferences = {
+        method: 'GET',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken
+        }
+    }
+
+    useEffect(() => {
+        if(props.accessToken === "")
+            setPreferred([]);
+        else{
+            fetcherPreferences();
+            console.log("Ciao")
+        }
+    }, [props.accessToken]); 
+
+    useEffect(() => {
+        if(props.accessToken !== null || props.accessToken !== ""){
+            console.log("Fetching preferences")
+            fetcherPreferences();
+        }
+    }, []);
+
+    const fetcherPreferences = () => {
+        if(props.accessToken === null || props.accessToken === "")
+            return;
+
+        fetch(getPreferencesUrl, optionsPreferences)
+        .then((res) => processPreferences(res));
+    }
+
+    const processPreferences = res => {
+        if(res.status === 200) {
+            res.json()
+                .then((result) => setPreferred(result),
+                      (error) => console.log(error));
+        }
+        else if(res.status === 6001) {
+            console.log("No preferences found");
+        }
+    }
+
     const sorting = (col) => {
         if(order === "ASC"){
-            const sorted = [...cryptoTable].sort((a,b) => 
+            const sorted = [...preferred].sort((a,b) => 
                 a[col] > b[col] ? 1 : -1     
             );
-            setCryptoTable(sorted)
+            setPreferred(sorted)
             setOrder("DSC")
         }
         if(order === "DSC"){
-            const sorted = [...cryptoTable].sort((a,b) => 
+            const sorted = [...preferred].sort((a,b) => 
                 a[col] < b[col] ? 1 : -1     
             );
-            setCryptoTable(sorted)
+            setPreferred(sorted)
             setOrder("ASC")
         }
     }
@@ -77,18 +124,6 @@ export default function CriptoTable() {
         )
     }
 
-    const fetchData = () => {
-        fetch(`http://${address}:8080/getTop100`)
-            .then((res) => res.json())
-            .then((result) => setCryptoTable(result),
-                  (error) => console.log("Error fetching top 100 cryptos"));
-    };
-
-    useEffect(fetchData, []);
-
-    useInterval(() => fetchData, interval_fetch);
-
-
     return (
         <Table className="table" sx={{maxWidth: '95%', marginTop: '30px'}}>
             <TableHead>
@@ -115,7 +150,7 @@ export default function CriptoTable() {
             </TableHead>
             <TableBody>
                 {
-                    (cryptoTable.slice(0, 10)).map((item, val) => (
+                    preferred.map((item, val) => (
                             <TableRow key={val}>
                                     <TableCell className="table-item">{item.rank}</TableCell>
                                     <TableCell className="table-item">
