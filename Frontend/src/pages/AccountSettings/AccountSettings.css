@@ -1,0 +1,108 @@
+.account-settings-page {
+    background-color: var(--bg-color-dark);
+    box-sizing: border-box;
+    min-height: 100vh;
+    padding: 0px 10px 10px 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.account-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 40%;
+}
+
+.name-image-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+.name-image-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.account-image {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.account-big-name {
+    margin: 0;
+    color: rgb(255, 255, 255);
+    font-size: 22px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.paper-gray-account-info {
+    background-color: var(--bg-color-gray);
+    margin-top: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.property-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0px 20px 20px;
+}
+
+.property-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.property-title {
+    color: var(--light-gray-color);
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.property-content {
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    margin: 0;
+}
+
+.password-content {
+    background-color: var(--bg-color-gray);
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    outline: none;
+    border-color: transparent;
+}
+
+.edit-button {
+    color: white;
+    background-color: var(--light-gray-color);
+    border-radius: 8px;  
+    font-weight: bold;
+    margin: 0px;
+    margin-right: 20px;
+    padding: 6px 14px 6px 14px;
+    cursor: pointer;
+}

@@ -111,12 +111,24 @@
     .portfolio .confirm-popup {
         left: 12% !important;
     }
+
+    .property-content {
+        font-size: 0.9em !important;
+    }
+
+    .password-content {
+        font-size: 0.9em !important;
+    }
 }
 
 @media only screen and (max-width: 800px)  {
     .choose-crypto-div {
         top: 14% !important;
         left: 5% !important;
+        width: 90% !important;
+    }
+
+    .account-wrapper {
         width: 90% !important;
     }
 
