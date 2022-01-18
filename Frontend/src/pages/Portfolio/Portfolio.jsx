@@ -129,7 +129,7 @@ const Portfolio = (props) => {
         let portfolioTimes = [];
 
         res.data.forEach((item) => {
-            if(item["value"]>1)
+            if(item["value"] > 1)
                 portfolioValues.push(item["value"].toFixed(2));
             else
                 portfolioValues.push(item["value"].toFixed(6));
@@ -261,8 +261,8 @@ const Portfolio = (props) => {
                         <ChooseCrypto accessToken={props.accessToken} fetchChart={fetcherChart} fetchInfo={fetcherInfo} accessToken={props.accessToken} lastSelectedCrypto={lastSelectedCrypto}
                             className={getCryptoDialogClass()} setDialogOpen={setChooseCryptoPageActive} setLastSelectedCrypto={setLastSelectedCrypto}
                             transactionPanelActive={transactionPanelActive} setTransactionPanelActive={setTransactionPanelActive} dialogActive={chooseCryptoPageActive}/>
-                        </div>
-                    )}
+                    </div>
+                )}
         </div>
     )
 }

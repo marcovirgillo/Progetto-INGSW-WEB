@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, forwardRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Icon } from '@mui/material';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
@@ -73,6 +73,7 @@ function DropdownProfile(props) {
 
 const DropdownNotification = React.forwardRef((props, ref) => {
     const [notificationList, setNotificationList] = useState(Notifications);
+
     const deleteNotification = idx => {
         let notif = [...notificationList.slice(0, idx), ...notificationList.slice(idx+1)]
         setNotificationList(notif);
