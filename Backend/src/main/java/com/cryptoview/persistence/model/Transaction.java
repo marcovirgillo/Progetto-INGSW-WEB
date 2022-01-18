@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 
+import org.json.simple.JSONObject;
+
 import com.cryptoview.controller.transfers.TransactionData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -29,6 +31,8 @@ public class Transaction implements Comparable<Transaction> {
 	private double totalUsdSpent;
 	private String transactionDate;
 	private String transactionTime;
+	
+	@JsonIgnore
 	private Date transactionDatestamp;
 	
 	public String getPortfolioOwner() {
@@ -137,6 +141,7 @@ public class Transaction implements Comparable<Transaction> {
 		return 0;
 	}
 
+	//è il metodo che crea una transazione a partire dai dati json ricevuti
 	public static Transaction parseFromdata(TransactionData transaction) throws IllegalArgumentException {
 		Transaction transfer = new Transaction();
 		transfer.setCryptoTicker(transaction.ticker);
@@ -169,5 +174,4 @@ public class Transaction implements Comparable<Transaction> {
 		
 		return transfer;
 	}
-	
 }

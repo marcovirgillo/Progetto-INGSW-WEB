@@ -1,10 +1,12 @@
 package com.cryptoview.controller;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +23,6 @@ import com.cryptoview.persistence.model.Portfolio;
 import com.cryptoview.persistence.model.Transaction;
 import com.cryptoview.persistence.model.User;
 import com.cryptoview.persistence.model.domain.PortfolioName;
-import com.cryptoview.persistence.model.domain.Username;
 import com.cryptoview.service.PortfolioService;
 
 @RestController
@@ -186,6 +187,52 @@ public class PortfolioController {
 			e.printStackTrace();
 			response.setStatus(Protocol.REMOVE_CRIPTO_ERROR);
 			resp.put("msg", "Cannot remove this asset");
+			
+			return resp;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@GetMapping("/assetTransactions")
+	public JSONObject getAssetTransactions(HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("Authorization");
+		String cripto_ticker = request.getHeader("Cripto-Ticker");
+		JSONObject resp = new JSONObject();
+		
+		try {
+			User user = UserDaoJDBC.getInstance().findByToken(token);
+			
+			if(user == null) {
+				response.setStatus(Protocol.INVALID_TOKEN);
+				resp.put("msg", "The auth token is not valid");
+				
+				return resp;
+			}
+			
+			if(cripto_ticker == null || cripto_ticker.isBlank()) {
+				response.setStatus(Protocol.INVALID_DATA);
+				resp.put("msg", "The cripto ticker is not valid");
+				
+				return resp;
+			}
+			
+			Portfolio portfolio = PortfolioDaoJDBC.getInstance().get(user.getUsername());
+			
+			if(portfolio != null) {
+				response.setStatus(Protocol.OK);
+				resp.put("transactions", PortfolioService.getInstance().getCriptoTransactionOfUser(portfolio, cripto_ticker));
+				
+				return resp;
+			}
+			else {
+				response.setStatus(portfolioDoesnExist(resp));
+				return resp;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.setStatus(Protocol.SERVER_ERROR);
+			resp.put("msg", "Internal server error");
 			
 			return resp;
 		}

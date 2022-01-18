@@ -59,7 +59,7 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 		ResultSet rs = stm.executeQuery();
 		if(rs.next()) {
 			portfolio = Portfolio.parseFromDB(rs);
-			portfolio.setTransactionList(TransactionDaoJDBC.getInstance().getUserTransaction(owner));
+			portfolio.setTransactionList(TransactionDaoJDBC.getInstance().getUserTransactions(owner));
 			portfolio.setCryptoMap(CryptoDaoJDBC.getInstance().getCryptoInPortfolio(owner));
 		}
 		

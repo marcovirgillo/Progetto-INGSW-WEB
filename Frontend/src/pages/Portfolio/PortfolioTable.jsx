@@ -6,6 +6,7 @@ import "./Portfolio.css"
 import { Link  } from 'react-router-dom'
 import { address } from '../../assets/globalVar';
 import ConfirmPopup from './ConfirmPopup';
+import TransactionTable from './TransactionTable';
 
 const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
 const removeAssetUrl = `http://${address}:8080/removeCripto`;
@@ -58,11 +59,15 @@ function DropdownOptions(props) {
             <ul className="options-list">
                 <ul className="option-item">
                     <img src={require("../../res/logos/plus-nocircle.png")} width={24}/>
-                    <p onClick={() => {props.openAddTransaction(props.cripto); props.closeDropdown(); }}>Add Transaction</p>
+                    <p onClick={props.openAddTransaction}>
+                        Add Transaction
+                    </p>
                 </ul>
                 <ul className="option-item">
                     <img src={require("../../res/logos/transaction.png")} width={24}/>
-                    <p>All Transactions</p>
+                    <p onClick={props.openAllTransactions}>
+                        All Transactions
+                    </p>
                 </ul>
                 <ul className="option-item">
                     <img src={require("../../res/logos/remove.png")} width={24}/>
@@ -85,7 +90,9 @@ export default function CriptoTable(props) {
     //popupactive è lo state per il popup di conferma elimina transazione
     const [popupActive, setPopupActive] = useState(false);
     //è l'ultima cripto che ho scelto, serve per l'eliminazione dell'asset
-    const [selectedAsset, setSelectedAsset] = useState({ticker: ''});
+    const [selectedAsset, setSelectedAsset] = useState({logo: '', ticker: ''});
+
+    const [transactionTableActive, setTransactionTableActive] = useState(false);
     
     useEffect(() => {
         setTableData(data);
@@ -146,6 +153,19 @@ export default function CriptoTable(props) {
             }).then(res => parseResult(res));
     }
 
+    const openAllTransactions = (cripto) => {
+        setSelectedAsset(cripto);
+        setTransactionTableActive(true);
+        setThisDropdownActive(-1);
+    }
+
+    const openAddNewTransaction = (cripto) => {
+        setSelectedAsset(cripto);
+        props.openAddTransaction(cripto);
+        setThisDropdownActive(-1);
+        //chiude tutti i dropdown
+    }
+
     //il parametro è l'elemento del json sul quale fare l'ordinamento
     const sorting = (col) => {
         if(order === "ASC"){
@@ -184,85 +204,93 @@ export default function CriptoTable(props) {
 
     return (
         <React.Fragment>
-            <Table className="table" sx={{maxWidth: '94%', marginTop: '30px'}}>
-                <TableHead>
-                    <TableRow>
-                        <TableCell className="table-attribute">Name</TableCell>
-                        <TableCell className="table-attribute" onClick={() => {sorting("price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
-                            <TableCellArrow content="Price" arrowChecker="price" />
-                        </TableCell>
-                        <TableCell className="table-attribute" onClick={() => {sorting("change_24h"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
-                            <TableCellArrow content="24h" arrowChecker="24h" />
-                        </TableCell>
-                        <TableCell className="table-attribute" onClick={() => {sorting("change_7d"); setItemActive("7d")}} style={{cursor: 'pointer'}}>
-                            <TableCellArrow content="7d" arrowChecker="7d" />
-                        </TableCell>
-                        <TableCell className="table-attribute" onClick={() => {sorting("holding_dollar"); setItemActive("holding")}} style={{cursor: 'pointer'}}>
-                            <TableCellArrow content="Holdings" arrowChecker="holding" />
-                        </TableCell>
-                        <TableCell className="table-attribute" onClick={() => {sorting("avg_buy_price"); setItemActive("avg-buy-price"); }} style={{cursor: 'pointer'}}>
-                            <TableCellArrow content="Avg. Buy Price" arrowChecker="avg-buy-price" />
-                        </TableCell>
-                        <TableCell className="table-attribute" onClick={() => {sorting("profit_dollar"); setItemActive("profit"); }} style={{cursor: 'pointer'}}>
-                            <TableCellArrow content="Profit/Loss" arrowChecker="profit" />
-                        </TableCell>
-                        <TableCell className="table-attribute">Actions</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {tableData.length > 0 && (
-                        tableData.map((item, val) => (
-                            <TableRow key={val}>
-                                    <TableCell className="table-item">
-                                        <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
-                                            <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
-                                            <Link to={`/crypto/${item.id}`} className="item-name">
-                                                <p>{item.name}</p>
-                                            </Link>
-                                            <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker.toUpperCase()})</p>
-                                        </ul>
-                                    </TableCell>
-                                    <TableCell className="table-item">
-                                        {getFormattedPrice(item.price)}
-                                    </TableCell>
-                                    <TableCell className={getPriceClass(item.change_24h)}>
-                                        {formatPercentage(item.change_24h)} 
-                                    </TableCell>
-                                    <TableCell className={getPriceClass(item.change_7d)}>
-                                        {formatPercentage(item.change_7d)} 
-                                    </TableCell>
-                                    <TableCell className="table-item">
-                                        <ul className="table-item-list">
-                                            <li>{item.holdings}</li>
-                                            <li className="item-grey">{getFormattedPrice(item.holding_dollar)}</li>
-                                        </ul>
-                                    </TableCell>
-                                    <TableCell className="table-item">
-                                        {getFormattedPrice(item.avg_buy_price)}
-                                    </TableCell>
-                                    <TableCell className="table-item">
-                                        <ul className="table-item-list">
-                                            <li>{formatProfitDollar(item.profit_dollar)}</li>
-                                            <li className={"profit " + getPriceClass(item.profit_dollar)}>
-                                                {item.profit_percentage} %
-                                            </li>
-                                        </ul>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="options-btn" onClick={() => setThisDropdownActive(val)}>
-                                            <img src={require("../../res/logos/3-dots.png")} width={21}/>
-                                        </div>
-                                        <DropdownOptions className={getDropdownClassName(val)} openAddTransaction={props.openAddTransaction} 
-                                            cripto={item} closeDropdown={() => setThisDropdownActive(-1)} openPopup={() => {setPopupActive(true); setSelectedAsset(item);}}/>
-                                    </TableCell>
+            {transactionTableActive && (<TransactionTable assetsUl={props.assetsUl} logo={selectedAsset.logo} closeTable={() => setTransactionTableActive(false)}
+                                                        accessToken={props.accessToken} cripto={selectedAsset}/>)}
+            {!transactionTableActive && (
+                <React.Fragment>
+                    <Table id="all-cripto-table" className="table" sx={{maxWidth: '94%', marginTop: '30px'}}>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell className="table-attribute">Name</TableCell>
+                                <TableCell className="table-attribute" onClick={() => {sorting("price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
+                                    <TableCellArrow content="Price" arrowChecker="price" />
+                                </TableCell>
+                                <TableCell className="table-attribute" onClick={() => {sorting("change_24h"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
+                                    <TableCellArrow content="24h" arrowChecker="24h" />
+                                </TableCell>
+                                <TableCell className="table-attribute" onClick={() => {sorting("change_7d"); setItemActive("7d")}} style={{cursor: 'pointer'}}>
+                                    <TableCellArrow content="7d" arrowChecker="7d" />
+                                </TableCell>
+                                <TableCell className="table-attribute" onClick={() => {sorting("holding_dollar"); setItemActive("holding")}} style={{cursor: 'pointer'}}>
+                                    <TableCellArrow content="Holdings" arrowChecker="holding" />
+                                </TableCell>
+                                <TableCell className="table-attribute" onClick={() => {sorting("avg_buy_price"); setItemActive("avg-buy-price"); }} style={{cursor: 'pointer'}}>
+                                    <TableCellArrow content="Avg. Buy Price" arrowChecker="avg-buy-price" />
+                                </TableCell>
+                                <TableCell className="table-attribute" onClick={() => {sorting("profit_dollar"); setItemActive("profit"); }} style={{cursor: 'pointer'}}>
+                                    <TableCellArrow content="Profit/Loss" arrowChecker="profit" />
+                                </TableCell>
+                                <TableCell className="table-attribute">Actions</TableCell>
                             </TableRow>
-                        ))
-                    )}
-                </TableBody>
-            </Table>
-            {popupActive && (<ConfirmPopup title="Remove Asset" text={"Are you sure? Every transaction related to this asset will be removed!"} 
-                                onConfirm={() => {removeSelectedAsset(); setPopupActive(false);}} 
-                                onCancel={() => setPopupActive(false)}/>)}
+                        </TableHead>
+                        <TableBody>
+                            {tableData.length > 0 && (
+                                tableData.map((item, val) => (
+                                    <TableRow key={val}>
+                                            <TableCell className="table-item">
+                                                <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
+                                                    <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
+                                                    <Link to={`/crypto/${item.id}`} className="item-name">
+                                                        <p>{item.name}</p>
+                                                    </Link>
+                                                    <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker.toUpperCase()})</p>
+                                                </ul>
+                                            </TableCell>
+                                            <TableCell className="table-item">
+                                                {getFormattedPrice(item.price)}
+                                            </TableCell>
+                                            <TableCell className={getPriceClass(item.change_24h)}>
+                                                {formatPercentage(item.change_24h)} 
+                                            </TableCell>
+                                            <TableCell className={getPriceClass(item.change_7d)}>
+                                                {formatPercentage(item.change_7d)} 
+                                            </TableCell>
+                                            <TableCell className="table-item">
+                                                <ul className="table-item-list">
+                                                    <li>{item.holdings}</li>
+                                                    <li className="item-grey">{getFormattedPrice(item.holding_dollar)}</li>
+                                                </ul>
+                                            </TableCell>
+                                            <TableCell className="table-item">
+                                                {getFormattedPrice(item.avg_buy_price)}
+                                            </TableCell>
+                                            <TableCell className="table-item">
+                                                <ul className="table-item-list">
+                                                    <li>{formatProfitDollar(item.profit_dollar)}</li>
+                                                    <li className={"profit " + getPriceClass(item.profit_dollar)}>
+                                                        {item.profit_percentage} %
+                                                    </li>
+                                                </ul>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="options-btn" onClick={() => setThisDropdownActive(val)}>
+                                                    <img src={require("../../res/logos/3-dots.png")} width={21}/>
+                                                </div>
+                                                <DropdownOptions className={getDropdownClassName(val)} 
+                                                    openAddTransaction={() => openAddNewTransaction(item)} 
+                                                    openPopup={() => {setPopupActive(true); setSelectedAsset(item);}}
+                                                    openAllTransactions={() => openAllTransactions(item)}/>
+                                            </TableCell>
+                                    </TableRow>
+                                ))
+                            )}
+                        </TableBody>
+                    </Table>
+                    {popupActive && (<ConfirmPopup title="Remove Asset" text={"Are you sure? Every transaction related to this asset will be removed!"} 
+                                        onConfirm={() => {removeSelectedAsset(); setPopupActive(false);}} 
+                                        onCancel={() => setPopupActive(false)}/>)}
+                    </React.Fragment>
+            )}
         </React.Fragment>
     );
 }

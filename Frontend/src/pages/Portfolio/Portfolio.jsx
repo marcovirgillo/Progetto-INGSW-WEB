@@ -1,4 +1,4 @@
-import React, { useEffect, useState,  } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import CryptoChart from '../../components/Chart/CryptoChart';
 import { PlaceholderBalanceChange, PlaceholderInfo } from './Data.js';
 import PortfolioTable, { formatProfitDollar } from './PortfolioTable';
@@ -41,6 +41,8 @@ const Portfolio = (props) => {
     const [lastSelectedCrypto, setLastSelectedCrypto] = useState({});
     const [transactionPanelActive, setTransactionPanelActive] = useState(false);
     const [portfolioExists, setPortfolioExists] = useState(true);
+
+    const myAssetsUl = useRef(null);
 
     const navigate = useNavigate();
 
@@ -98,7 +100,7 @@ const Portfolio = (props) => {
             return;
 
         fetch(portfolioChartUrl, optionsChart)
-        .then((res) => processValue(res));
+            .then((res) => processValue(res));
     }
 
     const fetcherInfo = () => {
@@ -106,7 +108,7 @@ const Portfolio = (props) => {
             return;
 
         fetch(portfolioInfoUrl, optionsInfo)
-        .then((res) => processInfo(res));
+            .then((res) => processInfo(res));
     }
 
     useEffect(() => {
@@ -247,18 +249,18 @@ const Portfolio = (props) => {
                             )}
                             { chartType === 'chart' && (<ChartButtons className="chart-btns-mobile"/>) }
                         </div>
-                        <ul className="assets-list">
+                        <ul ref={myAssetsUl} className="assets-list">
                             <p className="white-label assets-label">My Assets</p>
                             <div className="h-spacer-assets" />
                             <ButtonAddNewAsset setCryptoDialogOpen={setChooseCryptoPageActive}/>
                         </ul>
                         <ul style={{display: 'flex', flexDirection: 'columns', padding: 0, margin: 0,
-                                    justifyContent: 'center', alignItems: 'flex-start'}}>
+                                    justifyContent: 'center', alignItems: 'center'}}>
                             <PortfolioTable accessToken={props.accessToken} fetchChart={fetcherChart} fetchInfo={fetcherInfo} 
-                                data={portfolioInfo.assets} openAddTransaction={openAddTransaction}/>
+                                data={portfolioInfo.assets} openAddTransaction={openAddTransaction} assetsUl={myAssetsUl}/>
                         </ul>
 
-                        <ChooseCrypto accessToken={props.accessToken} fetchChart={fetcherChart} fetchInfo={fetcherInfo} accessToken={props.accessToken} lastSelectedCrypto={lastSelectedCrypto}
+                        <ChooseCrypto accessToken={props.accessToken} fetchChart={fetcherChart} fetchInfo={fetcherInfo} lastSelectedCrypto={lastSelectedCrypto}
                             className={getCryptoDialogClass()} setDialogOpen={setChooseCryptoPageActive} setLastSelectedCrypto={setLastSelectedCrypto}
                             transactionPanelActive={transactionPanelActive} setTransactionPanelActive={setTransactionPanelActive} dialogActive={chooseCryptoPageActive}/>
                     </div>

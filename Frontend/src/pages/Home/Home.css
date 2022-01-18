@@ -141,6 +141,16 @@ ul {
     }
 }
 
+@media only screen and (max-width: 700px) {
+    .transactions-table {
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+        font-size: 12px !important;
+        max-height: 90vh !important;
+    }
+}
+
 @media only screen and (max-width: 960px) {
     .table{
         display: block !important;

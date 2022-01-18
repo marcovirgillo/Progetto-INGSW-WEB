@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONArray;
@@ -14,6 +15,7 @@ import org.json.simple.JSONObject;
 
 import com.cryptoview.model.api.TopCryptoFetcher;
 import com.cryptoview.persistence.dao.CryptoDaoJDBC;
+import com.cryptoview.persistence.dao.TransactionDaoJDBC;
 import com.cryptoview.persistence.model.Crypto;
 import com.cryptoview.persistence.model.Portfolio;
 import com.cryptoview.persistence.model.Transaction;
@@ -382,6 +384,45 @@ public class PortfolioService {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public JSONArray getCriptoTransactionOfUser(Portfolio portfolio, String ticker) throws SQLException {
+		List <Transaction> transactions = TransactionDaoJDBC.getInstance().getUserTransactions(portfolio.getUsernameOwner());
+		JSONArray array = new JSONArray();
+		for(Transaction transaction : transactions) {
+			if(transaction.getCryptoTicker().equalsIgnoreCase(ticker)) {
+				JSONObject obj = new JSONObject();
+				
+				obj.put("type", fomatType(transaction.getType()));
+				obj.put("quantity", formatHoldingStr(transaction.getQuantity()) + " " + ticker.toUpperCase());
+				obj.put("quantity_usd", transaction.getTotalUsdSpent());
+				obj.put("date", transaction.getTransactionDatestamp().toString());
+				obj.put("cripto_price", transaction.getPriceUsdCrypto());
+				
+				array.add(obj);
+			}
+		}
+		
+		return array;
+	}
+	
+	private String fomatType(char type) {
+		switch(type) {
+			case 'b':
+				return "Buy";
+			
+			case 's':
+				return "Sell";
+				
+			case 'i':
+				return "Transfer In";
+				
+			case 'o':
+				return "Transfer Out";
+		}
+		
+		return "";
+	}
+
 	private static double round(double value, int places) {
 	    if (places < 0) throw new IllegalArgumentException();
 	 

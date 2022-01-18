@@ -14,7 +14,7 @@ public class TransactionDaoJDBC extends TransactionDao{
 	
 	private static TransactionDao instance;
 	
-	private final String getAllQuery = "select * from Transaction;";
+	private final String getAllQuery = "select * from transaction;";
 	private final String queryTransactionUser = "select * from transaction where portfolio_owner=?";
 	private final String insertTransaction = "insert into transaction values (nextval('transaction_ids'), ?, ?, ?, ?, ?, ?, ?, ?)";
 	
@@ -58,7 +58,7 @@ public class TransactionDaoJDBC extends TransactionDao{
 	}
 
 	@Override
-	public List<Transaction> getUserTransaction(String username) throws SQLException {
+	public List<Transaction> getUserTransactions(String username) throws SQLException {
 		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(queryTransactionUser);
 		stm.setString(1, username);
 		
@@ -68,9 +68,11 @@ public class TransactionDaoJDBC extends TransactionDao{
 			Transaction transaction = Transaction.parseFromDB(rs);
 			transactionList.add(transaction);
 		}
+		
 		stm.close();
 		rs.close();
 		Collections.sort(transactionList);
+		
 		return transactionList;
 	}
 }
