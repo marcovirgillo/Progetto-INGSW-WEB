@@ -14,7 +14,7 @@ export default function AppRoutes(props) {
             <Route path="/news" exact element={<News />} />
             <Route path="/exchanges" exact element={<Exchanges />} />
             <Route path="/profile" exact element={<Profile accessToken={props.accessToken}/>} />
-            <Route path="/crypto/:name" exact element={<SpecificCrypto accessToken={props.accessToken}/>} />
+            <Route path="/crypto/:name" exact element={<SpecificCrypto accessToken={props.accessToken} allCrypto={props.allCrypto}/>}/>
             <Route path="/exchange/:name" exact element={<SpecificExchange />} />
             <Route path="/aboutus" exact element={<AboutUs />} />
             <Route path="/login" exact element={<Login setAccessToken={props.setAccessToken}/>} />

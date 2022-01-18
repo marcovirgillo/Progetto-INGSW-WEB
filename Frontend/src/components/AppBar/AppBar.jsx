@@ -208,7 +208,7 @@ export default function AppBar(props) {
     useEffect(() => {
         fetch(allCryptoUrl)
             .then((res) => res.json())
-            .then((result) => {setAllCryptos(result); setQueryedData(result)},
+            .then((result) => {setAllCryptos(result); setQueryedData(result); props.setAllCrypto(result)},
                    (error) => console.log("Error fetching supported crypto "));
     }, []);
 

@@ -14,6 +14,7 @@ export default function App() {
     const [sideBarEnabled, setSideBarEnabled] = useState(false);
     const [searchMobileOpen, setSearchMobileOpen] = useState(false);
     const [accessToken, setAccessToken] = useState(localStorage.getItem("Auth Token"));
+    const [allCrypto, setAllCrypto] = useState([]);
 
     useEffect(() => {
         if(accessToken === null)
@@ -43,9 +44,9 @@ export default function App() {
                 <SideBar sideBarEnabled={sideBarEnabled} setSideBarEnabled={setSideBarEnabled} sideBarClass={sideBarClass}/>
                 <div className="layout-content">
                     <AppBar setSideBarEnabled={setSideBarEnabled} setSearchMobileOpen={setSearchMobileOpen} 
-                            isMobileOpen={searchMobileOpen} isSearchFieldOpen={searchMobileOpen} accessToken={accessToken} setAccessToken={saveToken}/>
+                            isMobileOpen={searchMobileOpen} isSearchFieldOpen={searchMobileOpen} accessToken={accessToken} setAccessToken={saveToken} setAllCrypto={setAllCrypto}/>
                     <div className="layout-content-main">
-                        <AppRoutes accessToken={accessToken} setAccessToken={saveToken}/> 
+                        <AppRoutes accessToken={accessToken} setAccessToken={saveToken} allCrypto={allCrypto}/> 
                         <Footer />
                     </div>
                 </div>
