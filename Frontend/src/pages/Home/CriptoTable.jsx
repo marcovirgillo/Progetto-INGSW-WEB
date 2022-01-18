@@ -23,8 +23,6 @@ export default function CriptoTable(props) {
 
     const [preferred, setPreferred] = useState([]);
 
-    console.log(props.accessToken)
-
     const optionsPreferences = {
         method: 'GET',
         headers : {
@@ -80,9 +78,7 @@ export default function CriptoTable(props) {
         if(res.status === 200) {
             console.log("Preference added/removed successfully!");
         }
-        else if(res.status === 5020) {
-            console.log("Preference already existed")
-        } else {
+         else {
             res.json().then(result => console.log(result));
         }
     }

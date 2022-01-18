@@ -6,11 +6,113 @@ import "./../../App.css";
 import { Grid    } from '@mui/material'
 import { info } from './TestData.js';
 import { useNavigate } from "react-router-dom";
+import { address } from './../../assets/globalVar.js';
 
+const getPreferencesUrl = `http://${address}:8080/getPreferences`;
+const addPreferenceUrl = `http://${address}:8080/addPreference`;
+const removePreferenceUrl = `http://${address}:8080/removePreference`;
 const HeaderSection = (props) => {
     const [screenSize, setScreenSize] = useState(null);
 
     const [preferredCripto, setPreferredCripto] = useState(false); //Se la cripto specifica è nei preferiti
+
+    const [preferred, setPreferred] = useState([]);
+
+    const optionsPreferences = {
+        method: 'GET',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken
+        }
+    }
+
+    let optionsAddPreference = {
+        method: 'PUT',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken,
+        },
+        body: {}
+    }
+
+    let optionsRemovePreference = {
+        method: 'DELETE',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken,
+        },
+        body: {}
+    }
+
+    const addPreference = (ticker_) => {
+        const body = {
+            'ticker': ticker_
+        }
+
+        optionsAddPreference.body = JSON.stringify(body);
+
+        fetch(addPreferenceUrl, optionsAddPreference)
+            .then(res => parseResponse(res));
+    }
+
+    const removePreference = (ticker_) => {
+        const body = {
+            'ticker': ticker_
+        }
+
+        optionsRemovePreference.body = JSON.stringify(body);
+
+        fetch(removePreferenceUrl, optionsRemovePreference)
+            .then(res => parseResponse(res));
+    }
+
+    const parseResponse = res => {
+        if(res.status === 200) {
+            console.log("Preference added/removed successfully!");
+        }
+        else if(res.status === 5020) {
+            console.log("Preference already existed")
+        } else {
+            res.json().then(result => console.log(result));
+        }
+    }
+
+    useEffect(() => {
+        if(props.accessToken === "")
+            setPreferred([]);
+        else{
+            fetcherPreferences();
+        }
+    }, [props.accessToken]); 
+
+    useEffect(() => {
+        if(props.accessToken !== null || props.accessToken !== ""){
+            console.log("Fetching preferences")
+            fetcherPreferences();
+        }
+    }, []);
+
+    const fetcherPreferences = () => {
+        if(props.accessToken === null || props.accessToken === "")
+            return;
+
+        fetch(getPreferencesUrl, optionsPreferences)
+        .then((res) => processPreferences(res));
+    }
+
+    const processPreferences = res => {
+        if(res.status === 200) {
+            res.json()
+                .then((result) => setPreferred(result.preferences),
+                      (error) => console.log(error));
+        }
+        else if(res.status === 6001) {
+            console.log("No preferences found");
+        }
+    }
 
     const cryptoData = props.data;
 
@@ -131,14 +233,36 @@ const HeaderSection = (props) => {
         return () => setPreferredCripto(!preferredCripto);
     }
 
+    function isSupported(){
+        let crypto = props.allCrypto.find(({ticker}) => ticker === cryptoData.symbol);
+        
+        if(crypto !== undefined)
+            return true;
+        
+        return false;        
+    }
+
+    function isPreferred(){
+        if(props.accessToken === "" || props.accessToken === null)
+            return false;
+        
+        let found = preferred.find(({id}) => id === cryptoData.symbol); 
+
+        if(found !== undefined)
+            return true;
+        return false;
+    }
+
     const MainDetailsSection = () => {
         return (
             <div className="container-header">
                 <div>
                     <div className="container-title-test" style={{maxWidth:'80vh'}}>
-                        {
-                            preferredCripto ? <img src={require("../../res/logos/star-checked.png")} width={36} height={36}  style={{paddingRight:'15px', cursor:'pointer'}} onClick={handleStar()} /> : 
-                                              <img src={require("../../res/logos/star-unchecked.png")} width={36} height={36} style={{paddingRight:'15px', cursor:'pointer'}} onClick={handleStar()}/>
+                        {isSupported() && 
+                            (
+                                isPreferred() ? <img src={require("../../res/logos/star-checked.png")} width={36} height={36}  style={{paddingRight:'15px', cursor:'pointer'}} onClick={handleStar()} /> : 
+                                                <img src={require("../../res/logos/star-unchecked.png")} width={36} height={36} style={{paddingRight:'15px', cursor:'pointer'}} onClick={handleStar()}/>
+                            )
                         }
                         <img src={cryptoData.image.small} />
                         <div className='crypto-title'>{cryptoData.name}</div>
