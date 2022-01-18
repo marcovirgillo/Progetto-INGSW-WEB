@@ -4,7 +4,7 @@ import "./Dashboard.css"
 import FavouriteTable from './FavouriteTable'
 import NewsSection from './NewsSection'
 
-const Dashboard = () => {
+const Dashboard = (props) => {
     return (
         <div className="dashboard-page">
             <div className="paper-gray">
@@ -22,7 +22,7 @@ const Dashboard = () => {
                     </ul>
                 </div>
                 <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    <FavouriteTable /> 
+                    <FavouriteTable accessToken={props.accessToken}/> 
                 </ul>
 
                 <NewsSection />

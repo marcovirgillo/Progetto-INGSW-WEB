@@ -1,6 +1,8 @@
 package com.cryptoview.controller;
 
+import java.lang.reflect.Array;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,11 +12,11 @@ import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.persistence.dao.PreferencesDaoJDBC;
 import com.cryptoview.persistence.dao.UserDaoJDBC;
 import com.cryptoview.persistence.model.Preference;
@@ -23,14 +25,18 @@ import com.cryptoview.service.PreferencesService;
 
 @RestController
 @CrossOrigin(origins = {"*"})
+
+
+
 public class UserPreferencesController {
+	
 	
 	//Restituisce status e Array  delle preferenze se con successo
 	@SuppressWarnings("unchecked")
 	@GetMapping("/getPreferences")
-	public JSONObject getPrefereces(HttpServletRequest request, HttpServletResponse response){
+	public JSONObject getPrefereces(HttpServletRequest request, HttpServletResponse response) {
 		String token = request.getHeader("Authorization");
-		
+		System.out.println(token);
 		try {
 			User user = UserDaoJDBC.getInstance().findByToken(token);
 			
@@ -62,6 +68,34 @@ public class UserPreferencesController {
 			resp.put("msg", "Internal server error");
 			
 			return resp;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@GetMapping("/getPreferencesDashboard")
+	public List<CryptoDetail> getPreferecesDashboard(HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("Authorization");
+	
+		try {
+			User user = UserDaoJDBC.getInstance().findByToken(token);
+			
+			if(user == null) {
+				
+				return Arrays.asList(null);
+			}
+
+			List<Preference> preferences = PreferencesDaoJDBC.getInstance().getUserPreferences(user.getUsername());
+			
+			if(preferences != null) {
+				response.setStatus(Protocol.OK);
+				return PreferencesService.getInstance().dashboardPreferences(preferences);
+			}
+			else {
+				return Arrays.asList(null);
+			}
+			
+		} catch (SQLException e) {
+			return Arrays.asList(null);
 		}
 	}
 	
