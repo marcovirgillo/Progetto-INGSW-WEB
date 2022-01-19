@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState }  from 'react'
 import OverviewSection from './OverviewSection'
 import "./Dashboard.css"
 import FavouriteTable from './FavouriteTable'
 import NewsSection from './NewsSection'
 
 const Dashboard = (props) => {
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     return (
         <div className="dashboard-page">
             <div className="paper-gray">
                 <h4 className="overview-label">Overview</h4>
-                <OverviewSection />
+                <OverviewSection accessToken={props.accessToken}/>
                 <p className="dashboard-title">Your favourite assets</p>
                 <div className="button-container" style={{marginRight:'0px', marginTop:'0px', marginBottom:'0px'}}>
                     <ul className="alert-container-title">
