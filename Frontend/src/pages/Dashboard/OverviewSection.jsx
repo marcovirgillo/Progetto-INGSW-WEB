@@ -12,7 +12,7 @@ export default function OverviewSection(props) {
     const [topPerformers, setTopPerformers] = useState([]);
     const [worstPerformers, setWorstPerformers] = useState([]);
     const [marketStats, setMarketStats] = useState([]);
-    console.log("qui", props.accessToken)
+
     const optionsPreferences = {
         method: 'GET',
         headers : {
@@ -32,7 +32,6 @@ export default function OverviewSection(props) {
 
     useEffect(() => {
         if(props.accessToken !== null || props.accessToken !== ""){
-            console.log("Fetching gainer")
             fetcherGainers();
 
         }
@@ -40,7 +39,6 @@ export default function OverviewSection(props) {
 
     useEffect(() => {
         if(props.accessToken !== null || props.accessToken !== ""){
-            console.log("Fetching worst")
             fetcherWorst();
 
         }
@@ -63,7 +61,6 @@ export default function OverviewSection(props) {
     }
 
     const processGainers = res => {
-        console.log("token", props.accessToken)
         if(res.status === 200) {
             res.json()
                 .then((result) => setTopPerformers(result),
@@ -75,7 +72,6 @@ export default function OverviewSection(props) {
     }
 
     const processWorst = res => {
-        console.log("token", props.accessToken)
         if(res.status === 200) {
             res.json()
                 .then((result) => setWorstPerformers(result),

@@ -22,6 +22,10 @@ const Signup = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
+    useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
         window.addEventListener('resize', handleResize);
         

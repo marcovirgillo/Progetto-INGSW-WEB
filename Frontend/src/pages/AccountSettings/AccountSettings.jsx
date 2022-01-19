@@ -13,6 +13,11 @@ const NameAndImage = (props) => {
 }
 
 const AccountInfo = (props) => {
+    
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     return (
         <div className='paper-gray-account-info'>
             <div className='property-container'>
