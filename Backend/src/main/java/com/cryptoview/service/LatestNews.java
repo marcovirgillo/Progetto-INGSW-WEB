@@ -84,6 +84,7 @@ public class LatestNews {
 				news.setImageUrl((String) obj.get("urlToImage")) ;
 				news.setTitle((String) obj.get("title"));
 				news.setContent((String) obj.get("content"));
+		
 				
 				String publishedAt = ((String) obj.get("publishedAt")).substring(0, 10);
 				news.setPublishedAt(publishedAt);

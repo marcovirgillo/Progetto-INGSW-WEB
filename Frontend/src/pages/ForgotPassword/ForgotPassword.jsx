@@ -61,6 +61,28 @@ export default function ForgotPassword() {
         return {minHeight:'60vh'}
     }
 
+    const [email, setEmail] = useState("");
+    const [errorLabelActive, setErrorLabelActive] = useState(false);
+
+    const checkEmailField = () => {
+        if(email === "")
+            showError();
+
+    }
+
+    const getErrorLabelClassname = () => {
+        if(errorLabelActive)
+            return "error-label label-active";
+        else
+            return "error-label";
+    }
+
+    const showError = () => {
+        setErrorLabelActive(true);
+        setTimeout(() => setErrorLabelActive(false), 3500);
+    }
+
+
     return (
         <div className="forgot-password">
             <div className="paper-grey" style={minHeight()}>
@@ -79,13 +101,18 @@ export default function ForgotPassword() {
                 <div style={{paddingTop:'20px'}} />
                 <span className="forgot-password-field-title" style={fieldFont()}>Email</span>
                 <div className="forgot-password-field">
-                    <input className="forgot-password-field-style" type="text" placeholder='Enter your email address' style={fieldFont()}/>
+                    <input className="forgot-password-field-style" onChange={(ev) => setEmail(ev.target.value)} type="text" placeholder='Enter your email address' style={fieldFont() }/>
                 </div>
                 <div style={{paddingTop:'20px'}} />
                 <div className="forgot-password-field">
                     <span className="send-button-style" style={fieldFont()}>
-                        <div className='send-button-text' style={sendButtonTextStyle("normal")}>Send</div>
+                        <div className='send-button-text' onClick={checkEmailField} style={sendButtonTextStyle("normal") }>Send</div>
                     </span>
+                    
+                    {errorLabelActive === true && <div className={getErrorLabelClassname()}>
+                        <p>Error, please check the input field and retry!</p>
+                    </div> }
+
                 </div>
                 <div style={{paddingTop:'20px'}} />
                 <div className="forgot-password-ending-list"> 
