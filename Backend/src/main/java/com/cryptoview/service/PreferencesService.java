@@ -44,13 +44,15 @@ public class PreferencesService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<CryptoDetail> dashboardPreferences(List<Preference> preferences) {
+	public JSONObject dashboardPreferencesToJson(List<Preference> preferences) {
 
 		ArrayList<CryptoDetail> array = new ArrayList<CryptoDetail>();
-		List<CryptoDetail> topCryptos = TopCryptos.getInstance().getAllSupportedCrypto();
+		List<CryptoDetail> allCrypto = new ArrayList<CryptoDetail>(TopCryptos.getInstance().getAllSupportedCrypto());
 		
+		
+		//TODO INTERFERISCE CON I RANK DI TOP 100
 		for (var preference : preferences) {
-			for (var crypto : topCryptos) {
+			for (var crypto : allCrypto) {
 				if (preference.getTicker().equals(crypto.getTicker())) {
 					array.add(crypto);
 				}
@@ -67,15 +69,18 @@ public class PreferencesService {
 		for (var elem : array) {
 			elem.setRank(cont++);
 		}
+		JSONObject response = new JSONObject();
+		response.put("preferences", array);
 		
-		return array;
+		return response;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<CryptoDetail> dashboardGainers(List<Preference> preferences) {
+	public JSONObject dashboardGainersToJson(List<Preference> preferences) {
 
 		ArrayList<CryptoDetail> array = new ArrayList<CryptoDetail>();
 		List<CryptoDetail> topCryptos = TopCryptos.getInstance().getAllSupportedCrypto();
+		JSONObject response = new JSONObject();
 		
 		for (var preference : preferences) {
 			for (var crypto : topCryptos) {
@@ -91,67 +96,18 @@ public class PreferencesService {
 			    return c2.getChange().compareTo(c1.getChange());
 			  }
 			});
-		Long cont = 1L;
-		if (array.size() < 6) {
-			List <CryptoDetail> tmp = new ArrayList<>();
-			if (array.size() %2== 0 ) {
-				for (int i = 0; i < array.size() / 2; i++)
-					tmp.add(array.get(i));
-			}
-			else {
-				for (int i = 0; i < (array.size() / 2) + 1; i++)
-					tmp.add(array.get(i));
-			}
-			return tmp;
-		}
 		
-		return array.subList(0, 3);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<CryptoDetail> dashboardWorstPerformer(List<Preference> preferences) {
-
-		ArrayList<CryptoDetail> array = new ArrayList<CryptoDetail>();
-		List<CryptoDetail> topCryptos = TopCryptos.getInstance().getAllSupportedCrypto();
 		
-		for (var preference : preferences) {
-			for (var crypto : topCryptos) {
-				if (preference.getTicker().equals(crypto.getTicker())) {
-					array.add(crypto);
-				}
-			}
-		}
+		response.put("preferences_top_gainers", array.subList(0, Math.min(3, array.size())));
 		
-		Collections.sort(array, new Comparator<CryptoDetail>() {
-			  @Override
-			  public int compare(CryptoDetail c1, CryptoDetail c2) {
-			    return c2.getChange().compareTo(c1.getChange());
-			  }
-			});
-		Long cont = 1L;
 		List <CryptoDetail> tmp = new ArrayList<>();
-		
-		if (array.size() < 6) {
-			if (array.size() %2 == 0) {
-				for(int i = array.size() / 2; i < array.size(); i++) {
-					if (array.get(i).getChange() < 0)
-						tmp.add(array.get(i));
-				}
-			}
-			else {
-				for(int i = (array.size() / 2) + 1; i < array.size(); i++) {
-					if (array.get(i).getChange() < 0)
-						tmp.add(array.get(i));
-				}
-			}
-			return tmp;
-		}
-		
-		for(int i = array.size() - 1; i >= array.size() - 3; --i)
+		for(int i = array.size() - 1; i >= array.size() - Math.min(3, array.size()); --i)
 			tmp.add(array.get(i));
 		
-		return tmp;
+		response.put("preferences_worst_performer", tmp);
 		
+		return response;
 	}
+	
 
 }

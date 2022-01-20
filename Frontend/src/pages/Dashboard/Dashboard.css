@@ -1,6 +1,6 @@
-.dashboard-page {
+.dashboard {
     background-color: var(--bg-color-dark);
-    min-height: 100vh;
+    min-height: 80vh;
     padding: 0px 10px 10px 10px;
 }
 
@@ -89,19 +89,19 @@
     margin-right: 45px;
 }
 
-.add-crypto{
+.dashboard .choose-crypto-div {
     width: 30%;
     top: 16%;
-    left: 42%;
+    left: 36%;
     background-color: var(--bg-color-dark);
     border-radius: 12px;
-    position: fixed;
-    z-index: 600;
+    position:relative;
+    z-index: 2;
     transform: scale(0);
     transition: transform 0.3s ease 0s;
 }
 
-.div-active {
+.dashboard .div-active {
     transform: scale(1);
     transition: transform 0.3s ease 0s;
 }
@@ -115,32 +115,39 @@
     padding: 0px;
 }
 
-.select-list {
+.dashboard .select-list {
     margin: 10px 18px 0px 30px;
 }
 
-.search-list {
+.dashboard .search-list {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     overflow-y: scroll;
-    height: 360px;
-    margin-top: 0px;
+    overflow-x: scroll;
+    height: 600px;
+    margin-top: -20px;
     padding-top: 16px;
+    margin-left: 16px;
+    padding-left: 7px;
+    margin-bottom: 0px;
 }
 
-.crypto-list {
+.dashboard .crypto-list {
     margin-top: 10px;
     width: 92%;
     align-items: flex-start;
     cursor: pointer;
+    margin-left:0px;
+    margin-right: 0px;
+    padding-right: 0px;
 }
 
-.crypto-list-item {
+.dashboard .crypto-list-item {
     padding: 0px;
-    padding-left: 20px;
-    margin-left: 6px;
+    padding-left: 10px;
+    margin-left: 0px;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -151,9 +158,44 @@
     border-radius: 10px;
 }
 
+.dashboard .crypto-list-item:hover{
+    background-color: #464646;
+}
+
+.dashboard .search-field {
+    margin-right: auto; 
+    margin-left: 0;
+    display: flex;
+    align-items: center;
+}
+
+.dashboard .search-icon-x {
+    position: relative;
+    left:28px;
+}
+
+.dashboard .search-container-x {
+    height: 32px;
+    width: 250px;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--search-bg-color);
+}
+
+
+.dashboard .search-container-x:focus {
+    outline: none;
+    box-shadow: 0px 0px 10px 2px var(--bg-color-blue);
+}
+
+
 @media only screen and (max-width: 900px){
     .button-container{
         justify-content:center;
+    }
+
+    .dashboard .search-list {
+        padding-bottom: 15px;
     }
 }
 
@@ -197,7 +239,16 @@
     .edit-favourites {
         padding-left: 3px !important;
     }
+
+    .dashboard .search-container-x {
+        width: 210px;
+    }
+
+    .dashboard .search-list {
+        height:60vh;
+    }
 }
+
 
 .favourite-assets-news-label {
     margin: 50px 0px 10px 0px;

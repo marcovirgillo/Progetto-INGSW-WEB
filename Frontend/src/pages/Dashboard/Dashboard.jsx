@@ -11,6 +11,7 @@ const getPreferencesUrl = `http://${address}:8080/getPreferencesDashboard`;
 
 const Dashboard = (props) => {
     const [preferred, setPreferred] = useState([]);
+    
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -50,6 +51,8 @@ const Dashboard = (props) => {
         if(props.accessToken === null || props.accessToken === "")
             return;
 
+            console.log("FETCHING PREFERENCES")
+
         fetch(getPreferencesUrl, optionsPreferences)
         .then((res) => processPreferences(res));
     }
@@ -57,7 +60,7 @@ const Dashboard = (props) => {
     const processPreferences = res => {
         if(res.status === 200) {
             res.json()
-                .then((result) => setPreferred(result),
+                .then((result) => setPreferred(result.preferences),
                       (error) => console.log(error));
         }
         else if(res.status === 6001) {
@@ -65,15 +68,18 @@ const Dashboard = (props) => {
         }
     }
 
+    console.log(preferred)
 
     return (
-        <div className="dashboard-page">
-            <div className="paper-gray">
+        <div className="dashboard">
             {preferred.length === 0 && (
-                <AddCrypto allCryptos={props.allCrypto} />
+                <div className="paper-gray">
+                    <div style={{paddingTop:'30px'}} />
+                    <AddCrypto allCryptos={props.allCrypto} accessToken={props.accessToken} fetcherPreferences={fetcherPreferences}/>
+                </div>
             )}
             {preferred.length !== 0 && (
-                <>
+                <div className="paper-gray">
                     <h4 className="overview-label">Overview</h4>
                     <OverviewSection accessToken={props.accessToken}/>
                     <div className="button-container" style={{marginRight:'0px', marginTop:'0px', marginBottom:'0px'}}>
@@ -92,7 +98,7 @@ const Dashboard = (props) => {
                     </ul>
 
                     <NewsSection />
-                </>
+                </div>
             )}
                 {/* <h4 className="overview-label">Overview</h4>
                 <OverviewSection accessToken={props.accessToken}/>
@@ -112,7 +118,6 @@ const Dashboard = (props) => {
                 </ul>
 
                 <NewsSection /> */}
-            </div>
         </div>
     )
 }
