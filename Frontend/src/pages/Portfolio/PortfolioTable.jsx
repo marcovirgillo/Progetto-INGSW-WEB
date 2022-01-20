@@ -95,8 +95,21 @@ export default function CriptoTable(props) {
     const [transactionTableActive, setTransactionTableActive] = useState(false);
     
     useEffect(() => {
+        console.log("arrivano data,", data);
+        if(selectedAsset !== undefined && selectedAsset.holding_dollar !== undefined) {
+            const idx = tableData.indexOf(selectedAsset);
+            const ticker = selectedAsset.ticker;
+            console.log("idx:", idx);
+            if(data[idx].ticker === ticker)
+                setSelectedAsset(data[idx]);
+            else {
+                setSelectedAsset({logo: '', ticker: ''})
+                setTransactionTableActive(false);
+            }
+        }
         setTableData(data);
         resetDropdowns();
+
     }, [data]);
 
     const resetDropdowns = () => {
@@ -202,10 +215,14 @@ export default function CriptoTable(props) {
         )
     }
 
+    console.log("selected asset:", selectedAsset);
     return (
         <React.Fragment>
-            {transactionTableActive && (<TransactionTable assetsUl={props.assetsUl} logo={selectedAsset.logo} closeTable={() => setTransactionTableActive(false)}
-                                                        accessToken={props.accessToken} cripto={selectedAsset}/>)}
+            {transactionTableActive && (
+                <TransactionTable assetsUl={props.assetsUl} logo={selectedAsset.logo} closeTable={() => setTransactionTableActive(false)}
+                                    accessToken={props.accessToken} cripto={selectedAsset} fetchChart={props.fetchChart} fetchInfo={props.fetchInfo}
+                />
+            )}
             {!transactionTableActive && (
                 <React.Fragment>
                     <Table id="all-cripto-table" className="table" sx={{maxWidth: '94%', marginTop: '30px'}}>

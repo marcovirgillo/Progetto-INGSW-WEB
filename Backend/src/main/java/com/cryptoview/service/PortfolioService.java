@@ -121,6 +121,7 @@ public class PortfolioService {
 		removeDuplicatesAndSort(timestampList, timestamp);
 		
 		//mi dice le quantitò di cripto che ho all'inizio del periodo di riferimento del portfolio
+		//rimangono da calcolare solo le transazioni non ancora avvenute
 		Map <String, Double> cryptoQuantity = getCryptoQuantityAtTimeOfBeginning(timestampList.get(0), portfolioTransactions, cryptoPortfolio);
 		
 		//è la lista finale
@@ -145,7 +146,7 @@ public class PortfolioService {
 					String ticker = transaction.getCryptoTicker();
 					
 					//aggiorno le quantità di cripto, in base al fatto che sia acquisto o meno
-					if(transaction.getType() == Transaction.BUY)
+					if(transaction.getType() == Transaction.BUY || transaction.getType() == Transaction.TRANSFER_IN)
 						cryptoQuantity.put(ticker, cryptoQuantity.get(ticker) + transaction.getQuantity());
 					else 
 						cryptoQuantity.put(ticker, cryptoQuantity.get(ticker) - transaction.getQuantity());
@@ -271,7 +272,7 @@ public class PortfolioService {
 			
 			String ticker = transaction.getCryptoTicker();
 			
-			if(transaction.getType() == Transaction.BUY)
+			if(transaction.getType() == Transaction.BUY || transaction.getType() == Transaction.TRANSFER_IN)
 				cryptoQuantityMap.put(ticker, cryptoQuantityMap.get(ticker) + transaction.getQuantity());
 			else 
 				cryptoQuantityMap.put(ticker, cryptoQuantityMap.get(ticker) - transaction.getQuantity());
@@ -394,9 +395,11 @@ public class PortfolioService {
 				
 				obj.put("type", fomatType(transaction.getType()));
 				obj.put("quantity", formatHoldingStr(transaction.getQuantity()) + " " + ticker.toUpperCase());
+				obj.put("quantity_cripto", transaction.getQuantity());
 				obj.put("quantity_usd", transaction.getTotalUsdSpent());
-				obj.put("date", transaction.getTransactionDatestamp().toString());
+				obj.put("date", transaction.getTransactionDatestamp());
 				obj.put("cripto_price", transaction.getPriceUsdCrypto());
+				obj.put("id", transaction.getId());
 				
 				array.add(obj);
 			}

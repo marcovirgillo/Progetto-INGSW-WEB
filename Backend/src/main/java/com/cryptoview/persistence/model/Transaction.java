@@ -7,8 +7,6 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 
-import org.json.simple.JSONObject;
-
 import com.cryptoview.controller.transfers.TransactionData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,6 +21,7 @@ public class Transaction implements Comparable<Transaction> {
 	@JsonIgnore
 	public static final char TRANSFER_OUT = 'o';
 	
+	private int id;
 	private String portfolioOwner;
 	private String cryptoTicker;
 	private char type;
@@ -49,6 +48,14 @@ public class Transaction implements Comparable<Transaction> {
 	
 	public void setCryptoTicker(String cryptoTicker) {
 		this.cryptoTicker = cryptoTicker;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public char getType() {
@@ -114,6 +121,7 @@ public class Transaction implements Comparable<Transaction> {
 	
 	public static Transaction parseFromDB(ResultSet rs) throws SQLException {
 		Transaction transaction = new Transaction();
+		transaction.setId(rs.getInt("id"));
 		transaction.setPortfolioOwner(rs.getString("portfolio_owner"));
 		transaction.setCryptoTicker(rs.getString("crypto_ticker"));
 		transaction.setType(rs.getString("type").charAt(0));
@@ -145,6 +153,7 @@ public class Transaction implements Comparable<Transaction> {
 	public static Transaction parseFromdata(TransactionData transaction) throws IllegalArgumentException {
 		Transaction transfer = new Transaction();
 		transfer.setCryptoTicker(transaction.ticker);
+		transfer.setType(transaction.type);
 		
 		if(transaction.quantity <= 0)
 			throw new IllegalArgumentException();
@@ -154,13 +163,15 @@ public class Transaction implements Comparable<Transaction> {
 		if(transaction.price_usd_crypto <= 0)
 			throw new IllegalArgumentException();
 		
-		transfer.setPriceUsdCrypto(transaction.price_usd_crypto);
+		if(transfer.getType() == TRANSFER_IN || transfer.getType() == TRANSFER_OUT)
+			transfer.setPriceUsdCrypto(0);
+		else
+			transfer.setPriceUsdCrypto(transaction.price_usd_crypto);
 		
 		if(transaction.type != BUY && transaction.type != SELL && transaction.type != TRANSFER_IN && transaction.type != TRANSFER_OUT)
 			throw new IllegalArgumentException();
 		
-		transfer.setType(transaction.type);
-				
+		
 		transfer.setTransactionDate(transaction.transaction_date);
 		transfer.setTransactionTime(transaction.transaction_time.split("\\.")[0]);
 		
@@ -170,7 +181,10 @@ public class Transaction implements Comparable<Transaction> {
 			throw new IllegalArgumentException();
 		}
 		
-		transfer.setTotalUsdSpent(transfer.priceUsdCrypto * transfer.quantity);
+		if(transfer.getType() == TRANSFER_IN || transfer.getType() == TRANSFER_OUT)
+			transfer.setTotalUsdSpent(0);
+		else
+			transfer.setTotalUsdSpent(transfer.priceUsdCrypto * transfer.quantity);
 		
 		return transfer;
 	}

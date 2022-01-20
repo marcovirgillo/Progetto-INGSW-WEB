@@ -75,10 +75,8 @@ export default function ChooseCrypto(props) {
                 </div>
             )}
             {props.transactionPanelActive && (
-                <div className={props.className}>
-                    <TransactionPanel fetchChart={props.fetchChart} fetchInfo={props.fetchInfo} accessToken={props.accessToken} 
-                        crypto={props.lastSelectedCrypto} closePanel={closeTransactionPanel} />
-                </div>
+                <TransactionPanel className={props.className} fetchChart={props.fetchChart} fetchInfo={props.fetchInfo} accessToken={props.accessToken} 
+                    crypto={props.lastSelectedCrypto} closePanel={closeTransactionPanel} />
             )}
         </React.Fragment>
     )

@@ -9,6 +9,7 @@ import { address } from '../../assets/globalVar';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 const addTransactionUrl = `http://${address}:8080/addTransaction`;
+const editTransactionUrl = `http://${address}:8080/updateTransaction`;
 
 function CustomSelectDropown(props) {
     const getClassName = () => {
@@ -32,15 +33,17 @@ function CustomSelectDropown(props) {
 }
 
 export default function TransactionPanel(props) {
-    const [itemActive, setItemActive] = useState("buy");
-    const [dateValue, setDateValue] = React.useState(new Date());
-    const [currentTransferType, setCurrentTransferType] = useState("i");
+    /* se ricevo i dati della transazione dalle props, li inizializzo con quel valore, altrimenti li inizializzo normalmente */
+    const [itemActive, setItemActive] = useState(props.transaction_type || "buy");
+    const [dateValue, setDateValue] = useState(props.date ? new Date(props.date) : new Date());
+    const [currentTransferType, setCurrentTransferType] = useState(props.transfer_type || "i");
     const [selectDropdownActive, setSelectDropdownActive] = useState(false);
     const [errorLabelActive, setErrorLabelActive] = useState(false);
+    const [errorLabelMessage, setErrorLabelMessage] = useState("");
 
     //state per i valori dei field
-    const [cryptoQuantField, setCryptoQuantField] = useState(0.0);
-    const [cryptoPriceField, setCryptoPriceField] = useState(props.crypto.price);
+    const [cryptoQuantField, setCryptoQuantField] = useState(props.quantity || 0.0);
+    const [cryptoPriceField, setCryptoPriceField] = useState(props.cripto_price || props.crypto.price);
     const [total, setTotal] = useState(0);
 
     useEffect(() => setTotal(cryptoPriceField * cryptoQuantField), [cryptoPriceField]);
@@ -65,15 +68,11 @@ export default function TransactionPanel(props) {
         body: {}
     }
 
-    const showError = () => {
-        setErrorLabelActive(true);
-        setTimeout(() => setErrorLabelActive(false), 3500);
-    }
-
     const addTransactionClicked = () => {
         let transaction_type = itemActive[0];
 
-        if(itemActive === "transaction")
+        //se è attivo il pannello transazioni, imposto il type come current transfer type
+        if(itemActive === "transfer")
             transaction_type = currentTransferType;
     
         try {
@@ -88,26 +87,70 @@ export default function TransactionPanel(props) {
             }
 
             options.body = JSON.stringify(body);
-
+            
             fetch(addTransactionUrl, options)
                 .then(res => parseResponse(res));
         } catch(error) {
-           showError();
+           showErrorMessage("Error! Please try again later");
+        }
+    }
+
+    const editTransaction = () => {
+        let transaction_type = itemActive[0];
+
+        //se è attivo il pannello transazioni, imposto il type come current transfer type
+        if(itemActive === "transfer")
+            transaction_type = currentTransferType;
+    
+        try {
+            const body = {
+                'data': {
+                    'ticker': props.crypto.ticker,
+                    'type': transaction_type,
+                    'quantity': cryptoQuantField,
+                    'price_usd_crypto': cryptoPriceField,
+                    'total_usd_spent': total,
+                    'transaction_date': dateValue.toISOString().split("T")[0],
+                    'transaction_time': dateValue.toISOString().split("T")[1]
+                },
+                'id': props.transaction_id
+            }
+
+            options.body = JSON.stringify(body);
+            
+            fetch(editTransactionUrl, options)
+                .then(res => parseResponse(res));
+        } catch(error) {
+           showErrorMessage("Error! Please try again later");
         }
     }
 
     const parseResponse = res => {
         if(res.status === 200) {
-            console.log("Transaction added !");
-            props.fetchInfo();
-            props.fetchChart();
+            if(props.fetchTransactionsList) {
+                props.fetchTransactionsList();
+            }
+            else {
+                props.fetchInfo();
+                props.fetchChart();
+            }
+
             props.closePanel();
         }
         else if(res.status === 5020) {
-            showError();
+            res.json().then(result => console.log(result));
+            showErrorMessage("Error, please check the input fields and retry!");
+        } else if (res.status === 5030) {
+            showErrorMessage("Insufficient crypto amount, please retry!");
         } else {
             res.json().then(result => console.log(result));
         }
+    }
+
+    const showErrorMessage = (msg) => {
+        setErrorLabelMessage(msg);
+        setErrorLabelActive(true);
+        setTimeout(() =>{ setErrorLabelMessage(""); setErrorLabelActive(false)}, 3500);
     }
 
     //faccio in modo che solo i numeri possono essere digitati nell'input field
@@ -152,9 +195,9 @@ export default function TransactionPanel(props) {
     }
 
     return (
-        <React.Fragment>
+        <div className={props.className}>
             <ul className="inline-list select-list">
-                <h3 style={{color: 'white'}}>Add Transaction</h3>
+                <h3 style={{color: 'white'}}>{props.editTransaction ? "Edit Transaction" : "Add Transaction"}</h3>
                 <div className="h-spacer-choose-crypto"/>
                 <CloseRoundedIcon className="close-btn" sx={{color: 'white', fontSize: 32, cursor: 'pointer'}} 
                     onClick={() => props.closePanel()}/>
@@ -177,7 +220,7 @@ export default function TransactionPanel(props) {
                                     onPaste={(ev) => ev.preventDefault()} type="number" placeholder="0.0" lang="en"
                             />
                         </ul>
-                        {itemActive != "transfer" && (
+                        {itemActive !== "transfer" && (
                             <ul className="field price-field">
                                 <p>Price per coin</p>
                                 <span className="dollar-symbol">$</span>
@@ -214,7 +257,7 @@ export default function TransactionPanel(props) {
                             />
                         </LocalizationProvider>
                     </ul>
-                {itemActive != "transfer" && (
+                {itemActive !== "transfer" && (
                     <React.Fragment>
                         <p className="total-label">Total</p>
                         <p className="total-dollar">$ {total}</p>
@@ -224,14 +267,12 @@ export default function TransactionPanel(props) {
             </ul>
             <ul className="btn-ul">
                 <div className="add-transaction-btn">
-                    <p onClick={addTransactionClicked}>Add Transaction</p>
+                    <p onClick={props.editTransaction ? editTransaction : addTransactionClicked}>Add Transaction</p>
                 </div>
                 <div className={getErrorLabelClassname()}>
-                        <p>Error, please check the input fields and retry!</p>
+                        <p>{errorLabelMessage}</p>
                 </div>
             </ul>
-           
-            
-        </React.Fragment>
+        </div>
     )
 }

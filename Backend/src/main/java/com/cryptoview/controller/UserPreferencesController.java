@@ -1,8 +1,6 @@
 package com.cryptoview.controller;
 
-import java.lang.reflect.Array;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,21 +14,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.persistence.dao.PreferencesDaoJDBC;
 import com.cryptoview.persistence.dao.UserDaoJDBC;
 import com.cryptoview.persistence.model.Preference;
 import com.cryptoview.persistence.model.User;
 import com.cryptoview.service.PreferencesService;
-import com.cryptoview.service.TopCryptos;
+
 
 @RestController
 @CrossOrigin(origins = {"*"})
-
-
-
 public class UserPreferencesController {
-	
 	
 	//Restituisce status e Array  delle preferenze se con successo
 	@SuppressWarnings("unchecked")
