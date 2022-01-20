@@ -1,7 +1,6 @@
 package com.cryptoview.controller;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.persistence.dao.PreferencesDaoJDBC;
 import com.cryptoview.persistence.dao.UserDaoJDBC;
 import com.cryptoview.persistence.model.Preference;
@@ -68,7 +66,7 @@ public class UserPreferencesController {
 	
 	@SuppressWarnings("unchecked")
 	@GetMapping("/getPreferencesDashboard")
-	public List<CryptoDetail> getPreferecesDashboard(HttpServletRequest request, HttpServletResponse response) {
+	public JSONObject getPreferecesDashboard(HttpServletRequest request, HttpServletResponse response) {
 		String token = request.getHeader("Authorization");
 	
 		try {
@@ -76,21 +74,33 @@ public class UserPreferencesController {
 			
 			if(user == null) {
 				
-				return Arrays.asList(null);
+				JSONObject resp = new JSONObject();
+				response.setStatus(Protocol.INVALID_TOKEN);
+				resp.put("msg", "The auth token is not valid");
+				
+				return resp;
 			}
 
 			List<Preference> preferences = PreferencesDaoJDBC.getInstance().getUserPreferences(user.getUsername());
 			
 			if(preferences != null) {
 				response.setStatus(Protocol.OK);
-				return PreferencesService.getInstance().dashboardPreferences(preferences);
+				return PreferencesService.getInstance().dashboardPreferencesToJson(preferences);
 			}
 			else {
-				return Arrays.asList(null);
+				JSONObject resp = new JSONObject();
+				response.setStatus(Protocol.NO_PREFERENCES_FOUND);
+				resp.put("msg", "No preferences found.");	
+				
+				return resp;
 			}
 			
 		} catch (SQLException e) {
-			return Arrays.asList(null);
+			JSONObject resp = new JSONObject();
+			response.setStatus(Protocol.SERVER_ERROR);
+			resp.put("msg", "Internal server error");
+			
+			return resp;
 		}
 	}
 	
@@ -258,57 +268,43 @@ public class UserPreferencesController {
 		}
 	}
 	
-	@GetMapping("/topGainersDashboard")
-	private List<CryptoDetail> getTopGainersDashboard(HttpServletRequest request, HttpServletResponse response) {
+	@SuppressWarnings("unchecked")
+	@GetMapping("/gainersSection")
+	private JSONObject getGainersDashboard(HttpServletRequest request, HttpServletResponse response) {
 		String token = request.getHeader("Authorization");
 		
 		try {
 			User user = UserDaoJDBC.getInstance().findByToken(token);
 			
 			if(user == null) {
+				JSONObject resp = new JSONObject();
+				response.setStatus(Protocol.INVALID_TOKEN);
+				resp.put("msg", "The auth token is not valid");
 				
-				return Arrays.asList(null);
+				return resp;
 			}
 
 			List<Preference> preferences = PreferencesDaoJDBC.getInstance().getUserPreferences(user.getUsername());
 			
 			if(preferences != null) {
 				response.setStatus(Protocol.OK);
-				return PreferencesService.getInstance().dashboardGainers(preferences);
+				return PreferencesService.getInstance().dashboardGainersToJson(preferences);
 			}
 			else {
-				return Arrays.asList(null);
+				JSONObject resp = new JSONObject();
+				response.setStatus(Protocol.NO_PREFERENCES_FOUND);
+				resp.put("msg", "No preferences found.");	
+				
+				return resp;
 			}
 			
 		} catch (SQLException e) {
-			return Arrays.asList(null);
+			JSONObject resp = new JSONObject();
+			response.setStatus(Protocol.SERVER_ERROR);
+			resp.put("msg", "Internal server error");
+			
+			return resp;
 		}
 	}
 	
-	@GetMapping("/worstGainersDashboard")
-	private List<CryptoDetail> getWorstGainerDashboard(HttpServletRequest request, HttpServletResponse response) {
-		String token = request.getHeader("Authorization");
-		
-		try {
-			User user = UserDaoJDBC.getInstance().findByToken(token);
-			
-			if(user == null) {
-				
-				return Arrays.asList(null);
-			}
-
-			List<Preference> preferences = PreferencesDaoJDBC.getInstance().getUserPreferences(user.getUsername());
-			
-			if(preferences != null) {
-				response.setStatus(Protocol.OK);
-				return PreferencesService.getInstance().dashboardWorstPerformer(preferences);
-			}
-			else {
-				return Arrays.asList(null);
-			}
-			
-		} catch (SQLException e) {
-			return Arrays.asList(null);
-		}
-	}
 }

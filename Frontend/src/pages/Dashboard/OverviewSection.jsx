@@ -3,15 +3,14 @@ import { Grid, Icon } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { address } from './../../assets/globalVar.js';
 
-const interval_fetch = 1000 * 120; //60 secondi
+const interval_fetch = 1000 * 120;
 
-const getGainersUrl = `http://${address}:8080/topGainersDashboard`;
-const getWorstUrl = `http://${address}:8080/worstGainersDashboard`;
+const getGainersUrl = `http://${address}:8080/gainersSection`;
 
 export default function OverviewSection(props) {
     const [topPerformers, setTopPerformers] = useState([]);
     const [worstPerformers, setWorstPerformers] = useState([]);
-    const [marketStats, setMarketStats] = useState([]);
+    const [marketStats, setMarketStats] = useState([]); // cambiare per la sezione porfolio
 
     const optionsPreferences = {
         method: 'GET',
@@ -37,12 +36,6 @@ export default function OverviewSection(props) {
         }
     }, []);
 
-    useEffect(() => {
-        if(props.accessToken !== null || props.accessToken !== ""){
-            fetcherWorst();
-
-        }
-    }, []);
 
     const fetcherGainers = () => {
         if(props.accessToken === null || props.accessToken === "")
@@ -52,33 +45,17 @@ export default function OverviewSection(props) {
         .then((res) => processGainers(res));
     }
 
-    const fetcherWorst = () => {
-        if(props.accessToken === null || props.accessToken === "")
-            return;
-
-        fetch(getWorstUrl, optionsPreferences)
-        .then((res) => processWorst(res));
-    }
-
     const processGainers = res => {
         if(res.status === 200) {
             res.json()
-                .then((result) => setTopPerformers(result),
+                .then((result) => {
+                    setTopPerformers(result.preferences_top_gainers);
+                    setWorstPerformers(result.preferences_worst_performer);
+                    },
                       (error) => console.log(error));
         }
         else if(res.status === 6001) {
             console.log("No gainers found");
-        }
-    }
-
-    const processWorst = res => {
-        if(res.status === 200) {
-            res.json()
-                .then((result) => setWorstPerformers(result),
-                      (error) => console.log(error));
-        }
-        else if(res.status === 6001) {
-            console.log("No worst found");
         }
     }
 
@@ -87,7 +64,14 @@ export default function OverviewSection(props) {
             return "+" + change.toFixed(2);
         }
         
-        return change.toFixed(2)  
+        return change.toFixed(2)
+    }
+
+    function setClassName(change) {
+        if (change > 0) {
+            return "list-change-green"
+        }
+        return "list-change-red"
     }
 
     return (
@@ -135,7 +119,7 @@ export default function OverviewSection(props) {
                                         <p className="list-ticker">{item.ticker.toUpperCase()}</p>
                                     </Link>
                                     <div className="spacer"> </div>
-                                    <p className="list-change-green">{change(item.change)}%</p>
+                                    <p className={setClassName(item.change)} >{change(item.change)}%</p>
                                 </ul>
                             ))
                         }
@@ -161,7 +145,7 @@ export default function OverviewSection(props) {
                                         <p className="list-ticker">{item.ticker.toUpperCase()}</p>
                                     </Link>
                                     <div className="spacer"> </div>
-                                    <p className="list-change-red">{change(item.change)}%</p>
+                                    <p className={setClassName(item.change)}>{change(item.change)}%</p>
                                 </ul>
                             ))
                         }
