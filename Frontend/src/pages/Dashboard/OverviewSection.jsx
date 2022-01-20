@@ -3,28 +3,84 @@ import { Grid, Icon } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { address } from './../../assets/globalVar.js';
 
-export default function OverviewSection() {
+const interval_fetch = 1000 * 120; //60 secondi
+
+const getGainersUrl = `http://${address}:8080/topGainersDashboard`;
+const getWorstUrl = `http://${address}:8080/worstGainersDashboard`;
+
+export default function OverviewSection(props) {
     const [topPerformers, setTopPerformers] = useState([]);
     const [worstPerformers, setWorstPerformers] = useState([]);
     const [marketStats, setMarketStats] = useState([]);
 
+    const optionsPreferences = {
+        method: 'GET',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken
+        }
+    }
+
     useEffect(() => {
-        console.log("QUA");
-        fetch(`http://${address}:8080/topGainers`)
-            .then(res => res.json())
-            .then((result) => setTopPerformers(result),
-                  (error) => console.log("Error fetching top gainers"));
+        if(props.accessToken === "")
+            setTopPerformers([]);
+        else{
+            fetcherGainers();
+        }
+    }, [props.accessToken]); 
 
-        fetch(`http://${address}:8080/worstPerformers`)
-            .then(res => res.json())
-            .then((result) => setWorstPerformers(result),
-                  (error) => console.log("Error fetching worst performers"));
+    useEffect(() => {
+        if(props.accessToken !== null || props.accessToken !== ""){
+            fetcherGainers();
 
-         fetch(`http://${address}:8080/marketStats`)
-        .then(res => res.json())
-        .then((result) => setMarketStats(result),
-            (error) => console.log("Error fetching market stats")); 
+        }
     }, []);
+
+    useEffect(() => {
+        if(props.accessToken !== null || props.accessToken !== ""){
+            fetcherWorst();
+
+        }
+    }, []);
+
+    const fetcherGainers = () => {
+        if(props.accessToken === null || props.accessToken === "")
+            return;
+
+        fetch(getGainersUrl, optionsPreferences)
+        .then((res) => processGainers(res));
+    }
+
+    const fetcherWorst = () => {
+        if(props.accessToken === null || props.accessToken === "")
+            return;
+
+        fetch(getWorstUrl, optionsPreferences)
+        .then((res) => processWorst(res));
+    }
+
+    const processGainers = res => {
+        if(res.status === 200) {
+            res.json()
+                .then((result) => setTopPerformers(result),
+                      (error) => console.log(error));
+        }
+        else if(res.status === 6001) {
+            console.log("No gainers found");
+        }
+    }
+
+    const processWorst = res => {
+        if(res.status === 200) {
+            res.json()
+                .then((result) => setWorstPerformers(result),
+                      (error) => console.log(error));
+        }
+        else if(res.status === 6001) {
+            console.log("No worst found");
+        }
+    }
 
     function change(change) {
         if(change > 0){

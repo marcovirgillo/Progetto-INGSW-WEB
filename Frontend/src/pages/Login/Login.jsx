@@ -26,6 +26,10 @@ const Login = (props) => {
     };
 
     useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
+    useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
         window.addEventListener('resize', handleResize);
         
@@ -40,13 +44,17 @@ const Login = (props) => {
             navigate("/");
         }
         else {
-            res.json().then((result) => console.log(result));
+            res.json().then((result) => {
+                setErrorType("Invalid");
+                showError();
+            })
         }
     }
 
     function checkConstraints(){
         if(username=="" || password==""){
-            console.log("All fields need to be filled")
+            setErrorType("Empty");
+            showError();
             return false;
         }
         return true;
@@ -131,6 +139,21 @@ const Login = (props) => {
         }
     }
 
+    const [errorLabelActive, setErrorLabelActive] = useState(false);
+    const [errorType, setErrorType] = useState("");
+
+    const getErrorLabelClassname = () => {
+        if(errorLabelActive)
+            return "error-label label-active";
+        else
+            return "error-label";
+    }
+
+    const showError = () => {
+        setErrorLabelActive(true);
+        setTimeout(() => {setErrorLabelActive(false); setErrorType("")}, 3500);
+    }
+
     return (
         <div className="login">
             <div className="paper-grey" style={minHeight()}>
@@ -180,7 +203,13 @@ const Login = (props) => {
                             <div className='login-button-text-google' style={loginButtonTextStyle("google")}>Log in with Google</div>
                         </span>
                     </span>
+                    {(errorLabelActive === true && <div className={getErrorLabelClassname()}>
+                        {errorType === "Empty" ? <p>Error, please check the input fields and retry!</p> : <p>Error, invalid combination of username and password!</p> }
+                    </div>)}
+
                 </div>
+
+                
 
                 <div style={{paddingTop:'20px'}} />
                 <div className="login-ending-list"> 

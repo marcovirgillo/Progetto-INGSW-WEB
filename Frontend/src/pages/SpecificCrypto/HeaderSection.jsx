@@ -11,10 +11,10 @@ import { address } from './../../assets/globalVar.js';
 const getPreferencesUrl = `http://${address}:8080/getPreferences`;
 const addPreferenceUrl = `http://${address}:8080/addPreference`;
 const removePreferenceUrl = `http://${address}:8080/removePreference`;
+
+let ispreferred;
 const HeaderSection = (props) => {
     const [screenSize, setScreenSize] = useState(null);
-
-    const [preferredCripto, setPreferredCripto] = useState(false); //Se la cripto specifica è nei preferiti
 
     const [preferred, setPreferred] = useState([]);
 
@@ -227,17 +227,29 @@ const HeaderSection = (props) => {
 
     function handleStar(){
         if(props.accessToken === ""){
-            return () => navigate("/login");
+            return navigate("/login");
         }
-        
-        return () => setPreferredCripto(!preferredCripto);
+
+        if(ispreferred){
+            removePreference(cryptoData.symbol);
+            var array  = [...preferred].filter(item => item.id != cryptoData.symbol);
+            setPreferred(array);
+        }
+        else{
+            addPreference(cryptoData.symbol);
+            var newPref = {id: cryptoData.symbol};
+            var array = [...preferred];
+            array.push(newPref);
+            setPreferred(array);
+        }
     }
 
     function isSupported(){
         let crypto = props.allCrypto.find(({ticker}) => ticker === cryptoData.symbol);
         
-        if(crypto !== undefined)
+        if(crypto !== undefined){
             return true;
+        }
         
         return false;        
     }
@@ -248,9 +260,22 @@ const HeaderSection = (props) => {
         
         let found = preferred.find(({id}) => id === cryptoData.symbol); 
 
-        if(found !== undefined)
+        if(found !== undefined){
+            ispreferred = true;
             return true;
+        }
+
+        ispreferred = false;
         return false;
+    }
+
+    function link(link_){
+        if(link_.indexOf(".com") === -1)
+            return link_;
+            
+        let link = link_.substring(0, link_.indexOf(".com")); //Cutting useless stuff after .com
+        link += ".com";
+        return link;
     }
 
     const MainDetailsSection = () => {
@@ -260,21 +285,21 @@ const HeaderSection = (props) => {
                     <div className="container-title-test" style={{maxWidth:'80vh'}}>
                         {isSupported() && 
                             (
-                                isPreferred() ? <img src={require("../../res/logos/star-checked.png")} width={36} height={36}  style={{paddingRight:'15px', cursor:'pointer'}} onClick={handleStar()} /> : 
-                                                <img src={require("../../res/logos/star-unchecked.png")} width={36} height={36} style={{paddingRight:'15px', cursor:'pointer'}} onClick={handleStar()}/>
+                                isPreferred() ? <img src={require("../../res/logos/star-checked.png")} width={36} height={36}  style={{paddingRight:'15px', cursor:'pointer'}} onClick={() => handleStar()} /> : 
+                                                <img src={require("../../res/logos/star-unchecked.png")} width={36} height={36} style={{paddingRight:'15px', cursor:'pointer'}} onClick={() => handleStar()}/>
                             )
                         }
                         <img src={cryptoData.image.small} />
                         <div className='crypto-title'>{cryptoData.name}</div>
                         <p className='grey-container' style={{marginLeft:'10px'}}>{cryptoData.symbol.toUpperCase()}</p>
-                        <p className="p-crypto" style={{marginLeft:'15px'}}>{/* {screenSize>600 ? 'Rank' : ''} */}Rank #{cryptoData.market_cap_rank}</p>
+                        <p className="p-crypto" style={{marginLeft:'15px'}}>Rank #{cryptoData.market_cap_rank}</p>
                     </div>
                 </div>
                 <ul>
                     <ul className="container-title" style={{marginTop:'25px'}}>
                         <p className='specific-crypto-primary-btn container-title' style={{marginLeft:'10px', cursor:'pointer'}}>
                             <img src={require("../../res/logos/link.png")} width={26} height={26} style={{marginRight:'10px'}}/>
-                            <a href={cryptoData.links.homepage[0]}> <span className="list-title-crypto" style={{marginBottom:'2px'}}>{cryptoData.links.homepage[0]}</span> </a>
+                            <a href={link(cryptoData.links.homepage[0])}> <span className="list-title-crypto" style={{marginBottom:'2px'}}>{link(cryptoData.links.homepage[0])}</span> </a>
                         </p>
                     
                     </ul>

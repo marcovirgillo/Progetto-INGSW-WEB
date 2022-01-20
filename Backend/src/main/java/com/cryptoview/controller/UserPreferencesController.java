@@ -22,6 +22,7 @@ import com.cryptoview.persistence.dao.UserDaoJDBC;
 import com.cryptoview.persistence.model.Preference;
 import com.cryptoview.persistence.model.User;
 import com.cryptoview.service.PreferencesService;
+import com.cryptoview.service.TopCryptos;
 
 @RestController
 @CrossOrigin(origins = {"*"})
@@ -260,6 +261,60 @@ public class UserPreferencesController {
 			resp.put("msg", "Internal server error");
 			
 			return resp;
+		}
+	}
+	
+	@GetMapping("/topGainersDashboard")
+	private List<CryptoDetail> getTopGainersDashboard(HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("Authorization");
+		
+		try {
+			User user = UserDaoJDBC.getInstance().findByToken(token);
+			
+			if(user == null) {
+				
+				return Arrays.asList(null);
+			}
+
+			List<Preference> preferences = PreferencesDaoJDBC.getInstance().getUserPreferences(user.getUsername());
+			
+			if(preferences != null) {
+				response.setStatus(Protocol.OK);
+				return PreferencesService.getInstance().dashboardGainers(preferences);
+			}
+			else {
+				return Arrays.asList(null);
+			}
+			
+		} catch (SQLException e) {
+			return Arrays.asList(null);
+		}
+	}
+	
+	@GetMapping("/worstGainersDashboard")
+	private List<CryptoDetail> getWorstGainerDashboard(HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("Authorization");
+		
+		try {
+			User user = UserDaoJDBC.getInstance().findByToken(token);
+			
+			if(user == null) {
+				
+				return Arrays.asList(null);
+			}
+
+			List<Preference> preferences = PreferencesDaoJDBC.getInstance().getUserPreferences(user.getUsername());
+			
+			if(preferences != null) {
+				response.setStatus(Protocol.OK);
+				return PreferencesService.getInstance().dashboardWorstPerformer(preferences);
+			}
+			else {
+				return Arrays.asList(null);
+			}
+			
+		} catch (SQLException e) {
+			return Arrays.asList(null);
 		}
 	}
 }

@@ -12,7 +12,6 @@ const interval_fetch = 1000 * 120; //60 secondi
 const getPreferencesUrl = `http://${address}:8080/getPreferencesDashboard`;
 
 export default function CriptoTable(props) {
-    console.log(props.accessToken)
     const [preferred, setPreferred] = useState([]);
     const [order, setOrder] = useState("ASC");
     const [itemActive, setItemActive] = useState(null);
@@ -31,7 +30,6 @@ export default function CriptoTable(props) {
             setPreferred([]);
         else{
             fetcherPreferences();
-            console.log("Ciao")
         }
     }, [props.accessToken]); 
 

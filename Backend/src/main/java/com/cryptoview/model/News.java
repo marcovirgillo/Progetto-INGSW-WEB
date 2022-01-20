@@ -62,7 +62,7 @@ public class News {
 	
 	public void setContent(String content) {
 		
-		int posToRemove= content.indexOf("[");
+		int posToRemove= content.indexOf("+");
 		if(posToRemove != -1)
 			this.content = content.substring(0, Math.max(0, posToRemove-1));
 		else

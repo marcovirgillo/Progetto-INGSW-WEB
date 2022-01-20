@@ -22,6 +22,10 @@ const Signup = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
+    useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
         window.addEventListener('resize', handleResize);
         
@@ -51,21 +55,23 @@ const Signup = () => {
         }
     }
 
-    function signupContraints(){
+    function signupConstraints(){
         if(!termsChecked || username==="" || email==="" || password===""){
-            console.log("NOT ALL FIELDS ARE FILLED/TERMS NOT ACCEPTED");
+            setErrorType("Empty");
+            showError();
             return false;
         }
         if(!password.match(/^(?=.*\d)(?=.*[@.?#$%^&+=!])(?=.*[a-z])(?=.*[A-Z]).{8,}$/))
         {
-            console.log("Password doesn't match requirements");
+            setErrorType("Invalid");
+            showError();
             return false;
         }
         return true;
     }
 
     const doSignup = () => {
-        if(!signupContraints())
+        if(!signupConstraints())
             return;
         fetch(signupAddress, signUpOptions)
             .then(res => parseResponse(res));
@@ -193,6 +199,22 @@ const Signup = () => {
         )
     } 
 
+    const [errorLabelActive, setErrorLabelActive] = useState(false);
+    const [errorType, setErrorType] = useState("");
+
+    const getErrorLabelClassname = () => {
+        if(errorLabelActive)
+            return "error-label label-active";
+        else
+            return "error-label";
+    }
+
+    const showError = () => {
+        setErrorLabelActive(true);
+        setTimeout(() => {setErrorLabelActive(false); setErrorType("")}, 3500);
+    }
+
+
     return (
         <div className="registration">
             <div className="paper-grey" style={minHeight()}>
@@ -272,6 +294,10 @@ const Signup = () => {
                     />
                     <span className="terms-text" style={termsStyle("white")}>I agree on the</span>
                     <span className="terms-text" ><Link to="/termsconditions" style={termsStyle("blue")}>Terms and Conditions</Link></span>
+
+                    {(errorLabelActive === true && <div className={getErrorLabelClassname()}>
+                        {errorType === "Empty" ? <p>Error, please check the input fields and retry!</p> : <p>Error, password doesn't match requirements!</p> }
+                    </div>)}
                 </div>
 
                 <div style={{paddingTop:'20px'}} />

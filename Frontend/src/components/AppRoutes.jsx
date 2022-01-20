@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import { Route, Routes } from 'react-router-dom'
 import { Home, Dashboard, Exchanges, News, Portfolio, Profile, AboutUs, Login, Signup, ForgotPassword, AccountSettings } from '../pages'
+import OverviewSection from '../pages/Dashboard/OverviewSection'
 import SpecificCrypto from '../pages/SpecificCrypto/SpecificCrypto'
 import SpecificExchange from '../pages/SpecificExchange/SpecificExchange'
 
@@ -21,6 +22,7 @@ export default function AppRoutes(props) {
             <Route path="/signup" exact element={<Signup />} />
             <Route path="/forgotpassword" exact element={<ForgotPassword />} />
             <Route path="/accountsettings" exact element={<AccountSettings />} />
+            <Route exact element={<OverviewSection accessToken={props.accessToken}/>} />
         </Routes>
     )
 }
