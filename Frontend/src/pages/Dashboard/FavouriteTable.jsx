@@ -51,7 +51,7 @@ export default function CriptoTable(props) {
     const processPreferences = res => {
         if(res.status === 200) {
             res.json()
-                .then((result) => setPreferred(result),
+                .then((result) => setPreferred(result.preferences),
                       (error) => console.log(error));
         }
         else if(res.status === 6001) {

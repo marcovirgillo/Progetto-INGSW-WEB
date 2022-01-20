@@ -101,7 +101,6 @@ export default function ExchangesTable() {
     function getImageOfCrypto(ticker_id){
         ticker_id = ticker_id.toLowerCase()
         let crypto = cryptoTable.find(({ticker}) => ticker === ticker_id);
-        console.log(ticker_id);
 
         if (ticker_id === "eur")
             return require("../../res/logos/euro.png");
