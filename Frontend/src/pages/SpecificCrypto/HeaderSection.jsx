@@ -89,7 +89,7 @@ const HeaderSection = (props) => {
     }, [props.accessToken]); 
 
     useEffect(() => {
-        if(props.accessToken !== null || props.accessToken !== ""){
+        if(props.accessToken !== null && props.accessToken !== ""){
             console.log("Fetching preferences")
             fetcherPreferences();
         }

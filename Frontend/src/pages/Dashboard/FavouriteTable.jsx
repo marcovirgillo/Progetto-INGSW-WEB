@@ -16,48 +16,13 @@ export default function CriptoTable(props) {
     const [order, setOrder] = useState("ASC");
     const [itemActive, setItemActive] = useState(null);
 
-    const optionsPreferences = {
-        method: 'GET',
-        headers : {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin' : '*',
-            'Authorization': props.accessToken
-        }
-    }
-
     useEffect(() => {
-        if(props.accessToken === "")
+        if(props.preferred === undefined)
             setPreferred([]);
         else{
-            fetcherPreferences();
+            setPreferred(props.preferred);
         }
-    }, [props.accessToken]); 
-
-    useEffect(() => {
-        if(props.accessToken !== null || props.accessToken !== ""){
-            console.log("Fetching preferences")
-            fetcherPreferences();
-        }
-    }, []);
-
-    const fetcherPreferences = () => {
-        if(props.accessToken === null || props.accessToken === "")
-            return;
-
-        fetch(getPreferencesUrl, optionsPreferences)
-        .then((res) => processPreferences(res));
-    }
-
-    const processPreferences = res => {
-        if(res.status === 200) {
-            res.json()
-                .then((result) => setPreferred(result),
-                      (error) => console.log(error));
-        }
-        else if(res.status === 6001) {
-            console.log("No preferences found");
-        }
-    }
+    }, [props.preferred]); 
 
     const sorting = (col) => {
         if(order === "ASC"){
