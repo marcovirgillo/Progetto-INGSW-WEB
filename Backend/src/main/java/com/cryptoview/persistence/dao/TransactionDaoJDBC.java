@@ -17,6 +17,9 @@ public class TransactionDaoJDBC extends TransactionDao{
 	private final String getAllQuery = "select * from transaction;";
 	private final String queryTransactionUser = "select * from transaction where portfolio_owner=?";
 	private final String insertTransaction = "insert into transaction values (nextval('transaction_ids'), ?, ?, ?, ?, ?, ?, ?, ?)";
+	private final String updateTransaction = "update transaction set type=?, quantity=?, price_usd_crypto=?, "
+										   + "transaction_date=?, transaction_time=? where id=? and portfolio_owner=?";
+	private final String deleteTransaction = "delete from transaction where id=? and portfolio_owner=?";
 	
 	private TransactionDaoJDBC() {}
 	
@@ -74,5 +77,32 @@ public class TransactionDaoJDBC extends TransactionDao{
 		Collections.sort(transactionList);
 		
 		return transactionList;
+	}
+
+	@Override
+	public void removeTransaction(int id, String user) throws SQLException {
+		PreparedStatement stm  = DBConnection.getInstance().getConnection().prepareStatement(deleteTransaction);
+		stm.setInt(1, id);
+		stm.setString(2, user);
+		
+		stm.execute();
+		stm.close();
+	}
+
+	@Override
+	public void updateTransaction(int id, Transaction newTransaction) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(updateTransaction);
+		stm.setString(1, String.valueOf(newTransaction.getType()));
+		stm.setDouble(2, newTransaction.getQuantity());
+		stm.setDouble(3, newTransaction.getPriceUsdCrypto());
+		stm.setDate(4, java.sql.Date.valueOf(newTransaction.getTransactionDate()));
+		stm.setTime(5, java.sql.Time.valueOf(newTransaction.getTransactionTime()));
+		
+		stm.setInt(6, id);
+		stm.setString(7, newTransaction.getPortfolioOwner());
+		
+		stm.execute();
+		stm.close();
+		
 	}
 }

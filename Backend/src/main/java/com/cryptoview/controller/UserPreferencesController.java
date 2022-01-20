@@ -1,6 +1,5 @@
 package com.cryptoview.controller;
 
-import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -22,22 +21,17 @@ import com.cryptoview.persistence.dao.UserDaoJDBC;
 import com.cryptoview.persistence.model.Preference;
 import com.cryptoview.persistence.model.User;
 import com.cryptoview.service.PreferencesService;
-import com.cryptoview.service.TopCryptos;
+
 
 @RestController
 @CrossOrigin(origins = {"*"})
-
-
-
 public class UserPreferencesController {
-	
 	
 	//Restituisce status e Array  delle preferenze se con successo
 	@SuppressWarnings("unchecked")
 	@GetMapping("/getPreferences")
 	public JSONObject getPrefereces(HttpServletRequest request, HttpServletResponse response) {
 		String token = request.getHeader("Authorization");
-		System.out.println(token);
 		try {
 			User user = UserDaoJDBC.getInstance().findByToken(token);
 			
