@@ -64,7 +64,7 @@ public class News {
 		
 		int posToRemove= content.indexOf("[");
 		if(posToRemove != -1)
-			this.content = content.substring(0, posToRemove-1);
+			this.content = content.substring(0, Math.max(0, posToRemove-1));
 		else
 			this.content = content;
 	}

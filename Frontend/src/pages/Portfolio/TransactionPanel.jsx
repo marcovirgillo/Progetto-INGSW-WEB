@@ -225,9 +225,9 @@ export default function TransactionPanel(props) {
             <ul className="btn-ul">
                 <div className="add-transaction-btn">
                     <p onClick={addTransactionClicked}>Add Transaction</p>
-                    <div className={getErrorLabelClassname()}>
+                </div>
+                <div className={getErrorLabelClassname()}>
                         <p>Error, please check the input fields and retry!</p>
-                    </div>
                 </div>
             </ul>
            

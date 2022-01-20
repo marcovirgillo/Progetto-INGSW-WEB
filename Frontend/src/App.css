@@ -85,6 +85,10 @@
         display: none !important;
     }
 
+    .portfolio .error-label p {
+        font-size: 0.8em;
+    }
+
     .dropdown-search {
         left: 10px !important;
         width: 92% !important;
