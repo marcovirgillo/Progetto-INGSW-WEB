@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import com.cryptoview.model.CryptoDetail;
+import com.cryptoview.model.api.TopCryptoFetcher;
 import com.cryptoview.persistence.model.Crypto;
 
 public class CryptoDaoJDBC extends CryptoDao {
@@ -90,8 +95,8 @@ public class CryptoDaoJDBC extends CryptoDao {
 		return map;
 	}
 	
-	//Questo metodo deve essere eseguito SOLO per aggiornare le cripto supportate
-	/*public void updateSupportedCrypto() throws SQLException {
+	//Questo metodo deve essere eseguito SOLO per aggiornare le cripto supportate (Aggiunge nuove se non sono già presenti)
+	public void updateSupportedCrypto() throws SQLException {
 		String query = "insert into crypto values(?,?,?,?) ON CONFLICT DO NOTHING";		
 		JSONArray cryptos = TopCryptoFetcher.getInstance().fetch(200);
 		
@@ -115,6 +120,6 @@ public class CryptoDaoJDBC extends CryptoDao {
 		chart = chart.substring(42, chart.length());
 		chart = chart.substring(0, chart.indexOf("/"));
 		return Integer.parseInt(chart);
-	}*/
+	}
 
 }

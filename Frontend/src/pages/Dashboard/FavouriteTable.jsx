@@ -4,58 +4,51 @@ import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import { useInterval } from '../../components/Hooks.js';
 import { Link, Navigate  } from 'react-router-dom'
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { address } from './../../assets/globalVar.js';
 
-//https://overreacted.io/making-setinterval-declarative-with-react-hooks/
-const interval_fetch = 1000 * 120; //60 secondi
-
-const getPreferencesUrl = `http://${address}:8080/getPreferencesDashboard`;
+const removePreferenceUrl = `http://${address}:8080/removePreference`;
 
 export default function CriptoTable(props) {
     const [preferred, setPreferred] = useState([]);
     const [order, setOrder] = useState("ASC");
     const [itemActive, setItemActive] = useState(null);
 
-    const optionsPreferences = {
-        method: 'GET',
+    useEffect(() => {
+        if(props.preferred === undefined)
+            setPreferred([]);
+        else{
+            setPreferred(props.preferred);
+        }
+    }, [props.preferred]); 
+
+    let optionsRemovePreference = {
+        method: 'DELETE',
         headers : {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin' : '*',
-            'Authorization': props.accessToken
-        }
+            'Authorization': props.accessToken,
+        },
+        body: {}
     }
 
-    useEffect(() => {
-        if(props.accessToken === "")
-            setPreferred([]);
-        else{
-            fetcherPreferences();
+    const removePreference = (ticker_) => {
+        const body = {
+            'ticker': ticker_
         }
-    }, [props.accessToken]); 
 
-    useEffect(() => {
-        if(props.accessToken !== null || props.accessToken !== ""){
-            console.log("Fetching preferences")
-            fetcherPreferences();
-        }
-    }, []);
+        optionsRemovePreference.body = JSON.stringify(body);
 
-    const fetcherPreferences = () => {
-        if(props.accessToken === null || props.accessToken === "")
-            return;
-
-        fetch(getPreferencesUrl, optionsPreferences)
-        .then((res) => processPreferences(res));
+        fetch(removePreferenceUrl, optionsRemovePreference)
+            .then(res => parseResponse(res));
     }
 
-    const processPreferences = res => {
+    const parseResponse = res => {
         if(res.status === 200) {
-            res.json()
-                .then((result) => setPreferred(result.preferences),
-                      (error) => console.log(error));
+            console.log("Preference removed successfully!");
         }
-        else if(res.status === 6001) {
-            console.log("No preferences found");
+         else {
+            res.json().then(result => console.log(result));
         }
     }
 
@@ -122,11 +115,19 @@ export default function CriptoTable(props) {
         )
     }
 
+    function handleRemovePreference(ticker){
+        removePreference(ticker);
+        var array  = [...preferred].filter(item => item.ticker != ticker);
+        props.setPreferred(array);
+
+        //Fare anche props.setPreferred per aggiornare tutta dashboard
+    }
+
     return (
         <Table className="table" sx={{maxWidth: '95%', marginTop: '30px'}}>
             <TableHead>
                 <TableRow>
-                    <TableCell className="table-attribute">#</TableCell>
+                    <TableCell className="table-attribute"><span style={{marginLeft:'40px'}}>#</span></TableCell>
                     <TableCell className="table-attribute">Name</TableCell>
                     <TableCell className="table-attribute"onClick={() => {sorting("price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
                         <TableCellArrow content="Price" arrowChecker="price" />
@@ -150,7 +151,15 @@ export default function CriptoTable(props) {
                 {
                     preferred.map((item, val) => (
                             <TableRow key={val}>
-                                    <TableCell className="table-item">{item.rank}</TableCell>
+                                    <TableCell className="table-item">
+                                        <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
+                                            <img src={require("../../res/logos/remove.png")} width={24} height={24} alt="remove preference" className="delete-dashboard-icon"
+                                                onClick={() => handleRemovePreference(item.ticker)}
+                                            />
+                                            <span style={{paddingLeft:'7px'}}>{val+1}</span>
+                                        </ul>   
+                                    </TableCell>
+                                   
                                     <TableCell className="table-item">
                                         <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
                                             <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>

@@ -92,7 +92,7 @@ export default function CriptoTable(props) {
     }, [props.accessToken]); 
 
     useEffect(() => {
-        if(props.accessToken !== null || props.accessToken !== ""){
+        if(props.accessToken !== null && props.accessToken !== ""){
             console.log("Fetching preferences")
             fetcherPreferences();
         }
@@ -211,7 +211,6 @@ export default function CriptoTable(props) {
         if(flag === false){
             removePreference(crypto);
             var array  = [...preferred].filter(item => item.id != crypto);
-          /*   console.log(array) */
             setPreferred(array);
         }
         else{

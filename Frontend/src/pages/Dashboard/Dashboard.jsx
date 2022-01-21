@@ -3,9 +3,15 @@ import { useNavigate } from "react-router-dom";
 import OverviewSection from './OverviewSection'
 import "./Dashboard.css"
 import FavouriteTable from './FavouriteTable'
+import AddCrypto from './AddCrypto'
 import NewsSection from './NewsSection'
+import { address } from './../../assets/globalVar.js';
+
+const getPreferencesUrl = `http://${address}:8080/getPreferencesDashboard`;
 
 const Dashboard = (props) => {
+    const [preferred, setPreferred] = useState([]);
+    
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -17,10 +23,84 @@ const Dashboard = (props) => {
         navigate("/login")
     }, [props.accessToken]);
 
+    const optionsPreferences = {
+        method: 'GET',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken
+        }
+    }
+
+    useEffect(() => {
+        if(props.accessToken === "")
+            setPreferred([]);
+        else{
+            fetcherPreferences();
+        }
+    }, [props.accessToken]); 
+
+    useEffect(() => {
+        if(props.accessToken !== null || props.accessToken !== ""){
+            console.log("Fetching preferences")
+            fetcherPreferences();
+        }
+    }, []);
+
+    const fetcherPreferences = () => {
+        if(props.accessToken === null || props.accessToken === "")
+            return;
+
+            console.log("FETCHING PREFERENCES")
+
+        fetch(getPreferencesUrl, optionsPreferences)
+        .then((res) => processPreferences(res));
+    }
+
+    const processPreferences = res => {
+        if(res.status === 200) {
+            res.json()
+                .then((result) => setPreferred(result.preferences),
+                      (error) => console.log(error));
+        }
+        else if(res.status === 6001) {
+            console.log("No preferences found");
+        }
+    }
+
+    console.log(preferred)
+
     return (
-        <div className="dashboard-page">
-            <div className="paper-gray">
-                <h4 className="overview-label">Overview</h4>
+        <div className="dashboard">
+            {preferred.length === 0 && (
+                <div className="paper-gray">
+                    <div style={{paddingTop:'30px'}} />
+                    <AddCrypto allCryptos={props.allCrypto} accessToken={props.accessToken} fetcherPreferences={fetcherPreferences}/>
+                </div>
+            )}
+            {preferred.length !== 0 && (
+                <div className="paper-gray">
+                    <h4 className="overview-label">Overview</h4>
+                    <OverviewSection accessToken={props.accessToken}/>
+                    <div className="button-container" style={{marginRight:'0px', marginTop:'0px', marginBottom:'0px'}}>
+                        <ul className="alert-container-title">
+                            <img className="favourite-image" src={require("../../res/logos/notifiche.png")} width={35} height={35}  style={{marginRight:'20px', marginTop:'1px'}}/>
+                            <p className="edit-alert">View Alerts</p>
+                        </ul>
+                        <ul className="favourite-container-title">
+                            <img className='plus-image' src={require("../../res/logos/plus.png")} width={35} height={35}  style={{marginRight:'20px', marginTop:'1px'}}/>
+                            <p className='edit-favourites'>Add Favourites</p> 
+                        </ul>
+                    </div>
+                    <p className="dashboard-title">Your favourite assets</p>
+                    <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                        <FavouriteTable accessToken={props.accessToken} preferred={preferred} setPreferred={setPreferred}/> 
+                    </ul>
+
+                    <NewsSection preferred={preferred} accessToken={props.accessToken}/>
+                </div>
+            )}
+                {/* <h4 className="overview-label">Overview</h4>
                 <OverviewSection accessToken={props.accessToken}/>
                 <div className="button-container" style={{marginRight:'0px', marginTop:'0px', marginBottom:'0px'}}>
                     <ul className="alert-container-title">
@@ -29,16 +109,15 @@ const Dashboard = (props) => {
                     </ul>
                     <ul className="favourite-container-title">
                         <img className='plus-image' src={require("../../res/logos/plus.png")} width={35} height={35}  style={{marginRight:'20px', marginTop:'1px'}}/>
-                        <p className='edit-favourites'>Edit Favourites</p> 
+                        <p className='edit-favourites'>Add Favourites</p> 
                     </ul>
                 </div>
                 <p className="dashboard-title">Your favourite assets</p>
                 <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    <FavouriteTable accessToken={props.accessToken}/> 
+                    <FavouriteTable accessToken={props.accessToken} preferred={preferred}/> 
                 </ul>
 
-                <NewsSection />
-            </div>
+                <NewsSection /> */}
         </div>
     )
 }

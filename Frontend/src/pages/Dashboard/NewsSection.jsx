@@ -31,19 +31,43 @@ const SideNewsBox = (props) => {
     );
 }
 
+const getNewsURL = `http://${address}:8080/getPreferredNews`;
 
-export default function NewsSection() {    
+export default function NewsSection(props) {    
     
-    const [popularNewsData, setPopularNewsData] = useState([]);
+    const [newsData, setNewsData] = useState([]);
+
+    const optionsPreferences = {
+        method: 'GET',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken
+        }
+    }
 
     const fetchPopularNews = () => {
-        fetch(`http://${address}:8080/allLatestNews`)
-            .then((res) => res.json())
-            .then((result) => setPopularNewsData(result),
-                  (error) => console.log("Error fetching popular news"));
+        if(props.preferred === undefined || props.preferred.length === 0 || props.accessToken === "" || props.accessToken === null){
+            setNewsData([]);
+            return;
+        }
+
+        fetch(getNewsURL, optionsPreferences)
+            .then(res => {processPreferences(res)});
     };
 
-    useEffect(fetchPopularNews, []);
+    const processPreferences = res => {
+        if(res.status === 200) {
+            res.json()
+                .then((result) => {console.log(result.news);setNewsData(result.news)},
+                      (error) => console.log(error));
+        }
+        else if(res.status === 6001) {
+            console.log("No news preferences found");
+        }
+    }
+
+    useEffect(fetchPopularNews, [props.preferred]);
 
     return (
         <div className='dashboard-news'>
@@ -51,18 +75,19 @@ export default function NewsSection() {
 
             <div className='container-news-top'>
                 {/* Single big news*/}
-                {
-                    (popularNewsData.slice(0, 1)).map((item, index) => (
+                { newsData.length !== 0 && (
+                    (newsData.slice(0, 1)).map((item, index) => (
                         <BigNewsBox
 
                             key = {index}
-                            imagePath = {item.imageUrl}
+                            imagePath = {item.urlToImage}
                             title = {item.title}
-                            content = {item.content}
+                            content = {item.description}
                             publishedAt = {item.publishedAt}
                             url = {item.url}
                         />
                     ))
+                )
                 }
 
 
@@ -70,16 +95,17 @@ export default function NewsSection() {
                 {/* Three side news*/}
                 <div className='three-side-news-container'>
                     <div className='scrollable-side-news-container'>
-                    {
-                        (popularNewsData.slice(1, 10)).map((item, index) => (
+                    { newsData.length !== 0 && (
+                        (newsData.slice(1, 10)).map((item, index) => (
                             <SideNewsBox
                                 key = {index}
                                 title = {item.title}
-                                content = {item.content}
+                                content = {item.description}
                                 publishedAt = {item.publishedAt}
                                 url = {item.url}
                             />
                         ))
+                     )
                     }
                     </div>
                 </div>

@@ -25,6 +25,9 @@ public class API {
 	private final String popularNewsKey = "https://newsapi.org/v2/everything?domains=cointelegraph.com,coindesk.com&pageSize=4&sortBy=popularity&apiKey=";
 	private final String allLatestNewsKey = "https://newsapi.org/v2/everything?domains=cointelegraph.com,coindesk.com&pageSize=100&sortBy=publishedAt&apiKey=";		
 	
+	private final String preferredNewsPart1 = "https://newsapi.org/v2/everything?";
+	private final String preferredNewsPart2 = "domains=cointelegraph.com&pageSize=20&sortBy=publishedAt&apiKey=";
+	
 	private API() {}
 	
 	public static API getInstance() {
@@ -67,5 +70,13 @@ public class API {
 	
 	public String getAllNewsKey() {
 		return allLatestNewsKey + newsAPIKey[1];
+	}
+	
+	public String getPreferredNewsPart1() {
+		return preferredNewsPart1;
+	}
+	
+	public String getPreferredNewsPart2() {
+		return preferredNewsPart2 + newsAPIKey[1];
 	}
 }
