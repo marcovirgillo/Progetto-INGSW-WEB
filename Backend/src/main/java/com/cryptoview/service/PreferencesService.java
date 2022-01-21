@@ -119,17 +119,21 @@ public class PreferencesService {
 		for(var i : preferences) {
 			for(var j : allCrypto) {
 				if(j.getTicker().equals(i.getTicker()))
-					preferredCryptos.add(j.getName().replace(" ", "-"));
+					preferredCryptos.add(j.getName().replaceAll("\\s.*", ""));
 			}
 		}
 		
-		for(var i : preferredCryptos) {
-			request.append("q=");
-			request.append(i);
-			request.append("&");
+		request.append("qInTitle=");
+		for(int i=0; i<preferredCryptos.size() - 1; i++) {
+			request.append(preferredCryptos.get(i));
+			request.append("+OR+");
 		}
+		request.append(preferredCryptos.get(preferredCryptos.size() - 1));
+		request.append("&");
 		
 		request.append(API.getInstance().getPreferredNewsPart2());
+		
+		System.out.println(request);
 		
 		JSONArray preferredNews = NewsFetcher.getInstance().fetchPreferredNews(request.toString());
 		

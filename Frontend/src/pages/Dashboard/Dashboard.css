@@ -229,6 +229,17 @@
     }
 }
 
+@media only screen and (max-width: 900px){
+    .dashboard .big-news-container {
+        margin-left: 15px !important;
+        margin-right: 15px !important;
+    }
+
+    .dashboard .big-news-title {
+        margin-left: 10px;
+    }
+}
+
 @media only screen and (max-width: 600px) {
     .dashboard-page {
         padding: 0;
@@ -297,6 +308,7 @@
     max-height: 530px;
 }
 
+
 .dashboard-news .single-side-news-container {
     padding-bottom: 0;
 }
@@ -345,8 +357,8 @@
         margin-left: 15px;
     }
 
-    .scrollable-side-news-container {
-        padding-top: 30px;
+    .three-side-news-container {
+        padding-top: 30px !important;
     }
 }
 
