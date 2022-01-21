@@ -97,7 +97,7 @@ const Dashboard = (props) => {
                         <FavouriteTable accessToken={props.accessToken} preferred={preferred} setPreferred={setPreferred}/> 
                     </ul>
 
-                    <NewsSection />
+                    <NewsSection preferred={preferred} accessToken={props.accessToken}/>
                 </div>
             )}
                 {/* <h4 className="overview-label">Overview</h4>

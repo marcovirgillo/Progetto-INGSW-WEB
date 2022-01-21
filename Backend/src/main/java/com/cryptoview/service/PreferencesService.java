@@ -1,5 +1,6 @@
 package com.cryptoview.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -9,8 +10,11 @@ import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import com.cryptoview.model.CryptoDetail;
+import com.cryptoview.model.api.API;
+import com.cryptoview.model.api.NewsFetcher;
 import com.cryptoview.persistence.model.Preference;
 
 public class PreferencesService {
@@ -76,11 +80,11 @@ public class PreferencesService {
 	public JSONObject dashboardGainersToJson(List<Preference> preferences) {
 
 		ArrayList<CryptoDetail> array = new ArrayList<CryptoDetail>();
-		List<CryptoDetail> topCryptos = TopCryptos.getInstance().getAllSupportedCrypto();
+		List<CryptoDetail> allCrypto = TopCryptos.getInstance().getAllSupportedCrypto();
 		JSONObject response = new JSONObject();
 		
 		for (var preference : preferences) {
-			for (var crypto : topCryptos) {
+			for (var crypto : allCrypto) {
 				if (preference.getTicker().equals(crypto.getTicker())) {
 					array.add(crypto);
 				}
@@ -105,6 +109,34 @@ public class PreferencesService {
 		
 		return response;
 	}
-	
 
+	@SuppressWarnings("unchecked")
+	public JSONObject getNewsPreferences(List<Preference> preferences) throws ParseException, IOException {
+		StringBuilder request = new StringBuilder(API.getInstance().getPreferredNewsPart1());
+		List<CryptoDetail> allCrypto = new ArrayList<CryptoDetail>(TopCryptos.getInstance().getAllSupportedCrypto());
+		ArrayList<String> preferredCryptos = new ArrayList<String>();
+		
+		for(var i : preferences) {
+			for(var j : allCrypto) {
+				if(j.getTicker().equals(i.getTicker()))
+					preferredCryptos.add(j.getName().replace(" ", "-"));
+			}
+		}
+		
+		for(var i : preferredCryptos) {
+			request.append("q=");
+			request.append(i);
+			request.append("&");
+		}
+		
+		request.append(API.getInstance().getPreferredNewsPart2());
+		
+		JSONArray preferredNews = NewsFetcher.getInstance().fetchPreferredNews(request.toString());
+		
+		JSONObject response = new JSONObject();
+		
+		response.put("news", preferredNews);
+		
+		return response;
+	}
 }

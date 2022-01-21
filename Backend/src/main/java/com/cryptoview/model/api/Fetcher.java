@@ -8,6 +8,8 @@ import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+import com.cryptoview.service.log.Logger;
+
 public class Fetcher {
 	
 	private static Fetcher instance = null;
@@ -19,7 +21,7 @@ public class Fetcher {
 		return instance;
 	}
 	
-	public String fetch(String url, String errorMsg) {
+	public String fetch(String url, String errorMsg) throws IOException {
 		try {
 			/*URL obj = new URL(url);
 			
@@ -52,6 +54,7 @@ public class Fetcher {
 		    
 		} catch (Exception e) {
 			e.printStackTrace();
+			Logger.getInstance().addEvent(errorMsg);
 		} 
 		
 		return "";		
