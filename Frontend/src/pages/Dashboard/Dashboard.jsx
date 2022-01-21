@@ -6,11 +6,14 @@ import FavouriteTable from './FavouriteTable'
 import AddCrypto from './AddCrypto'
 import NewsSection from './NewsSection'
 import { address } from './../../assets/globalVar.js';
+import CircularProgress from '@mui/material/CircularProgress';
+import { blue } from '@mui/material/colors';
 
 const getPreferencesUrl = `http://${address}:8080/getPreferencesDashboard`;
 
 const Dashboard = (props) => {
     const [preferred, setPreferred] = useState([]);
+    const [fetched, setFetched] = useState(false);
     
     const navigate = useNavigate();
 
@@ -42,7 +45,6 @@ const Dashboard = (props) => {
 
     useEffect(() => {
         if(props.accessToken !== null || props.accessToken !== ""){
-            console.log("Fetching preferences")
             fetcherPreferences();
         }
     }, []);
@@ -51,7 +53,6 @@ const Dashboard = (props) => {
         if(props.accessToken === null || props.accessToken === "")
             return;
 
-            console.log("FETCHING PREFERENCES")
 
         fetch(getPreferencesUrl, optionsPreferences)
         .then((res) => processPreferences(res));
@@ -60,15 +61,35 @@ const Dashboard = (props) => {
     const processPreferences = res => {
         if(res.status === 200) {
             res.json()
-                .then((result) => setPreferred(result.preferences),
+                .then((result) => {setPreferred(result.preferences); setFetched(true);},
                       (error) => console.log(error));
         }
         else if(res.status === 6001) {
             console.log("No preferences found");
+            setFetched(true);
         }
     }
 
     console.log(preferred)
+
+    if(fetched === false){
+        return(
+            <div className="dashboard">
+                <div className="paper-gray">
+                <div style={{paddingTop:'100px'}}/>
+                <div className="loader">
+                    <CircularProgress size={100} sx={{
+                            color: blue[300],
+                            '&.Mui-checked': {
+                                color: blue[300],
+                            },
+                        }}
+                    /> 
+                </div>
+            </div>
+            </div>
+        )
+    }
 
     return (
         <div className="dashboard">
@@ -97,7 +118,7 @@ const Dashboard = (props) => {
                         <FavouriteTable accessToken={props.accessToken} preferred={preferred} setPreferred={setPreferred}/> 
                     </ul>
 
-                    <NewsSection />
+                    <NewsSection preferred={preferred} accessToken={props.accessToken}/>
                 </div>
             )}
                 {/* <h4 className="overview-label">Overview</h4>

@@ -1,5 +1,6 @@
 package com.cryptoview.controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -86,6 +88,44 @@ public class UserPreferencesController {
 			if(preferences != null) {
 				response.setStatus(Protocol.OK);
 				return PreferencesService.getInstance().dashboardPreferencesToJson(preferences);
+			}
+			else {
+				JSONObject resp = new JSONObject();
+				response.setStatus(Protocol.NO_PREFERENCES_FOUND);
+				resp.put("msg", "No preferences found.");	
+				
+				return resp;
+			}
+			
+		} catch (SQLException e) {
+			JSONObject resp = new JSONObject();
+			response.setStatus(Protocol.SERVER_ERROR);
+			resp.put("msg", "Internal server error");
+			
+			return resp;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@GetMapping("/getPreferredNews")
+	public JSONObject getPreferredNews(HttpServletRequest request, HttpServletResponse response) throws ParseException, IOException {
+		String token = request.getHeader("Authorization");
+		try {
+			User user = UserDaoJDBC.getInstance().findByToken(token);
+			
+			if(user == null) {
+				JSONObject resp = new JSONObject();
+				response.setStatus(Protocol.INVALID_TOKEN);
+				resp.put("msg", "The auth token is not valid");
+				
+				return resp;
+			}
+
+			List<Preference> preferences = PreferencesDaoJDBC.getInstance().getUserPreferences(user.getUsername());
+			
+			if(preferences != null) {
+				response.setStatus(Protocol.OK);
+				return PreferencesService.getInstance().getNewsPreferences(preferences);
 			}
 			else {
 				JSONObject resp = new JSONObject();

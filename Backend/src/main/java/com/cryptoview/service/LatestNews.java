@@ -6,7 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.cryptoview.model.News;
-import com.cryptoview.model.api.LatestNewsFetcher;
+import com.cryptoview.model.api.NewsFetcher;
 
 public class LatestNews {
 	private ArrayList <News> latestCryptoNews;
@@ -31,7 +31,7 @@ public class LatestNews {
 	}
 	
 	public void fetchCryptoData() {
-		JSONArray latestNewsJSON = LatestNewsFetcher.getInstance().fetch("crypto");
+		JSONArray latestNewsJSON = NewsFetcher.getInstance().fetch("crypto");
 		
 		synchronized (this) {
 			latestCryptoNews.clear();
@@ -51,7 +51,7 @@ public class LatestNews {
 	}
 	
 	public void fetchExchangesData() {
-		JSONArray latestNewsJSON = LatestNewsFetcher.getInstance().fetch("exchanges");
+		JSONArray latestNewsJSON = NewsFetcher.getInstance().fetch("exchanges");
 		
 		synchronized (this) {
 			latestExchangesNews.clear();
@@ -71,7 +71,7 @@ public class LatestNews {
 	}
 	
 	public void fetchPopularNewsData() {
-		JSONArray popularNewsJSON = LatestNewsFetcher.getInstance().fetch("popular");
+		JSONArray popularNewsJSON = NewsFetcher.getInstance().fetch("popular");
 
 		synchronized (this) {
 			popularNews.clear();
@@ -96,7 +96,7 @@ public class LatestNews {
 	}
 	
 	public void fetchAllLatestNewsData() {
-		JSONArray allLatestNewsJSON = LatestNewsFetcher.getInstance().fetch("all");
+		JSONArray allLatestNewsJSON = NewsFetcher.getInstance().fetch("all");
 
 		synchronized (this) {
 			allLatestNews.clear();
