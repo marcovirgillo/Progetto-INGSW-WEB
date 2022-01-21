@@ -133,8 +133,6 @@ public class PreferencesService {
 		
 		request.append(API.getInstance().getPreferredNewsPart2());
 		
-		System.out.println(request);
-		
 		JSONArray preferredNews = NewsFetcher.getInstance().fetchPreferredNews(request.toString());
 		
 		JSONObject response = new JSONObject();

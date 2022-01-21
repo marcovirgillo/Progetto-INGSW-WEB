@@ -1,0 +1,21 @@
+.profile {
+    background-color: var(--bg-color-dark);
+    padding: 0px 10px 10px 10px;
+}
+
+.profile .paper-gray{
+    background-color: var(--bg-color-gray);
+    border-radius: 8px;
+    width: 100%;
+    min-height: 100vh;
+
+
+}
+
+.profile .loader {
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+    margin: 0 auto;
+    justify-content: space-evenly;
+}
