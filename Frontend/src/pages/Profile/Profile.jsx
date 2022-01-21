@@ -103,8 +103,8 @@ const Profile = (props) => {
                         />
                     </div>
                     
-                    <Link to="/"> 
-                        <p className='sign-out-button'  onClick={doLogout} > Sign out </p>
+                    <Link to="/" className='sign-out-button'> 
+                        <div onClick={doLogout} > Sign out </div>
                     </Link>
 
                 </div>
