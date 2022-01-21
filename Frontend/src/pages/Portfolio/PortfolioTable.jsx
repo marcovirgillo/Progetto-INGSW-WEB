@@ -95,11 +95,12 @@ export default function CriptoTable(props) {
     const [transactionTableActive, setTransactionTableActive] = useState(false);
     
     useEffect(() => {
-        console.log("arrivano data,", data);
+        //serve per aggiornare i dati della cripto che sto guardando dopo aver eliminato una transazione
         if(selectedAsset !== undefined && selectedAsset.holding_dollar !== undefined) {
             const idx = tableData.indexOf(selectedAsset);
             const ticker = selectedAsset.ticker;
-            console.log("idx:", idx);
+            
+            //se cambia ticker, significa che ho eliminato l'ultima transazione di una cripto e quindi chiudo le transazioni
             if(data[idx].ticker === ticker)
                 setSelectedAsset(data[idx]);
             else {
@@ -214,8 +215,7 @@ export default function CriptoTable(props) {
             </span>
         )
     }
-
-    console.log("selected asset:", selectedAsset);
+    
     return (
         <React.Fragment>
             {transactionTableActive && (

@@ -35,24 +35,28 @@ public class PortfolioController {
 	@SuppressWarnings("unchecked")
 	@GetMapping("/portfolioValue")
 	private JSONObject getPrices(HttpServletRequest request, HttpServletResponse response) {
-		String timeStamp = request.getHeader("timeStamp");
-		String token = request.getHeader("Authorization");
+		String timeStamp = "1";//request.getHeader("timeStamp");
+		//String token = request.getHeader("Authorization");
 		
 		try {
-			User user = UserDaoJDBC.getInstance().findByToken(token);
+			//User user = UserDaoJDBC.getInstance().findByToken(token); 
 			
-			if(user == null) {
+			/*if(user == null) {
 				JSONObject resp = new JSONObject();
 				response.setStatus(Protocol.INVALID_TOKEN);
 				resp.put("msg", "The auth token is not valid");
 				
 				return resp;
-			}
+			}*/
 			
 			response.setStatus(Protocol.OK);
-			Portfolio portfolio = PortfolioDaoJDBC.getInstance().get(user.getUsername());
-			if(portfolio != null)
-				return PortfolioService.getInstance().getPortfolioValueTime(portfolio, timeStamp);
+			Portfolio portfolio = PortfolioDaoJDBC.getInstance().get("admin");
+			if(portfolio != null) {
+				response.setStatus(Protocol.OK);
+				JSONObject obj = PortfolioService.getInstance().getPortfolioValueTime(portfolio, timeStamp);
+				
+				return obj;
+			}
 			else {
 				JSONObject resp = new JSONObject();
 				response.setStatus(portfolioDoesnExist(resp));

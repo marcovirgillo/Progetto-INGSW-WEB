@@ -81,6 +81,7 @@ const Portfolio = (props) => {
     }
 
     const processValue = res => {
+        console.log("arrivata risposta, ", res);
         if(res.status === 200) {
             res.json()
                 .then((result) => processData(result),
@@ -99,6 +100,7 @@ const Portfolio = (props) => {
         if(props.accessToken === null || props.accessToken === "")
             return;
 
+        console.log("fetch chart");
         fetch(portfolioChartUrl, optionsChart)
             .then((res) => processValue(res));
     }
@@ -116,7 +118,6 @@ const Portfolio = (props) => {
             navigate("/login");
         }
         else {
-            fetcherChart();
             fetcherInfo();
         }
     }, []);
@@ -127,6 +128,7 @@ const Portfolio = (props) => {
     }, [chartInterval]);
 
     function processData(res) {
+        console.log("qua");
         let portfolioValues = [];
         let portfolioTimes = [];
 
@@ -138,17 +140,22 @@ const Portfolio = (props) => {
 
             portfolioTimes.push(item["time"]);
         })
-    
+        
+        console.log("qua2");
         setChartDatetime(portfolioTimes);
 
         setChartData([{
             name: 'Value',
             data: portfolioValues}]);
 
+        console.log("qu3");
+
         setPortfolioChange({
             balance_change_24h_percentage: res.balance_change_24h_percentage,
             balance_change_24h: res.balance_change_24h
         });
+
+        console.log("chart set")
     }
 
     function getClassNameChange(price) {
