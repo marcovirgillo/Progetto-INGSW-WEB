@@ -8,6 +8,15 @@
     background-color: var(--bg-color-gray);
     border-radius: 8px;
     width: 100%;
+    min-height: 100vh;
+}
+
+.dashboard .loader {
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+    margin: 0 auto;
+    justify-content: space-evenly;
 }
 
 .overview-label {
