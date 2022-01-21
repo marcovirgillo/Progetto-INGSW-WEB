@@ -1,9 +1,11 @@
-.account-settings-page {
+.account-settings {
     background-color: var(--bg-color-dark);
-    box-sizing: border-box;
+}
+
+.settings-page {
     min-height: 100vh;
     padding: 0px 10px 10px 10px;
-    width: 100%;
+    width: 95%;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -20,7 +22,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    padding-top: 20px;
+    padding-top: 5%;
 }
 
 .name-image-list {
@@ -41,19 +43,20 @@
 .account-big-name {
     margin: 0;
     color: rgb(255, 255, 255);
-    font-size: 22px;
+    font-size: 20px;
     font-weight: bold;
     display: flex;
     align-items: center;
 }
 
-.paper-gray-account-info {
-    background-color: var(--bg-color-gray);
+.paper-black-account-info {
+    background-color: var(--bg-color-dark);
     margin-top: 20px;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     width: 100%;
+    height:36%;
 }
 
 .property-container {
@@ -61,7 +64,26 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: 20px 0px 20px 20px;
+    margin: 40px 0px 40px 20px;
+    
+}
+
+.property-container-center {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0px 40px 20px;
+    
+}
+
+.property-container-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0px 40px 20px;
+    
 }
 
 .property-list {
@@ -75,7 +97,7 @@
 .property-title {
     color: var(--light-gray-color);
     font-weight: bold;
-    font-size: 16px;
+    font-size: 15px;
     margin: 0;
     margin-bottom: 5px;
 }
@@ -88,7 +110,7 @@
 }
 
 .password-content {
-    background-color: var(--bg-color-gray);
+    background-color: var(--bg-color-black);
     color: white;
     font-weight: bold;
     font-size: 18px;
@@ -106,3 +128,17 @@
     padding: 6px 14px 6px 14px;
     cursor: pointer;
 }
+
+.settings-title {
+    font-size: 25px;
+    color: white;
+    font-weight: bold; 
+    padding-top: 20px;
+}
+
+input[type="password"] {
+    font-family: Verdana;
+    letter-spacing: 0.125em;
+    font-size: 15px;
+}
+  
