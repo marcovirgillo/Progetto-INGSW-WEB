@@ -211,7 +211,6 @@ export default function CriptoTable(props) {
         if(flag === false){
             removePreference(crypto);
             var array  = [...preferred].filter(item => item.id != crypto);
-          /*   console.log(array) */
             setPreferred(array);
         }
         else{

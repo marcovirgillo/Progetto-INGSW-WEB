@@ -65,10 +65,7 @@ public class PreferencesService {
 			    return c2.getMarket_cap().compareTo(c1.getMarket_cap());
 			  }
 			});
-		Long cont = 1L;
-		for (var elem : array) {
-			elem.setRank(cont++);
-		}
+		
 		JSONObject response = new JSONObject();
 		response.put("preferences", array);
 		

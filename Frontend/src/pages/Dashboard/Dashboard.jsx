@@ -94,7 +94,7 @@ const Dashboard = (props) => {
                     </div>
                     <p className="dashboard-title">Your favourite assets</p>
                     <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                        <FavouriteTable accessToken={props.accessToken} preferred={preferred}/> 
+                        <FavouriteTable accessToken={props.accessToken} preferred={preferred} setPreferred={setPreferred}/> 
                     </ul>
 
                     <NewsSection />
