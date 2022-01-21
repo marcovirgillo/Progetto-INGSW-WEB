@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TableBody, Table, TableCell, TableHead, TableRow } from '@mui/material';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
@@ -71,7 +71,7 @@ export default function TransactionTable(props) {
         }
     }
 
-    const fetchData = () => {
+    const fetchAllTransactions = () => {
         fetch(transactionUrl, options)
             .then(res => res.json())
             .then(result => setTableData(result.transactions));
@@ -81,7 +81,7 @@ export default function TransactionTable(props) {
         if(props.assetsUl.current !== null)
             props.assetsUl.current.style.display = 'none';
 
-        fetchData();
+        fetchAllTransactions();
 
         return () => { if(props.assetsUl !== null) props.assetsUl.current.style.display = 'flex' }
     }, []);
@@ -89,14 +89,14 @@ export default function TransactionTable(props) {
     //il parametro è l'elemento del json sul quale fare l'ordinamento
     const sorting = (col) => {
         if(order === "ASC"){
-            const sorted = [...props.data].sort((a,b) => 
+            const sorted = [...tableData].sort((a,b) => 
                 a[col] > b[col] ? 1 : -1     
             );
             setTableData(sorted)
             setOrder("DSC")
         }
         if(order === "DSC"){
-            const sorted = [...props.data].sort((a,b) => 
+            const sorted = [...tableData].sort((a,b) => 
                 a[col] < b[col] ? 1 : -1     
             );
             setTableData(sorted)
@@ -141,12 +141,16 @@ export default function TransactionTable(props) {
         return "";
     }
 
+    const fetchAllData = () => {
+        fetchAllTransactions();
+        props.fetchChart();
+        props.fetchInfo();
+    }
+
     const parseDelete = res => {
         if(res.status === 200) {
             setPopupActive(false);
-            fetchData();
-            props.fetchChart();
-            props.fetchInfo();
+            fetchAllData();
         }
         else 
             res.json().then(result => console.log(result));
@@ -226,12 +230,14 @@ export default function TransactionTable(props) {
             <Table className="transactions-table" sx={{maxWidth: '94%', marginTop: '30px'}}>
                 <TableHead>
                     <TableRow>
-                        <TableCell className="table-attribute">Type</TableCell>
-                        <TableCell className="table-attribute" onClick={() => {sorting("price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
-                            <TableCellArrow content="Price" arrowChecker="price" />
+                        <TableCell className="table-attribute" onClick={() => {sorting("date"); setItemActive("date")}} style={{cursor: 'pointer'}}>
+                            <TableCellArrow content="Type" arrowChecker="date" />
                         </TableCell>
-                        <TableCell className="table-attribute" onClick={() => {sorting("change_24h"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
-                            <TableCellArrow content="Amount" arrowChecker="24h" />
+                        <TableCell className="table-attribute" onClick={() => {sorting("cripto_price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
+                            <TableCellArrow content="Price per Coin" arrowChecker="price" />
+                        </TableCell>
+                        <TableCell className="table-attribute" onClick={() => {sorting("quantity_usd"); setItemActive("holdings")}} style={{cursor: 'pointer'}}>
+                            <TableCellArrow content="Amount" arrowChecker="holdings" />
                         </TableCell>
                         <TableCell className="table-attribute">Actions</TableCell>
                     </TableRow>
@@ -272,18 +278,20 @@ export default function TransactionTable(props) {
                 </TableBody>
             </Table>
             
-            {editTransactionActive && (<React.Fragment><div className="background-blurrer" />
-            {/* passo tutti i dati per inizializzare i campi della transazione */}
-            <TransactionPanel className={getEditTransactionClass()} 
-                              editTransaction={true} date={lastSelectedTransaction.date} crypto={props.cripto}
-                              quantity={lastSelectedTransaction.quantity_cripto}
-                              cripto_price={lastSelectedTransaction.cripto_price}
-                              transaction_id={lastSelectedTransaction.id}
-                              transaction_type={getTransactionType()} transfer_type={getTransferType()}
-                              accessToken={props.accessToken}
-                              fetchTransactionsList={fetchData}
-                              closePanel={() => setEditTransactionActive(false)}
-            /></React.Fragment>)}
+            {editTransactionActive && (
+                <React.Fragment><div className="background-blurrer" />
+                {/* passo tutti i dati per inizializzare i campi della transazione */}
+                <TransactionPanel className={getEditTransactionClass()} 
+                                editTransaction={true} date={lastSelectedTransaction.date} crypto={props.cripto}
+                                quantity={lastSelectedTransaction.quantity_cripto}
+                                cripto_price={lastSelectedTransaction.cripto_price}
+                                transaction_id={lastSelectedTransaction.id}
+                                transaction_type={getTransactionType()} transfer_type={getTransferType()}
+                                accessToken={props.accessToken}
+                                fetchAllData={fetchAllData}
+                                closePanel={() => setEditTransactionActive(false)}
+                /></React.Fragment>
+            )}
             
             {popupActive && (<ConfirmPopup title="Remove Transaction" text={"Are you sure you want to remove this transaction ?"} 
                                         onConfirm={() => removeCurrentTransaction()} 

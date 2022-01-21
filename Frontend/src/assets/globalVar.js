@@ -1,1 +1,1 @@
-export const address = "192.168.1.151";
+export const address = "localhost";

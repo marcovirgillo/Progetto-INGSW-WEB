@@ -127,8 +127,9 @@ export default function TransactionPanel(props) {
 
     const parseResponse = res => {
         if(res.status === 200) {
-            if(props.fetchTransactionsList) {
-                props.fetchTransactionsList();
+            //se esiste questo metodo, fetcho portfolio info, chart e dati della cripto del qual ho modificato una transazione
+            if(props.fetchAllData) {
+                props.fetchAllData();
             }
             else {
                 props.fetchInfo();
