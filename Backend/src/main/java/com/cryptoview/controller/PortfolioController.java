@@ -35,19 +35,19 @@ public class PortfolioController {
 	@SuppressWarnings("unchecked")
 	@GetMapping("/portfolioValue")
 	private JSONObject getPrices(HttpServletRequest request, HttpServletResponse response) {
-		String timeStamp = "1";//request.getHeader("timeStamp");
-		//String token = request.getHeader("Authorization");
+		String timeStamp = request.getHeader("timeStamp");
+		String token = request.getHeader("Authorization");
 		
 		try {
-			//User user = UserDaoJDBC.getInstance().findByToken(token); 
+			User user = UserDaoJDBC.getInstance().findByToken(token); 
 			
-			/*if(user == null) {
+			if(user == null) {
 				JSONObject resp = new JSONObject();
 				response.setStatus(Protocol.INVALID_TOKEN);
 				resp.put("msg", "The auth token is not valid");
 				
 				return resp;
-			}*/
+			}
 			
 			response.setStatus(Protocol.OK);
 			Portfolio portfolio = PortfolioDaoJDBC.getInstance().get("admin");
@@ -280,6 +280,7 @@ public class PortfolioController {
 			}
 			
 		} catch (SQLException e) {
+			e.printStackTrace();
 			response.setStatus(Protocol.TRANSACTION_ERROR);
 			resp.put("msg", "Insufficient cripto amount");
 			

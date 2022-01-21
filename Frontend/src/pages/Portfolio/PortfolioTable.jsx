@@ -79,6 +79,7 @@ function DropdownOptions(props) {
 }
 
 export default function CriptoTable(props) {
+    //data è l'elenco di cripto nel portfolio
     const { data } = props;
     const [order, setOrder] = useState("ASC");
     const [tableData, setTableData] = useState(data);
@@ -90,7 +91,7 @@ export default function CriptoTable(props) {
     //popupactive è lo state per il popup di conferma elimina transazione
     const [popupActive, setPopupActive] = useState(false);
     //è l'ultima cripto che ho scelto, serve per l'eliminazione dell'asset
-    const [selectedAsset, setSelectedAsset] = useState({logo: '', ticker: ''});
+    const [selectedAsset, setSelectedAsset] = useState({'logo': '', 'ticker': ''});
 
     const [transactionTableActive, setTransactionTableActive] = useState(false);
     
@@ -101,13 +102,14 @@ export default function CriptoTable(props) {
             const ticker = selectedAsset.ticker;
             
             //se cambia ticker, significa che ho eliminato l'ultima transazione di una cripto e quindi chiudo le transazioni
-            if(data[idx].ticker === ticker)
+            if(data.length > 0 && data[idx].ticker === ticker)
                 setSelectedAsset(data[idx]);
             else {
                 setSelectedAsset({logo: '', ticker: ''})
                 setTransactionTableActive(false);
             }
         }
+
         setTableData(data);
         resetDropdowns();
 
@@ -149,6 +151,7 @@ export default function CriptoTable(props) {
         if(res.status === 200) {
             props.fetchChart(); 
             props.fetchInfo();
+            setSelectedAsset({'logo': '', 'ticker': ''});
         }
         else 
             res.json().then(result => console.log(result));
@@ -215,7 +218,7 @@ export default function CriptoTable(props) {
             </span>
         )
     }
-    
+
     return (
         <React.Fragment>
             {transactionTableActive && (
@@ -228,7 +231,9 @@ export default function CriptoTable(props) {
                     <Table id="all-cripto-table" className="table" sx={{maxWidth: '94%', marginTop: '30px'}}>
                         <TableHead>
                             <TableRow>
-                                <TableCell className="table-attribute">Name</TableCell>
+                                <TableCell className="table-attribute" onClick={() => {sorting("name"); setItemActive("name")}} style={{cursor: 'pointer'}}>
+                                    <TableCellArrow content="Name" arrowChecker="name" />
+                                </TableCell>
                                 <TableCell className="table-attribute" onClick={() => {sorting("price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
                                     <TableCellArrow content="Price" arrowChecker="price" />
                                 </TableCell>
