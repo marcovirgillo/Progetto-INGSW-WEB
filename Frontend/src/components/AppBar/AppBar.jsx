@@ -258,6 +258,7 @@ export default function AppBar(props) {
                     >
                         <img src={require("../../res/logos/bell.png")} width={24} height={24} alt="bell"/>
                     </Icon>
+
                     <Icon ref={wrapperRefProfile} className="profile-icon" style={{display: 'revert'}} 
                             onClick={()=>{  if(dropdownNotificationActive)
                                                     setDropdownNotificationActive(false);
