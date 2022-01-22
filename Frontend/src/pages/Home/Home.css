@@ -98,19 +98,26 @@ ul {
     margin-right: 8px;
     color: white;
     margin-left: 5px;
-    -webkit-line-clamp: 1;
+    min-width: fit-content;
 }
 
 .list-ticker {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 2 !important;
     color: #8B8B8B;
+    padding-right: 4px;
 }
 
 .list-change-green {
+    min-width: fit-content;
     margin-right: 15px;
     color: var(--price-color-green);
 }
 
 .list-change-red {
+    min-width: fit-content;
     margin-right: 15px;
     color: var(--price-color-red);
 }

@@ -320,6 +320,7 @@ public class PortfolioService {
 		else 
 			percentage_change_24h = portfolioChange24h / oldBalance * 100;
 		obj.put("balance_change_24h_percentage", round(percentage_change_24h, 2));
+		obj.put("balance", actualBalance);
 	}
 	
 	private Double calculatePortfolioBalance(Portfolio portfolio) {
@@ -333,6 +334,24 @@ public class PortfolioService {
 		return totalValue;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public JSONObject getPortfolioOverview(Portfolio portfolio) throws SQLException {
+		if(portfolioValue24hOld.get(portfolio.getUsernameOwner()) == null)
+			getPortfolioValueTime(portfolio, "1");
+		
+		JSONObject resp = new JSONObject();
+		insertPortfolioChangeData(resp, portfolio);
+		
+		Double balance_change_24h = (Double) resp.get("balance_change_24h");
+		Double btcPrice = TopCryptos.getInstance().getBitcoinPrice();
+		
+		Double balance_change_btc = 0.0;
+		if(btcPrice != 0.0)
+			balance_change_btc = balance_change_24h / btcPrice;
+		
+		resp.put("balance_change_btc", balance_change_btc);
+		return resp;
+	}
 
 	private void getPriceInfo(ArrayList<Transaction> transactionList, Map <String, Double> profitDollar,
 			                  Map <String, Double> avgPrices, Map <String, Double> profitPercentage) {
