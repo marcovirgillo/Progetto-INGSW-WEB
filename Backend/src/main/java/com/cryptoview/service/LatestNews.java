@@ -33,6 +33,9 @@ public class LatestNews {
 	public void fetchCryptoData() {
 		JSONArray latestNewsJSON = NewsFetcher.getInstance().fetch("crypto");
 		
+		if(latestNewsJSON.isEmpty())
+			return;
+		
 		synchronized (this) {
 			latestCryptoNews.clear();
 			
@@ -53,6 +56,9 @@ public class LatestNews {
 	public void fetchExchangesData() {
 		JSONArray latestNewsJSON = NewsFetcher.getInstance().fetch("exchanges");
 		
+		if(latestNewsJSON.isEmpty())
+			return;
+		
 		synchronized (this) {
 			latestExchangesNews.clear();
 			
@@ -72,6 +78,9 @@ public class LatestNews {
 	
 	public void fetchPopularNewsData() {
 		JSONArray popularNewsJSON = NewsFetcher.getInstance().fetch("popular");
+		
+		if(popularNewsJSON.isEmpty())
+			return;
 
 		synchronized (this) {
 			popularNews.clear();
@@ -97,6 +106,9 @@ public class LatestNews {
 	
 	public void fetchAllLatestNewsData() {
 		JSONArray allLatestNewsJSON = NewsFetcher.getInstance().fetch("all");
+		
+		if(allLatestNewsJSON.isEmpty())
+			return;
 
 		synchronized (this) {
 			allLatestNews.clear();

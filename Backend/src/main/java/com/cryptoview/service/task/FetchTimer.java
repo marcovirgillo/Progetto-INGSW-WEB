@@ -50,7 +50,8 @@ public class FetchTimer implements DisposableBean, Runnable {
 			}
 			
 			if(System.currentTimeMillis() - lastUpdateNews > FREQUENCY_NEWS) {
-				//updateLatestNews();	
+				updateLatestNews();
+			
 				lastUpdateNews = System.currentTimeMillis();
 			}
 			

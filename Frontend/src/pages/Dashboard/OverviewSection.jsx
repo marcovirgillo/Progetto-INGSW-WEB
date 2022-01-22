@@ -6,11 +6,15 @@ import { address } from './../../assets/globalVar.js';
 const interval_fetch = 1000 * 120;
 
 const getGainersUrl = `http://${address}:8080/gainersSection`;
+const portfolioStatsUrl = `http://${address}:8080/portfolioOverview`;
 
 export default function OverviewSection(props) {
     const [topPerformers, setTopPerformers] = useState([]);
     const [worstPerformers, setWorstPerformers] = useState([]);
-    const [marketStats, setMarketStats] = useState([]); // cambiare per la sezione porfolio
+    const [portfolioStats, setPortfolioStats] = useState({"balance_change_24h_percentage": 0,
+    "balance": 0,
+    "balance_change_btc": 0,
+    "balance_change_24h": 0});
 
     const optionsPreferences = {
         method: 'GET',
@@ -22,20 +26,23 @@ export default function OverviewSection(props) {
     }
 
     useEffect(() => {
-        if(props.accessToken === "")
+        if(props.accessToken === "") {
             setTopPerformers([]);
+            setPortfolioStats([]);
+        }
         else{
             fetcherGainers();
+            fetcherPortfolioStats();
         }
     }, [props.accessToken]); 
 
     useEffect(() => {
         if(props.accessToken !== null || props.accessToken !== ""){
             fetcherGainers();
+            fetcherPortfolioStats();
 
         }
     }, []);
-
 
     const fetcherGainers = () => {
         if(props.accessToken === null || props.accessToken === "")
@@ -59,6 +66,27 @@ export default function OverviewSection(props) {
         }
     }
 
+    const fetcherPortfolioStats = () => {
+        if(props.accessToken === null || props.accessToken === "")
+            return;
+
+        fetch(portfolioStatsUrl, optionsPreferences)
+        .then((res) => processPortfolioStats(res));
+    }
+
+    const processPortfolioStats = res => {
+        if(res.status === 200) {
+            res.json()
+                .then((result) => {
+                    setPortfolioStats(result);
+                    },
+                      (error) => console.log(error));
+        }
+        else if(res.status === 6001) {
+            console.log("No portfolio stats");
+        }
+    }
+
     function change(change) {
         if(change > 0){
             return "+" + change.toFixed(2);
@@ -74,6 +102,15 @@ export default function OverviewSection(props) {
         return "list-change-red"
     }
 
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      });
+
+    function lowerFormat(change) {
+        return "$" + change.toFixed(6);
+    }
+
     return (
         <Grid container sx={{margin: '20px 0px 10px 0px'}} columnSpacing={{lg:5, md:2, sm:1, xs:2}} columns={{lg:20, md:17, sm:28, xs:7}}> 
             <Grid item lg={1} md={1} sm={1} xs={1} /> 
@@ -87,13 +124,23 @@ export default function OverviewSection(props) {
                             <Link to="/portfolio"><div className="show-more-button">Show more</div></ Link>
                         </ul>
                         {
-                            marketStats.map((item, val) => (
-                                <ul key={val} className="list-item">
-                                    <p className="list-name">{item.name}</p>
-                                    <div className="spacer"> </div>
-                                    <p className="list-stat">{item.value}</p>
-                                </ul>
-                            ))
+                        <>
+                            <ul className="list-item">
+                                <p className="list-name">24h Change</p>
+                                <div className="spacer"> </div>
+                                <p className={setClassName(portfolioStats.balance_change_24h_percentage)}>{change(portfolioStats.balance_change_24h_percentage)} %</p>
+                            </ul>
+                            <ul className="list-item">
+                                <p className="list-name">24h BTC Change</p>
+                                <div className="spacer"> </div>
+                                <p className={setClassName(portfolioStats.balance_change_btc)}>{change(portfolioStats.balance_change_btc)}%</p>
+                            </ul>
+                            <ul className="list-item">
+                                <p className="list-name">Value</p>
+                                <div className="spacer"> </div>
+                                <p className="list-stat">{portfolioStats.balance < 1 ? lowerFormat(portfolioStats.balance) : formatter.format(portfolioStats.balance)}</p>
+                            </ul>
+                        </>
                         }
                     </ul>
                 </div>

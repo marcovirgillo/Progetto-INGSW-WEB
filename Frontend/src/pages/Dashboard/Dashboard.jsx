@@ -14,6 +14,8 @@ const getPreferencesUrl = `http://${address}:8080/getPreferencesDashboard`;
 const Dashboard = (props) => {
     const [preferred, setPreferred] = useState([]);
     const [fetched, setFetched] = useState(false);
+
+    const [addPreferredActive, setAddPreferredActive] = useState(false);
     
     const navigate = useNavigate();
 
@@ -96,7 +98,10 @@ const Dashboard = (props) => {
             {preferred.length === 0 && (
                 <div className="paper-gray">
                     <div style={{paddingTop:'30px'}} />
-                    <AddCrypto allCryptos={props.allCrypto} accessToken={props.accessToken} fetcherPreferences={fetcherPreferences}/>
+                    <AddCrypto allCryptos={props.allCrypto} accessToken={props.accessToken} fetcherPreferences={fetcherPreferences} 
+                                addCryptosClass={true} position="beforeDashboard" setAddPreferredActive={setAddPreferredActive}
+                                preferred={preferred} addPreferredActive={false}
+                    />
                 </div>
             )}
             {preferred.length !== 0 && (
@@ -106,13 +111,16 @@ const Dashboard = (props) => {
                     <div className="button-container" style={{marginRight:'0px', marginTop:'0px', marginBottom:'0px'}}>
                         <ul className="alert-container-title">
                             <img className="favourite-image" src={require("../../res/logos/notifiche.png")} width={35} height={35}  style={{marginRight:'20px', marginTop:'1px'}}/>
-                            <p className="edit-alert">View Alerts</p>
+                            <p className="edit-alert">Edit Alerts</p>
                         </ul>
-                        <ul className="favourite-container-title">
+                        <ul className="favourite-container-title" onClick={() => setAddPreferredActive(!addPreferredActive)}>
                             <img className='plus-image' src={require("../../res/logos/plus.png")} width={35} height={35}  style={{marginRight:'20px', marginTop:'1px'}}/>
                             <p className='edit-favourites'>Add Favourites</p> 
                         </ul>
                     </div>
+                    <AddCrypto 
+                        allCryptos={props.allCrypto} accessToken={props.accessToken} fetcherPreferences={fetcherPreferences} addCryptosClass={addPreferredActive}  
+                        position="dashboard" addPreferredActive={addPreferredActive} setAddPreferredActive={setAddPreferredActive} preferred={preferred}/>
                     <p className="dashboard-title">Your favourite assets</p>
                     <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         <FavouriteTable accessToken={props.accessToken} preferred={preferred} setPreferred={setPreferred}/> 
@@ -121,24 +129,6 @@ const Dashboard = (props) => {
                     <NewsSection preferred={preferred} accessToken={props.accessToken}/>
                 </div>
             )}
-                {/* <h4 className="overview-label">Overview</h4>
-                <OverviewSection accessToken={props.accessToken}/>
-                <div className="button-container" style={{marginRight:'0px', marginTop:'0px', marginBottom:'0px'}}>
-                    <ul className="alert-container-title">
-                        <img className="favourite-image" src={require("../../res/logos/notifiche.png")} width={35} height={35}  style={{marginRight:'20px', marginTop:'1px'}}/>
-                        <p className="edit-alert">View Alerts</p>
-                    </ul>
-                    <ul className="favourite-container-title">
-                        <img className='plus-image' src={require("../../res/logos/plus.png")} width={35} height={35}  style={{marginRight:'20px', marginTop:'1px'}}/>
-                        <p className='edit-favourites'>Add Favourites</p> 
-                    </ul>
-                </div>
-                <p className="dashboard-title">Your favourite assets</p>
-                <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    <FavouriteTable accessToken={props.accessToken} preferred={preferred}/> 
-                </ul>
-
-                <NewsSection /> */}
         </div>
     )
 }

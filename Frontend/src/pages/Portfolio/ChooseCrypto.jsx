@@ -49,7 +49,7 @@ export default function ChooseCrypto(props) {
     return (
         <React.Fragment>
             {/* inserisco questo div che si sovrappone agli altri per non far cliccare i vari bottoni se il dialog è aperto */}
-            {props.dialogActive && (<div className="background-blurrer" />)}
+            {props.dialogActive && (<div className="-backgroundblurrer" />)}
             {!props.transactionPanelActive && (
                 <div className={props.className}>
                     <ul className="inline-list select-list">

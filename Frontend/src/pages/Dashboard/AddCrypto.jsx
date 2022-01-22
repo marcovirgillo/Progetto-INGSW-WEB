@@ -19,6 +19,7 @@ let selected = [];
 
 const AddCrypto = (props) => {
     const [queryedData, setQueryedData] = useState(props.allCryptos);
+    const [updateChecked, setUpdateChecked] = useState(false);
 
     useEffect(() => {
         setQueryedData(props.allCryptos)
@@ -28,7 +29,7 @@ const AddCrypto = (props) => {
         method: 'PUT',
         headers : {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin' : '*',
+            'Access-Control-Allow-Origin' : '*', 
             'Authorization': props.accessToken,
         },
         body: {}
@@ -45,6 +46,8 @@ const AddCrypto = (props) => {
 
         fetch(addPreferencesUrl, optionsAddPreference)
             .then(res => parseResponse(res));
+
+        props.setAddPreferredActive(false);
     }
 
     const parseResponse = res => {
@@ -70,25 +73,52 @@ const AddCrypto = (props) => {
     }
 
     const handleChange = (crypto) => {
-        var item  = selected.find(item => item.id === crypto);
+        var item  = selected.find(item => item.ticker === crypto);
         if(item === undefined)
             selected.push({ticker: crypto});
         else{
-            var array  = [...selected].filter(item => item.id != crypto);
+            var array  = [...selected].filter(item => item.ticker != crypto);
             selected = array;
         }
 
-
         console.log(selected)
+        setUpdateChecked(!updateChecked);
     };
+
+    function isSelected(crypto){
+        var item  = selected.find(item => item.ticker === crypto);
+        if(item === undefined)
+            return false;
+        return true;
+    }
+
+    function AddCryptoClass(){
+        if(props.position==="beforeDashboard"){
+            if(props.addCryptosClass)
+                return "choose-crypto-div div-active";
+            else
+                return "choose-crypto-div";
+        }
+        if(props.position==="dashboard"){
+            if(props.addCryptosClass)
+                return "choose-crypto-div-dashboard div-active"  
+            else
+                return "choose-crypto-div-dashboard";
+        }
+
+    }
 
     return (
         <div>
         <React.Fragment>
-                <div className="choose-crypto-div div-active">
+            {props.addPreferredActive && (<div className="background-blurrer" />)}
+                <div className={AddCryptoClass()}>
                     <ul className="inline-list select-list">
                         <span style={{color: 'white', fontSize:'20px', fontWeight:'700', paddingTop:'15px'}}>Select your favourite assets</span>
                         <div className="h-spacer-choose-crypto"/>
+                        <img src={require("../../res/logos/close.png")} width={24} height={24} alt="close add preferences" className="close-dashboard-icon"
+                                                onClick={() => props.setAddPreferredActive(false)}
+                                            />
                     </ul>
                     <ul className="search-list">
                         <div style={{paddingTop:'30px'}} />
@@ -103,7 +133,7 @@ const AddCrypto = (props) => {
                                     {/* <ArrowForwardIosRoundedIcon sx={{color: 'white', marginRight: '5px'}}/> */}
                                     <Checkbox
                                        /*  {...label} */
-                                        defaultChecked={false}
+                                        checked={isSelected(item.ticker)}
                                         sx={{
                                             color: blue[300],
                                             '&.Mui-checked': {

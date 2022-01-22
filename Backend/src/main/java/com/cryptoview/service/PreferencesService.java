@@ -132,7 +132,7 @@ public class PreferencesService {
 			}
 		}
 		
-		request.append("qInTitle=");
+		request.append("q=");
 		for(int i=0; i<preferredCryptos.size() - 1; i++) {
 			request.append(preferredCryptos.get(i));
 			request.append("+OR+");
@@ -140,9 +140,17 @@ public class PreferencesService {
 		request.append(preferredCryptos.get(preferredCryptos.size() - 1));
 		request.append("&");
 		
-		request.append(API.getInstance().getPreferredNewsPart2());
-		
-		JSONArray preferredNews = NewsFetcher.getInstance().fetchPreferredNews(request.toString());
+		//request.append(API.getInstance().getPreferredNewsPart2());
+		JSONArray preferredNews = null;
+		while(preferredNews == null) {
+			int first = request.length();
+			request.append(API.getInstance().getPreferredNewsPart2());
+			System.out.println(request);
+			preferredNews = NewsFetcher.getInstance().fetchPreferredNews(request.toString());
+			request.delete(first, request.length());
+			System.out.println("Fetching preferred News...");
+			
+		}
 		
 		JSONObject response = new JSONObject();
 		
