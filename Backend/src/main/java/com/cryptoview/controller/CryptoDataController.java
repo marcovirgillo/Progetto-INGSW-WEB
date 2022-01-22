@@ -1,35 +1,24 @@
 package com.cryptoview.controller;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cryptoview.controller.transfers.TransactionData;
 import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.model.Exchanges;
 import com.cryptoview.model.News;
 import com.cryptoview.model.Stats;
-import com.cryptoview.persistence.dao.PortfolioDaoJDBC;
 import com.cryptoview.persistence.dao.TransactionDaoJDBC;
-import com.cryptoview.persistence.dao.UserDaoJDBC;
-import com.cryptoview.persistence.model.Portfolio;
 import com.cryptoview.persistence.model.Transaction;
-import com.cryptoview.persistence.model.User;
 import com.cryptoview.service.LatestNews;
 import com.cryptoview.service.MarketStats;
-import com.cryptoview.service.PortfolioService;
 import com.cryptoview.service.TopCryptos;
 import com.cryptoview.service.TopExchanges;
 

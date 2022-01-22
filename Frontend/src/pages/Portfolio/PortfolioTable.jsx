@@ -32,8 +32,7 @@ function getFormattedPrice(price) {
         }
 
         return "$" + price.toFixed(decimals + 2);
-    } 
-        
+    }    
 }
 
 function formatPercentage(change) {

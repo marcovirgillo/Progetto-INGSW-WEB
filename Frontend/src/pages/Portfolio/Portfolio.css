@@ -872,3 +872,9 @@
 .stats-list #last-child {
     margin-right: 0px;
 } 
+
+.portfolio .apexcharts-legend-text {
+    color: white !important;
+    margin-left: 10px;
+    font-weight: 600 !important;
+}

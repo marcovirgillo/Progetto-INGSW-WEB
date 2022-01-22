@@ -2,6 +2,8 @@ package com.cryptoview.model;
 
 import org.json.simple.JSONObject;
 
+import com.cryptoview.persistence.dao.CryptoDaoJDBC;
+
 public class CryptoDetail implements Comparable <CryptoDetail>{
 	private Long rank;
 	private String id;
@@ -172,14 +174,39 @@ public class CryptoDetail implements Comparable <CryptoDetail>{
 		detail.setChange((Double) ((JSONObject) obj.get("market_data")).get("price_change_percentage_24h"));
 		detail.setChange_7d((Double) ((JSONObject) obj.get("market_data")).get("price_change_percentage_7d"));
 		
-		detail.setMarket_cap((long) 0);
+		detail.setMarket_cap(CryptoDetail.getMarketCap(obj));
 		detail.setRank((long) 0);
-		detail.setVolume((long) 0);
-		detail.setChart7d("");
-		
+		detail.setVolume(CryptoDetail.getVolume(obj));
+		detail.setChart7d(getChart(CryptoDaoJDBC.getInstance().getCrypto(detail.getTicker()).getIdGraphic()));
+
 		detail.checkNullField();
 		
 		return detail;
+	}
+	
+	private static String getChart(Integer id) {
+		if(id == null)
+			return "";
+		
+		return "https://www.coingecko.com/coins/" + id + "/sparkline";
+	}
+	
+	private static Long getMarketCap(JSONObject obj) {
+		Object cap = (Object) ((JSONObject) ((JSONObject) obj.get("market_data")).get("market_cap")).get("usd");
+		if(cap instanceof Double)
+			return ((Double) cap).longValue();
+		else if(cap instanceof Long)
+			return (Long) cap;
+		return 0L;
+	}
+	
+	private static Long getVolume(JSONObject obj) {
+		Object vol = (Object) ((JSONObject) ((JSONObject) obj.get("market_data")).get("total_volume")).get("usd");
+		if(vol instanceof Double)
+			return ((Double) vol).longValue();
+		else if(vol instanceof Long)
+			return (Long) vol;
+		return 0L;
 	}
 	
 	private void checkNullField() {

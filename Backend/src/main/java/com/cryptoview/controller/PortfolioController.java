@@ -50,7 +50,7 @@ public class PortfolioController {
 			}
 			
 			response.setStatus(Protocol.OK);
-			Portfolio portfolio = PortfolioDaoJDBC.getInstance().get("admin");
+			Portfolio portfolio = PortfolioDaoJDBC.getInstance().get(user.getUsername());
 			if(portfolio != null) {
 				response.setStatus(Protocol.OK);
 				JSONObject obj = PortfolioService.getInstance().getPortfolioValueTime(portfolio, timeStamp);

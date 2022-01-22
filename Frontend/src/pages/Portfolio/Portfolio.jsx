@@ -9,6 +9,7 @@ import { address } from '../../assets/globalVar';
 import ChooseCrypto from './ChooseCrypto';
 import { useNavigate } from "react-router-dom";
 import CreatePortfolio from './CreatePortfolio';
+import PieChart from '../../components/Chart/PieChart';
 
 const greenColor = "#46C95B";
 const redColor = "#E05757";
@@ -205,6 +206,20 @@ const Portfolio = (props) => {
         fetcherInfo();
     }
 
+    const parsePortfolioAssets = () => {
+        let chart_data = {
+            'labels': [],
+            'holdings': [],
+        }
+        
+        portfolioInfo.assets.forEach((item, val) => {
+            chart_data.labels.push(item.ticker.toUpperCase());
+            chart_data.holdings.push(item.holding_dollar);
+        })
+
+        return chart_data;
+    }
+
     return (
         <div className="portfolio">
                 {!portfolioExists && (<CreatePortfolio updateData={updateData} accessToken={props.accessToken}/>)}
@@ -236,7 +251,7 @@ const Portfolio = (props) => {
                                 <div className="h-spacer" />
                                 { chartType === 'chart' && (<ChartButtons className="chart-btns-desktop"/>) }
                             </ul>
-                            {chartData [0].data.length > 1 && (
+                            {chartType == "chart" && chartData [0].data.length > 1 && (
                             <CryptoChart className="chart"
                                 color={portfolioChange.balance_change_24h >= 0 ? greenColor : redColor} 
                                 width="100%" 
@@ -247,6 +262,11 @@ const Portfolio = (props) => {
                             />
                             )}
                             { chartType === 'chart' && (<ChartButtons className="chart-btns-mobile"/>) }
+                            { chartType === 'allocation' && portfolioInfo.assets.length > 0 && (
+                                <ul style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                                    <PieChart width="500px" height="300px" data={parsePortfolioAssets()} />
+                                </ul>
+                            )}
                         </div>
                         <ul ref={myAssetsUl} className="assets-list">
                             <p className="white-label assets-label">My Assets</p>
