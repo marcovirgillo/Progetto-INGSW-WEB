@@ -878,3 +878,34 @@
     margin-left: 10px;
     font-weight: 600 !important;
 }
+
+.portfolio .statistics-list {
+    padding: 0px;
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    column-gap: 40px;
+}
+
+.portfolio .statistics-list-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.portfolio .statistics-inner-list {
+    padding: 0px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.portfolio .statistics-list p {
+    font-weight: 500;
+}
+
+.portfolio .statistics-list .label {
+    color: var(--light-gray-color);
+}

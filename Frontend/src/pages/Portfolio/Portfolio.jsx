@@ -10,6 +10,7 @@ import ChooseCrypto from './ChooseCrypto';
 import { useNavigate } from "react-router-dom";
 import CreatePortfolio from './CreatePortfolio';
 import PieChart from '../../components/Chart/PieChart';
+import PortfolioStatistics from './PortfolioStatistics';
 
 const greenColor = "#46C95B";
 const redColor = "#E05757";
@@ -251,7 +252,7 @@ const Portfolio = (props) => {
                                 <div className="h-spacer" />
                                 { chartType === 'chart' && (<ChartButtons className="chart-btns-desktop"/>) }
                             </ul>
-                            {chartType == "chart" && chartData [0].data.length > 1 && (
+                            {chartType === "chart" && chartData [0].data.length > 1 && (
                             <CryptoChart className="chart"
                                 color={portfolioChange.balance_change_24h >= 0 ? greenColor : redColor} 
                                 width="100%" 
@@ -266,6 +267,9 @@ const Portfolio = (props) => {
                                 <ul style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
                                     <PieChart width="500px" height="300px" data={parsePortfolioAssets()} />
                                 </ul>
+                            )}
+                            { chartType === 'statistics' && portfolioInfo.assets.length > 0 && (
+                                <PortfolioStatistics data={portfolioInfo.assets} />
                             )}
                         </div>
                         <ul ref={myAssetsUl} className="assets-list">

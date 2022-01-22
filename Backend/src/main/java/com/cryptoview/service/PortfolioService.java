@@ -336,6 +336,8 @@ public class PortfolioService {
 	
 	@SuppressWarnings("unchecked")
 	public JSONObject getPortfolioOverview(Portfolio portfolio) throws SQLException {
+		//se non ho il valore del portfolio di 24h fa, chiamo la funzione che calcola il chart, perchè il valore vienne
+		//aggiornato là, quando il timestamp è 1
 		if(portfolioValue24hOld.get(portfolio.getUsernameOwner()) == null)
 			getPortfolioValueTime(portfolio, "1");
 		
