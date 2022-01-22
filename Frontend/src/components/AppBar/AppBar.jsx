@@ -11,7 +11,6 @@ import LoggedAccount from './LoggedAccount.jsx'
 import AccessAccount from './AccessAccount.jsx'
 
 const allCryptoUrl = `http://${address}:8080/supportedCrypto`;
-const checkLoginAddress = `http://${address}:8080/checkLogin`;
 
 function isEmptyObject(obj) {
     for(var prop in obj) {
@@ -24,48 +23,9 @@ function isEmptyObject(obj) {
 }
 
 function DropdownProfile(props) {
-    const [userLogged, setUserLogged] = useState({});
-   
-    const req_options = {
-        method: 'GET',
-        headers: { 
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin' : '*',
-            'Authorization': props.accessToken
-        }
-    };
-
-    //controllo la risposta del server dopo il tentativo di login
-    const parseResult = res => {
-        if(res.status === 200) {
-            console.log("Login con token da appbar success")
-            res.json().then(result => setUserLogged(result['user']));
-        }
-        else if(res.status === 5000 && props.accessToken != "") {
-            //TODO popup rifai il login
-            //In questo caso il token non nullo che ho salvato non è valido e devo rifare l'accesso
-            setUserLogged({});
-        }
-        else {
-            console.log("Errore durante il login da appbar:")
-            res.json().then((val) => console.log(val));
-            setUserLogged({});
-        }
-    }
-
-    //provo a vedere se il mio token per il login è valido
-    const fetchData = () => {
-        console.log("Fetcho dal backend con token");
-        fetch(checkLoginAddress, req_options)
-            .then(res => parseResult(res));   
-    }
-
-    useEffect(fetchData, []);
-    useEffect(fetchData, [props.accessToken]);
-
     return (
         <div className={"dropdown dropdown-profile " + props.class}>
-            {!isEmptyObject(userLogged) ? <LoggedAccount setAccessToken={props.setAccessToken} user={userLogged} accessToken={props.accessToken} /> 
+            {!isEmptyObject(props.userLogged) ? <LoggedAccount setAccessToken={props.setAccessToken} user={props.userLogged} accessToken={props.accessToken} /> 
                                             : <AccessAccount setAccessToken={props.setAccessToken}/> }
         </div>
     );
@@ -270,7 +230,10 @@ export default function AppBar(props) {
 
 
                     <DropdownNotification ref={wrapperRefNotificationDropdown} class={dropdownNotificationActive ? ' drop-active': ''} />
-                    <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} accessToken={props.accessToken} setAccessToken={props.setAccessToken}/>
+                    <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} 
+                            accessToken={props.accessToken} setAccessToken={props.setAccessToken}
+                            userLogged={props.userLogged} setUserLogged={props.setUserLogged}
+                    />
                 </React.Fragment>
             )}
 

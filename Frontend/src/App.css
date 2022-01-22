@@ -146,6 +146,12 @@
     }
 }
 
+@media only screen and (max-width: 1200px) {
+    .gainers-list {
+        padding-left: 36px !important;
+    }
+}
+
 @media only screen and (min-width: 1000px) {
     ::-webkit-scrollbar {
         width: 12px;

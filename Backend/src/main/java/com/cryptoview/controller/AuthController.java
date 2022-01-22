@@ -184,9 +184,14 @@ public class AuthController {
 			
 			return resp;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			response.setStatus(Protocol.SERVER_ERROR);
-			resp.put("msg", "Internal server error");
+			if(e.getMessage().contains("violates unique constraint")) {
+				response.setStatus(Protocol.USER_ALREADY_EXISTS);
+				resp.put("msg", "User already exists");
+			}
+			else {
+				response.setStatus(Protocol.SERVER_ERROR);
+				resp.put("msg", "Internal server error");
+			}
 			
 			return resp;
 		} catch(IllegalArgumentException | NullPointerException e2) {

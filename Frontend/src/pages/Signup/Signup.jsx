@@ -19,6 +19,9 @@ const Signup = () => {
     const [passwordInfoActive, setPasswordInfoActive] = useState(false);
     const [termsChecked, setTermsChecked] = useState(false);
 
+    const [errorLabelActive, setErrorLabelActive] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -49,6 +52,10 @@ const Signup = () => {
             console.log("signup successful");
             navigate("/login");
         }
+        else if(res.status === 409) 
+            showError("This username already exists!"); 
+        else if(res.status === 403)
+            showError("Error! Please check the input fields and retry");
         else {
             console.log("error during signup");
             res.json().then(result => console.log(result));
@@ -56,15 +63,13 @@ const Signup = () => {
     }
 
     function signupConstraints(){
-        if(!termsChecked || username==="" || email==="" || password===""){
-            setErrorType("Empty");
-            showError();
+        if(!termsChecked || username === "" || email === "" || password === ""){
+            showError("Error! Some fields are empty")
             return false;
         }
         if(!password.match(/^(?=.*\d)(?=.*[@.?#$%^&+=!])(?=.*[a-z])(?=.*[A-Z]).{8,}$/))
         {
-            setErrorType("Invalid");
-            showError();
+            showError("Error! Please check the input fields and retry");
             return false;
         }
         return true;
@@ -199,9 +204,6 @@ const Signup = () => {
         )
     } 
 
-    const [errorLabelActive, setErrorLabelActive] = useState(false);
-    const [errorType, setErrorType] = useState("");
-
     const getErrorLabelClassname = () => {
         if(errorLabelActive)
             return "error-label label-active";
@@ -209,9 +211,10 @@ const Signup = () => {
             return "error-label";
     }
 
-    const showError = () => {
+    const showError = (msg) => {
         setErrorLabelActive(true);
-        setTimeout(() => {setErrorLabelActive(false); setErrorType("")}, 3500);
+        setErrorMessage(msg);
+        setTimeout(() => {setErrorLabelActive(false); setErrorMessage("")}, 3500);
     }
 
 
@@ -295,9 +298,11 @@ const Signup = () => {
                     <span className="terms-text" style={termsStyle("white")}>I agree on the</span>
                     <span className="terms-text" ><Link to="/termsconditions" style={termsStyle("blue")}>Terms and Conditions</Link></span>
 
-                    {(errorLabelActive === true && <div className={getErrorLabelClassname()}>
-                        {errorType === "Empty" ? <p>Error, please check the input fields and retry!</p> : <p>Error, password doesn't match requirements!</p> }
-                    </div>)}
+                    {errorLabelActive === true && (
+                        <div className={getErrorLabelClassname()}>
+                            <p>{errorMessage}</p>
+                        </div>
+                    )}
                 </div>
 
                 <div style={{paddingTop:'20px'}} />

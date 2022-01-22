@@ -61,7 +61,10 @@ export default function PieChart(props) {
                     height: '200px'
                 }
             }
-        }]
+        }],
+        stroke: {
+            show: false
+        }
     }
 
     return (

@@ -40,7 +40,7 @@ export default function GainersSection() {
             <Grid item lg={1} md={1} sm={1} xs={1} /> {/* Grid item imposta un margine di 1 per ogni larghezza di schermo */}
             <Grid className="item" item lg={6} md={5} sm={12} xs={5}> {/* Top gainer card che occupa un numero di colonne specificato sulla base della larghezza dello schermo */}
                 <div className="container stats">
-                    <ul style={{paddingLeft: '50px'}}>
+                    <ul className="gainers-list">
                         <ul className="container-title">
                             <img src={require("../../res/logos/stats-icon.png")} width={32} height={32} className="container-title-icon" style={{marginRight:'20px', marginTop:'7px'}}/>
                             <div className="list-title">Market Statistics</div>
@@ -61,7 +61,7 @@ export default function GainersSection() {
             <Grid item className="xs-spacer" sx={{display:'none'}} sm={1} xs={1} />
             <Grid item className="item" lg={6} md={5} sm={12} xs={5}> {/* Worst gainers card che occupa un numero di colonne specificato sulla base della larghezza dello schermo */}
                 <div className="container top-gainers">
-                    <ul style={{paddingLeft: '50px'}}>
+                    <ul className="gainers-list">
                         <ul className="container-title">
                             <img src={require("../../res/logos/gainers-icon.png")} width={32} height={32} className="container-title-icon" style={{marginRight:'20px', marginTop:'7px'}}/>
                             <div className="list-title">Top Performers</div>
@@ -89,7 +89,7 @@ export default function GainersSection() {
             <Grid item className="xs-spacer" sx={{display:'none'}} sm={6} xs={1} />
             <Grid className="item" item lg={6} md={5} sm={15} xs={5}>
                 <div className="container worst-gainers">
-                    <ul style={{paddingLeft: '50px'}}>
+                    <ul className="gainers-list">
                         <ul className="container-title">
                             <img src={require("../../res/logos/losers-icon.png")} width={32} height={32} className="container-title-icon" style={{marginRight:'20px', marginTop:'7px'}}/>
                             <div className="list-title">Worst Performers</div>

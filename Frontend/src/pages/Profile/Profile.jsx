@@ -4,12 +4,29 @@ import "./Profile.css"
 import { address } from "../../assets/globalVar";
 import { Link } from 'react-router-dom'
 
+function isEmptyObject(obj) {
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop)){
+            return false;
+        }
+    }
+
+    return true;
+}
+
 const NameAndImage = (props) => {
+    const getProfilePic = () => {
+        if(props.user.avatar === null)
+            return require("../../res/images/profile-dark.png");
+        else 
+            return "data:image/png;base64," + props.user.avatar;
+    }
+
     return (
         <div className='name-image-container'>
             <ul className='name-image-list'>
-                <img src={require("../../res/images/doggo.jpg")} className='account-image'/>
-                <p className='account-big-name'>{props.name}</p>
+                <img src={getProfilePic()} className='account-image'/>
+                <p className='account-big-name'>{props.user.username}</p>
             </ul>
         </div>
     );
@@ -21,7 +38,7 @@ const AccountInfo = (props) => {
             <div className='property-container'>
                 <ul className='property-list'>
                     <p className='property-title'>Display Name</p>
-                    <p className='property-content'> {props.name} </p>
+                    <p className='property-content'> {props.user.username} </p>
                 </ul>
                 <p className='edit-button'> Edit </p>
             </div>
@@ -29,7 +46,7 @@ const AccountInfo = (props) => {
             <div className='property-container'>
                 <ul className='property-list'>
                     <p className='property-title'>Email</p>
-                    <p className='property-content'>{props.email} </p>
+                    <p className='property-content'>{props.user.email} </p>
                 </ul>
                 <p className='edit-button'> Edit </p>
             </div>
@@ -54,8 +71,9 @@ const Profile = (props) => {
     }, [])
 
     useEffect(() => {
-        if(props.accessToken === "")
-        navigate("/login")
+        console.log("props profile", props);
+        if(props.accessToken === "" || isEmptyObject(props.userLogged))
+            navigate("/login")
     }, []);
 
     const logoutLink = `http://${address}:8080/logout`;
@@ -72,7 +90,6 @@ const Profile = (props) => {
     const parseResponse = res => {
         if(res.status === 200) {
             console.log("Logout successful");
-            res.json().then((result) => console.log(result));
             props.setAccessToken("");
         }
         else {
@@ -86,7 +103,6 @@ const Profile = (props) => {
             .then(res => parseResponse(res));
     }
 
-    
     return(
         <div className="profile">
             <div className='paper-gray-account-settings'>
@@ -94,12 +110,11 @@ const Profile = (props) => {
                     <div className='account-settings-wrapper'>
                         <p className="account-settings-title"> My Account </p>
                         <NameAndImage
-                            name="Marco Virgillo"
+                           user={props.userLogged}
                         />
                         
                         <AccountInfo 
-                            name="Marco Virgillo"
-                            email="marcovirgillo10x@gmail.com"
+                            user={props.userLogged}
                         />
                     </div>
                     

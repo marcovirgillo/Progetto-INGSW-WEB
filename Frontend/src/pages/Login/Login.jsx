@@ -40,7 +40,6 @@ const Login = (props) => {
         if(res.status === 200) {
             res.json().then((result) => props.setAccessToken(result['key']));
             console.log("Accesso effettuato");
-            console.log(props);
             navigate("/");
         }
         else {
@@ -70,13 +69,13 @@ const Login = (props) => {
     }
 
     function titleStyle(color){
-        if(screenSize<600)
-            if(color==="blue")
+        if(screenSize < 600)
+            if(color === "blue")
                 return {color:'#32C0FF', fontSize:'22px'};
             else
                 return {color:'white', fontSize:'22px'};
         
-        if(color==="blue") return {color:'#32C0FF'};
+        if(color === "blue") return {color:'#32C0FF'};
         
         return {color:'white'};
     }

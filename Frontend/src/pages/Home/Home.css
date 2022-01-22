@@ -98,6 +98,7 @@ ul {
     margin-right: 8px;
     color: white;
     margin-left: 5px;
+    -webkit-line-clamp: 1;
 }
 
 .list-ticker {
@@ -131,7 +132,7 @@ ul {
 }
 
 /* cambia la visualizzazione della griglia, i 900px arrivano da sm di grid, NON CAMBIARE*/
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 899px) {
     .xs-spacer {
         display: revert !important;
     }
@@ -331,4 +332,8 @@ table th:last-child{
 /* override di una classe di swiper */
 .swiper-wrapper {
     padding-left: 60px !important;
+}
+
+.gainers-list {
+    padding-left: 50px;
 }
