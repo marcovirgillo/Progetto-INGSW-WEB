@@ -9,7 +9,7 @@ import com.cryptoview.persistence.model.domain.Username;
 
 public abstract class UserDao implements Dao<User>{
 
-	public abstract List<User> getAll() throws Exception;
+	public abstract List<User> getAll() throws SQLException;
 	public abstract void save(User obj) throws SQLException;
 	
 	public abstract User findByToken(String token) throws SQLException, IllegalArgumentException, NullPointerException;

@@ -78,7 +78,7 @@ export default function GainersSection() {
                                         <p className="list-ticker">{item.ticker.toUpperCase()}</p>
                                     </Link>
                                     <div className="spacer"> </div>
-                                    <p className="list-change-green">{change(item.change)}%</p>
+                                    <p className="list-change-green">{change(item.change_24h)}%</p>
                                 </ul>
                             ))
                         }
@@ -104,7 +104,7 @@ export default function GainersSection() {
                                         <p className="list-ticker">{item.ticker.toUpperCase()}</p>
                                     </Link>
                                     <div className="spacer"> </div>
-                                    <p className="list-change-red">{change(item.change)}%</p>
+                                    <p className="list-change-red">{change(item.change_24h)}%</p>
                                 </ul>
                             ))
                         }

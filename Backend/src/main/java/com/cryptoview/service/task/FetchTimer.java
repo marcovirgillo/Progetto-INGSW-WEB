@@ -11,6 +11,7 @@ import com.cryptoview.service.TopExchanges;
 import com.cryptoview.persistence.dao.DBConnection;
 import com.cryptoview.service.LatestNews;
 import com.cryptoview.service.MarketStats;
+import com.cryptoview.service.PreferencesService;
 
 //è la classe che si occupa di processare dati ogni tot tempo, in modo da averli pronti ad ogni richiesta
 @Component
@@ -20,10 +21,14 @@ public class FetchTimer implements DisposableBean, Runnable {
 	private final int FREQUENCY_GAINERS = 1000 * 60 * 10; //update ogni 10 minuti
 	private final int FREQUENCY_NEWS = 1000 * 60 * 30; //update ogni 30 minuti
 	private final int FREQUENCY_TOKEN_EXPIRY = 1000 * 60 * 60 * 24; //24 ore
+	private final int FREQUENCY_NOTIFICATION_1H = 1000 * 60 * 59; //59 minuti;
+	private final int FREQUENCY_NOTIFICATION_24H = 1000 * 60 * 1430; // 23h 50 min
 	
 	private long lastUpdateGainers = 0;
 	private long lastUpdateNews = 0;
 	private long lastUpdateTokenCheck = 0;
+	private long lastUpdateNotification1h = 0;
+	private long lastUpdateNotification24h = 0;
 	
 	private Thread myThread;
 	boolean isRunning = true;
@@ -45,19 +50,40 @@ public class FetchTimer implements DisposableBean, Runnable {
 			}
 			
 			if(System.currentTimeMillis() - lastUpdateNews > FREQUENCY_NEWS) {
-				//updateLatestNews();
-				
+				//updateLatestNews();	
 				lastUpdateNews = System.currentTimeMillis();
 			}
 			
 			if(System.currentTimeMillis() - lastUpdateTokenCheck > FREQUENCY_TOKEN_EXPIRY) {
-				checkExpiredTokens();
-				
+				checkExpiredTokens();	
+				lastUpdateTokenCheck = System.currentTimeMillis();
+			}
+			
+			if(System.currentTimeMillis() - lastUpdateNotification1h > FREQUENCY_NOTIFICATION_1H) {
+				//checkNotifications(1);
+				lastUpdateTokenCheck = System.currentTimeMillis();
+			}
+			
+			if(System.currentTimeMillis() - lastUpdateNotification24h > FREQUENCY_NOTIFICATION_24H) {
+				//checkNotifications(24);
 				lastUpdateTokenCheck = System.currentTimeMillis();
 			}
 		}
 	}
 
+	private void checkNotifications(int time) {
+		System.out.println(java.time.LocalDateTime.now() + " CHECKING  " + time + "h notification");
+		try {
+			if(time == 1)
+				PreferencesService.getInstance().updateNotifications1h();
+			else if(time == 24)
+				PreferencesService.getInstance().updateNotifications24h();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println(java.time.LocalDateTime.now() + " CHECKED notifications");
+	}
+	
 	private void checkExpiredTokens() {
 		System.out.println(java.time.LocalDateTime.now() + " CHECKING Expired Tokens");
 		String query = "select check_tokens_expiration();";

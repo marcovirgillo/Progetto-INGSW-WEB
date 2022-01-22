@@ -11,6 +11,8 @@ import LoggedAccount from './LoggedAccount.jsx'
 import AccessAccount from './AccessAccount.jsx'
 
 const allCryptoUrl = `http://${address}:8080/supportedCrypto`;
+const getNotificationsUrl = `http://${address}:8080/getUserNotifications`;
+const deleteNotificationsUrl = `http://${address}:8080/deleteUserNotifications`;
 
 function isEmptyObject(obj) {
     for(var prop in obj) {
@@ -32,26 +34,45 @@ function DropdownProfile(props) {
 }
 
 const DropdownNotification = React.forwardRef((props, ref) => {
-    const [notificationList, setNotificationList] = useState(Notifications);
+    const [notificationList, setNotificationList] = useState([]);
+
+    const fetchNotifications = () => {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Authorization': props.accessToken,
+            }
+        }
+
+        fetch(getNotificationsUrl, options)
+            .then(res => res.json())
+            .then((result) => setNotificationList(result['notifications']),
+                  (error) => console.log(error));
+    }
 
     const deleteNotification = idx => {
         let notif = [...notificationList.slice(0, idx), ...notificationList.slice(idx+1)]
         setNotificationList(notif);
     }
 
+    useEffect(fetchNotifications, []);
+
     return (
         <div ref={ref} className={"dropdown dropdown-notification " + props.class}>
             <div className="dropdown-wrapper">
                 <ul className="dropdown-notification-list">
                     {notificationList.length > 0 && (notificationList.map((item, val) => (
-                        <ul key={val} className="dropdown-list-item-horizontal notification-button">
-                            <img src={item.logo} width={20} height={20} style={{borderRadius: '100%'}} alt="crypyo logo"/>
-                            <p className="dropdown-text">{item.text}</p>
-                            <div className="notif-spacer" />
-                            <Icon className="delete-btn" onClick={()=>{deleteNotification(val)}}> 
-                                <DeleteOutlineRoundedIcon className="delete-icon" sx={{color: 'white'}}/> 
-                            </Icon>
-                        </ul>
+                        <React.Fragment>
+                            <ul key={val} className="dropdown-list-item-horizontal notification-button">
+                                <img src={item.logo} width={20} height={20} style={{borderRadius: '100%'}} alt="crypyo logo"/>
+                                <p className="dropdown-text">{item.content}</p>
+                                <div className="notif-spacer" />
+                                <Icon className="delete-btn" onClick={()=>{deleteNotification(val)}}> 
+                                    <DeleteOutlineRoundedIcon className="delete-icon" sx={{color: 'white'}}/> 
+                                </Icon>
+                            </ul>
+                            <p style={{paddingLeft: '20px', color: '#8F8F8F', marginTop: '5px'}}>{new Date(item.notification_datestamp).toUTCString()}</p>
+                        </React.Fragment>
                     )))}
                     {notificationList.length === 0 && (
                         <p style={{color: 'white', margin: '0px 20px 0px 20px'}}>There are no notifications</p>
@@ -229,7 +250,9 @@ export default function AppBar(props) {
                     </Icon>
 
 
-                    <DropdownNotification ref={wrapperRefNotificationDropdown} class={dropdownNotificationActive ? ' drop-active': ''} />
+                    <DropdownNotification ref={wrapperRefNotificationDropdown} accessToken={props.accessToken} 
+                        class={dropdownNotificationActive ? ' drop-active': ''} 
+                    />
                     <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} 
                             accessToken={props.accessToken} setAccessToken={props.setAccessToken}
                             userLogged={props.userLogged} setUserLogged={props.setUserLogged}

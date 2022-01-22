@@ -172,8 +172,8 @@ export default function CriptoTable(props) {
                                     <TableCell className="table-item">
                                         {getFormattedPrice(item.price)}
                                     </TableCell>
-                                    <TableCell className={getPriceClass(item.change)}>
-                                        {change(item.change)} %
+                                    <TableCell className={getPriceClass(item.change_24h)}>
+                                        {change(item.change_24h)} %
                                     </TableCell>
                                     <TableCell className={getPriceClass(item.change_7d)}>
                                         {change(item.change_7d)} %
