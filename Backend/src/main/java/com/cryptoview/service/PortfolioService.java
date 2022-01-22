@@ -349,7 +349,7 @@ public class PortfolioService {
 		
 		Double balance_change_btc = 0.0;
 		if(btcPrice != 0.0)
-			balance_change_btc = balance_change_24h / btcPrice;
+			balance_change_btc = (balance_change_24h / btcPrice) * 100;
 		
 		resp.put("balance_change_btc", balance_change_btc);
 		return resp;
