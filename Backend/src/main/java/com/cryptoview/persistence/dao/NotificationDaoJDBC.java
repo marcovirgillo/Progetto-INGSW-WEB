@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.persistence.model.Notification;
 import com.cryptoview.service.TopCryptos;
 
@@ -13,7 +14,7 @@ public class NotificationDaoJDBC extends NotificationDao {
 
 	private static NotificationDaoJDBC instance = null;
 	
-	private String addNewNotification = "insert into notification values (default, ?, ?, ?, now(), now())";
+	private String addNewNotification = "insert into notification values (default, ?, ?, ?, now(), now(), ?)";
 	private String getUserNotification = "select * from notification where username=?";
 	private String deleteNotification = "delete from notification where username=? and id=?";
 	
@@ -36,8 +37,9 @@ public class NotificationDaoJDBC extends NotificationDao {
 	public void save(Notification obj) throws SQLException {
 		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(addNewNotification);
 		stm.setString(1, obj.getUsername());
-		stm.setString(2, obj.getCriptoTicker());
-		stm.setString(3, obj.getContent());
+		stm.setString(2, obj.getCripto_Ticker());
+		stm.setDouble(3, obj.getPrice_Change());
+		stm.setInt(4, obj.getPrice_Change_Interval());
 		
 		stm.execute();
 		stm.close();
@@ -53,7 +55,10 @@ public class NotificationDaoJDBC extends NotificationDao {
 		
 		while(rs.next()) {
 			Notification notif = Notification.parseFromDB(rs);
-			notif.setLogo(TopCryptos.getInstance().getSupportedCryptoLogo(notif.getCriptoTicker()));
+			CryptoDetail crypto = TopCryptos.getInstance().getSupportedCryptoDetail(notif.getCripto_Ticker());
+			notif.setLogo(crypto.getLogo());
+			notif.setCriptoName(crypto.getName());
+			notif.setCriptoId(crypto.getId());
 			notifications.add(notif);
 		}
 		

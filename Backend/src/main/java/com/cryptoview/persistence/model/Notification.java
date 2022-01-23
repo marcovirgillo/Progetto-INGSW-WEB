@@ -1,5 +1,7 @@
 package com.cryptoview.persistence.model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -13,8 +15,11 @@ public class Notification {
 	
 	private int id;
 	private String criptoTicker;
+	private String criptoId;
+	private String criptoName;
 	private String username;
-	private String content;
+	private Double priceChange;
+	private Integer priceChangeInterval;
 	private String logo;
 	
 	@JsonIgnore
@@ -32,6 +37,22 @@ public class Notification {
 		this.id = id;
 	}
 	
+	public void setCriptoId(String criptoId) {
+		this.criptoId = criptoId;
+	}
+	
+	public String getCripto_Id() {
+		return criptoId;
+	}
+	
+	public void setCriptoName(String criptoName) {
+		this.criptoName = criptoName;
+	}
+	
+	public String getCripto_Name() {
+		return criptoName;
+	}
+	
 	public void setLogo(String logo) {
 		this.logo = logo;
 	}
@@ -40,7 +61,7 @@ public class Notification {
 		return logo;
 	}
 	
-	public String getCriptoTicker() {
+	public String getCripto_Ticker() {
 		return criptoTicker;
 	}
 	
@@ -56,8 +77,20 @@ public class Notification {
 		this.username = username;
 	}
 	
-	public String getContent() {
-		return content;
+	public void setPriceChange(Double priceChange) {
+		this.priceChange = priceChange;
+	}
+	
+	public void setPriceChangeInterval(Integer priceChangeInterval) {
+		this.priceChangeInterval = priceChangeInterval;
+	}
+	
+	public Double getPrice_Change() {
+		return priceChange;
+	}
+	
+	public Integer getPrice_Change_Interval() {
+		return priceChangeInterval;
 	}
 	
 	public String getNotificationDate() {
@@ -89,15 +122,20 @@ public class Notification {
 		notificationDatestamp = formatter.parse(notificationDate + " " + notificationTime);
 	}
 	
-	public void setContent(String content) {
-		this.content = content;
+	private static double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+	 
+	    BigDecimal bd = new BigDecimal(Double.toString(value));
+	    bd = bd.setScale(places, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
 	}
 	
 	public static Notification parseFromDB(ResultSet rs) throws SQLException {
 		Notification notification = new Notification();
 		notification.setId(rs.getInt("id"));
 		notification.setUsername(rs.getString("username"));
-		notification.setContent(rs.getString("notification_content"));
+		notification.setPriceChange(round(rs.getDouble("price_change"), 2));
+		notification.setPriceChangeInterval(rs.getInt("price_change_interval"));
 		notification.setCriptoTicker(rs.getString("cripto_ticker"));
 		notification.setNotificationDate(rs.getString("notification_date"));
 		notification.setNotificationTime(rs.getString("notification_time"));

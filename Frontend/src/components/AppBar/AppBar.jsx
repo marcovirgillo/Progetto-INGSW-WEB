@@ -4,7 +4,6 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import "./AppBar.css"
 import { Link } from 'react-router-dom'
-import { Notifications } from "./../../pages/Home/TestData.js";
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { address } from "./../../assets/globalVar.js";
 import LoggedAccount from './LoggedAccount.jsx'
@@ -36,6 +35,11 @@ function DropdownProfile(props) {
 const DropdownNotification = React.forwardRef((props, ref) => {
     const [notificationList, setNotificationList] = useState([]);
 
+    const parseResponse = res => {
+        if(res.status === 200) 
+            res.json().then(result => setNotificationList(result['notifications']));
+    }
+
     const fetchNotifications = () => {
         const options = {
             method: 'GET',
@@ -45,17 +49,46 @@ const DropdownNotification = React.forwardRef((props, ref) => {
         }
 
         fetch(getNotificationsUrl, options)
-            .then(res => res.json())
-            .then((result) => setNotificationList(result['notifications']),
-                  (error) => console.log(error));
+            .then(res => parseResponse(res));
     }
 
-    const deleteNotification = idx => {
+    const deleteNotification = (id, idx) => {
+        fetch(deleteNotificationsUrl, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': props.accessToken
+            },
+            body : JSON.stringify({
+                'id': id,
+            })
+        });
+
         let notif = [...notificationList.slice(0, idx), ...notificationList.slice(idx+1)]
         setNotificationList(notif);
     }
 
     useEffect(fetchNotifications, []);
+
+    function NotificationText(props) {
+
+        const getClassName = (change) => {
+            return (change >= 0 ? 'item-green' : 'item-red')
+        }
+
+        return (
+            <span style={{color: 'white', marginLeft: '20px', display: 'flex', flexWrap: 'wrap'}}>
+                <Link to={`/crypto/${props.notif.cripto_Id}`} onClick={() => props.closePanel()}> 
+                    <span className="notification-cripto-name">{props.notif.cripto_Name} ({props.notif.cripto_Ticker.toUpperCase()})</span> 
+                </Link>
+                &nbsp;is {props.notif.price_Change >= 0 ? ' up' : ' down'}
+                <span className={getClassName(props.notif.price_Change)}>
+                    &nbsp;{props.notif.price_Change} %&nbsp;
+                </span>
+                in the last {props.notif.price_Change_Interval === 1 ? 'hour' : '24 hours'}
+            </span>
+        )
+    }
 
     return (
         <div ref={ref} className={"dropdown dropdown-notification " + props.class}>
@@ -65,13 +98,15 @@ const DropdownNotification = React.forwardRef((props, ref) => {
                         <React.Fragment>
                             <ul key={val} className="dropdown-list-item-horizontal notification-button">
                                 <img src={item.logo} width={20} height={20} style={{borderRadius: '100%'}} alt="crypyo logo"/>
-                                <p className="dropdown-text">{item.content}</p>
+                                <NotificationText notif={item} closePanel={props.closePanel}/>
                                 <div className="notif-spacer" />
-                                <Icon className="delete-btn" onClick={()=>{deleteNotification(val)}}> 
+                                <Icon className="delete-btn" onClick={()=>{ deleteNotification(item.id, val)}}> 
                                     <DeleteOutlineRoundedIcon className="delete-icon" sx={{color: 'white'}}/> 
                                 </Icon>
                             </ul>
-                            <p style={{paddingLeft: '20px', color: '#8F8F8F', marginTop: '5px'}}>{new Date(item.notification_datestamp).toUTCString()}</p>
+                            <p style={{paddingLeft: '20px', color: '#8F8F8F', marginTop: '5px', marginBottom: '20px'}}>
+                                {new Date(item.notification_datestamp).toUTCString()}
+                            </p>
                         </React.Fragment>
                     )))}
                     {notificationList.length === 0 && (
@@ -251,7 +286,7 @@ export default function AppBar(props) {
 
 
                     <DropdownNotification ref={wrapperRefNotificationDropdown} accessToken={props.accessToken} 
-                        class={dropdownNotificationActive ? ' drop-active': ''} 
+                        class={dropdownNotificationActive ? ' drop-active': ''} closePanel={() => setDropdownNotificationActive(false)} 
                     />
                     <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} 
                             accessToken={props.accessToken} setAccessToken={props.setAccessToken}

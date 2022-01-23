@@ -62,12 +62,12 @@ public class FetchTimer implements DisposableBean, Runnable {
 			
 			if(System.currentTimeMillis() - lastUpdateNotification1h > FREQUENCY_NOTIFICATION_1H) {
 				//checkNotifications(1);
-				lastUpdateTokenCheck = System.currentTimeMillis();
+				lastUpdateNotification1h = System.currentTimeMillis();
 			}
 			
 			if(System.currentTimeMillis() - lastUpdateNotification24h > FREQUENCY_NOTIFICATION_24H) {
 				//checkNotifications(24);
-				lastUpdateTokenCheck = System.currentTimeMillis();
+				lastUpdateNotification24h = System.currentTimeMillis();
 			}
 		}
 	}
