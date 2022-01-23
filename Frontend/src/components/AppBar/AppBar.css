@@ -84,7 +84,7 @@
     width: 1.4em !important;
 }
 
-input[type=text] {
+.app-bar input[type=text] {
     color: white;
     padding-left: 40px;
     font-weight: 500;

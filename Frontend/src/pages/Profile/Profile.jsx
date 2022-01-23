@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "./Profile.css"
 import { address } from "../../assets/globalVar";
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { set } from 'date-fns/esm';
 
 function isEmptyObject(obj) {
     for(var prop in obj) {
@@ -33,31 +35,125 @@ const NameAndImage = (props) => {
 }
 
 const AccountInfo = (props) => {
+
+    const [usernameInputField, setUsernameInputField] = useState(props.user.username);
+    const [emailInputField, setEmailInputField] = useState(props.user.email);
+    const [passwordInputField, setPasswordInputField] = useState(props.user.password);
+    const [newPasswordInputField, setNewPasswordInputField] = useState("");
+    const [confirmNewPasswordInputField, setConfirmNewPasswordInputField] = useState("");
+
+    const [usernameEditable, setUsernameEditable] = useState(false);
+    const [emailEditable, setEmailEditable] = useState(false);
+    const [passwordEditable, setPasswordEditable] = useState(false);
+
+    const [errorLabelActive, setErrorLabelActive] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const getErrorLabelClassname = () => {
+        if(errorLabelActive)
+            return "error-label label-active";
+        else
+            return "error-label";
+    }
+
+    const showError = (msg) => {
+        setErrorLabelActive(true);
+        setErrorMessage(msg);
+        setTimeout(() => {setErrorLabelActive(false); setErrorMessage("")}, 3500);
+    }
+
+
+    const accountInfoConstraints = () => {
+        if(usernameEditable === true && usernameInputField === ""){
+            showError("Error! Username field is empty");
+            
+            return false;
+        }
+
+        if(emailEditable === true && emailInputField === "") {
+            showError("Error! Email field is empty");
+            return false;
+        }
+
+        if(passwordEditable === true && !passwordInputField.match(/^(?=.*\d)(?=.*[@.?#$%^&+=!])(?=.*[a-z])(?=.*[A-Z]).{8,}$/)) {
+            showError("Error! Please check the input fields and retry");
+            return false;
+        }
+        
+        return true;
+    }
+
+    const saveChanges = () => {
+
+        if(accountInfoConstraints() === false) {
+            return;
+        }
+        else {    
+            setUsernameEditable(false);
+            setEmailEditable(false);
+            setPasswordEditable(false);
+        }
+
+        /*console.log(usernameInputField);
+        console.log(emailInputField);
+        console.log(passwordInputField);*/
+    }
+
+    const showPasswordFileds = () => {
+        return (
+            <React.Fragment>
+                <div className="background-blurrer" />
+                <div className='password-fields-container'>
+                    <input type="password" className='property-content-editable' placeholder='Old password' onChange={(e)=>setPasswordInputField(e.target.value)}/>
+                    <input type="password" className='password-content-editable' placeholder='New password' onChange={(e)=>setPasswordInputField(e.target.value)}/>
+                    <input type="password" className='password-content-editable' placeholder='Retype new password' onChange={(e)=>setPasswordInputField(e.target.value)}/>
+
+                </div>
+            </React.Fragment>
+        );
+    }
+
+
     return (
-        <div className='paper-black-account-info'>
-            <div className='property-container'>
-                <ul className='property-list'>
-                    <p className='property-title'>Display Name</p>
-                    <p className='property-content'> {props.user.username} </p>
-                </ul>
-                <p className='edit-button'> Edit </p>
-            </div>
+        <div className='paper-black-account-settings'>
+            <div className='properties-container'>
+                <div className='property-container'>
+                    <ul className='property-list'>
+                        <p className='property-title'>Username</p>
+                        {usernameEditable ? <input type="text" className='property-content-editable' defaultValue={usernameInputField} onChange={(e)=>setUsernameInputField(e.target.value)}/> 
+                            : <p className='property-content'> {usernameInputField} </p>}
+                    </ul>
+                    {usernameEditable === false && <p className='edit-button' onClick={()=> setUsernameEditable(true)}> Edit </p>}
+                </div>
 
-            <div className='property-container'>
-                <ul className='property-list'>
+                <div className='property-container'>
+                    <ul className='property-list'>
                     <p className='property-title'>Email</p>
-                    <p className='property-content'>{props.user.email} </p>
-                </ul>
-                <p className='edit-button'> Edit </p>
+                        {emailEditable ? <input type="text" className='property-content-editable' defaultValue={emailInputField} onChange={(e)=>setEmailInputField(e.target.value)}/> 
+                            : <p className='property-content'> {emailInputField} </p>}
+                    </ul>
+                    {emailEditable === false && <p className='edit-button' onClick={()=> setEmailEditable(true)}> Edit </p>}
+                </div>
+
+                <div className='property-container'>
+                    <ul className='property-list'>
+                        <p className='property-title'>Password</p>
+                        <input type="password" defaultValue={"cryptoview"} className='password-content'/>
+                    </ul>
+                    <p className='edit-button' onClick={()=> {setPasswordEditable(true); showPasswordFileds(); }}> Edit </p>
+                </div>
             </div>
 
-            <div className='property-container'>
-                <ul className='property-list'>
-                    <p className='property-title'>Password</p>
-                    <input className='password-content' type="password" readOnly value={"cryptoview"}/>
-                </ul>
-                <p className='edit-button'> Change </p>
-            </div>
+            {(usernameEditable === true || emailEditable === true) && (
+                <div className='save-button' onClick={()=>saveChanges()}> Save </div>
+            )}
+
+            {errorLabelActive === true && (
+                <div className={getErrorLabelClassname()}>
+                    <p>{errorMessage}</p>
+                </div>
+            )}
+       
         </div>
         
     );
