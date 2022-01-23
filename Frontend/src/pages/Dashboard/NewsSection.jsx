@@ -59,7 +59,7 @@ export default function NewsSection(props) {
     const processPreferences = res => {
         if(res.status === 200) {
             res.json()
-                .then((result) => {console.log(result.news);setNewsData(result.news)},
+                .then((result) => {setNewsData(result.news)},
                       (error) => console.log(error));
         }
         else if(res.status === 6001) {

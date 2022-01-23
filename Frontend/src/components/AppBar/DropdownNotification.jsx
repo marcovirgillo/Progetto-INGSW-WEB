@@ -31,7 +31,7 @@ const DropdownNotification = React.forwardRef((props, ref) => {
             <div className="dropdown-wrapper">
                 <ul className="dropdown-notification-list">
                     {props.notificationList.length > 0 && (props.notificationList.map((item, val) => (
-                        <React.Fragment>
+                        <ul key={val} style={{width: '100%', boxSizing: 'border-box', padding: '0px'}}>
                             <li className="dropdown-list-item-horizontal notification-button">
                                 <img src={item.logo} width={20} height={20} style={{borderRadius: '100%'}} alt="crypyo logo"/>
                                 <NotificationText notif={item} closePanel={props.closePanel}/>
@@ -40,10 +40,10 @@ const DropdownNotification = React.forwardRef((props, ref) => {
                                     <DeleteOutlineRoundedIcon className="delete-icon" sx={{color: 'white'}}/> 
                                 </Icon>
                             </li>
-                            <p style={{paddingLeft: '20px', color: '#8F8F8F', marginTop: '5px', marginBottom: '20px'}}>
+                            <p key={10000 + val} style={{paddingLeft: '20px', color: '#8F8F8F', marginTop: '5px', marginBottom: '20px'}}>
                                 {new Date(item.notification_datestamp).toUTCString()}
                             </p>
-                        </React.Fragment>
+                        </ul>
                     )))}
                     {props.notificationList.length === 0 && (
                         <p style={{color: 'white', margin: '0px 20px 0px 20px'}}>There are no notifications</p>

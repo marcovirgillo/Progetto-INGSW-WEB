@@ -99,7 +99,14 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    padding: 0px 15px 0px 15px;
+    box-sizing: border-box;
+    padding: 0px 0px 0px 15px;
+}
+
+.dropdown-profile .dropdown-list-item-horizontal {
+    padding-right: 25px;
+    width: 95%;
+    box-sizing: border-box;
 }
 
 .dropdown-button:hover {
@@ -199,7 +206,7 @@
     height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
-    max-height: 255px;
+    max-height: 260px;
 }
 
 .dropdown-profile {
@@ -239,7 +246,7 @@
     height: 24px;
     margin-left: 10px;
     margin-right: 5px;
-    padding-right: 20px;
+    padding-right: 10px;
 }
 
 .delete-icon {
