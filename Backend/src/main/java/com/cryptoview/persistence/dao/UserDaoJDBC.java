@@ -16,7 +16,7 @@ public class UserDaoJDBC extends UserDao {
 
 	private static UserDaoJDBC instance;
 	
-	private String findByTokenQuery = "select * from utente where token=?";
+	private String findByTokenQuery = "select * from utente where token=? and token !=''";
 	private String checkCredentialsQuery = "select * from utente where username=?";
 	private String saveTokenQuery = "update utente set token=? where username=?";
 	private String saveUserQuery = "insert into utente values(?,?, null, '', ?)";

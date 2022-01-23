@@ -655,7 +655,7 @@
     margin: 5px 0px 0px 0px;
 }
 
-.portfolio .background-blurrer {
+.background-blurrer {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -908,4 +908,10 @@
 
 .portfolio .statistics-list .label {
     color: var(--light-gray-color);
+}
+
+.portfolio input[type=text] {
+    color: white;
+    padding-left: 40px;
+    font-weight: 500;
 }

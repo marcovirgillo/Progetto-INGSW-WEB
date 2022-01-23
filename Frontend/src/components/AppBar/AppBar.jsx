@@ -4,12 +4,11 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import "./AppBar.css"
 import { Link } from 'react-router-dom'
-import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import { address } from "./../../assets/globalVar.js";
 import LoggedAccount from './LoggedAccount.jsx'
 import AccessAccount from './AccessAccount.jsx'
+import DropdownNotification from './DropdownNotification.jsx';
+import { address } from '../../assets/globalVar';
 
-const allCryptoUrl = `http://${address}:8080/supportedCrypto`;
 const getNotificationsUrl = `http://${address}:8080/getUserNotifications`;
 const deleteNotificationsUrl = `http://${address}:8080/deleteUserNotifications`;
 
@@ -31,92 +30,6 @@ function DropdownProfile(props) {
         </div>
     );
 }
-
-const DropdownNotification = React.forwardRef((props, ref) => {
-    const [notificationList, setNotificationList] = useState([]);
-
-    const parseResponse = res => {
-        if(res.status === 200) 
-            res.json().then(result => setNotificationList(result['notifications']));
-    }
-
-    const fetchNotifications = () => {
-        const options = {
-            method: 'GET',
-            headers: {
-                'Authorization': props.accessToken,
-            }
-        }
-
-        fetch(getNotificationsUrl, options)
-            .then(res => parseResponse(res));
-    }
-
-    const deleteNotification = (id, idx) => {
-        fetch(deleteNotificationsUrl, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': props.accessToken
-            },
-            body : JSON.stringify({
-                'id': id,
-            })
-        });
-
-        let notif = [...notificationList.slice(0, idx), ...notificationList.slice(idx+1)]
-        setNotificationList(notif);
-    }
-
-    useEffect(fetchNotifications, []);
-
-    function NotificationText(props) {
-
-        const getClassName = (change) => {
-            return (change >= 0 ? 'item-green' : 'item-red')
-        }
-
-        return (
-            <span style={{color: 'white', marginLeft: '20px', display: 'flex', flexWrap: 'wrap'}}>
-                <Link to={`/crypto/${props.notif.cripto_Id}`} onClick={() => props.closePanel()}> 
-                    <span className="notification-cripto-name">{props.notif.cripto_Name} ({props.notif.cripto_Ticker.toUpperCase()})</span> 
-                </Link>
-                &nbsp;is {props.notif.price_Change >= 0 ? ' up' : ' down'}
-                <span className={getClassName(props.notif.price_Change)}>
-                    &nbsp;{props.notif.price_Change} %&nbsp;
-                </span>
-                in the last {props.notif.price_Change_Interval === 1 ? 'hour' : '24 hours'}
-            </span>
-        )
-    }
-
-    return (
-        <div ref={ref} className={"dropdown dropdown-notification " + props.class}>
-            <div className="dropdown-wrapper">
-                <ul className="dropdown-notification-list">
-                    {notificationList.length > 0 && (notificationList.map((item, val) => (
-                        <React.Fragment>
-                            <ul key={val} className="dropdown-list-item-horizontal notification-button">
-                                <img src={item.logo} width={20} height={20} style={{borderRadius: '100%'}} alt="crypyo logo"/>
-                                <NotificationText notif={item} closePanel={props.closePanel}/>
-                                <div className="notif-spacer" />
-                                <Icon className="delete-btn" onClick={()=>{ deleteNotification(item.id, val)}}> 
-                                    <DeleteOutlineRoundedIcon className="delete-icon" sx={{color: 'white'}}/> 
-                                </Icon>
-                            </ul>
-                            <p style={{paddingLeft: '20px', color: '#8F8F8F', marginTop: '5px', marginBottom: '20px'}}>
-                                {new Date(item.notification_datestamp).toUTCString()}
-                            </p>
-                        </React.Fragment>
-                    )))}
-                    {notificationList.length === 0 && (
-                        <p style={{color: 'white', margin: '0px 20px 0px 20px'}}>There are no notifications</p>
-                    )}
-                </ul>
-            </div>
-        </div>
-    );
-})
 
 function DropdownSearchPanel(props) {
     const getClassName = isActive => {
@@ -182,14 +95,13 @@ function SearchFieldMobile(props) {
     );
 }
 
-
-
 export default function AppBar(props) {
     const [dropdownProfileActive, setDropdownProfileActive] = useState(false);
     const [dropdownNotificationActive, setDropdownNotificationActive] = useState(false);
     const [dropdownSearchActive, setDropdownSearchActive] = useState(false);
-    const [allCryptos, setAllCryptos] = useState([]);
     const [queryedData, setQueryedData] = useState([]);
+    const [notificationList, setNotificationList] = useState([]);
+    const [notificationBtnCLicked, setNotificationBtnClicked] = useState(false);
 
     const wrapperRefNotificationDropdown = useRef(null);
     useOutsideAlerter(wrapperRefNotificationDropdown, "Notification");
@@ -221,23 +133,59 @@ export default function AppBar(props) {
             };
     }, [ref]);}
 
-    useEffect(() => {
-        fetch(allCryptoUrl)
-            .then((res) => res.json())
-            .then((result) => {setAllCryptos(result); setQueryedData(result); props.setAllCrypto(result)},
-                   (error) => console.log("Error fetching supported crypto "));
-    }, []);
-
     const queryData = (str) => {
         let allCryptoCopy = [];
 
-        allCryptos.forEach((item) => {
+        props.allCryptos.forEach((item) => {
             if((item.name.toLowerCase()).includes(str.toLowerCase()) || (item.ticker.toLowerCase()).includes(str.toLowerCase()))
                 allCryptoCopy.push(item);
         })
 
         setQueryedData(allCryptoCopy);
     }
+
+    useEffect(() => setQueryedData(props.allCryptos), [props.allCryptos]);
+
+    const parseResponse = res => {
+        if(res.status === 200) {
+            res.json().then(result => setNotificationList(result['notifications']));
+            setNotificationBtnClicked(false);
+        }
+    }
+
+    const fetchNotifications = () => {
+        if(props.accessToken === null || props.accessToken === "")
+            return;
+        
+        const options = {
+            method: 'GET',
+            headers: {
+                'Authorization': props.accessToken,
+            }
+        }
+
+        fetch(getNotificationsUrl, options)
+            .then(res => parseResponse(res));
+    }
+
+    const deleteNotification = (id, idx) => {
+        fetch(deleteNotificationsUrl, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': props.accessToken
+            },
+            body : JSON.stringify({
+                'id': id,
+            })
+        });
+
+        let notif = [...notificationList.slice(0, idx), ...notificationList.slice(idx+1)]
+        setNotificationList(notif);
+    }
+
+    useEffect(fetchNotifications, []);
+    useEffect(fetchNotifications, [props.accessToken]);
 
     return (
         <div className="app-bar">
@@ -266,14 +214,18 @@ export default function AppBar(props) {
                     <Icon className="search-icon" style={{display: 'none'}} onClick={() => {props.setSearchMobileOpen(true)}}>
                         <img src={require("../../res/logos/search.png")} alt="search icon" width={20} height={20}/>
                     </Icon>
-                    <Icon ref={wrapperRefNotification} className="notification-icon" 
-                            onClick={()=>{ if(dropdownProfileActive) 
-                                                setDropdownProfileActive(false);
-                                        
-                                            setDropdownNotificationActive(!dropdownNotificationActive)}}
-                    >
-                        <img src={require("../../res/logos/bell.png")} width={24} height={24} alt="bell"/>
-                    </Icon>
+                    <span className="notification-icon-span">
+                        <Icon ref={wrapperRefNotification} className="notification-icon" 
+                                onClick={()=>{ if(dropdownProfileActive) 
+                                                    setDropdownProfileActive(false);
+
+                                                setNotificationBtnClicked(true);
+                                                setDropdownNotificationActive(!dropdownNotificationActive)}}
+                        >
+                            <img src={require("../../res/logos/bell.png")} width={24} height={24} alt="bell"/>
+                        </Icon>
+                        {!notificationBtnCLicked && (<p>{notificationList.length}</p>)}
+                    </span>
 
                     <Icon ref={wrapperRefProfile} className="profile-icon" style={{display: 'revert'}} 
                             onClick={()=>{  if(dropdownNotificationActive)
@@ -286,7 +238,8 @@ export default function AppBar(props) {
 
 
                     <DropdownNotification ref={wrapperRefNotificationDropdown} accessToken={props.accessToken} 
-                        class={dropdownNotificationActive ? ' drop-active': ''} closePanel={() => setDropdownNotificationActive(false)} 
+                            notificationList={notificationList} deleteNotification={deleteNotification}
+                            class={dropdownNotificationActive ? ' drop-active': ''} closePanel={() => setDropdownNotificationActive(false)} 
                     />
                     <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} 
                             accessToken={props.accessToken} setAccessToken={props.setAccessToken}
