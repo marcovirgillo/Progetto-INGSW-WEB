@@ -42,8 +42,6 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 		rs.close();
 		stm.close();
 		
-		if(preferences.size()==0)
-			return null;
 		return preferences;
 	}
 	
@@ -58,13 +56,12 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 			stm.setString(1, username);
 			stm.setString(2, i.getTicker());
 			
-			@SuppressWarnings("unused")
-			int rs = stm.executeUpdate();
-			
+			stm.executeUpdate();
 			stm.close();
 			
 			cont++;
 		}
+		
 		if(cont != 0) //Se ho aggiunta almeno una
 			return true;
 		return false; //altrimenti non sono state aggiunte poiché esistevano già
@@ -79,9 +76,7 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 		stm.setString(1, username);
 		stm.setString(2, preference.getTicker());
 		
-		@SuppressWarnings("unused")
-		int rs = stm.executeUpdate();
-		
+		stm.executeUpdate();
 		stm.close();
 
 		return true;

@@ -53,11 +53,10 @@ public class Fetcher {
 		    return response;
 		    
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("News API key: " + API.getInstance().getCurrentAPIKey() + " has reached maximum requests for today.");
 			Logger.getInstance().addEvent(errorMsg);
-		} 
-		
-		return "";		
+			return "";
+		} 				
 	}
 	
 	private static String readAll(Reader rd) throws IOException {

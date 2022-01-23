@@ -166,7 +166,7 @@ export default function OverviewSection(props) {
                                         <p className="list-ticker">{item.ticker.toUpperCase()}</p>
                                     </Link>
                                     <div className="spacer"> </div>
-                                    <p className={setClassName(item.change)} >{change(item.change)}%</p>
+                                    <p className={setClassName(item.change_24h)} >{change(item.change_24h)}%</p>
                                 </ul>
                             ))
                         }
@@ -192,7 +192,7 @@ export default function OverviewSection(props) {
                                         <p className="list-ticker">{item.ticker.toUpperCase()}</p>
                                     </Link>
                                     <div className="spacer"> </div>
-                                    <p className={setClassName(item.change)}>{change(item.change)}%</p>
+                                    <p className={setClassName(item.change_24h)}>{change(item.change_24h)}%</p>
                                 </ul>
                             ))
                         }

@@ -3,7 +3,7 @@ package com.cryptoview.model.api;
 public class API {
 
 	public static API instance = null;
-	private final String newsAPIKey[] = {"5b515b57ab5945328c3e6b2a0456aded", "5d711f7e4dc7434bb70e91331a269d34"};
+	private final String newsAPIKey[] = {"5b515b57ab5945328c3e6b2a0456aded", "5d711f7e4dc7434bb70e91331a269d34", "42d4fff021654ddcb5448c22ad99c88b", "98bad8fc685b45d3b8275254d25a0cf1"};
 	private final String newsAPIPart1 = "https://newsapi.org/v2/everything?domains=cointelegraph.com&pageSize=";
 	private final String newsAPIPart2 = "&apiKey=";
 	private final String newsExchangesAPI = "https://newsapi.org/v2/everything?domains=cointelegraph.com&pageSize=8&q=exchange&apiKey=";
@@ -28,6 +28,8 @@ public class API {
 	private final String preferredNewsPart1 = "https://newsapi.org/v2/everything?";
 	private final String preferredNewsPart2 = "domains=cointelegraph.com&pageSize=20&sortBy=publishedAt&apiKey=";
 	
+	private int newsKeyIndex = 0;
+	
 	private API() {}
 	
 	public static API getInstance() {
@@ -36,8 +38,16 @@ public class API {
 		return instance;
 	}
 	
+	private String getNewsKey() {
+		String key = newsAPIKey[newsKeyIndex];
+		newsKeyIndex++;
+		if(newsKeyIndex == newsAPIKey.length)
+			newsKeyIndex = 0;
+		return key;
+	}
+	
 	public String getNewsAPI(int number) {
-		return newsAPIPart1 + number + newsAPIPart2 + newsAPIKey[0];
+		return newsAPIPart1 + number + newsAPIPart2 + getNewsKey();
 	}
 	
 	public String getTopAPI(int number) {
@@ -61,15 +71,15 @@ public class API {
 	}
 	
 	public String getNewsExchangesAPI() {
-		return newsExchangesAPI + newsAPIKey[0];
+		return newsExchangesAPI + getNewsKey();
 	}
 	
 	public String getPopularNewsKey() {
-		return popularNewsKey + newsAPIKey[1];
+		return popularNewsKey + getNewsKey();
 	}
 	
 	public String getAllNewsKey() {
-		return allLatestNewsKey + newsAPIKey[1];
+		return allLatestNewsKey + getNewsKey();
 	}
 	
 	public String getPreferredNewsPart1() {
@@ -77,6 +87,16 @@ public class API {
 	}
 	
 	public String getPreferredNewsPart2() {
-		return preferredNewsPart2 + newsAPIKey[1];
+		return preferredNewsPart2 + getNewsKey();
+	}
+
+	public int getNumberOfKeys() {
+		return newsAPIKey.length;
+	}
+
+	public String getCurrentAPIKey() {
+		if(newsKeyIndex==0)
+			return newsAPIKey[newsAPIKey.length - 1];
+		return newsAPIKey[newsKeyIndex - 1];
 	}
 }

@@ -1,11 +1,9 @@
 package com.cryptoview.service;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -15,11 +13,19 @@ import org.json.simple.parser.ParseException;
 import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.model.api.API;
 import com.cryptoview.model.api.NewsFetcher;
+import com.cryptoview.persistence.dao.NotificationDaoJDBC;
+import com.cryptoview.persistence.dao.PreferencesDaoJDBC;
+import com.cryptoview.persistence.dao.UserDaoJDBC;
+import com.cryptoview.persistence.model.Notification;
 import com.cryptoview.persistence.model.Preference;
 
 public class PreferencesService {
 
 	private static PreferencesService instance = null;
+	
+	private final Double NOTIFICATION_1H_TRESHOLD = 5.0;
+	private final Double NOTIFICATION_24H_TRESHOLD = 7.0;
+
 
 	private PreferencesService() {
 	}
@@ -53,8 +59,6 @@ public class PreferencesService {
 		ArrayList<CryptoDetail> array = new ArrayList<CryptoDetail>();
 		List<CryptoDetail> allCrypto = new ArrayList<CryptoDetail>(TopCryptos.getInstance().getAllSupportedCrypto());
 		
-		
-		//TODO INTERFERISCE CON I RANK DI TOP 100
 		for (var preference : preferences) {
 			for (var crypto : allCrypto) {
 				if (preference.getTicker().equals(crypto.getTicker())) {
@@ -63,12 +67,9 @@ public class PreferencesService {
 			}
 		}
 		
-		Collections.sort(array, new Comparator<CryptoDetail>() {
-			  @Override
-			  public int compare(CryptoDetail c1, CryptoDetail c2) {
-			    return c2.getMarket_cap().compareTo(c1.getMarket_cap());
-			  }
-			});
+		Collections.sort(array, (c1,c2) -> {
+			 return c2.getMarket_cap().compareTo(c1.getMarket_cap());
+		});
 		
 		JSONObject response = new JSONObject();
 		response.put("preferences", array);
@@ -91,13 +92,9 @@ public class PreferencesService {
 			}
 		}
 		
-		Collections.sort(array, new Comparator<CryptoDetail>() {
-			  @Override
-			  public int compare(CryptoDetail c1, CryptoDetail c2) {
-			    return c2.getChange().compareTo(c1.getChange());
-			  }
-			});
-		
+		Collections.sort(array, (c1,c2) -> {
+			 return c2.getChange_24h().compareTo(c1.getChange_24h());
+		});
 		
 		response.put("preferences_top_gainers", array.subList(0, Math.min(3, array.size())));
 		
@@ -123,7 +120,7 @@ public class PreferencesService {
 			}
 		}
 		
-		request.append("qInTitle=");
+		request.append("q=");
 		for(int i=0; i<preferredCryptos.size() - 1; i++) {
 			request.append(preferredCryptos.get(i));
 			request.append("+OR+");
@@ -131,14 +128,66 @@ public class PreferencesService {
 		request.append(preferredCryptos.get(preferredCryptos.size() - 1));
 		request.append("&");
 		
-		request.append(API.getInstance().getPreferredNewsPart2());
-		
-		JSONArray preferredNews = NewsFetcher.getInstance().fetchPreferredNews(request.toString());
+		//request.append(API.getInstance().getPreferredNewsPart2());
+		JSONArray preferredNews = null;
+		while(preferredNews == null) {
+			int first = request.length();
+			request.append(API.getInstance().getPreferredNewsPart2());
+			System.out.println(request);
+			preferredNews = NewsFetcher.getInstance().fetchPreferredNews(request.toString());
+			request.delete(first, request.length());
+			System.out.println("Fetching preferred News...");
+			
+		}
 		
 		JSONObject response = new JSONObject();
 		
 		response.put("news", preferredNews);
 		
 		return response;
+	}
+	
+	public void updateNotifications1h() throws SQLException {
+		List <String> users = UserDaoJDBC.getInstance().getAll().stream().map(user -> user.getUsername()).toList();
+		
+		for(String user : users) {
+			List <Preference> userPreferences = PreferencesDaoJDBC.getInstance().getUserPreferences(user);
+			
+			for(Preference preference : userPreferences) {
+				CryptoDetail cryptoPreference = TopCryptos.getInstance().getSupportedCryptoDetail(preference.getTicker());
+				
+				if(Math.abs(cryptoPreference.getChange_1h()) >= NOTIFICATION_1H_TRESHOLD) {
+					Notification notif = new Notification();
+					notif.setPriceChange(cryptoPreference.getChange_1h());
+					notif.setPriceChangeInterval(1);
+					notif.setCriptoTicker(cryptoPreference.getTicker());
+					notif.setUsername(user);
+					
+					NotificationDaoJDBC.getInstance().save(notif);
+				}
+			}
+		}
+	}
+	
+	public void updateNotifications24h() throws SQLException {
+		List <String> users = UserDaoJDBC.getInstance().getAll().stream().map(user -> user.getUsername()).toList();
+		
+		for(String user : users) {
+			List <Preference> userPreferences = PreferencesDaoJDBC.getInstance().getUserPreferences(user);
+			
+			for(Preference preference : userPreferences) {
+				CryptoDetail cryptoPreference = TopCryptos.getInstance().getSupportedCryptoDetail(preference.getTicker());
+				
+				if(Math.abs(cryptoPreference.getChange_24h()) > NOTIFICATION_24H_TRESHOLD) {
+					Notification notif = new Notification();
+					notif.setPriceChangeInterval(24);
+					notif.setPriceChange(cryptoPreference.getChange_24h());
+					notif.setCriptoTicker(cryptoPreference.getTicker());
+					notif.setUsername(user);
+					
+					NotificationDaoJDBC.getInstance().save(notif);
+				}
+			}
+		}
 	}
 }

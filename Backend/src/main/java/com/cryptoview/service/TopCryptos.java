@@ -92,8 +92,16 @@ public class TopCryptos {
 		return supportedCryptoDetail.get(ticker).getLogo();
 	}
 	
+	public Double getSupportedCrypto1hChange(String ticker) {
+		return supportedCryptoDetail.get(ticker).getChange_1h();
+	}
+	
 	public Double getSupportedCrypto24hChange(String ticker) {
-		return supportedCryptoDetail.get(ticker).getChange();
+		return supportedCryptoDetail.get(ticker).getChange_24h();
+	}
+	
+	public CryptoDetail getSupportedCryptoDetail(String ticker) {
+		return supportedCryptoDetail.get(ticker);
 	}
 	
 	public Double getSupportedCrypto7dChange(String ticker) {

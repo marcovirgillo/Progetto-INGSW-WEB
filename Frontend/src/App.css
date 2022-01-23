@@ -44,7 +44,7 @@
     }
 
     .dropdown-notification {
-        right: 15px !important;
+        right: 10px !important;
         font-size: 0.8em !important;
     }
 
@@ -75,6 +75,10 @@
     .transaction-div-list .btn-container {
         margin-left: 15px;
         width: 89% !important;
+    }
+
+    .dropdown-notification {
+        width: 96%;
     }
 
     .search-icon {

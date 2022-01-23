@@ -3,6 +3,8 @@ package com.cryptoview.persistence.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.cryptoview.persistence.model.User;
@@ -20,7 +22,8 @@ public class UserDaoJDBC extends UserDao {
 	private String saveUserQuery = "insert into utente values(?,?, null, '', ?)";
 	private String getTokenQuery = "select token from utente where username=?";
 	private String updateUserQuery = "update utente set username=?, email=?, avatar=?";
-	private String updateUserPasswordQuery = "update utente set password=?";
+	private String updateUserPasswordQuery = "update utente set password=? where username=?";
+	private String getAllUsers = "select * from utente";
 	
 	private UserDaoJDBC() {}
 	
@@ -32,9 +35,21 @@ public class UserDaoJDBC extends UserDao {
 	}
 	
 	@Override
-	public List<User> getAll() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<User> getAll() throws SQLException {
+		Statement stm = DBConnection.getInstance().getConnection().createStatement();
+		ResultSet rs = stm.executeQuery(getAllUsers);
+		
+		ArrayList <User> users = new ArrayList<>();
+		
+		while (rs.next()) {
+			User utente = User.parseFromDB(rs);
+			users.add(utente);
+		}
+		
+		stm.close();
+		rs.close();
+		
+		return users;
 	}
 
 	@Override

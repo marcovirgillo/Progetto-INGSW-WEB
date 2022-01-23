@@ -160,16 +160,19 @@
 }
 
 .notification-button {
+    font-weight: 500;
     width: 100%;
     padding-left: 20px;
 }
 
-.notification-button:hover {
-    background-color: #505050;
+.notification-cripto-name:hover {
+    color: var(--color-cyan);
+    cursor: pointer;
 }
 
 .dropdown-notification {
-    right: 75px;
+    padding-top: 15px;
+    right: 70px;
 }
 
 .dropdown-wrapper {

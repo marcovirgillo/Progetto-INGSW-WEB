@@ -25,24 +25,36 @@ public class NewsFetcher {
 	
 	public JSONArray fetch(String type) {
 		try {
-			switch(type) {
-				case "crypto":{
-					String response = Fetcher.getInstance().fetch(API.getInstance().getNewsAPI(8), "ERROR fetching latest news.");
-					return parser(response);
-				}
-				case "exchanges":{
-					String response = Fetcher.getInstance().fetch(API.getInstance().getNewsExchangesAPI(), "ERROR fetching latest news.");
-					return parser(response);
-				}
-				case "popular":{
-					String response = Fetcher.getInstance().fetch(API.getInstance().getPopularNewsKey(), "ERROR fetching popular news.");
-					return parser(response);
-				}
-				case "all":{
-					String response = Fetcher.getInstance().fetch(API.getInstance().getAllNewsKey(), "ERROR fetching popular news.");
-					return parser(response);
-				}
-			}				
+			int cont = 0;
+			String response = "";
+			while(response == "" && cont < API.getInstance().getNumberOfKeys()) {
+				switch(type) {
+					case "crypto":{
+						response = Fetcher.getInstance().fetch(API.getInstance().getNewsAPI(8), "ERROR fetching latest news.");
+						break;
+					}
+					case "exchanges":{
+						response = Fetcher.getInstance().fetch(API.getInstance().getNewsExchangesAPI(), "ERROR fetching latest news.");
+						break;
+					}
+					case "popular":{
+						response = Fetcher.getInstance().fetch(API.getInstance().getPopularNewsKey(), "ERROR fetching popular news.");
+						break;
+					}
+					case "all":{
+						response = Fetcher.getInstance().fetch(API.getInstance().getAllNewsKey(), "ERROR fetching popular news.");
+						break;
+					}
+				}	
+				System.out.println("Refetching " + type + " news...");
+				cont++;
+			}
+			if(response == "") {
+				System.out.println("All keys have reached maximum requests for today!");
+				return new JSONArray();
+			}
+			return parser(response);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -52,6 +64,9 @@ public class NewsFetcher {
 	
 	public JSONArray fetchPreferredNews(String request) throws ParseException, IOException {
 		String response = Fetcher.getInstance().fetch(request, "ERROR fetching latest news.");
+		if(response == "") {
+			return null;
+		}
 		return parser(response);
 	}
 
