@@ -241,7 +241,6 @@ public class PortfolioController {
 			
 			return resp;
 		} catch (IllegalArgumentException | NullPointerException e2) {
-			e2.printStackTrace();
 			response.setStatus(Protocol.INVALID_DATA);
 			resp.put("msg", "the portfolio name is not valid");
 			

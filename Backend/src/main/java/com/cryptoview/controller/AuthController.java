@@ -202,4 +202,37 @@ public class AuthController {
 			return resp;
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	@PostMapping("/updateUserData")
+	public JSONObject updateUserData(@RequestBody JSONObject obj, HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("Authorization");
+		JSONObject resp = new JSONObject();
+		
+		try {
+			//cerco l'utente che ha quel token di accesso
+			User user = UserDaoJDBC.getInstance().findByToken(token);
+			
+			//se non trovo l'utente, rispondo con error 5000
+			if(user == null) {
+				response.setStatus(Protocol.INVALID_TOKEN);
+				resp.put("msg", "The auth token is not valid");
+				
+				return resp;
+			}
+			
+			UserDaoJDBC.getInstance().updateUserAvatar(null, token);
+			response.setStatus(200);
+			resp.put("msg", "avatar updated successfully");
+			
+			return resp;
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.setStatus(Protocol.SERVER_ERROR);
+			resp.put("msg", "Internal server error");
+			
+			return resp;
+		}	
+	}
 }
