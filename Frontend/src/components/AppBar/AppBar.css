@@ -235,6 +235,7 @@
 .dropdown-text {
     color: white;
     margin-left: 20px;
+    min-width: fit-content;
 }
 
 .notif-spacer {

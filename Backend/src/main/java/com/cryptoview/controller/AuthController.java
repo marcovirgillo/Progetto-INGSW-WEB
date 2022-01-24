@@ -1,6 +1,9 @@
 package com.cryptoview.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.Base64;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -204,8 +207,8 @@ public class AuthController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@PostMapping("/updateUserData")
-	public JSONObject updateUserData(@RequestBody JSONObject obj, HttpServletRequest request, HttpServletResponse response) {
+	@PostMapping("/updateUserAvatar")
+	public JSONObject updateUserAvatar(@RequestBody JSONObject obj, HttpServletRequest request, HttpServletResponse response) {
 		String token = request.getHeader("Authorization");
 		JSONObject resp = new JSONObject();
 		
@@ -221,7 +224,10 @@ public class AuthController {
 				return resp;
 			}
 			
-			UserDaoJDBC.getInstance().updateUserAvatar(null, token);
+			String avatar = (String) obj.get("image");
+			byte[] img = Base64.getDecoder().decode(avatar.split(",")[1].getBytes("UTF-8"));
+			
+			UserDaoJDBC.getInstance().updateUserAvatar(img, token);
 			response.setStatus(200);
 			resp.put("msg", "avatar updated successfully");
 			
@@ -233,6 +239,54 @@ public class AuthController {
 			resp.put("msg", "Internal server error");
 			
 			return resp;
-		}	
+		} catch (UnsupportedEncodingException e2) {
+			e2.printStackTrace();
+			response.setStatus(Protocol.INVALID_DATA);
+			resp.put("msg", "Invalid image");
+			
+			return resp;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@PostMapping("/updateUserInfo")
+	public JSONObject updateUserInfo(@RequestBody JSONObject obj, HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("Authorization");
+		JSONObject resp = new JSONObject();
+		
+		try {
+			//cerco l'utente che ha quel token di accesso
+			User user = UserDaoJDBC.getInstance().findByToken(token);
+			
+			//se non trovo l'utente, rispondo con error 5000
+			if(user == null) {
+				response.setStatus(Protocol.INVALID_TOKEN);
+				resp.put("msg", "The auth token is not valid");
+				
+				return resp;
+			}
+			
+			User edited = new User();
+			edited.setEmail(new Email((String) obj.get("email")));
+			edited.setUsername(new Username((String) obj.get("username")));
+			
+			UserDaoJDBC.getInstance().updateUser(user, token);
+			response.setStatus(200);
+			resp.put("msg", "user updated successfully");
+			
+			return resp;
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.setStatus(Protocol.SERVER_ERROR);
+			resp.put("msg", "Internal server error");
+			
+			return resp;
+		} catch (IllegalArgumentException | NullPointerException e2) {
+			response.setStatus(Protocol.INVALID_DATA);
+			resp.put("msg", "Invalid data prvided");
+			
+			return resp;
+		}
 	}
 }
