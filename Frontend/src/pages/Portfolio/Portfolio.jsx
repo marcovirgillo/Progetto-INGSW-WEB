@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import CreatePortfolio from './CreatePortfolio';
 import PieChart from '../../components/Chart/PieChart';
 import PortfolioStatistics from './PortfolioStatistics';
+import CircularProgress from '@mui/material/CircularProgress';
+import { blue } from '@mui/material/colors';
 
 const greenColor = "#46C95B";
 const redColor = "#E05757";
@@ -43,6 +45,7 @@ const Portfolio = (props) => {
     const [lastSelectedCrypto, setLastSelectedCrypto] = useState({});
     const [transactionPanelActive, setTransactionPanelActive] = useState(false);
     const [portfolioExists, setPortfolioExists] = useState(true);
+    const [infoFetched, setInfoFetched] = useState(false);
 
     const myAssetsUl = useRef(null);
 
@@ -80,6 +83,8 @@ const Portfolio = (props) => {
         }
         else 
             setPortfolioExists(true);
+
+        setInfoFetched(true);
     }
 
     const processValue = res => {
@@ -118,9 +123,10 @@ const Portfolio = (props) => {
             navigate("/login");
         }
         else {
+            setInfoFetched(false);
             fetcherInfo();
         }
-    }, []);
+    }, [props.accessToken]);
 
     //se cambia l'intervallo di tempo, fetcho i dati nuovi
     useEffect(() =>{
@@ -207,6 +213,7 @@ const Portfolio = (props) => {
         fetcherInfo();
     }
 
+    //prendo le mie cripto e processo i dati per il pie chart
     const parsePortfolioAssets = () => {
         let chart_data = {
             'labels': [],
@@ -221,6 +228,19 @@ const Portfolio = (props) => {
         return chart_data;
     }
 
+    if(infoFetched === false) {
+        return (
+            <div className="portfolio">
+                <div className="paper-grey">
+                    <div style={{display: 'flex', justifyContent: 'center', paddingTop: '100px', paddingBottom: '80px'}}>
+                        <CircularProgress size={100} 
+                            sx={{color: blue[300], '&.Mui-checked': { color: blue[300] } }}
+                        /> 
+                    </div>
+                </div>
+            </div>
+        )
+    }
     return (
         <div className="portfolio">
                 {!portfolioExists && (<CreatePortfolio updateData={updateData} accessToken={props.accessToken}/>)}

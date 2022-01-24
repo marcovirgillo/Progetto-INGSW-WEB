@@ -72,8 +72,6 @@ const Dashboard = (props) => {
         }
     }
 
-    console.log(preferred)
-
     if(fetched === false){
         return(
             <div className="dashboard">
