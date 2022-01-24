@@ -64,6 +64,22 @@
     height: 70px;
     border-radius: 50%;
     margin-right: 20px;
+    
+}
+
+.image-pencil-container {
+    display: grid;
+    cursor: pointer;
+}
+
+.pencil {
+    position: absolute;
+    width: 18px;
+    margin-left: 44px;
+    margin-top: 4px;
+    background-color: var(--light-gray-color);
+    border-radius: 50%;
+    padding: 3px 3px 4px 5px;
 }
 
 .account-big-name {
@@ -83,6 +99,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+    padding-bottom: 20px;
 }
 
 .properties-container {
@@ -139,13 +156,7 @@
     padding: 0px 0px 0px 5px !important;
     outline: none;
     width: 70%;
-    height: 25px;
-}
-
-.password-fields-container {
-    display: flex;
-    flex-direction: column;
-    mask-position: fixed;
+    height: 38px;
 }
 
 .password-content {
@@ -160,20 +171,6 @@
     padding: 0;
 }
 
-.password-content-editable {
-    background-color: var(--search-bg-color);
-    box-shadow: 0px 0px 10px 2px var(--bg-color-blue);
-    border-radius: 8px;
-    color: white;
-    font-weight: bold !important;
-    font-size: 16px !important ;
-    border: 0;
-    padding: 0px 0px 0px 5px !important;
-    margin-top: 30px;
-    outline: none;
-    width: 70%;
-    height: 25px;
-}
 
 .edit-button {
     color: white;
@@ -196,7 +193,101 @@
     margin: 0px;
     padding: 8px 12px 8px 12px;
     cursor: pointer;
-    margin: 20px 0px 10px 0px;
+    margin: 20px 0px 20px 0px;
+}
+
+.background-blurrer {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    z-index: 500;
+    background-color: rgba(31, 31, 31, 0.5);
+}
+
+.edit-password-popup {
+    box-sizing: border-box;
+    position: fixed;
+    width: 400px;
+    left: 37%;
+    top: 25%;
+    background-color: var(--bg-color-gray);
+    border-radius: 10px;
+    padding-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.edit-password-list {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    width: 100%;
+}
+
+.edit-password-label-field-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.edit-password-label-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 88%;
+}
+
+.password-label {
+    color:white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.password-content-editable {
+    background-color: var(--search-bg-color);
+    border-radius: 8px;
+    color: white;
+    font-weight: bold !important;
+    font-size: 16px !important ;
+    border: 0;
+    padding: 0px 0px 0px 5px !important;
+    outline: none;
+    height: 38px;
+}
+
+.password-content-editable:hover {
+    box-shadow: 0px 0px 10px 2px var(--bg-color-blue);
+}
+
+.popup-btn {
+    width: 88%;
+    text-align: center;
+    color: white;
+    padding: 10px 0px 10px 0px;
+    border-radius: 10px;
+    margin-bottom: 0px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 20px;
+}
+
+.popup-confirm {
+    background-color: var(--color-cyan);
+}
+
+
+.popup-cancel {
+    background-color: var(--light-gray-color);
 }
 
 
@@ -217,7 +308,7 @@
     margin-top: 10px;
     background-color: #d14242;
     box-sizing: border-box;
-    width: 95%;
+    width: 88%;
     border-radius: 8px;
     height: fit-content;
     padding: 5px 10px 6px 10px;
@@ -225,7 +316,6 @@
     transform: scale(0);
     transition: opacity 0.3s, transform 0.3s !important;
     -webkit-transition: opacity 0.5s;
-    margin-bottom: 20px;
 }
 
 .profile .label-active {
@@ -246,12 +336,3 @@
 }
 
 
-.background-blurrer {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100vw;
-    height: 100vh;
-    z-index: 500;
-    background-color: rgba(31, 31, 31, 0.5);
-}
