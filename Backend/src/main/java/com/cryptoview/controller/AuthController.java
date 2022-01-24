@@ -270,7 +270,7 @@ public class AuthController {
 			edited.setEmail(new Email((String) obj.get("email")));
 			edited.setUsername(new Username((String) obj.get("username")));
 			
-			UserDaoJDBC.getInstance().updateUser(user, token);
+			UserDaoJDBC.getInstance().updateUser(edited, token);
 			response.setStatus(200);
 			resp.put("msg", "user updated successfully");
 			

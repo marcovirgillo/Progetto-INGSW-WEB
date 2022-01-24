@@ -329,8 +329,6 @@ const EditPasswordPopup = (props) => {
     );
 }
 
-
-
 const Profile = (props) => {
     const navigate = useNavigate();
 
@@ -421,6 +419,7 @@ const Profile = (props) => {
                             passwordEditable={passwordEditable}
                             enablePasswordEdit={enablePasswordEdit}
                             disablePasswordEdit = {disablePasswordEdit}
+                            accessToken={props.accessToken}
 
                             formErrorLabelActive = {formErrorLabelActive}
                             popupErrorLabelActive = {popupErrorLabelActive}
