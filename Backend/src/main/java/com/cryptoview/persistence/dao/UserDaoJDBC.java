@@ -3,6 +3,8 @@ package com.cryptoview.persistence.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.cryptoview.persistence.model.User;
@@ -14,13 +16,15 @@ public class UserDaoJDBC extends UserDao {
 
 	private static UserDaoJDBC instance;
 	
-	private String findByTokenQuery = "select * from utente where token=?";
+	private String findByTokenQuery = "select * from utente where token=? and token !=''";
 	private String checkCredentialsQuery = "select * from utente where username=?";
 	private String saveTokenQuery = "update utente set token=? where username=?";
 	private String saveUserQuery = "insert into utente values(?,?, null, '', ?)";
 	private String getTokenQuery = "select token from utente where username=?";
-	private String updateUserQuery = "update utente set username=?, email=?, avatar=?";
-	private String updateUserPasswordQuery = "update utente set password=?";
+	private String updateUserQuery = "update utente set username=?, email=? where token=?";
+	private String updateUserPasswordQuery = "update utente set password=? where username=?";
+	private String updateAvatarQuery = "update utente set avatar=? where token=?";
+	private String getAllUsers = "select * from utente";
 	
 	private UserDaoJDBC() {}
 	
@@ -32,9 +36,21 @@ public class UserDaoJDBC extends UserDao {
 	}
 	
 	@Override
-	public List<User> getAll() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<User> getAll() throws SQLException {
+		Statement stm = DBConnection.getInstance().getConnection().createStatement();
+		ResultSet rs = stm.executeQuery(getAllUsers);
+		
+		ArrayList <User> users = new ArrayList<>();
+		
+		while (rs.next()) {
+			User utente = User.parseFromDB(rs);
+			users.add(utente);
+		}
+		
+		stm.close();
+		rs.close();
+		
+		return users;
 	}
 
 	@Override
@@ -112,6 +128,38 @@ public class UserDaoJDBC extends UserDao {
 		stm.close();
 		
 		return token;
+		
+	}
+
+	@Override
+	public void updateUser(User user, String token) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(updateUserQuery);
+		stm.setString(1, user.getUsername());
+		stm.setString(2, user.getEmail());
+		stm.setString(3, token);
+		
+		stm.execute();
+		stm.close();
+	}
+
+	@Override
+	public void updateUserPassword(Password newPass, String token) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(updateUserPasswordQuery);
+		stm.setString(1, SpringUtil.hashPassword(newPass.toString()));
+		stm.setString(2, token);
+		
+		stm.execute();
+		stm.close();
+	}
+
+	@Override
+	public void updateUserAvatar(byte[] avatar, String token) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(updateAvatarQuery);
+		stm.setBytes(1, avatar);
+		stm.setString(2, token);
+		
+		stm.execute();
+		stm.close();
 		
 	}
 }

@@ -655,7 +655,7 @@
     margin: 5px 0px 0px 0px;
 }
 
-.portfolio .background-blurrer {
+.background-blurrer {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -663,6 +663,16 @@
     height: 100vh;
     z-index: 500;
     background-color: rgba(31, 31, 31, 0.5);
+}
+
+.portfolio .error-label-create-portfolio {
+    border-radius: border-box;
+    width: 85%;
+    color: #d31111;
+    text-align: left;
+    font-weight: 500;
+    font-size: 0.9em;
+    margin: 8px 0px 0px 0px;
 }
 
 .portfolio .confirm-popup {
@@ -908,4 +918,10 @@
 
 .portfolio .statistics-list .label {
     color: var(--light-gray-color);
+}
+
+.portfolio input[type=text] {
+    color: white;
+    padding-left: 40px;
+    font-weight: 500;
 }

@@ -9,6 +9,7 @@ import React, { useState, useEffect } from 'react';
 import { address } from './assets/globalVar';
 
 const checkLoginAddress = `http://${address}:8080/checkLogin`;
+const allCryptoUrl = `http://${address}:8080/supportedCrypto`;
 
 export default function App() {
     //le due funzioni di stato vengono passate a sideBar e appbar, e servono a chiudere/aprire la sidebar sull'evento onclick dei bottoni
@@ -29,6 +30,11 @@ export default function App() {
     useEffect(() => {
         if(accessToken === null)
             setAccessToken("");
+
+        fetch(allCryptoUrl)
+            .then((res) => res.json())
+            .then((result) => setAllCrypto(result),
+                   (error) => console.log("Error fetching supported crypto "));
     }, []);
 
     useEffect(fetchData, [accessToken]);
@@ -83,7 +89,7 @@ export default function App() {
                 <div className="layout-content">
                     <AppBar setSideBarEnabled={setSideBarEnabled} setSearchMobileOpen={setSearchMobileOpen} 
                             isMobileOpen={searchMobileOpen} isSearchFieldOpen={searchMobileOpen} 
-                            accessToken={accessToken} setAccessToken={saveToken} setAllCrypto={setAllCrypto}
+                            accessToken={accessToken} setAccessToken={saveToken} allCryptos={allCrypto}
                             setUserLogged={setUserLogged} userLogged={userLogged}
                     />
                     <div className="layout-content-main">

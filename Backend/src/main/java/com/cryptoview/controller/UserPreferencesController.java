@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cryptoview.persistence.dao.NotificationDaoJDBC;
 import com.cryptoview.persistence.dao.PreferencesDaoJDBC;
 import com.cryptoview.persistence.dao.UserDaoJDBC;
 import com.cryptoview.persistence.model.Alert;
+import com.cryptoview.persistence.model.Notification;
 import com.cryptoview.persistence.model.Preference;
 import com.cryptoview.persistence.model.User;
 import com.cryptoview.service.PreferencesService;
@@ -137,6 +139,75 @@ public class UserPreferencesController {
 			}
 			
 		} catch (SQLException e) {
+			JSONObject resp = new JSONObject();
+			response.setStatus(Protocol.SERVER_ERROR);
+			resp.put("msg", "Internal server error");
+			
+			return resp;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@GetMapping("/getUserNotifications")
+	public JSONObject getNotifications(HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("Authorization");
+		
+		try {
+			User user = UserDaoJDBC.getInstance().findByToken(token);
+			
+			if(user == null) {
+				JSONObject resp = new JSONObject();
+				response.setStatus(Protocol.INVALID_TOKEN);
+				resp.put("msg", "The auth token is not valid");
+				
+				return resp;
+			}
+
+			List<Notification> notifications = NotificationDaoJDBC.getInstance().getUserNotification(user.getUsername());
+			
+			JSONObject resp = new JSONObject();
+			resp.put("notifications", notifications);
+			response.setStatus(Protocol.OK);
+			
+			return resp;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JSONObject resp = new JSONObject();
+			response.setStatus(Protocol.SERVER_ERROR);
+			resp.put("msg", "Internal server error");
+			
+			return resp;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@DeleteMapping("/deleteUserNotifications")
+	public JSONObject deleteNotifications(@RequestBody JSONObject obj, HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("Authorization");
+		
+		try {
+			User user = UserDaoJDBC.getInstance().findByToken(token);
+			
+			if(user == null) {
+				JSONObject resp = new JSONObject();
+				response.setStatus(Protocol.INVALID_TOKEN);
+				resp.put("msg", "The auth token is not valid");
+				
+				return resp;
+			}
+			
+			int id = (int) obj.get("id");
+			NotificationDaoJDBC.getInstance().remove(id, user.getUsername());
+			
+			JSONObject resp = new JSONObject();
+			resp.put("msg", "Notification removed successfully");
+			response.setStatus(Protocol.OK);
+			
+			return resp;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
 			JSONObject resp = new JSONObject();
 			response.setStatus(Protocol.SERVER_ERROR);
 			resp.put("msg", "Internal server error");
