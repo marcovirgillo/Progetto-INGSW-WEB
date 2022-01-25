@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cryptoview.persistence.dao.NotificationDaoJDBC;
 import com.cryptoview.persistence.dao.PreferencesDaoJDBC;
 import com.cryptoview.persistence.dao.UserDaoJDBC;
+import com.cryptoview.persistence.model.Alert;
 import com.cryptoview.persistence.model.Notification;
 import com.cryptoview.persistence.model.Preference;
 import com.cryptoview.persistence.model.User;
@@ -417,6 +418,72 @@ public class UserPreferencesController {
 			JSONObject resp = new JSONObject();
 			response.setStatus(Protocol.SERVER_ERROR);
 			resp.put("msg", "Internal server error");
+			
+			return resp;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@PutMapping("/saveAlert")
+	private JSONObject saveAlert(@RequestBody Alert alert, HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("Authorization");
+		JSONObject resp = new JSONObject();
+		
+		try {
+			User user = UserDaoJDBC.getInstance().findByToken(token);
+			
+			if(user == null) {
+				response.setStatus(Protocol.INVALID_TOKEN);
+				resp.put("msg", "The auth token is not valid");
+				
+				return resp;
+			}
+
+			PreferencesDaoJDBC.getInstance().save(alert, user.getUsername());
+			resp.put("msg", "Alert successfuly added.");
+			response.setStatus(Protocol.OK);
+			
+			return resp;	
+		} catch (SQLException e) {
+			response.setStatus(Protocol.SERVER_ERROR);
+			resp.put("msg", "Internal server error");
+			
+			return resp;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@DeleteMapping("/removeAlert")
+	private JSONObject removeAlert(@RequestBody JSONObject obj, HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("Authorization");
+		JSONObject resp = new JSONObject();
+		
+		try {
+			User user = UserDaoJDBC.getInstance().findByToken(token);
+			
+			if(user == null) {
+				response.setStatus(Protocol.INVALID_TOKEN);
+				resp.put("msg", "The auth token is not valid");
+				
+				return resp;
+			}
+			
+			Integer id = (Integer) obj.get("id");
+			boolean result = PreferencesDaoJDBC.getInstance().remove(id, user.getUsername());
+			
+			if(result) {
+				resp.put("msg", "Alert successfuly removed.");
+				response.setStatus(Protocol.OK);
+				return resp;	
+			}
+			else {
+				resp.put("msg", "Alert doesn't exist.");
+				response.setStatus(Protocol.ALERT_NOT_EXISTENT);
+				return resp;	
+			}
+		} catch (SQLException e) {
+			response.setStatus(Protocol.SERVER_ERROR);
+			resp.put("msg", "Internal server error or Alert doesn't exist");
 			
 			return resp;
 		}

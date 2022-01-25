@@ -17,4 +17,7 @@ public class Protocol {
 
 	//Preferences 
 	public static final int NO_PREFERENCES_FOUND = 6001;
+	
+	//Alerts
+	public static final int ALERT_NOT_EXISTENT = 7001;
 }

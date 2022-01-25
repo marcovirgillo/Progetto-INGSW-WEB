@@ -68,12 +68,14 @@ export default function App() {
             //In questo caso il token non nullo che ho salvato non è valido e devo rifare l'accesso
             saveToken("");
             setUserLogged({});
+            saveToken("");
         }
         else {
             console.log("Errore durante il login da app js:")
             res.json().then((val) => console.log(val));
             saveToken("");
             setUserLogged({});
+            saveToken("");
         }
     }
 
