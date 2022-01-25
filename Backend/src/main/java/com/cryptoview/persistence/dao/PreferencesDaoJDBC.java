@@ -19,6 +19,7 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 	private String findPreference = "select * from preferire where ticker=? and username=?";
 	private String saveAlert = "insert into alerts values(default, ?,?,?,?)";
 	private String removeAlert = "delete from alerts where id=? and username=?";
+	private String getCryptoAlerstQuery = "select * from alerts where ticker=?";
 	
 	private PreferencesDaoJDBC() {}
 	
@@ -137,8 +138,8 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 	public void save(Alert alert, String username) throws SQLException {
 		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(saveAlert);
 		stm.setString(1, alert.getCriptoTicker());
-		stm.setString(2, username);
-		stm.setDouble(3, alert.getTargetPrice());
+		stm.setDouble(2, alert.getTargetPrice());
+		stm.setString(3, username);
 		stm.setBoolean(4, alert.isAbove());
 			
 		stm.executeUpdate();	
@@ -146,7 +147,7 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 	}
 	
 	@Override
-	public boolean remove(Integer id, String username) throws SQLException {
+	public boolean removeAlert(Integer id, String username) throws SQLException {
 		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(removeAlert);
 		stm.setInt(1, id);
 		stm.setString(2, username);
@@ -157,5 +158,23 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 		if(rs == 0)
 			return false;
 		return true;
+	}
+
+	@Override
+	public List<Alert> getCryptoAlerts(String ticker) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(getCryptoAlerstQuery);
+		stm.setString(1, ticker);
+		
+		ResultSet rs = stm.executeQuery();
+		List <Alert> list = new ArrayList <Alert>();
+		while(rs.next()) {
+			Alert alert = Alert.parseFromDB(rs);
+			list.add(alert);
+		}
+		
+		stm.close();
+		rs.close();
+		
+		return list;
 	}
 }

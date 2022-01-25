@@ -24,7 +24,7 @@ public class UserDaoJDBC extends UserDao {
 	private String saveUserQuery = "insert into utente values(?,?, null, '', ?)";
 	private String getTokenQuery = "select token from utente where username=?";
 	private String updateUserEmailQuery = "update utente set email=? where token=?";
-	private String updateUserPasswordQuery = "update utente set password=? where username=?";
+	private String updateUserPasswordQuery = "update utente set password=? where token=?";
 	private String updateAvatarQuery = "update utente set avatar=? where token=?";
 	private String getAllUsers = "select * from utente";
 	

@@ -201,8 +201,13 @@ public class UserPreferencesController {
 				return resp;
 			}
 			
+			char type = (char) obj.get("type");
 			int id = (int) obj.get("id");
-			NotificationDaoJDBC.getInstance().remove(id, user.getUsername());
+			
+			if(type == Notification.ALERT)
+				NotificationDaoJDBC.getInstance().removeAlertNotification(id, user.getUsername());
+			else if(type == Notification.PRICE)
+				NotificationDaoJDBC.getInstance().removePriceNotification(id, user.getUsername());
 			
 			JSONObject resp = new JSONObject();
 			resp.put("msg", "Notification removed successfully");
@@ -469,7 +474,7 @@ public class UserPreferencesController {
 			}
 			
 			Integer id = (Integer) obj.get("id");
-			boolean result = PreferencesDaoJDBC.getInstance().remove(id, user.getUsername());
+			boolean result = PreferencesDaoJDBC.getInstance().removeAlert(id, user.getUsername());
 			
 			if(result) {
 				resp.put("msg", "Alert successfuly removed.");

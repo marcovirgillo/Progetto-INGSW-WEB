@@ -31,6 +31,7 @@ public class User {
 		return username.toString();
 	}
 	
+	@JsonIgnore
 	public Username getUsernameField() {
 		return username;
 	}

@@ -73,7 +73,7 @@ public class Alert {
 		alert.setId(rs.getInt("id"));
 		alert.setAbove(rs.getBoolean("is_above"));
 		alert.setCriptoTicker(rs.getString("ticker"));
-		alert.setUsername("username");
+		alert.setUsername(rs.getString("username"));
 		alert.setTargetPrice(rs.getDouble("price"));
 		
 		return alert;
