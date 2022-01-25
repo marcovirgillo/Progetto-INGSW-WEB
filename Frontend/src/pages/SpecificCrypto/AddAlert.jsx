@@ -25,6 +25,11 @@ const AddAlert = (props) => {
         const val = ev.target.value;
         const key = ev.key;
 
+        if(val.length > 10){
+            ev.preventDefault();
+            return;
+        }
+
         if(key === " ") {
             ev.preventDefault();
             return;
