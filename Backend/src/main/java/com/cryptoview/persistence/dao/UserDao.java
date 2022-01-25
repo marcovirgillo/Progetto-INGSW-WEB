@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.cryptoview.persistence.model.User;
+import com.cryptoview.persistence.model.domain.Email;
 import com.cryptoview.persistence.model.domain.Password;
 import com.cryptoview.persistence.model.domain.Username;
 
@@ -18,7 +19,7 @@ public abstract class UserDao implements Dao<User>{
 	public abstract User checkCredentials(Username username, Password password) throws SQLException;
 	public abstract void saveToken(String user, String token) throws SQLException;
 	
-	public abstract void updateUser(User user, String token) throws SQLException;
+	public abstract void updateUserEmail(Email emai, String token) throws SQLException;
 	public abstract void updateUserAvatar(byte[] avatar, String token) throws SQLException;
 	public abstract void updateUserPassword(Password newPass, String token) throws SQLException;
 

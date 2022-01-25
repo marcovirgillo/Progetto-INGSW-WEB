@@ -31,6 +31,10 @@ public class User {
 		return username.toString();
 	}
 	
+	public Username getUsernameField() {
+		return username;
+	}
+	
 	public void setUsername(Username username) {
 		this.username = username;
 	}
