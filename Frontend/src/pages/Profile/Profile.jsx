@@ -89,6 +89,7 @@ const NameAndImage = (props) => {
             <ul className='name-image-list'>
                 <div className='image-pencil-container' >
                     <input type="file" ref={inputImage} style = {{display: 'none'}} onChange={(e) => handleOnChange(e)} />
+                    {/* COGLIONE RIVEDI QUESTA RIGA DI MERDA.*/}
                     <img src={image === null ? getProfilePic() : image} className='account-image' />
                     <img src={require("../../res/logos/edit.png")} className='pencil' onClick={() => setDropdownImage(!dropdownImage)}/>
 
