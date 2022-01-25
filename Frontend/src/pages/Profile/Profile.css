@@ -26,22 +26,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    
+  
 }
 
 .account-settings-wrapper {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    min-width: 40%;
 }
 
 .account-settings-title {
     font-size: 25px;
     color: white;
     font-weight: bold; 
-    padding-top: 10%;
+    padding-top: 5%;
 }
 
 .name-image-container {
@@ -98,14 +96,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
     padding-bottom: 20px;
 }
 
 .properties-container {
     display: flex;
     flex-direction: column;
-    width: 100%;
 }
 
 .property-container {
@@ -113,8 +109,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: 40px 0px 40px 20px;
-    
+    margin: 35px 30px 15px 40px;   
 }
 
 .property-list {
@@ -155,7 +150,7 @@
     border: 0;
     padding: 0px 0px 0px 5px !important;
     outline: none;
-    width: 70%;
+    max-width: 70%;
     height: 38px;
 }
 
@@ -178,8 +173,7 @@
     border-radius: 8px;  
     font-weight: bold;
     font-size: 15px;
-    margin: 0px 0px 0px 20px;
-    margin-right: 20px;
+    margin: 0px 0px 0px 0px;
     padding: 6px 14px 6px 14px;
     cursor: pointer;
 }
@@ -210,14 +204,16 @@
     box-sizing: border-box;
     position: fixed;
     width: 400px;
-    left: 37%;
-    top: 25%;
+    left: 50%;
+    top: 50%;
     background-color: var(--bg-color-gray);
     border-radius: 10px;
     padding-bottom: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: -200px; 
+    margin-left: -200px;
 }
 
 .edit-password-list {
@@ -227,13 +223,11 @@
     margin: 0;
     padding: 0;
     align-items: center;
-    width: 100%;
 }
 
 .edit-password-label-field-wrapper {
     display: flex;
     flex-direction: column;
-    width: 100%;
     align-items: center;
 }
 
