@@ -220,6 +220,7 @@ const AccountInfo = (props) => {
                             getErrorLabelClassname = {props.getErrorLabelClassname}
                             showError = {props.showError}
                             errorMessage = {props.errorMessage}
+                            accessToken = {props.accessToken}
                         />
                     }
                 </div>
@@ -282,7 +283,7 @@ const EditPasswordPopup = (props) => {
 
     const parsePasswordResponse = res => {
         if(res.status === 200) {
-            //TODO apposto
+            props.disablePasswordEdit();
         }
         if(res.status === 5020) 
             props.showError("Error! Password characters are not valid, please retry", 'popup');
