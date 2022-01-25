@@ -205,31 +205,36 @@ const AccountInfo = (props) => {
         <div className='paper-black-account-settings'>
             <div className='properties-container'>
                 <div className='property-container'>
-                    <ul className='property-list'>
-                        <p className='property-title'>Username</p>
-                        {usernameEditable ? <input type="text" className='property-content-editable' value={usernameInputField} onChange={(e)=>setUsernameInputField(e.target.value)} onKeyPress={(ev) => checkUsernameConstraints(ev)} /> 
-                            : <p className='property-content'> {usernameInputField} </p>}
+                    <p className='property-title'>Username</p>
+                    <ul className="property-list">
+                        {usernameEditable  
+                            ? <input type="text" className='property-content-editable' value={usernameInputField} onChange={(e)=>setUsernameInputField(e.target.value)} onKeyPress={(ev) => checkUsernameConstraints(ev)} /> 
+                            : <p className='property-content'> {usernameInputField} </p>
+                        }
+                        <div className="property-spacer" />
+                        <p className="edit-button" onClick={() => setUsernameEditable(!usernameEditable)}>{usernameEditable ? 'Cancel' : 'Edit'}</p>
                     </ul>
-                    {usernameEditable === false && <p className='edit-button' onClick={()=> setUsernameEditable(true)}> Edit </p>}
-                    {usernameEditable === true && <p className='edit-button' onClick={()=> setUsernameEditable(false)}> Cancel </p>}
                 </div>
 
                 <div className='property-container'>
-                    <ul className='property-list'>
                     <p className='property-title'>Email</p>
-                        {emailEditable ? <input type="text" className='property-content-editable' value={emailInputField} onChange={(e)=>setEmailInputField(e.target.value)} onKeyPress={(ev) => checkEmailConstraints(ev)} /> 
-                            : <p className='property-content'> {emailInputField} </p>}
+                    <ul className="property-list">
+                        {emailEditable  
+                            ? <input type="text" className='property-content-editable' value={emailInputField} onChange={(e)=>setEmailInputField(e.target.value)} onKeyPress={(ev) => checkEmailConstraints(ev)} /> 
+                            : <p className='property-content'> {emailInputField} </p>
+                        }
+                        <div className="property-spacer" />
+                        <p className="edit-button" onClick={() => setEmailEditable(!emailEditable)}>{emailEditable ? 'Cancel' : 'Edit'}</p>
                     </ul>
-                    {emailEditable === false && <p className='edit-button' onClick={()=> setEmailEditable(true)}> Edit </p>}
-                    {emailEditable === true && <p className='edit-button' onClick={()=> setEmailEditable(false)}> Cancel </p>}
                 </div>
 
                 <div className='property-container'>
-                    <ul className='property-list'>
-                        <p className='property-title'>Password</p>
+                    <p className='property-title'>Password</p>
+                    <ul className="property-list">
                         <input type="password" defaultValue={"cryptoview"} className='password-content'/>
+                        <div className="property-spacer" />
+                        <p className='edit-button' onClick={props.enablePasswordEdit}> Edit </p>
                     </ul>
-                    <p className='edit-button' onClick={props.enablePasswordEdit}> Edit </p>
                     {props.passwordEditable === true &&
                         <EditPasswordPopup 
                             disablePasswordEdit={props.disablePasswordEdit} 
