@@ -28,7 +28,7 @@ const NameAndImage = (props) => {
 
     }, [image]);
 
-    const onImageClick = () => {
+    const onChangeImage = () => {
         inputImage.current.click();
     }
 
@@ -77,13 +77,29 @@ const NameAndImage = (props) => {
             });
     }
 
+    const [dropdownImage, setDropdownImage] = useState(false);
+
+    const onDeleteImage = () => {
+
+    }
+
     return (
         <div className='name-image-container'>
             <ul className='name-image-list'>
-                <div className='image-pencil-container' onClick={onImageClick}>
+                <div className='image-pencil-container' >
                     <input type="file" ref={inputImage} style = {{display: 'none'}} onChange={(e) => handleOnChange(e)} />
                     <img src={image === null ? getProfilePic() : image} className='account-image' />
-                    <img src={require("../../res/logos/edit.png")} className='pencil'/>
+                    <img src={require("../../res/logos/edit.png")} className='pencil' onClick={() => setDropdownImage(!dropdownImage)}/>
+
+                    
+                    {dropdownImage === true && (<div className='dropdown-edit-image'>
+                        <ul className='dropdown-edit-image-list'>
+                            <p className='dropdown-edit-image-item' onClick={onChangeImage} >Change avatar</p>
+                            <div className="dropdown-edit-image-spacer" />
+                            <p className='dropdown-edit-image-item' onClick={onDeleteImage}> Delete avatar</p>
+                        </ul>
+                    </div>)}
+
                 </div>
                 <p className='account-big-name'>{props.user.username}</p>
             </ul>

@@ -38,36 +38,6 @@
     width: 40%;
 }
 
-@media only screen and (max-width: 1000px) {
-    .account-settings-wrapper {
-        width: 60% !important;
-    }
-
-    .edit-password-popup {
-        left: 25% !important;
-        width: 50% !important;
-    }
-}
-
-@media only screen and (max-width: 600px) {
-    .account-settings-wrapper {
-        width: 88% !important;
-    }
-
-    .profile {
-        padding: 0px;
-    }
-
-    .paper-gray-account-settings {
-        border-radius: 0px;
-    }
-
-    .edit-password-popup {
-        left: 10% !important;
-        width: 80% !important;
-    }
-}
-
 .account-settings-title {
     font-size: 25px;
     color: white;
@@ -114,6 +84,37 @@
     border: 2px solid var(--bg-color-gray);
 }
 
+.dropdown-edit-image {
+    border-radius: 10px;
+    background-color: var(--bg-color-dark);
+    position: absolute;
+    left: 500px;
+    top: 23%;
+    height: 80px;
+}
+
+.dropdown-edit-image-list {
+   padding: 0;
+   margin: 0;
+   list-style-type: none; 
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   width: 120px;
+   padding: 10px 10px 10px 10px;
+}
+
+.dropdown-edit-image-item {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+}
+
+.dropdown-edit-image-item:hover {
+    background-color: #5c5c5c;
+}
+
 .account-big-name {
     margin: 0;
     color: rgb(255, 255, 255);
@@ -149,10 +150,6 @@
     width: 100%;
     box-sizing: border-box;
     padding: 20px 0px 10px 20px;
-}
-
-.property-spacer {
-    flex: 1 0 0;
 }
 
 .property-list {
@@ -211,7 +208,6 @@
     padding: 0;
 }
 
-
 .edit-button {
     color: white;
     background-color: var(--light-gray-color);
@@ -222,6 +218,10 @@
     margin-right: 20px;
     padding: 6px 14px 6px 14px;
     cursor: pointer;
+}
+
+.property-spacer {
+    flex: 1 0 0;
 }
 
 .save-button {
@@ -325,7 +325,6 @@
     background-color: var(--color-cyan);
 }
 
-
 .popup-cancel {
     background-color: var(--light-gray-color);
 }
@@ -373,4 +372,34 @@
     font-weight: 500;
     text-align: center !important;
     white-space: initial !important;
+}
+
+@media only screen and (max-width: 1000px) {
+    .account-settings-wrapper {
+        width: 60% !important;
+    }
+
+    .edit-password-popup {
+        left: 25% !important;
+        width: 50% !important;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .account-settings-wrapper {
+        width: 88% !important;
+    }
+
+    .profile {
+        padding: 0px;
+    }
+
+    .paper-gray-account-settings {
+        border-radius: 0px;
+    }
+
+    .edit-password-popup {
+        left: 10% !important;
+        width: 80% !important;
+    }
 }
