@@ -2,6 +2,7 @@ package com.cryptoview.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -163,6 +164,9 @@ public class UserPreferencesController {
 			}
 
 			List<Notification> notifications = NotificationDaoJDBC.getInstance().getUserNotification(user.getUsername());
+			Collections.sort(notifications, (not1, not2) -> {
+				return -1 * not1.getNotification_datestamp().compareTo(not2.getNotification_datestamp());
+			});
 			
 			JSONObject resp = new JSONObject();
 			resp.put("notifications", notifications);
