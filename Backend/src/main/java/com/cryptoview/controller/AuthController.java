@@ -94,7 +94,7 @@ public class AuthController {
 		if(token != null && !token.isBlank()) {
 			try {
 				//cerco l'utente che ha quel token di accesso
-				User user = UserDaoJDBC.getInstance().findByToken(token);
+				User user = UserDaoJDBC.getInstance().findByTokenWithAvatar(token);
 				
 				//se non trovo l'utente, rispondo con error 5000
 				if(user == null) {
