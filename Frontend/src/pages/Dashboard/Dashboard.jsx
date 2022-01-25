@@ -110,11 +110,11 @@ const Dashboard = (props) => {
                     <OverviewSection accessToken={props.accessToken}/>
                     <div className="button-container" style={{marginRight:'0px', marginTop:'0px', marginBottom:'0px'}}>
                         <ul className="alert-container-title">
-                            <img className="favourite-image" src={require("../../res/logos/notifiche.png")} width={35} height={35}  style={{marginRight:'20px', marginTop:'1px'}}/>
+                            <img className="favourite-image" src={require("../../res/logos/alert.png")} width={35} height={35}  style={{marginRight:'10px', marginTop:'1px'}}/>
                             <p className="edit-alert">Edit Alerts</p>
                         </ul>
                         <ul className="favourite-container-title" onClick={() => setAddPreferredActive(!addPreferredActive)}>
-                            <img className='plus-image' src={require("../../res/logos/plus.png")} width={35} height={35}  style={{marginRight:'20px', marginTop:'1px'}}/>
+                            <img className='plus-image' src={require("../../res/logos/plus.png")} width={35} height={35}  style={{marginRight:'10px', marginTop:'1px'}}/>
                             <p className='edit-favourites'>Add Favourites</p> 
                         </ul>
                     </div>

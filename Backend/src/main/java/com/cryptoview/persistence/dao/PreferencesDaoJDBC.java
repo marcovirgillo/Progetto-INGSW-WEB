@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cryptoview.persistence.model.Alert;
 import com.cryptoview.persistence.model.Preference;
 
 public class PreferencesDaoJDBC extends PreferencesDao{
@@ -16,6 +17,8 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 	private String savePreferenceQuery = "insert into preferire values(?, ?)";
 	private String removePreferenceQuery = "delete from preferire where ticker=? and username=?";
 	private String findPreference = "select * from preferire where ticker=? and username=?";
+	private String saveAlert = "insert into alerts values(?,?,?,?)";
+	private String removeAlert = "delete from alerts where ticker=? and username=? and price=? and above=?";
 	
 	private PreferencesDaoJDBC() {}
 	
@@ -134,6 +137,34 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 			return true;
 		return false;
 	}
-
 	
+	public void save(Alert alert, String username) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(saveAlert);
+		stm.setString(1, alert.getTicker());
+		stm.setString(2, username);
+		stm.setFloat(3, alert.getPrice());
+		stm.setBoolean(4, alert.getAbove());
+			
+		@SuppressWarnings("unused")
+		int rs = stm.executeUpdate();
+			
+		stm.close();
+	}
+	
+	public boolean remove(Alert alert, String username) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(removeAlert);
+		stm.setString(1, alert.getTicker());
+		stm.setString(2, username);
+		stm.setFloat(3, alert.getPrice());
+		stm.setBoolean(4, alert.getAbove());
+			
+		@SuppressWarnings("unused")
+		int rs = stm.executeUpdate();
+		
+		stm.close();
+		
+		if(rs == 0)
+			return false;
+		return true;
+	}
 }

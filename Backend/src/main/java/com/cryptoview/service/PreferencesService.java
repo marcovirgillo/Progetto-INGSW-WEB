@@ -136,7 +136,6 @@ public class PreferencesService {
 		while(preferredNews == null) {
 			int first = request.length();
 			request.append(API.getInstance().getPreferredNewsPart2());
-			System.out.println(request);
 			preferredNews = NewsFetcher.getInstance().fetchPreferredNews(request.toString());
 			request.delete(first, request.length());
 			System.out.println("Fetching preferred News...");

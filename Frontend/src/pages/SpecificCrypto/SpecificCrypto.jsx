@@ -5,9 +5,11 @@ import ChartSection from './ChartSection'
 import HeaderSection from './HeaderSection'
 import StatisticsSection from './StatisticsSection'
 import { useLocation } from 'react-router';
+import { useNavigate } from "react-router-dom";
 import { TableBody, Table, TableCell, TableHead, TableRow, Icon } from '@mui/material';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
+import AddAlert from './AddAlert';
 import { address } from './../../assets/globalVar.js';
 
 const SpecificCrypto = (props) => {
@@ -15,6 +17,8 @@ const SpecificCrypto = (props) => {
     const [cryptoData, setCryptoData] = useState([]);
     const [exchanges, setExchanges] = useState([]);
     const [markets, setMarkets] = useState([]);
+
+    const [addAlertActive, setAddAlertActive] = useState(false);
 
     const [order, setOrder] = useState("DSC");
     const [itemActive, setItemActive] = useState(null);
@@ -171,6 +175,16 @@ const SpecificCrypto = (props) => {
         return {fontSize:'13px', marginRight:'55px', fontWeight:'500', color:'#DBDBDB'};
     }
 
+    function isSupported(){
+        let crypto = props.allCrypto.find(({ticker}) => ticker === cryptoData.symbol);
+        
+        if(crypto !== undefined){
+            return true;
+        }
+        
+        return false;        
+    }
+
     const MarketsSection = () => {
         return (
             <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -221,20 +235,41 @@ const SpecificCrypto = (props) => {
         )
     }
 
+    const navigate = useNavigate();
+
+    function handleAllert(){
+        if(props.accessToken === "" || props.accessToken === null){
+            navigate("/login");
+            return;
+        }
+        setAddAlertActive(!addAlertActive)
+    }
+
     return (    
         <div className="specific-crypto">
             <div className="paper-grey">
                 <div style={{paddingTop:'20px'}}/>
                 <HeaderSection data={cryptoData} accessToken={props.accessToken} allCrypto={props.allCrypto} />
-                <div style={{paddingTop:'20px'}}/>
+                <AddAlert cryptoData={cryptoData} addAlertActive={addAlertActive} setAddAlertActive={setAddAlertActive} />
                 {
                     screenSize>600 && (
-                        <StatisticsSection data={cryptoData} />
+                        <>
+                            <div style={{paddingTop:'20px'}}/>
+                            <StatisticsSection data={cryptoData} />
+                        </>
                     )
                 }
+                {isSupported() && (
+                    <div className="button-container" style={{marginRight:'0px', marginTop:'0px', marginBottom:'0px'}}>
+                        <ul className="alert-container-title" onClick={() => handleAllert()}>
+                            <img className="favourite-image" src={require("../../res/logos/alert.png")} width={35} height={35}  style={{marginRight:'10px', marginTop:'1px'}}/>
+                            <p className="edit-alert">Add Alert</p>
+                        </ul>
+                    </div>
+                )}
                 <p className="cripto-title">{cryptoData.name} Interactive Chart</p>
                 <ChartSection />
-                {
+                {   
                     screenSize<=600 && (
                         <StatisticsSection data={cryptoData} />
                     )
