@@ -211,6 +211,7 @@ const AccountInfo = (props) => {
                             : <p className='property-content'> {usernameInputField} </p>}
                     </ul>
                     {usernameEditable === false && <p className='edit-button' onClick={()=> setUsernameEditable(true)}> Edit </p>}
+                    {usernameEditable === true && <p className='edit-button' onClick={()=> setUsernameEditable(false)}> Cancel </p>}
                 </div>
 
                 <div className='property-container'>
@@ -220,6 +221,7 @@ const AccountInfo = (props) => {
                             : <p className='property-content'> {emailInputField} </p>}
                     </ul>
                     {emailEditable === false && <p className='edit-button' onClick={()=> setEmailEditable(true)}> Edit </p>}
+                    {emailEditable === true && <p className='edit-button' onClick={()=> setEmailEditable(false)}> Cancel </p>}
                 </div>
 
                 <div className='property-container'>
