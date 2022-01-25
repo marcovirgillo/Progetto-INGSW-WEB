@@ -2,6 +2,7 @@ package com.cryptoview.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -164,6 +165,9 @@ public class UserPreferencesController {
 			}
 
 			List<Notification> notifications = NotificationDaoJDBC.getInstance().getUserNotification(user.getUsername());
+			Collections.sort(notifications, (not1, not2) -> {
+				return -1 * not1.getNotification_datestamp().compareTo(not2.getNotification_datestamp());
+			});
 			
 			JSONObject resp = new JSONObject();
 			resp.put("notifications", notifications);
@@ -423,12 +427,12 @@ public class UserPreferencesController {
 	@PutMapping("/saveAlert")
 	private JSONObject saveAlert(@RequestBody Alert alert, HttpServletRequest request, HttpServletResponse response) {
 		String token = request.getHeader("Authorization");
+		JSONObject resp = new JSONObject();
 		
 		try {
 			User user = UserDaoJDBC.getInstance().findByToken(token);
 			
 			if(user == null) {
-				JSONObject resp = new JSONObject();
 				response.setStatus(Protocol.INVALID_TOKEN);
 				resp.put("msg", "The auth token is not valid");
 				
@@ -436,15 +440,13 @@ public class UserPreferencesController {
 			}
 
 			PreferencesDaoJDBC.getInstance().save(alert, user.getUsername());
-			
-			JSONObject resp = new JSONObject();
 			resp.put("msg", "Alert successfuly added.");
 			response.setStatus(Protocol.OK);
+			
 			return resp;	
 		} catch (SQLException e) {
-			JSONObject resp = new JSONObject();
 			response.setStatus(Protocol.SERVER_ERROR);
-			resp.put("msg", "Internal server error or Alert already exists");
+			resp.put("msg", "Internal server error");
 			
 			return resp;
 		}
@@ -452,35 +454,34 @@ public class UserPreferencesController {
 	
 	@SuppressWarnings("unchecked")
 	@DeleteMapping("/removeAlert")
-	private JSONObject removeAlert(@RequestBody Alert alert, HttpServletRequest request, HttpServletResponse response) {
+	private JSONObject removeAlert(@RequestBody JSONObject obj, HttpServletRequest request, HttpServletResponse response) {
 		String token = request.getHeader("Authorization");
+		JSONObject resp = new JSONObject();
 		
 		try {
 			User user = UserDaoJDBC.getInstance().findByToken(token);
 			
 			if(user == null) {
-				JSONObject resp = new JSONObject();
 				response.setStatus(Protocol.INVALID_TOKEN);
 				resp.put("msg", "The auth token is not valid");
 				
 				return resp;
 			}
-
-			boolean result = PreferencesDaoJDBC.getInstance().remove(alert, user.getUsername());
+			
+			Integer id = (Integer) obj.get("id");
+			boolean result = PreferencesDaoJDBC.getInstance().remove(id, user.getUsername());
+			
 			if(result) {
-				JSONObject resp = new JSONObject();
 				resp.put("msg", "Alert successfuly removed.");
 				response.setStatus(Protocol.OK);
 				return resp;	
 			}
 			else {
-				JSONObject resp = new JSONObject();
 				resp.put("msg", "Alert doesn't exist.");
 				response.setStatus(Protocol.ALERT_NOT_EXISTENT);
 				return resp;	
 			}
 		} catch (SQLException e) {
-			JSONObject resp = new JSONObject();
 			response.setStatus(Protocol.SERVER_ERROR);
 			resp.put("msg", "Internal server error or Alert doesn't exist");
 			

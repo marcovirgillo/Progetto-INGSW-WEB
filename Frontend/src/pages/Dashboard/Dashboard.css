@@ -122,7 +122,7 @@
 
 .dashboard .choose-crypto-div-dashboard {
     width: 30%;
-    top: 16%;
+    top: 12%;
     left: 45%;
     background-color: var(--bg-color-dark);
     border-radius: 12px;
@@ -427,5 +427,11 @@
     .three-side-news-container {
         padding-top: 30px !important;
     }
+}
+
+.dashboard input[type=text] {
+    color: white;
+    padding-left: 40px;
+    font-weight: 500;
 }
 

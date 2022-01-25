@@ -68,6 +68,11 @@
         left: 20% !important;
         width: 60% !important;
     }
+
+    .edit-password-popup {
+        left: 32% !important;
+        width: 36% !important;
+    }
 }
 
 /*qui il div aggiungi cripto riempie quasi tutto lo schermo */

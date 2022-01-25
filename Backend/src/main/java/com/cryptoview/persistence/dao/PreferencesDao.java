@@ -19,5 +19,5 @@ public abstract class PreferencesDao {
 	
 	//Per l'aggiunta o rimozione di allerte specificati dagli utenti
 	public abstract void save(Alert alert, String username) throws SQLException;
-	public abstract boolean remove(Alert alert, String username) throws SQLException;
+	public abstract boolean remove(Integer id, String username) throws SQLException;
 }

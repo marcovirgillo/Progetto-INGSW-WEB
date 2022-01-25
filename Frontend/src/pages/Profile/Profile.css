@@ -34,14 +34,45 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    min-width: 40%;
+    margin-top: 50px;
+    width: 40%;
+}
+
+@media only screen and (max-width: 1000px) {
+    .account-settings-wrapper {
+        width: 60% !important;
+    }
+
+    .edit-password-popup {
+        left: 25% !important;
+        width: 50% !important;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .account-settings-wrapper {
+        width: 88% !important;
+    }
+
+    .profile {
+        padding: 0px;
+    }
+
+    .paper-gray-account-settings {
+        border-radius: 0px;
+    }
+
+    .edit-password-popup {
+        left: 10% !important;
+        width: 80% !important;
+    }
 }
 
 .account-settings-title {
     font-size: 25px;
     color: white;
     font-weight: bold; 
-    padding-top: 10%;
+    margin: 0px;
 }
 
 .name-image-container {
@@ -75,11 +106,12 @@
 .pencil {
     position: absolute;
     width: 18px;
-    margin-left: 44px;
-    margin-top: 4px;
+    margin-left: 50px;
+    margin-top: -8px;
     background-color: var(--light-gray-color);
     border-radius: 50%;
     padding: 3px 3px 4px 5px;
+    border: 2px solid var(--bg-color-gray);
 }
 
 .account-big-name {
@@ -105,16 +137,22 @@
 .properties-container {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     width: 100%;
 }
 
 .property-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
-    margin: 40px 0px 40px 20px;
-    
+    align-items: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px 0px 10px 20px;
+}
+
+.property-spacer {
+    flex: 1 0 0;
 }
 
 .property-list {
@@ -122,7 +160,8 @@
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
     width: 100%;
 }
 
@@ -155,7 +194,7 @@
     border: 0;
     padding: 0px 0px 0px 5px !important;
     outline: none;
-    width: 70%;
+    width: 85%;
     height: 38px;
 }
 
@@ -166,6 +205,7 @@
     font-family: Verdana;
     letter-spacing: 0.125em;
     font-size: 14px !important;
+    max-width: 60%;
     border: 0;
     outline: none;
     padding: 0;
@@ -209,9 +249,9 @@
 .edit-password-popup {
     box-sizing: border-box;
     position: fixed;
-    width: 400px;
-    left: 37%;
-    top: 25%;
+    width: 28%;
+    left: 44%;
+    top: 26%;
     background-color: var(--bg-color-gray);
     border-radius: 10px;
     padding-bottom: 15px;
@@ -334,5 +374,3 @@
     text-align: center !important;
     white-space: initial !important;
 }
-
-
