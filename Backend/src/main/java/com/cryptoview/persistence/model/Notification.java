@@ -1,33 +1,32 @@
 package com.cryptoview.persistence.model;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class Notification {
-	
-	private int id;
-	private String criptoTicker;
-	private String criptoId;
-	private String criptoName;
-	private String username;
-	private Double priceChange;
-	private Integer priceChangeInterval;
-	private String logo;
+public abstract class Notification {
 	
 	@JsonIgnore
-	private String notificationDate;
+	public static final char PRICE = 'p';
 	@JsonIgnore
-	private String notificationTime;
+	public static final char ALERT = 'a';
 	
-	private Date notificationDatestamp;
+	protected int id;
+	protected String criptoTicker;
+	protected String criptoId;
+	protected String criptoName;
+	protected String username;
+	protected String logo;
+	protected char type;
+	
+	@JsonIgnore
+	protected String notificationDate;
+	@JsonIgnore
+	protected String notificationTime;
+	
+	protected Date notificationDatestamp;
 	
 	public int getId() {
 		return id;
@@ -47,6 +46,14 @@ public class Notification {
 	
 	public void setCriptoName(String criptoName) {
 		this.criptoName = criptoName;
+	}
+	
+	public void setType(char type) {
+		this.type = type;
+	}
+	
+	public char getType() {
+		return type;
 	}
 	
 	public String getCripto_Name() {
@@ -77,22 +84,6 @@ public class Notification {
 		this.username = username;
 	}
 	
-	public void setPriceChange(Double priceChange) {
-		this.priceChange = priceChange;
-	}
-	
-	public void setPriceChangeInterval(Integer priceChangeInterval) {
-		this.priceChangeInterval = priceChangeInterval;
-	}
-	
-	public Double getPrice_Change() {
-		return priceChange;
-	}
-	
-	public Integer getPrice_Change_Interval() {
-		return priceChangeInterval;
-	}
-	
 	public String getNotificationDate() {
 		return notificationDate;
 	}
@@ -120,34 +111,5 @@ public class Notification {
 	public void calculateDateStamp() throws ParseException {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
 		notificationDatestamp = formatter.parse(notificationDate + " " + notificationTime);
-	}
-	
-	private static double round(double value, int places) {
-	    if (places < 0) throw new IllegalArgumentException();
-	 
-	    BigDecimal bd = new BigDecimal(Double.toString(value));
-	    bd = bd.setScale(places, RoundingMode.HALF_UP);
-	    return bd.doubleValue();
-	}
-	
-	public static Notification parseFromDB(ResultSet rs) throws SQLException {
-		Notification notification = new Notification();
-		notification.setId(rs.getInt("id"));
-		notification.setUsername(rs.getString("username"));
-		notification.setPriceChange(round(rs.getDouble("price_change"), 2));
-		notification.setPriceChangeInterval(rs.getInt("price_change_interval"));
-		notification.setCriptoTicker(rs.getString("cripto_ticker"));
-		notification.setNotificationDate(rs.getString("notification_date"));
-		notification.setNotificationTime(rs.getString("notification_time"));
-		
-		try {
-			notification.calculateDateStamp();
-		} catch (ParseException e) {
-			notification.setNotificationDatestamp(Date.from(Instant.now()));
-		}
-		
-		return notification;
-	}
-	
-	
+	}	
 }

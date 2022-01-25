@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -16,8 +17,11 @@ import com.cryptoview.model.api.NewsFetcher;
 import com.cryptoview.persistence.dao.NotificationDaoJDBC;
 import com.cryptoview.persistence.dao.PreferencesDaoJDBC;
 import com.cryptoview.persistence.dao.UserDaoJDBC;
+import com.cryptoview.persistence.model.Alert;
+import com.cryptoview.persistence.model.AlertNotification;
 import com.cryptoview.persistence.model.Notification;
 import com.cryptoview.persistence.model.Preference;
+import com.cryptoview.persistence.model.PriceNotification;
 
 public class PreferencesService {
 
@@ -156,7 +160,7 @@ public class PreferencesService {
 				CryptoDetail cryptoPreference = TopCryptos.getInstance().getSupportedCryptoDetail(preference.getTicker());
 				
 				if(Math.abs(cryptoPreference.getChange_1h()) >= NOTIFICATION_1H_TRESHOLD) {
-					Notification notif = new Notification();
+					PriceNotification notif = new PriceNotification();
 					notif.setPriceChange(cryptoPreference.getChange_1h());
 					notif.setPriceChangeInterval(1);
 					notif.setCriptoTicker(cryptoPreference.getTicker());
@@ -178,7 +182,7 @@ public class PreferencesService {
 				CryptoDetail cryptoPreference = TopCryptos.getInstance().getSupportedCryptoDetail(preference.getTicker());
 				
 				if(Math.abs(cryptoPreference.getChange_24h()) > NOTIFICATION_24H_TRESHOLD) {
-					Notification notif = new Notification();
+					PriceNotification notif = new PriceNotification();
 					notif.setPriceChangeInterval(24);
 					notif.setPriceChange(cryptoPreference.getChange_24h());
 					notif.setCriptoTicker(cryptoPreference.getTicker());
@@ -188,5 +192,30 @@ public class PreferencesService {
 				}
 			}
 		}
+	}
+	
+	public void checkAlerts(Map<String, CryptoDetail> supportedCryptoDetail) throws SQLException {
+		System.out.println("CHECKING Alerts");
+		for(CryptoDetail crypto : supportedCryptoDetail.values()) {
+			for(Alert alert : PreferencesDaoJDBC.getInstance().getCryptoAlerts(crypto.getTicker())) {
+				if((alert.isAbove() && crypto.getPrice() >= alert.getTargetPrice()) ||
+				  (!alert.isAbove() && crypto.getPrice() <= alert.getTargetPrice())) {
+					AlertNotification notif = createAlertNotification(alert);
+					NotificationDaoJDBC.getInstance().save(notif);
+					PreferencesDaoJDBC.getInstance().removeAlert(alert.getId(), alert.getUsername());
+				}
+			}
+		}
+		System.out.println("CHECKED Alerts");
+	}
+
+	private AlertNotification createAlertNotification(Alert alert) {
+		AlertNotification notif = new AlertNotification();
+		notif.setCriptoTicker(alert.getCriptoTicker());
+		notif.setUsername(alert.getUsername());
+		notif.setAbove(alert.isAbove());
+		notif.setTargetPrice(alert.getTargetPrice());
+		
+		return notif;
 	}
 }

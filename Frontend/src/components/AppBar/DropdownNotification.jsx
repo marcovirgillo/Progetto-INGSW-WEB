@@ -4,11 +4,38 @@ import { Link } from 'react-router-dom';
 import { Icon } from '@mui/material';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 
+const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
+
+function getFormattedPrice(price) {
+    if(price > 1)
+        return formatter.format(price);
+    else {
+        if(price === 0)
+            return "$" + 0.0;
+
+        return "$" + price.toFixed(getDecimalPlaces(price) + 2);
+    }
+}
+
+const getDecimalPlaces = (number) => {
+    let decimal = 0;
+    while(number < 1) {
+        decimal++;
+        number *= 10;
+    }
+
+    return decimal;
+}
+
 const DropdownNotification = React.forwardRef((props, ref) => {
     function NotificationText(props) {
 
         const getClassName = (change) => {
-            return (change >= 0 ? 'item-green' : 'item-red')
+            return (change >= 0 ? 'item-green' : 'item-red');
+        }
+
+        const getClassNameAlert = above => {
+            return (above ? 'item-green' : 'item-red');
         }
 
         return (
@@ -16,12 +43,24 @@ const DropdownNotification = React.forwardRef((props, ref) => {
                 <Link to={`/crypto/${props.notif.cripto_Id}`} onClick={() => props.closePanel()}> 
                     <span className="notification-cripto-name">{props.notif.cripto_Name} ({props.notif.cripto_Ticker.toUpperCase()})</span> 
                 </Link>
-                &nbsp;is {props.notif.price_Change >= 0 ? ' up' : ' down'}
-                <span className={getClassName(props.notif.price_Change)}>
-                    &nbsp;{props.notif.price_Change} %&nbsp;
-                </span>
-                <span>in the last&nbsp;</span> 
-                {props.notif.price_Change_Interval === 1 ? 'hour' : '24 hours'}
+                {props.notif.type === 'p' && (
+                    <React.Fragment>
+                        &nbsp;is {props.notif.price_Change >= 0 ? ' up' : ' down'}
+                        <span className={getClassName(props.notif.price_Change)}>
+                            &nbsp;{props.notif.price_Change} %&nbsp;
+                        </span>
+                        <span>in the last&nbsp;</span> 
+                        {props.notif.price_Change_Interval === 1 ? 'hour' : '24 hours'}
+                    </React.Fragment>
+                )}
+                {props.notif.type === 'a' && (
+                    <React.Fragment>
+                        &nbsp;has reached the price target
+                        <span className={getClassNameAlert(props.notif.above)}>
+                            &nbsp;{getFormattedPrice(props.notif.target_Price)}&nbsp;
+                        </span>
+                    </React.Fragment>
+                )}
             </span>
         )
     }
