@@ -100,8 +100,12 @@ const StatisticsSection = (props) => {
         let yesterdayVol = volume24hData[0][1];
         let dim = volume24hData.length -1;
         let todayVol = volume24hData[dim][1];
-        
-        let change = 100 - ((yesterdayVol * 100) / todayVol);
+
+        let change;
+        if(todayVol>=yesterdayVol)
+            change = 100 - ((yesterdayVol * 100) / todayVol);
+        else
+            change = ((todayVol * 100) / yesterdayVol) - 100;
 
         return change;
     }

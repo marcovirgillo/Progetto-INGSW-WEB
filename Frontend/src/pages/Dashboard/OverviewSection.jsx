@@ -128,7 +128,7 @@ export default function OverviewSection(props) {
                             <ul className="list-item">
                                 <p className="list-name">24h Change</p>
                                 <div className="spacer"> </div>
-                                <p className={setClassName(portfolioStats.balance_change_24h_percentage)}>{change(portfolioStats.balance_change_24h_percentage)} %</p>
+                                <p className={setClassName(portfolioStats.balance_change_24h_percentage)}>{change(portfolioStats.balance_change_24h_percentage)}%</p>
                             </ul>
                             <ul className="list-item">
                                 <p className="list-name">24h BTC Change</p>

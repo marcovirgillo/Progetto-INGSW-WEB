@@ -315,9 +315,7 @@ public class PortfolioService {
 		
 		obj.put("balance_change_24h", round(portfolioChange24h, 2));
 		Double percentage_change_24h = 0.0;
-		if(oldBalance == 0.0)
-			percentage_change_24h = 100.0;
-		else 
+		if(oldBalance != 0.0)
 			percentage_change_24h = portfolioChange24h / oldBalance * 100;
 		obj.put("balance_change_24h_percentage", round(percentage_change_24h, 2));
 		obj.put("balance", actualBalance);
@@ -348,7 +346,7 @@ public class PortfolioService {
 		Double btcPrice = TopCryptos.getInstance().getBitcoinPrice();
 		
 		Double balance_change_btc = 0.0;
-		if(btcPrice != 0.0)
+		if(btcPrice != 0.0 && (Double) resp.get("balance_change_24h_percentage") != 0)
 			balance_change_btc = (balance_change_24h / btcPrice) * 100;
 		
 		resp.put("balance_change_btc", balance_change_btc);
