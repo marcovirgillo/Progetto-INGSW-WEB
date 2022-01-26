@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cryptoview.persistence.model.User;
+import com.cryptoview.persistence.model.domain.Email;
 import com.cryptoview.persistence.model.domain.Password;
 import com.cryptoview.persistence.model.domain.Username;
 import com.cryptoview.utilities.SpringUtil;
@@ -17,14 +18,17 @@ public class UserDaoJDBC extends UserDao {
 	private static UserDaoJDBC instance;
 	
 	private String findByTokenQuery = "select * from utente where token=? and token !=''";
+	private String findByTokenNoAvatarQuery = "select username, email from utente where token=? and token !=''";
 	private String checkCredentialsQuery = "select * from utente where username=?";
 	private String saveTokenQuery = "update utente set token=? where username=?";
 	private String saveUserQuery = "insert into utente values(?,?, null, '', ?)";
 	private String getTokenQuery = "select token from utente where username=?";
-	private String updateUserQuery = "update utente set username=?, email=? where token=?";
-	private String updateUserPasswordQuery = "update utente set password=? where username=?";
+	private String updateUserEmailQuery = "update utente set email=? where token=?";
+	private String updateUserPasswordQuery = "update utente set password=? where token=?";
 	private String updateAvatarQuery = "update utente set avatar=? where token=?";
+	private String resetAvatarQuery = "update utente set avatar=null where token=?";
 	private String getAllUsers = "select * from utente";
+	private String deleteTokenQuery = "delete from tokens where token=?";
 	
 	private UserDaoJDBC() {}
 	
@@ -67,13 +71,15 @@ public class UserDaoJDBC extends UserDao {
 
 	@Override
 	public User findByToken(String token) throws SQLException, IllegalArgumentException, NullPointerException {
-		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(findByTokenQuery);
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(findByTokenNoAvatarQuery);
 		stm.setString(1, token);
 		
 		ResultSet rs = stm.executeQuery();
 		User utente = null;
 		if(rs.next()) {
-			utente = User.parseFromDB(rs);
+			utente = new User();
+			utente.setUsername(new Username(rs.getString("username")));
+			utente.setEmail(new Email(rs.getString("email")));
 		}
 		
 		rs.close();
@@ -132,11 +138,10 @@ public class UserDaoJDBC extends UserDao {
 	}
 
 	@Override
-	public void updateUser(User user, String token) throws SQLException {
-		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(updateUserQuery);
-		stm.setString(1, user.getUsername());
-		stm.setString(2, user.getEmail());
-		stm.setString(3, token);
+	public void updateUserEmail(Email email, String token) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(updateUserEmailQuery);
+		stm.setString(1, email.toString());
+		stm.setString(2, token);
 		
 		stm.execute();
 		stm.close();
@@ -161,5 +166,41 @@ public class UserDaoJDBC extends UserDao {
 		stm.execute();
 		stm.close();
 		
+	}
+	
+	@Override
+	public void resetUserAvatar(String token) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(resetAvatarQuery);
+		stm.setString(1, token);
+		
+		stm.execute();
+		stm.close();
+		
+	}
+
+	@Override
+	public User findByTokenWithAvatar(String token) throws SQLException, NullPointerException, IllegalArgumentException{
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(findByTokenQuery);
+		stm.setString(1, token);
+		
+		ResultSet rs = stm.executeQuery();
+		User utente = null;
+		if(rs.next()) {
+			utente = User.parseFromDB(rs);
+		}
+		
+		rs.close();
+		stm.close();
+		
+		return utente;
+	}
+
+	@Override
+	public void deleteToken(String token) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(deleteTokenQuery);
+		stm.setString(1, token);
+		
+		stm.execute();
+		stm.close();
 	}
 }

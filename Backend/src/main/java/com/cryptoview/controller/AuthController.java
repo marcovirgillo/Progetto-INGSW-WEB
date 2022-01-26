@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,9 @@ import com.cryptoview.utilities.SpringUtil;
 @RestController
 @CrossOrigin(origins = {"*"})
 public class AuthController {
+	private interface UpdateUserFunction {
+		String call(User user, String token) throws SQLException, IllegalStateException;
+	}
 	
 	@SuppressWarnings("unchecked")
 	@PostMapping("/login")
@@ -94,7 +98,7 @@ public class AuthController {
 		if(token != null && !token.isBlank()) {
 			try {
 				//cerco l'utente che ha quel token di accesso
-				User user = UserDaoJDBC.getInstance().findByToken(token);
+				User user = UserDaoJDBC.getInstance().findByTokenWithAvatar(token);
 				
 				//se non trovo l'utente, rispondo con error 5000
 				if(user == null) {
@@ -146,6 +150,7 @@ public class AuthController {
 				}
 				
 				//altrimenti invalido il token
+				UserDaoJDBC.getInstance().deleteToken(token);
 				UserDaoJDBC.getInstance().saveToken(user.getUsername(), "");
 				response.setStatus(Protocol.OK);
 				resp.put("msg", "logout successful");
@@ -207,8 +212,7 @@ public class AuthController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@PostMapping("/updateUserAvatar")
-	public JSONObject updateUserAvatar(@RequestBody JSONObject obj, HttpServletRequest request, HttpServletResponse response) {
+	public JSONObject updateUserTemplate(HttpServletRequest request, HttpServletResponse response, UpdateUserFunction fun) {
 		String token = request.getHeader("Authorization");
 		JSONObject resp = new JSONObject();
 		
@@ -224,12 +228,9 @@ public class AuthController {
 				return resp;
 			}
 			
-			String avatar = (String) obj.get("image");
-			byte[] img = Base64.getDecoder().decode(avatar.split(",")[1].getBytes("UTF-8"));
-			
-			UserDaoJDBC.getInstance().updateUserAvatar(img, token);
+			String ok = fun.call(user, token);
 			response.setStatus(200);
-			resp.put("msg", "avatar updated successfully");
+			resp.put("msg", ok);
 			
 			return resp;
 				
@@ -239,52 +240,89 @@ public class AuthController {
 			resp.put("msg", "Internal server error");
 			
 			return resp;
-		} catch (UnsupportedEncodingException e2) {
-			e2.printStackTrace();
-			response.setStatus(Protocol.INVALID_DATA);
-			resp.put("msg", "Invalid image");
+		} catch (IllegalStateException e2) {
+			response.setStatus(Protocol.WRONG_CREDENTIALS);
+			resp.put("msg", "The old password doesn't match");
 			
 			return resp;
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
-	@PostMapping("/updateUserInfo")
-	public JSONObject updateUserInfo(@RequestBody JSONObject obj, HttpServletRequest request, HttpServletResponse response) {
-		String token = request.getHeader("Authorization");
-		JSONObject resp = new JSONObject();
-		
+	@PostMapping("/updateUserAvatar")
+	public JSONObject updateUserAvatar(@RequestBody JSONObject obj, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			//cerco l'utente che ha quel token di accesso
-			User user = UserDaoJDBC.getInstance().findByToken(token);
+			String avatar = (String) obj.get("image");
+			byte[] img = Base64.getDecoder().decode(avatar.split(",")[1].getBytes("UTF-8"));
 			
-			//se non trovo l'utente, rispondo con error 5000
-			if(user == null) {
-				response.setStatus(Protocol.INVALID_TOKEN);
-				resp.put("msg", "The auth token is not valid");
-				
-				return resp;
-			}
+			UpdateUserFunction fun = (user, token) -> {
+				UserDaoJDBC.getInstance().updateUserAvatar(img, token);
+				return "Avatar updated successfully";
+			};
 			
-			User edited = new User();
-			edited.setEmail(new Email((String) obj.get("email")));
-			edited.setUsername(new Username((String) obj.get("username")));
-			
-			UserDaoJDBC.getInstance().updateUser(edited, token);
-			response.setStatus(200);
-			resp.put("msg", "user updated successfully");
-			
-			return resp;
-				
-		} catch (SQLException e) {
-			e.printStackTrace();
-			response.setStatus(Protocol.SERVER_ERROR);
-			resp.put("msg", "Internal server error");
-			
-			return resp;
-		} catch (IllegalArgumentException | NullPointerException e2) {
+			return updateUserTemplate(request, response, fun);
+		} catch (UnsupportedEncodingException e) {
+			JSONObject resp = new JSONObject();
+			resp.put("msg", "Invalid image");
 			response.setStatus(Protocol.INVALID_DATA);
-			resp.put("msg", "Invalid data prvided");
+			
+			return resp;
+		}
+	}
+	
+	@DeleteMapping("/resetUserAvatar")
+	public JSONObject resetUserAvatar(HttpServletRequest request, HttpServletResponse response) {
+		
+		UpdateUserFunction fun = (user, token) -> {
+			UserDaoJDBC.getInstance().resetUserAvatar(token);
+			return "Avatar updated successfully";
+		};
+		
+		return updateUserTemplate(request, response, fun);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@PostMapping("/updateUserEmail")
+	public JSONObject updateUserEmail(@RequestBody JSONObject obj, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			Email newMail = new Email((String) obj.get("email"));
+			
+			UpdateUserFunction fun = (user, token) -> {
+				UserDaoJDBC.getInstance().updateUserEmail(newMail, token);
+				return "Email changed successfully";
+			};
+			
+			return updateUserTemplate(request, response, fun);
+		} catch (IllegalArgumentException | NullPointerException e) {
+			JSONObject resp = new JSONObject();
+			response.setStatus(Protocol.INVALID_DATA);
+			resp.put("msg", "The provided email is not valid");
+			
+			return resp;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@PostMapping("/updateUserPassword")
+	public JSONObject updateUserPassword(@RequestBody JSONObject obj, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			Password oldPassword = new Password((String) obj.get("old_password"));
+			Password newPassword = new Password((String) obj.get("new_password"));
+			
+			UpdateUserFunction fun = (user, token) -> {
+				if(UserDaoJDBC.getInstance().checkCredentials(user.getUsernameField(), oldPassword) != null) {
+					UserDaoJDBC.getInstance().updateUserPassword(newPassword, token);
+					return "Password changed successfully";
+				}
+				
+				throw new IllegalStateException();
+			};
+			
+			return updateUserTemplate(request, response, fun);
+		} catch (IllegalArgumentException | NullPointerException e) {
+			JSONObject resp = new JSONObject();
+			response.setStatus(Protocol.INVALID_DATA);
+			resp.put("msg", "The provided password is not valid");
 			
 			return resp;
 		}

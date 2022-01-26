@@ -1,5 +1,6 @@
 package com.cryptoview.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,6 +67,13 @@ public class TopCryptos {
 			Collections.sort(cryptosList);
 			
 			checkMissingPrices();
+			
+			try {
+				PreferencesService.getInstance().checkAlerts(supportedCryptoDetail);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Cannot update alerts !");
+			}
 		}
 	}
 	

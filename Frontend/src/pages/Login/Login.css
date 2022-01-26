@@ -194,3 +194,9 @@
     text-align: center;
     white-space: initial;
 }
+
+@media only screen and (max-width: 600px) {
+    .login {
+        padding: 0px;
+    }
+}

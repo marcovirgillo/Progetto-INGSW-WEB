@@ -116,7 +116,7 @@ export default function OverviewSection(props) {
             <Grid item lg={1} md={1} sm={1} xs={1} /> 
             <Grid className="item" item lg={6} md={5} sm={12} xs={5}> 
                 <div className="container stats">
-                    <ul style={{paddingLeft: '50px'}}>
+                    <ul className="gainers-list">
                         <ul className="container-title">
                             <img src={require("../../res/logos/portfolio-dashboard.png")} width={32} height={32} className="container-title-icon" style={{marginRight:'20px', marginTop:'7px'}}/>
                             <div className="list-title">Your portfolio</div>
@@ -124,7 +124,7 @@ export default function OverviewSection(props) {
                             <Link to="/portfolio"><div className="show-more-button">Show more</div></ Link>
                         </ul>
                         {
-                        <>
+                        <React.Fragment>
                             <ul className="list-item">
                                 <p className="list-name">24h Change</p>
                                 <div className="spacer"> </div>
@@ -140,7 +140,7 @@ export default function OverviewSection(props) {
                                 <div className="spacer"> </div>
                                 <p className="list-stat">{portfolioStats.balance < 1 ? lowerFormat(portfolioStats.balance) : formatter.format(portfolioStats.balance)}</p>
                             </ul>
-                        </>
+                        </React.Fragment>
                         }
                     </ul>
                 </div>
@@ -149,7 +149,7 @@ export default function OverviewSection(props) {
             <Grid item className="xs-spacer" sx={{display:'none'}} sm={1} xs={1} />
             <Grid item className="item" lg={6} md={5} sm={12} xs={5}> 
                 <div className="container top-gainers">
-                    <ul style={{paddingLeft: '50px'}}>
+                    <ul className="gainers-list">
                         <ul className="container-title">
                             <img src={require("../../res/logos/gainers-icon.png")} width={32} height={32} className="container-title-icon" style={{marginRight:'20px', marginTop:'7px'}}/>
                             <div className="list-title">Top Favourite Performers</div>
@@ -177,7 +177,7 @@ export default function OverviewSection(props) {
             <Grid item className="xs-spacer" sx={{display:'none'}} sm={6} xs={1} />
             <Grid className="item" item lg={6} md={5} sm={15} xs={5}>
                 <div className="container worst-gainers">
-                    <ul style={{paddingLeft: '50px'}}>
+                    <ul className="gainers-list">
                         <ul className="container-title">
                             <img src={require("../../res/logos/losers-icon.png")} width={32} height={32} className="container-title-icon" style={{marginRight:'20px', marginTop:'7px'}}/>
                             <div className="list-title">Worst Favourite Performers</div>

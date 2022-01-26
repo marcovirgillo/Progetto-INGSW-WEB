@@ -22,7 +22,7 @@ public class FetchTimer implements DisposableBean, Runnable {
 	private final int FREQUENCY_NEWS = 1000 * 60 * 30; //update ogni 30 minuti
 	private final int FREQUENCY_TOKEN_EXPIRY = 1000 * 60 * 60 * 24; //24 ore
 	private final int FREQUENCY_NOTIFICATION_1H = 1000 * 60 * 59; //59 minuti;
-	private final int FREQUENCY_NOTIFICATION_24H = 1000 * 60 * 1430; // 23h 50 min
+	private final int FREQUENCY_NOTIFICATION_24H = 1000 * 60 * 720; // 12h
 	
 	private long lastUpdateGainers = 0;
 	private long lastUpdateNews = 0;
@@ -51,7 +51,6 @@ public class FetchTimer implements DisposableBean, Runnable {
 			
 			if(System.currentTimeMillis() - lastUpdateNews > FREQUENCY_NEWS) {
 				updateLatestNews();
-			
 				lastUpdateNews = System.currentTimeMillis();
 			}
 			
@@ -61,12 +60,12 @@ public class FetchTimer implements DisposableBean, Runnable {
 			}
 			
 			if(System.currentTimeMillis() - lastUpdateNotification1h > FREQUENCY_NOTIFICATION_1H) {
-				//checkNotifications(1);
+				checkNotifications(1);
 				lastUpdateNotification1h = System.currentTimeMillis();
 			}
 			
 			if(System.currentTimeMillis() - lastUpdateNotification24h > FREQUENCY_NOTIFICATION_24H) {
-				//checkNotifications(24);
+				checkNotifications(24);
 				lastUpdateNotification24h = System.currentTimeMillis();
 			}
 		}
@@ -79,6 +78,13 @@ public class FetchTimer implements DisposableBean, Runnable {
 				PreferencesService.getInstance().updateNotifications1h();
 			else if(time == 24)
 				PreferencesService.getInstance().updateNotifications24h();
+			
+			//elimino le notifiche piu' vecchie, se ce ne sono piu di 3 per coppia (username, ticker)
+			String query = "select delete_older_notification()";
+			Statement stm = DBConnection.getInstance().getConnection().createStatement();
+			stm.execute(query);
+			stm.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

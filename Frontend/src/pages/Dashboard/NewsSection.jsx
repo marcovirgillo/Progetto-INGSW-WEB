@@ -10,7 +10,7 @@ const BigNewsBox = (props) => {
                     <img src={props.imagePath} className='big-news-image'/>
                     <p className='big-news-title'> {props.title} </p>
                     <p className='big-news-content'> {props.content} </p>
-                    <p className='big-news-date'> {props.publishedAt} </p>
+                    <p className='big-news-date'> {new Date(props.publishedAt).toUTCString()} </p>
                 </ul>
             </div>
         </a>
@@ -24,7 +24,7 @@ const SideNewsBox = (props) => {
                 <ul className='single-side-news-list'>
                     <p className='side-news-title'> {props.title} </p>
                     <p className='side-news-content'> {props.content} </p>
-                    <p className='side-news-date'> {props.publishedAt} </p>
+                    <p className='side-news-date'> {new Date(props.publishedAt).toUTCString()} </p>
                 </ul>
             </div>
         </a>

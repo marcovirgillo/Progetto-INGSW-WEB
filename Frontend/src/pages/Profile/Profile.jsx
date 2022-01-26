@@ -4,9 +4,12 @@ import "./Profile.css"
 import { address } from "../../assets/globalVar";
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import scaleImage from './ImageConverter.js'
 
 const updateAvatarUrl = `http://${address}:8080/updateUserAvatar`;
-const updateProfileUrl = `http://${address}:8080/updateUserInfo`;
+const updateProfileUrl = `http://${address}:8080/updateUserEmail`;
+const updatePasswordUrl = `http://${address}:8080/updateUserPassword`;
+const resetAvatarUrl = `http://${address}:8080/resetUserAvatar`;
 
 function isEmptyObject(obj) {
     for(var prop in obj) {
@@ -20,15 +23,17 @@ function isEmptyObject(obj) {
 
 const NameAndImage = (props) => {
     const [image, setImage] = useState(null);
+    const [dropdownImageActive, setDropdownImageActive] = useState(false);
     const inputImage = useRef(null);
     
+    //se cambia l'immagine, la posto al backend
     useEffect(() => {
         if(image !== null)
             updateAvatar();
 
     }, [image]);
 
-    const onImageClick = () => {
+    const onChangeImage = () => {
         inputImage.current.click();
     }
 
@@ -36,28 +41,21 @@ const NameAndImage = (props) => {
         if(e.target.files && e.target.files[0]) {
             convertToBase64(e.target.files[0]);
         }
+        setDropdownImageActive(false);
     }
 
     const convertToBase64 = (file) => {
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-            setImage(reader.result);
-        };
-
-        reader.onerror = function (error) {
-            console.log('Error: ', error);
-        };
+        scaleImage(file, setImage, () => props.showError("Cannot load image, please retry!", "form"));
     }
 
     const getProfilePic = () => {
         if(props.user.avatar === null)
             return require("../../res/images/profile-dark.png");
-        else 
+        else
             return "data:image/png;base64," + props.user.avatar;
     }
 
-    const options = {
+    const updateAvataroptions = {
         method: 'POST',
         headers: {
             'Authorization': props.accessToken,
@@ -69,54 +67,70 @@ const NameAndImage = (props) => {
     }
 
     const updateAvatar = () => {
-        fetch(updateAvatarUrl, options)
+        fetch(updateAvatarUrl, updateAvataroptions)
             .then(res => {
                 if(res.status === 200) {
-                    //TODO apposto
+                   props.fetchProfile();
                 }
             });
     }
 
+    const resetAvatar = () => {
+        fetch(resetAvatarUrl, resetAvatarOptions)
+            .then(res => {
+                if(res.status === 200) {
+                    props.fetchProfile();
+                }
+            });
+    }
+
+    const resetAvatarOptions = {
+        method: 'DELETE',
+        headers: {
+            'Authorization': props.accessToken,
+            'Content-Type': 'application/json'
+        }
+    }
+
+    const onDeleteImage = () => {
+        resetAvatar();
+        setDropdownImageActive(false);
+    }
+
+  
     return (
         <div className='name-image-container'>
             <ul className='name-image-list'>
-                <div className='image-pencil-container' onClick={onImageClick}>
+                <div className='image-pencil-container' >
                     <input type="file" ref={inputImage} style = {{display: 'none'}} onChange={(e) => handleOnChange(e)} />
-                    <img src={image === null ? getProfilePic() : image} className='account-image' />
-                    <img src={require("../../res/logos/edit.png")} className='pencil'/>
+                    <img src={getProfilePic()} className='account-image' />
+                    <img src={require("../../res/logos/edit.png")} className='pencil' onClick={() => setDropdownImageActive(!dropdownImageActive)}/>
                 </div>
                 <p className='account-big-name'>{props.user.username}</p>
+                {dropdownImageActive === true && (
+                    <div className='dropdown-edit-image'>
+                        <ul className='dropdown-edit-image-list'>
+                            <p className='dropdown-edit-image-item' onClick={onChangeImage} >Change avatar</p>
+                            <p className='dropdown-edit-image-item' onClick={onDeleteImage}> Delete avatar</p>
+                        </ul>
+                    </div>
+                )}
             </ul>
         </div>
     );
 }
 
 const AccountInfo = (props) => {
-    const [usernameEditable, setUsernameEditable] = useState(false);
     const [emailEditable, setEmailEditable] = useState(false);
-
-    const [usernameInputField, setUsernameInputField] = useState(props.user.username);
     const [emailInputField, setEmailInputField] = useState(props.user.email);
+
+    useEffect(() => {   
+        if(props.user && props.user.email != undefined)
+            setEmailInputField(props.user.email);
+    }, [props.user]);
 
     const isCharacterALetter = (char) => {
         return (/[a-zA-Z]/).test(char)
-    }
-
-    const checkUsernameConstraints = (ev) => {
-        const key = ev.key;
-
-        if(key === " ") {
-            ev.preventDefault();
-            return;
-        }
-        if(key === "."){
-            ev.preventDefault();
-            return;
-        }
-        if(isNaN(key) && !isCharacterALetter(key)){
-            ev.preventDefault();
-            return;
-        }
     }
 
     const checkEmailConstraints = (ev) => {
@@ -142,16 +156,12 @@ const AccountInfo = (props) => {
     }
 
     const checkAccountInfoConstraints = () => {
-        if(usernameInputField === "" || emailInputField === "") {
+        if(emailInputField === "") {
             props.showError("Error! Some fields are empty", "form");
             return false;
         }
 
         return true;
-    }
-
-    const checkUsername = (user) => {
-        return user.match(/^[a-zA-Z0-9_]+$/);
     }
 
     const checkEmail = (mail) => {
@@ -166,17 +176,16 @@ const AccountInfo = (props) => {
         },
 
         body: JSON.stringify({
-            'email': emailInputField,
-            'username': usernameInputField
+            'email': emailInputField
         })
     }
 
     const parseResponse = res => {
         if(res.status === 200) {
-            //TODO apposto
+           props.fetchProfile();
         }
         if(res.status === 5020) 
-            props.showError("Error! Some fields are not valid, please retry", 'form');
+            props.showError("Email is not valid, please retry", 'form');
         if(res.status === 500)
             props.showError("Server error! Please try again later", 'form');
     }
@@ -184,17 +193,11 @@ const AccountInfo = (props) => {
     const updateProfileInfo = () => {
         if(checkAccountInfoConstraints() === false)
             return;
-
-        if(!checkUsername(usernameInputField)) {
-            props.showError("Error! The username is not valid, please retry", 'form');
-            return
-        }
         if(!checkEmail(emailInputField)) {
             props.showError("Error! the e-mail is not valid, please retry", 'form');
             return
         }    
 
-        setUsernameEditable(false);
         setEmailEditable(false);
 
         fetch(updateProfileUrl, updateOptions)
@@ -206,14 +209,7 @@ const AccountInfo = (props) => {
             <div className='properties-container'>
                 <div className='property-container'>
                     <p className='property-title'>Username</p>
-                    <ul className="property-list">
-                        {usernameEditable  
-                            ? <input type="text" className='property-content-editable' value={usernameInputField} onChange={(e)=>setUsernameInputField(e.target.value)} onKeyPress={(ev) => checkUsernameConstraints(ev)} /> 
-                            : <p className='property-content'> {usernameInputField} </p>
-                        }
-                        <div className="property-spacer" />
-                        <p className="edit-button" onClick={() => setUsernameEditable(!usernameEditable)}>{usernameEditable ? 'Cancel' : 'Edit'}</p>
-                    </ul>
+                    <p className='property-content'> {props.user.username} </p>
                 </div>
 
                 <div className='property-container'>
@@ -242,12 +238,13 @@ const AccountInfo = (props) => {
                             getErrorLabelClassname = {props.getErrorLabelClassname}
                             showError = {props.showError}
                             errorMessage = {props.errorMessage}
+                            accessToken = {props.accessToken}
                         />
                     }
                 </div>
             </div>
 
-            {(usernameEditable === true || emailEditable === true) && (
+            {emailEditable === true && (
                 <div className='save-button' onClick={() => updateProfileInfo()} > Save </div>
             )}
 
@@ -285,15 +282,41 @@ const EditPasswordPopup = (props) => {
             props.showError("Error! Please check the input fields and retry", "popup");
             return false;
         }
-        
-        // Controllo sulla old password. Deve essere uguale a quella presente nel DB
-        
+    
         return true;
+    }
+
+    const updateOptions = {
+        method: 'POST',
+        headers: {
+            'Authorization': props.accessToken,
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+            'old_password':  oldPasswordInputField,
+            'new_password': newPasswordInputField
+        })
+    }
+
+    const parsePasswordResponse = res => {
+        if(res.status === 200) {
+            props.disablePasswordEdit();
+        }
+        if(res.status === 5020) 
+            props.showError("Error! Password characters are not valid, please retry", 'popup');
+        if(res.status === 500)
+            props.showError("Server error! Please try again later", 'popup');
+        if(res.status === 401)
+            props.showError("Error! Old password doesn't match, please retry", 'popup');
     }
 
     const handleConfirmPassword = () => {
         if(checkPasswordConstraints() === false)
             return;
+        
+        fetch(updatePasswordUrl, updateOptions)
+            .then(res => parsePasswordResponse(res));
     }
 
     return (
@@ -338,16 +361,17 @@ const EditPasswordPopup = (props) => {
 
 const Profile = (props) => {
     const navigate = useNavigate();
+    const [passwordEditable, setPasswordEditable] = useState(false);
+    const [formErrorLabelActive, setFormErrorLabelActive] = useState(false);
+    const [popupErrorLabelActive, setPopupErrorLabelActive] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
+
+        if(props.accessToken === "" && isEmptyObject(props.userLogged))
+            navigate("/login");
     }, [])
-
-    useEffect(() => {
-        console.log("props profile", props);
-        if(props.accessToken === "" || isEmptyObject(props.userLogged))
-            navigate("/login")
-    }, []);
 
     const logoutLink = `http://${address}:8080/logout`;
 
@@ -376,8 +400,6 @@ const Profile = (props) => {
             .then(res => parseResponse(res));
     }
 
-    const [passwordEditable, setPasswordEditable] = useState(false);
-
     const enablePasswordEdit = () => {
         setPasswordEditable(true);
     }
@@ -385,10 +407,6 @@ const Profile = (props) => {
     const disablePasswordEdit = () => {
         setPasswordEditable(false);
     }
-
-    const [formErrorLabelActive, setFormErrorLabelActive] = useState(false);
-    const [popupErrorLabelActive, setPopupErrorLabelActive] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
 
     const getErrorLabelClassname = () => {
         if(formErrorLabelActive || popupErrorLabelActive)
@@ -419,6 +437,8 @@ const Profile = (props) => {
                         <NameAndImage
                            user={props.userLogged}
                            accessToken={props.accessToken}
+                           fetchProfile={props.fetchProfile}
+                           showError = {showError}
                         />
                         
                         <AccountInfo 
@@ -427,6 +447,7 @@ const Profile = (props) => {
                             enablePasswordEdit={enablePasswordEdit}
                             disablePasswordEdit = {disablePasswordEdit}
                             accessToken={props.accessToken}
+                            fetchProfile={props.fetchProfile}
 
                             formErrorLabelActive = {formErrorLabelActive}
                             popupErrorLabelActive = {popupErrorLabelActive}

@@ -390,3 +390,9 @@
         padding: 4px;
     }
 }
+
+.news-page input[type=text] {
+    color: white;
+    padding-left: 40px;
+    font-weight: 500;
+}
