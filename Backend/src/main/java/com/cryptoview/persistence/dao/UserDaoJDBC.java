@@ -28,6 +28,7 @@ public class UserDaoJDBC extends UserDao {
 	private String updateAvatarQuery = "update utente set avatar=? where token=?";
 	private String resetAvatarQuery = "update utente set avatar=null where token=?";
 	private String getAllUsers = "select * from utente";
+	private String deleteTokenQuery = "delete from tokens where token=?";
 	
 	private UserDaoJDBC() {}
 	
@@ -192,5 +193,14 @@ public class UserDaoJDBC extends UserDao {
 		stm.close();
 		
 		return utente;
+	}
+
+	@Override
+	public void deleteToken(String token) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(deleteTokenQuery);
+		stm.setString(1, token);
+		
+		stm.execute();
+		stm.close();
 	}
 }

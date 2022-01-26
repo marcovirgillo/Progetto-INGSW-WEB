@@ -1,11 +1,7 @@
 package com.cryptoview.controller;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +11,6 @@ import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.model.Exchanges;
 import com.cryptoview.model.News;
 import com.cryptoview.model.Stats;
-import com.cryptoview.persistence.dao.TransactionDaoJDBC;
-import com.cryptoview.persistence.model.Transaction;
 import com.cryptoview.service.LatestNews;
 import com.cryptoview.service.MarketStats;
 import com.cryptoview.service.TopCryptos;
@@ -53,16 +47,9 @@ public class CryptoDataController {
 	
 	@GetMapping("/supportedCrypto")
 	private List<CryptoDetail> getSupportedCripto() {
-		return TopCryptos.getInstance().getAllSupportedCrypto();
-	}
-	
-	@GetMapping("/supportedCryptoSorted")
-	private List<CryptoDetail> getSupportedCriptoSorted() {
 		List <CryptoDetail> list = TopCryptos.getInstance().getAllSupportedCrypto();
-		Collections.sort(list, new Comparator<CryptoDetail>() {
-			public int compare(CryptoDetail o1, CryptoDetail o2) {
-				return o1.getName().compareTo(o2.getName());
-			}
+		Collections.sort(list, (o1, o2) -> {
+			return o1.getName().compareTo(o2.getName());
 		});
 		
 		return list;
@@ -73,25 +60,10 @@ public class CryptoDataController {
 		return MarketStats.getInstance().getStats();
 	}
 	
-	@GetMapping("/transactions") 
-	private List <Transaction> getTransactions(HttpServletResponse response) {
-		List <Transaction> list = Arrays.asList();
-		try {
-			list = TransactionDaoJDBC.getInstance().getAll();
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.setStatus(500);
-		}
-		
-		return list;
-	}
-	
 	@GetMapping("/getTop100Exchanges")
 	private List<Exchanges> getExchanges() {
 		return TopExchanges.getInstance().getTop100();
 	}
-	
-	
 
 	@GetMapping("/popularNews")
 	private List<News> getPopularNews(){
@@ -102,5 +74,4 @@ public class CryptoDataController {
 	private List<News> getAllLatestNews(){
 		return LatestNews.getInstance().getAllLatestNews();
 	}
-	
 }

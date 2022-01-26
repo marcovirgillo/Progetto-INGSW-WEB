@@ -201,7 +201,7 @@ public class UserPreferencesController {
 				return resp;
 			}
 			
-			char type = (char) obj.get("type");
+			char type = ((String) obj.get("type")).charAt(0);
 			int id = (int) obj.get("id");
 			
 			if(type == Notification.ALERT)

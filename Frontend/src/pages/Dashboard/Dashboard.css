@@ -308,8 +308,8 @@
 }
 
 @media only screen and (max-width: 600px) {
-    .dashboard-page {
-        padding: 0;
+    .dashboard {
+        padding: 0px;
     }
 
     .paper-gray {

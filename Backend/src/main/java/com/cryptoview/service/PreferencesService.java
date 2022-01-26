@@ -19,7 +19,6 @@ import com.cryptoview.persistence.dao.PreferencesDaoJDBC;
 import com.cryptoview.persistence.dao.UserDaoJDBC;
 import com.cryptoview.persistence.model.Alert;
 import com.cryptoview.persistence.model.AlertNotification;
-import com.cryptoview.persistence.model.Notification;
 import com.cryptoview.persistence.model.Preference;
 import com.cryptoview.persistence.model.PriceNotification;
 
