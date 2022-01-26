@@ -8,6 +8,7 @@ import { useState } from 'react'
 const updateAvatarUrl = `http://${address}:8080/updateUserAvatar`;
 const updateProfileUrl = `http://${address}:8080/updateUserEmail`;
 const updatePasswordUrl = `http://${address}:8080/updateUserPassword`;
+const resetAvatarUrl = `http://${address}:8080/resetUserAvatar`;
 
 function isEmptyObject(obj) {
     for(var prop in obj) {
@@ -37,6 +38,7 @@ const NameAndImage = (props) => {
         if(e.target.files && e.target.files[0]) {
             convertToBase64(e.target.files[0]);
         }
+        setDropdownImageActive(false);
     }
 
     const convertToBase64 = (file) => {
@@ -54,11 +56,11 @@ const NameAndImage = (props) => {
     const getProfilePic = () => {
         if(props.user.avatar === null)
             return require("../../res/images/profile-dark.png");
-        else 
+        else
             return "data:image/png;base64," + props.user.avatar;
     }
 
-    const options = {
+    const updateAvataroptions = {
         method: 'POST',
         headers: {
             'Authorization': props.accessToken,
@@ -70,7 +72,7 @@ const NameAndImage = (props) => {
     }
 
     const updateAvatar = () => {
-        fetch(updateAvatarUrl, options)
+        fetch(updateAvatarUrl, updateAvataroptions)
             .then(res => {
                 if(res.status === 200) {
                     //TODO apposto
@@ -78,23 +80,42 @@ const NameAndImage = (props) => {
             });
     }
 
-    const [dropdownImage, setDropdownImage] = useState(false);
+    const [dropdownImageActive, setDropdownImageActive] = useState(false);
 
-    const onDeleteImage = () => {
-        // TODO Default avatar
+
+    const resetAvatar = () => {
+        fetch(resetAvatarUrl, resetAvatarOptions)
+            .then(res => {
+                if(res.status === 200) {
+                    setImage(null);
+                }
+            });
     }
 
+    const resetAvatarOptions = {
+        method: 'DELETE',
+        headers: {
+            'Authorization': props.accessToken,
+            'Content-Type': 'application/json'
+        }
+    }
+
+    const onDeleteImage = () => {
+        resetAvatar();
+        setDropdownImageActive(false);
+    }
+
+  
     return (
         <div className='name-image-container'>
             <ul className='name-image-list'>
                 <div className='image-pencil-container' >
                     <input type="file" ref={inputImage} style = {{display: 'none'}} onChange={(e) => handleOnChange(e)} />
-                    {/* COGLIONE RIVEDI QUESTA RIGA DI MERDA.*/}
                     <img src={image === null ? getProfilePic() : image} className='account-image' />
-                    <img src={require("../../res/logos/edit.png")} className='pencil' onClick={() => setDropdownImage(!dropdownImage)}/>
+                    <img src={require("../../res/logos/edit.png")} className='pencil' onClick={() => setDropdownImageActive(!dropdownImageActive)}/>
 
                     
-                    {dropdownImage === true && (<div className='dropdown-edit-image'>
+                    {dropdownImageActive === true && (<div className='dropdown-edit-image'>
                         <ul className='dropdown-edit-image-list'>
                             <p className='dropdown-edit-image-item' onClick={onChangeImage} >Change avatar</p>
                             <p className='dropdown-edit-image-item' onClick={onDeleteImage}> Delete avatar</p>

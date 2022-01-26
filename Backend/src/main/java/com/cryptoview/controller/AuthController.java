@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -210,7 +211,7 @@ public class AuthController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public JSONObject updateUserTemplate(JSONObject obj, HttpServletRequest request, HttpServletResponse response, UpdateUserFunction fun) {
+	public JSONObject updateUserTemplate(HttpServletRequest request, HttpServletResponse response, UpdateUserFunction fun) {
 		String token = request.getHeader("Authorization");
 		JSONObject resp = new JSONObject();
 		
@@ -258,7 +259,7 @@ public class AuthController {
 				return "Avatar updated successfully";
 			};
 			
-			return updateUserTemplate(obj, request, response, fun);
+			return updateUserTemplate(request, response, fun);
 		} catch (UnsupportedEncodingException e) {
 			JSONObject resp = new JSONObject();
 			resp.put("msg", "Invalid image");
@@ -266,6 +267,17 @@ public class AuthController {
 			
 			return resp;
 		}
+	}
+	
+	@DeleteMapping("/resetUserAvatar")
+	public JSONObject resetUserAvatar(HttpServletRequest request, HttpServletResponse response) {
+		
+		UpdateUserFunction fun = (user, token) -> {
+			UserDaoJDBC.getInstance().resetUserAvatar(token);
+			return "Avatar updated successfully";
+		};
+		
+		return updateUserTemplate(request, response, fun);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -279,7 +291,7 @@ public class AuthController {
 				return "Email changed successfully";
 			};
 			
-			return updateUserTemplate(obj, request, response, fun);
+			return updateUserTemplate(request, response, fun);
 		} catch (IllegalArgumentException | NullPointerException e) {
 			JSONObject resp = new JSONObject();
 			response.setStatus(Protocol.INVALID_DATA);
@@ -305,7 +317,7 @@ public class AuthController {
 				throw new IllegalStateException();
 			};
 			
-			return updateUserTemplate(obj, request, response, fun);
+			return updateUserTemplate(request, response, fun);
 		} catch (IllegalArgumentException | NullPointerException e) {
 			JSONObject resp = new JSONObject();
 			response.setStatus(Protocol.INVALID_DATA);
