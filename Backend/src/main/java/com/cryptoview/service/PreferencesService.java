@@ -194,8 +194,7 @@ public class PreferencesService {
 			}
 		}
 	}
-<<<<<<< HEAD
-
+	
 	@SuppressWarnings("unchecked")
 	public JSONObject alertsToJSON(List<Alert> alerts) {
 		JSONObject response = new JSONObject();
@@ -217,7 +216,7 @@ public class PreferencesService {
 		response.put("alerts", array);
 
 		return response;
-=======
+	}
 	
 	public void checkAlerts(Map<String, CryptoDetail> supportedCryptoDetail) throws SQLException {
 		System.out.println("CHECKING Alerts");
@@ -242,6 +241,5 @@ public class PreferencesService {
 		notif.setTargetPrice(alert.getTargetPrice());
 		
 		return notif;
->>>>>>> 45cbec008fc73b06843e672c14110189162ace41
 	}
 }

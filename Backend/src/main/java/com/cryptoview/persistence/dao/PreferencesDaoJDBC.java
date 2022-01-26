@@ -161,7 +161,6 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 		return true;
 	}
 
-<<<<<<< HEAD
 	public List<Alert> getUserAlerts(String username) throws SQLException{
 		List<Alert> alerts = new ArrayList<Alert>();
 		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(getAllAlerts);
@@ -178,7 +177,8 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 		stm.close();
 		
 		return alerts;
-=======
+	}
+	
 	@Override
 	public List<Alert> getCryptoAlerts(String ticker) throws SQLException {
 		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(getCryptoAlerstQuery);
@@ -195,6 +195,5 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 		rs.close();
 		
 		return list;
->>>>>>> 45cbec008fc73b06843e672c14110189162ace41
 	}
 }
