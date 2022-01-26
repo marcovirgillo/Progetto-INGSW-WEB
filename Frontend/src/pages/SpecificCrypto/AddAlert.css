@@ -39,7 +39,7 @@
     border-radius: 10px;
 }
 
-.add-alert .background-blurrer {
+.add-alert .background-blurrer-alert {
     position: fixed;
     top: 0px;
     width: 100vw;

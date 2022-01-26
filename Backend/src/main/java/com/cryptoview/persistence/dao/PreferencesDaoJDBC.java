@@ -19,6 +19,7 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 	private String findPreference = "select * from preferire where ticker=? and username=?";
 	private String saveAlert = "insert into alerts values(default, ?,?,?,?)";
 	private String removeAlert = "delete from alerts where id=? and username=?";
+	private String getAllAlerts = "select * from alerts where username=?";
 	
 	private PreferencesDaoJDBC() {}
 	
@@ -157,5 +158,23 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 		if(rs == 0)
 			return false;
 		return true;
+	}
+
+	public List<Alert> getUserAlerts(String username) throws SQLException{
+		List<Alert> alerts = new ArrayList<Alert>();
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(getAllAlerts);
+		stm.setString(1, username);
+		
+		ResultSet rs = stm.executeQuery();
+		
+		while(rs.next()) {
+			Alert alert = Alert.parseFromDB(rs);
+			alerts.add(alert);
+		}
+		
+		rs.close();
+		stm.close();
+		
+		return alerts;
 	}
 }

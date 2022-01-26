@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -16,6 +17,7 @@ import com.cryptoview.model.api.NewsFetcher;
 import com.cryptoview.persistence.dao.NotificationDaoJDBC;
 import com.cryptoview.persistence.dao.PreferencesDaoJDBC;
 import com.cryptoview.persistence.dao.UserDaoJDBC;
+import com.cryptoview.persistence.model.Alert;
 import com.cryptoview.persistence.model.Notification;
 import com.cryptoview.persistence.model.Preference;
 
@@ -147,7 +149,7 @@ public class PreferencesService {
 	}
 	
 	public void updateNotifications1h() throws SQLException {
-		List <String> users = UserDaoJDBC.getInstance().getAll().stream().map(user -> user.getUsername()).toList();
+		List <String> users = UserDaoJDBC.getInstance().getAll().stream().map(user -> user.getUsername()).collect(Collectors.toList());
 		
 		for(String user : users) {
 			List <Preference> userPreferences = PreferencesDaoJDBC.getInstance().getUserPreferences(user);
@@ -169,7 +171,7 @@ public class PreferencesService {
 	}
 	
 	public void updateNotifications24h() throws SQLException {
-		List <String> users = UserDaoJDBC.getInstance().getAll().stream().map(user -> user.getUsername()).toList();
+		List <String> users = UserDaoJDBC.getInstance().getAll().stream().map(user -> user.getUsername()).collect(Collectors.toList());
 		
 		for(String user : users) {
 			List <Preference> userPreferences = PreferencesDaoJDBC.getInstance().getUserPreferences(user);
@@ -188,5 +190,28 @@ public class PreferencesService {
 				}
 			}
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public JSONObject alertsToJSON(List<Alert> alerts) {
+		JSONObject response = new JSONObject();
+
+		JSONArray array = new JSONArray();
+
+		for (var alert : alerts) {
+			JSONObject obj = new JSONObject();
+			CryptoDetail crypto = TopCryptos.getInstance().getSupportedCryptoDetail(alert.getCriptoTicker());
+			obj.put("id", alert.getId());
+			obj.put("ticker", alert.getCriptoTicker());
+			obj.put("price", alert.getTargetPrice());
+			obj.put("above", alert.isAbove());
+			obj.put("name", crypto.getName());
+			obj.put("image_url", crypto.getLogo());
+			array.add(obj);
+		}
+
+		response.put("alerts", array);
+
+		return response;
 	}
 }

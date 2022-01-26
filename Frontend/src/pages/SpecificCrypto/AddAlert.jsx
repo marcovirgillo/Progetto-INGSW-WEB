@@ -56,7 +56,7 @@ const AddAlert = (props) => {
 
     return (
         <div className="add-alert">
-            {props.addAlertActive && (<div className="background-blurrer" />)}
+            {props.addAlertActive && (<div className="background-blurrer-alert" />)}
             <div className={addAlertClass()}>
                 <ul className="inline-list select-list">
                     <span style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>

@@ -489,4 +489,44 @@ public class UserPreferencesController {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	@GetMapping("/getAlerts")
+	public JSONObject getAlerts(HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("Authorization");
+		try {
+			User user = UserDaoJDBC.getInstance().findByToken(token);
+			
+			if(user == null) {
+				JSONObject resp = new JSONObject();
+				response.setStatus(Protocol.INVALID_TOKEN);
+				resp.put("msg", "The auth token is not valid");
+				
+				return resp;
+			}
+
+			List<Alert> alerts = PreferencesDaoJDBC.getInstance().getUserAlerts(user.getUsername());
+			Collections.sort(alerts, (a1, a2) -> { //Ordino per ticker in modo tale da mostrare insieme alert della stessa cripto
+				return -1 * a1.getCriptoTicker().compareTo(a2.getCriptoTicker());
+			});
+			if(alerts != null) {
+				response.setStatus(Protocol.OK);
+				return PreferencesService.getInstance().alertsToJSON(alerts);
+			}
+			else {
+				JSONObject resp = new JSONObject();
+				response.setStatus(Protocol.NO_ALERTS_FOUND);
+				resp.put("msg", "No preferences found.");	
+				
+				return resp;
+			}
+			
+		} catch (SQLException e) {
+			JSONObject resp = new JSONObject();
+			response.setStatus(Protocol.SERVER_ERROR);
+			resp.put("msg", "Internal server error");
+			
+			return resp;
+		}
+	}
+	
 }
