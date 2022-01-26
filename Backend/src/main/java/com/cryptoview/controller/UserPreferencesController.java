@@ -13,6 +13,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -429,8 +430,8 @@ public class UserPreferencesController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@PutMapping("/saveAlert")
-	private JSONObject saveAlert(@RequestBody Alert alert, HttpServletRequest request, HttpServletResponse response) {
+	@PostMapping("/saveAlert")
+	private JSONObject saveAlert(@RequestBody JSONObject obj, HttpServletRequest request, HttpServletResponse response) {
 		String token = request.getHeader("Authorization");
 		JSONObject resp = new JSONObject();
 		
@@ -443,8 +444,13 @@ public class UserPreferencesController {
 				
 				return resp;
 			}
-
+			
+			Alert alert = new Alert();
+			alert.setCriptoTicker((String) obj.get("ticker"));
+			alert.setTargetPrice(Double.parseDouble((String) obj.get("price")));
+			alert.setAbove((boolean) obj.get("is_above"));
 			PreferencesDaoJDBC.getInstance().save(alert, user.getUsername());
+			
 			resp.put("msg", "Alert successfuly added.");
 			response.setStatus(Protocol.OK);
 			
@@ -452,6 +458,11 @@ public class UserPreferencesController {
 		} catch (SQLException e) {
 			response.setStatus(Protocol.SERVER_ERROR);
 			resp.put("msg", "Internal server error");
+			
+			return resp;
+		} catch (NumberFormatException e2) {
+			response.setStatus(Protocol.INVALID_DATA);
+			resp.put("msg", "Invalid price");
 			
 			return resp;
 		}
@@ -513,6 +524,7 @@ public class UserPreferencesController {
 			Collections.sort(alerts, (a1, a2) -> { //Ordino per ticker in modo tale da mostrare insieme alert della stessa cripto
 				return -1 * a1.getCriptoTicker().compareTo(a2.getCriptoTicker());
 			});
+			
 			if(alerts != null) {
 				response.setStatus(Protocol.OK);
 				return PreferencesService.getInstance().alertsToJSON(alerts);

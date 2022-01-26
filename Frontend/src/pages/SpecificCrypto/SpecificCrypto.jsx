@@ -250,13 +250,13 @@ const SpecificCrypto = (props) => {
             <div className="paper-grey">
                 <div style={{paddingTop:'20px'}}/>
                 <HeaderSection data={cryptoData} accessToken={props.accessToken} allCrypto={props.allCrypto} />
-                <AddAlert cryptoData={cryptoData} addAlertActive={addAlertActive} setAddAlertActive={setAddAlertActive} />
+                <AddAlert cryptoData={cryptoData} addAlertActive={addAlertActive} closePanel={() => setAddAlertActive(false)} accessToken={props.accessToken}/>
                 {
                     screenSize>600 && (
-                        <>
+                        <React.Fragment>
                             <div style={{paddingTop:'20px'}}/>
                             <StatisticsSection data={cryptoData} />
-                        </>
+                        </React.Fragment>
                     )
                 }
                 {isSupported() && (
