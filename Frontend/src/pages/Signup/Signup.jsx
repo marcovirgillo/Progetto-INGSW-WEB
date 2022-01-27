@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const signupAddress = `http://${address}:8080/registration`;
 
-const Signup = () => {
+const Signup = (props) => {
     const [screenSize, setScreenSize] = useState(window.innerWidth);
 
     const [username, setUsername] = useState("");
@@ -49,11 +49,11 @@ const Signup = () => {
 
     const parseResponse = res => {
         if(res.status === 200) {
-            console.log("signup successful");
+            props.showResultPopup("Sign Up successfull !");
             navigate("/login");
         }
         else if(res.status === 409) 
-            showError("This username already exists!"); 
+            showError("This username/email already exists!"); 
         else if(res.status === 403)
             showError("Error! Please check the input fields and retry");
         else {

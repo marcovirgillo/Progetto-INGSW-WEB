@@ -48,15 +48,15 @@ const DropdownNotification = React.forwardRef((props, ref) => {
                         <span className={getClassName(props.notif.price_Change)}>
                             &nbsp;{props.notif.price_Change} %&nbsp;
                         </span>
-                        <span>in the last&nbsp;</span> 
+                        in the last&nbsp; 
                         {props.notif.price_Change_Interval === 1 ? 'hour' : '24 hours'}
                     </React.Fragment>
                 )}
                 {props.notif.type === 'a' && (
                     <React.Fragment>
-                        &nbsp;has reached the price target
+                        &nbsp;has reached the price target &nbsp;
                         <span className={getClassNameAlert(props.notif.above)}>
-                            &nbsp;{getFormattedPrice(props.notif.target_Price)}&nbsp;
+                            {getFormattedPrice(props.notif.target_Price)}&nbsp;
                         </span>
                     </React.Fragment>
                 )}

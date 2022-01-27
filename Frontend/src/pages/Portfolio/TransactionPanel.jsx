@@ -127,13 +127,16 @@ export default function TransactionPanel(props) {
 
     const parseResponse = res => {
         if(res.status === 200) {
-            //se esiste questo metodo, fetcho portfolio info, chart e dati della cripto del qual ho modificato una transazione
+            //se esiste questo metodo, fetcho portfolio info, chart e dati della cripto del quale ho modificato una transazione
             if(props.fetchAllData) {
                 props.fetchAllData();
+                props.showResultPopup("Transaction edited successfully!");
             }
+            //altrimenti significa che ho aggiunto una nuova transazione
             else {
                 props.fetchInfo();
                 props.fetchChart();
+                props.showResultPopup("Transaction added successfully!");
             }
 
             props.closePanel();
@@ -217,16 +220,20 @@ export default function TransactionPanel(props) {
                     <ul className="field-container">
                         <ul className="field">
                             <p>Quantity</p>
-                            <input value={cryptoQuantField} onKeyPress={(ev) => checkNumbers(ev)} onChange={(ev) => updateField(ev, setCryptoQuantField)}  
-                                    onPaste={(ev) => ev.preventDefault()} type="number" placeholder="0.0" lang="en"
+                            <input value={cryptoQuantField} onKeyPress={(ev) => checkNumbers(ev)} 
+                                    onChange={(ev) => updateField(ev, setCryptoQuantField)}  
+                                    onPaste={(ev) => ev.preventDefault()} 
+                                    type="number" placeholder="0.0" lang="en" min={0}
                             />
                         </ul>
                         {itemActive !== "transfer" && (
                             <ul className="field price-field">
                                 <p>Price per coin</p>
                                 <span className="dollar-symbol">$</span>
-                                <input value={cryptoPriceField} onKeyPress={(ev) => checkNumbers(ev)} onChange={(ev) => updateField(ev, setCryptoPriceField)} 
-                                       onPaste={(ev) => ev.preventDefault()} type="number" lang="en"
+                                <input value={cryptoPriceField} onKeyPress={(ev) => checkNumbers(ev)} 
+                                        onChange={(ev) => updateField(ev, setCryptoPriceField)} 
+                                        onPaste={(ev) => ev.preventDefault()} 
+                                        type="number" lang="en" min={0}
                                 />
                             </ul>
                         )}
