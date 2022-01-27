@@ -26,7 +26,7 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: center;
-/*     align-items: flex-start; */
+    /*align-items: flex-start;*/
     padding-left: 80px;
 }
 
@@ -68,6 +68,23 @@ a {
     padding-left:20px;
 }
 
+.header-section {
+    width: 100%;
+    display: flex; 
+    justify-content: center;
+}
+
+.header-section-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 90%;
+    margin-left: -20px;
+}
+
+.community-info-container {
+    margin-right: 40px;
+}
 
 .container-title-price {
     display: flex;
@@ -280,10 +297,6 @@ a {
 }
 
 @media only screen and (max-width:600px) {
-    .container-header{
-        margin-left: -50px;
-    }
-
     .prices-info-container,
     .community-info-container {
         font-size: 120;
@@ -323,11 +336,5 @@ a {
 
     .specific-crypto {
         padding: 0px;
-    }
-}
-
-@media only screen and (max-width: 1540px) {
-    .xs-spacer-crypto {
-        display: revert !important;
     }
 }

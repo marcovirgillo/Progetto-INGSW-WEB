@@ -63,7 +63,7 @@ const SpecificCrypto = (props) => {
     const fetcher = () => {
         fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}`)
         .then((res) => res.json())
-        .then((result) => setData(result)/* setCryptoData(result) */, 
+        .then((result) => setData(result), 
         (error) => console.log("Error fetching crypto"));
     }
 

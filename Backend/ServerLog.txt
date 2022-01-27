@@ -56,3 +56,4 @@
 2022-01-26T20:16:57.744403120 ERROR fetching market stats.
 2022-01-26T22:23:47.668128934 ERROR fetching market stats.
 2022-01-26T22:39:17.551977364 ERROR fetching market stats.
+2022-01-27T13:06:34.075600053 ERROR fetching market stats.
