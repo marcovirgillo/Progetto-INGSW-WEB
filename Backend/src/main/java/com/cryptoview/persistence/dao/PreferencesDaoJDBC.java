@@ -161,7 +161,7 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 		return true;
 	}
 
-	public List<Alert> getUserAlerts(String username) throws SQLException{
+	public List<Alert> getUserAlerts(String username) throws SQLException {
 		List<Alert> alerts = new ArrayList<Alert>();
 		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(getAllAlerts);
 		stm.setString(1, username);

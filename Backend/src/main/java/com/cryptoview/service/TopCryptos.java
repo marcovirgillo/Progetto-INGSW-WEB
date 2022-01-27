@@ -39,6 +39,8 @@ public class TopCryptos {
 	
 	public void fetchData() {
 		JSONArray cryptos = TopCryptoFetcher.getInstance().fetch(250);
+		if(cryptos.size() == 0)
+			return;
 		
 		synchronized (this) {
 			cryptosList.clear();
@@ -174,7 +176,6 @@ public class TopCryptos {
 			list.add(supportedCryptoDetail.get(ticker));
 		}
 		
-		Collections.shuffle(list);
 		return list;
 	}
 }

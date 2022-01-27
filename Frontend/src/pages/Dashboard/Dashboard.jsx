@@ -122,8 +122,6 @@ const Dashboard = (props) => {
         )
     }
 
-    console.log(alerts)
-
     return (
         <div className="dashboard">
             {preferred.length === 0 && (

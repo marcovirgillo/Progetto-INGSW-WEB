@@ -99,7 +99,7 @@ input[type=number]::-webkit-outer-spin-button {
     align-items: center;
     flex-flow: row wrap;
     justify-content: space-around;
-    max-width: 250px;
+    max-width: 60%;
     margin: 0 auto;
 } 
 
@@ -113,8 +113,8 @@ input[type=number]::-webkit-outer-spin-button {
 .add-alert .dollar{
     position:absolute;
     margin-left: 10px;
-    margin-bottom: 5px;
-    font-size: 30px;
+    margin-bottom: 2px;
+    font-size: 25px;
     font-weight: 600;
     color: var(--bg-color-blue);
 }

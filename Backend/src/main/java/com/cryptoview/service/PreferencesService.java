@@ -19,7 +19,6 @@ import com.cryptoview.persistence.dao.NotificationDaoJDBC;
 import com.cryptoview.persistence.dao.PreferencesDaoJDBC;
 import com.cryptoview.persistence.dao.UserDaoJDBC;
 import com.cryptoview.persistence.model.Alert;
-import com.cryptoview.persistence.model.Notification;
 import com.cryptoview.persistence.model.AlertNotification;
 import com.cryptoview.persistence.model.Preference;
 import com.cryptoview.persistence.model.PriceNotification;
@@ -31,13 +30,12 @@ public class PreferencesService {
 	private final Double NOTIFICATION_1H_TRESHOLD = 5.0;
 	private final Double NOTIFICATION_24H_TRESHOLD = 7.0;
 
-
-	private PreferencesService() {
-	}
+	private PreferencesService() {}
 
 	public static PreferencesService getInstance() {
 		if (instance == null)
 			instance = new PreferencesService();
+		
 		return instance;
 	}
 
@@ -60,7 +58,6 @@ public class PreferencesService {
 
 	@SuppressWarnings("unchecked")
 	public JSONObject dashboardPreferencesToJson(List<Preference> preferences) {
-
 		ArrayList<CryptoDetail> array = new ArrayList<CryptoDetail>();
 		List<CryptoDetail> allCrypto = new ArrayList<CryptoDetail>(TopCryptos.getInstance().getAllSupportedCrypto());
 		
@@ -198,7 +195,6 @@ public class PreferencesService {
 	@SuppressWarnings("unchecked")
 	public JSONObject alertsToJSON(List<Alert> alerts) {
 		JSONObject response = new JSONObject();
-
 		JSONArray array = new JSONArray();
 
 		for (var alert : alerts) {

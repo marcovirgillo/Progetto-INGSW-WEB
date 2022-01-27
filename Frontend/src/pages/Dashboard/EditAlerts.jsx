@@ -56,8 +56,22 @@ const EditAlerts = (props) => {
     function getFormattedPrice(price) {
         if(price > 1)
             return formatter.format(price);
-        else 
-            return "$" + price;
+        else {
+            if(price === 0)
+                return "$" + 0.0;
+    
+            return "$" + price.toFixed(getDecimalPlaces(price) + 2);
+        }
+    }
+    
+    const getDecimalPlaces = (number) => {
+        let decimal = 0;
+        while(number < 1) {
+            decimal++;
+            number *= 10;
+        }
+    
+        return decimal;
     }
     
     function handleSelectCryptoAlert(){
@@ -68,7 +82,8 @@ const EditAlerts = (props) => {
     return(
         <div className="edit-alerts">
             {props.editAlertsActive && (<div className="background-blurrer-edit-alerts" />)}
-                <SelectCryptoAlert selectCryptoActive={selectCryptoActive} setSelectCryptoActive={setSelectCryptoActive} allCryptos={props.allCryptos}/>
+                <SelectCryptoAlert selectCryptoActive={selectCryptoActive} setSelectCryptoActive={setSelectCryptoActive} 
+                                    allCryptos={props.allCryptos} accessToken={props.accessToken}/>
                 <div className={editAlertsClass()}>
                     <ul className="inline-list select-list">
                         <span style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
@@ -78,7 +93,7 @@ const EditAlerts = (props) => {
                         <div className="h-spacer-choose-crypto"/>
                         <img src={require("../../res/logos/close.png")} width={24} height={24} alt="close add preferences" className="close-alert-icon"
                               onClick={() => props.setEditAlertsActive(false)}
-                                            />
+                        />
                     </ul>
                     <div style={{paddingTop:'15px'}} />
                     <ul className="inline-list select-list">
@@ -88,7 +103,7 @@ const EditAlerts = (props) => {
                             {queryedData.length !== 0 && (
                                 <img src={require("../../res/logos/plus-nocircle.png")} width={30} height={30} alt="remove alert" 
                                      className="create-allert-button" onClick={() => handleSelectCryptoAlert()}
-                                            />
+                                />
                             )}
                         </div>
                     </ul>
@@ -101,8 +116,10 @@ const EditAlerts = (props) => {
                                                 /* onClick={() => handleRemoveAlert(item.id)} TODO */
                                             />
                                     <img src={item.image_url} style={{paddingLeft:'5px'}} width={30} alt="crypto logo"/>  
-                                    <p >{item.name}</p>
-                                    {screenSize>600 && (<p className="ticker">{item.ticker.toUpperCase()}</p>)}
+                                    <p className="name">{item.name}</p>
+                                    {screenSize > 600 && (
+                                        <p className="ticker">{item.ticker.toUpperCase()}</p>
+                                    )}
                                     <p className="alert-price"> {getFormattedPrice(item.price)}</p>
                                     <div className="h-spacer-choose-crypto" />
                                     {item.above ? <img src={require("../../res/logos/alert-up.png")} width={30} alt="alert up" className="updown-alert"/> :

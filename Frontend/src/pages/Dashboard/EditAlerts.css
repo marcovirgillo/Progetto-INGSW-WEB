@@ -59,12 +59,12 @@
 .edit-alerts .alert-price {
     font-weight: 600;
     color: var(--bg-color-blue);
-    padding-left:20px;
 }
 
 .edit-alerts .updown-alert{
-    padding-left:20px;
-    padding-right:30px;
+    padding-left: 15px;
+    padding-right: 10px;
+    margin-left: 10px;
 }
 
 @media only screen and (max-width: 1500px){
@@ -110,6 +110,20 @@
     cursor: pointer;
 }
 
+.edit-alerts .name {
+    flex: 2 1 0;
+    margin: 0px 0px 0px 10px;
+    min-width: max-content;
+}
+
+.edit-alerts .ticker {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 2 !important;
+    margin-left: 10px;
+}
+
 .edit-alerts .create-allert-button:hover{
     background-color: #55AD11;
     border-radius: 10px;
@@ -124,7 +138,8 @@
     justify-content: flex-start;
     align-items: center;
     flex: 1 0 0;
-    width: 87%;
+    width: 100%;
+    box-sizing: border-box;
     max-height: 52px;
     border-radius: 10px;
 }
@@ -136,8 +151,7 @@
     align-items: flex-start;
     cursor: pointer;
     margin-left:0px;
-    margin-right: 0px;
-    padding-right: 0px;
+    padding: 0px;
 }
 
 @media only screen and (max-width: 1500px){
