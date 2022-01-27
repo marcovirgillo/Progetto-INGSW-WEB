@@ -168,7 +168,7 @@ export default function AppBar(props) {
             .then(res => parseResponse(res));
     }
 
-    const deleteNotification = (id, idx) => {
+    const deleteNotification = (id, idx, type) => {
         fetch(deleteNotificationsUrl, {
             method: 'DELETE',
             headers: {
@@ -177,6 +177,7 @@ export default function AppBar(props) {
             },
             body : JSON.stringify({
                 'id': id,
+                'type': type
             })
         });
 

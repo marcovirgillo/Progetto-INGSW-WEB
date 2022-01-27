@@ -304,7 +304,7 @@ const Portfolio = (props) => {
                         </ul>
 
                         <ChooseCrypto accessToken={props.accessToken} fetchChart={fetcherChart} fetchInfo={fetcherInfo} lastSelectedCrypto={lastSelectedCrypto}
-                            className={getCryptoDialogClass()} setDialogOpen={setChooseCryptoPageActive} setLastSelectedCrypto={setLastSelectedCrypto}
+                            className={getCryptoDialogClass()} setDialogOpen={setChooseCryptoPageActive} setLastSelectedCrypto={setLastSelectedCrypto} allCrypto={props.allCrypto}
                             transactionPanelActive={transactionPanelActive} setTransactionPanelActive={setTransactionPanelActive} dialogActive={chooseCryptoPageActive}/>
                     </div>
                 )}

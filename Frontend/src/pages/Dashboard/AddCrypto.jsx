@@ -111,7 +111,7 @@ const AddCrypto = (props) => {
     return (
         <div>
         <React.Fragment>
-            {props.addPreferredActive && (<div className="background-blurrer" />)}
+            {props.addPreferredActive && (<div className="background-blurrer-dashboard" />)}
                 <div className={AddCryptoClass()}>
                     <ul className="inline-list select-list">
                         <span style={{color: 'white', fontSize:'20px', fontWeight:'700', paddingTop:'15px'}}>Select your favourite assets</span>

@@ -20,4 +20,5 @@ public class Protocol {
 	
 	//Alerts
 	public static final int ALERT_NOT_EXISTENT = 7001;
+	public static final int NO_ALERTS_FOUND = 7002;
 }
