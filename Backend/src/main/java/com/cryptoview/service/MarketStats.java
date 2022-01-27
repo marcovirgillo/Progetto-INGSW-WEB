@@ -49,6 +49,8 @@ public class MarketStats {
 	
 	public void fetchData() {
 		JSONObject statsJSON = MarketStatsFetcher.getInstance().fetch();
+		if(statsJSON.get("total_market_cap") == null)
+			return;
 		
 		synchronized (this) {
 			stats.clear();

@@ -7,6 +7,7 @@ import AppBar from './components/AppBar/AppBar';
 import Footer from './components/Footer/Footer';
 import React, { useState, useEffect } from 'react';
 import { address } from './assets/globalVar';
+import ResultPopup from './components/ResultPopup/ResultPopup';
 
 const checkLoginAddress = `http://${address}:8080/checkLogin`;
 const allCryptoUrl = `http://${address}:8080/supportedCrypto`;
@@ -20,6 +21,8 @@ export default function App() {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("Auth Token"));
     const [userLogged, setUserLogged] = useState({});
     const [allCrypto, setAllCrypto] = useState([]);
+    const [resultPopupActive, setResultPopupActive] = useState(false);
+    const [resultPopupText, setResultPopupText] = useState("");
 
     //provo a vedere se il mio token per il login è valido
     const fetchData = () => {
@@ -36,6 +39,7 @@ export default function App() {
             .then((result) => setAllCrypto(result),
                    (error) => console.log("Error fetching supported crypto "));
     }, []);
+
 
     useEffect(fetchData, [accessToken]);
 
@@ -81,11 +85,18 @@ export default function App() {
         setAccessToken(token);
     } 
 
+    const showResultPopup = (msg) => {
+        setResultPopupActive(true);
+        setResultPopupText(msg);
+        setTimeout(() => setResultPopupActive(false), 3000);
+    }
+
     return (
         <BrowserRouter>
             <div className="layout-main">
                 <SideBar sideBarEnabled={sideBarEnabled} setSideBarEnabled={setSideBarEnabled} sideBarClass={sideBarClass}/>
                 <div className="layout-content">
+                    <ResultPopup isActive={resultPopupActive} text={resultPopupText} />
                     <AppBar setSideBarEnabled={setSideBarEnabled} setSearchMobileOpen={setSearchMobileOpen} 
                             isMobileOpen={searchMobileOpen} isSearchFieldOpen={searchMobileOpen} 
                             accessToken={accessToken} setAccessToken={saveToken} allCryptos={allCrypto}
@@ -93,7 +104,7 @@ export default function App() {
                     />
                     <div className="layout-content-main">
                         <AppRoutes accessToken={accessToken} setAccessToken={saveToken} allCrypto={allCrypto} 
-                                   userLogged={userLogged} fetchProfile={fetchData}/> 
+                                   userLogged={userLogged} fetchProfile={fetchData} showResultPopup={showResultPopup}/> 
                         <Footer />
                     </div>
                 </div>

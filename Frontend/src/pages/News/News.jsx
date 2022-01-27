@@ -63,7 +63,7 @@ const SearchField = (props) => {
     return (
         <div className="news-search-field">
             <img className="news-search-icon" src={require("../../res/logos/search.png")} width={18} height={18}/>
-            <input id='search' className="news-search" type="text" placeholder="Cerca.." onChange={ (ev) => props.getInput(ev)}/> 
+            <input id='search' className="news-search" type="text" placeholder="Search..." onChange={ (ev) => props.getInput(ev)}/> 
                                             
         </div>
     );

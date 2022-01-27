@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router';
-import { Navigate } from 'react-router-dom';
 import './SpecificCrypto.css';
 import "./../../App.css";
-import { Grid    } from '@mui/material'
-import { info } from './TestData.js';
 import { useNavigate } from "react-router-dom";
 import { address } from './../../assets/globalVar.js';
 
@@ -14,8 +10,6 @@ const removePreferenceUrl = `http://${address}:8080/removePreference`;
 
 let ispreferred;
 const HeaderSection = (props) => {
-    const [screenSize, setScreenSize] = useState(null);
-
     const [preferred, setPreferred] = useState([]);
 
     const optionsPreferences = {
@@ -115,17 +109,8 @@ const HeaderSection = (props) => {
     }
 
     const cryptoData = props.data;
-
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const handleResize = () => setScreenSize(window.innerWidth);
-        window.addEventListener('resize', handleResize);
-        handleResize();
-        
-        return () => window.removeEventListener('resize', handleResize);
-    });
-    
     const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
 
     function getFormattedPrice(price) {
@@ -321,39 +306,17 @@ const HeaderSection = (props) => {
     }
 
     return (
-        <React.Fragment>
-        {
-            cryptoDataSize() && (
-                <Grid container columnSpacing={{xl:5, lg:5, md:2, sm:1, xs:2}} columns={{xl:20, lg:28, md:28, sm:28, xs:7}} > 
-                    <Grid item xl={1} lg={2} md={2} sm={2} xs={1} /> 
-                    <Grid className="item" item xl={6} lg={12} md={12} sm={12} xs={5}> 
+        <div className="header-section">
+            <div className="header-section-wrapper">
+                {cryptoDataSize() && (
+                    <React.Fragment>
                         <MainDetailsSection />
-                    </Grid>
-                    <Grid item className="xs-spacer-crypto" sx={{display:'none'}} sm={1}  xs={1}/> {/* Spaziatura per schermi più piccoli */}
-                    <Grid item className="xs-spacer-crypto" sx={{display:'none'}} sm={1}  />
-                    <Grid className="item" item xl={6} lg={12} md={12} sm={12} xs={5}> 
-                    {
-                        screenSize<600 ? <CommunitySection /> : <PriceDataSection />
-                    }
-                    </Grid>
-                    <Grid item className="xs-spacer-crypto" sx={{display:'none'}} lg={0} md={0} sm={1} xs={1} />
-                    {
-                        screenSize >= 600 && (
-                            <Grid item className="xs-spacer-crypto" sx={{display:'none'}} sm={1} xs={1} />
-                        )
-                    }
-                    
-                    <Grid className="item" item xl={6} lg={12} md={12} sm={12} xs={5}> 
-                    
-                    {   
-                        screenSize<600 ? <PriceDataSection /> : <CommunitySection />
-                    }
-                    </Grid>
-                    <Grid item xl={1} lg={2} md={2} sm={2} xs={1} />
-                </Grid>
-            )
-        }
-    </React.Fragment>
+                        <PriceDataSection />
+                        <CommunitySection />
+                    </React.Fragment>
+                )}
+            </div>
+        </div>
     );
 }
 

@@ -49,7 +49,8 @@ const SelectCryptoAlert = (props) => {
         <React.Fragment>
             {props.selectCryptoActive && (<div className="background-blurrer-edit-alerts" />)}
             {addAlertActive && (
-                <AddAlert cryptoData={lastSelectedCrypto} addAlertActive={true} closePanel={() => setAddAlertActive(false)} accessToken={props.accessToken}/> 
+                <AddAlert cryptoData={lastSelectedCrypto} addAlertActive={true} closePanel={() => setAddAlertActive(false)} accessToken={props.accessToken}
+                          alerts={props.alerts} setAlerts={props.setAlerts} fetcherAlerts={props.fetcherAlerts} showResultPopup={props.showResultPopup}/> 
             )}
             {!addAlertActive && (
                 <div className={selectCryptoAlertClass()}>

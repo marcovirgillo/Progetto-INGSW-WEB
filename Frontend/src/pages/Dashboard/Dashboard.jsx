@@ -122,6 +122,8 @@ const Dashboard = (props) => {
         )
     }
 
+    console.log(alerts)
+
     return (
         <div className="dashboard">
             {preferred.length === 0 && (
@@ -151,7 +153,7 @@ const Dashboard = (props) => {
                         allCryptos={props.allCrypto} accessToken={props.accessToken} fetcherPreferences={fetcherPreferences} addCryptosClass={addPreferredActive}  
                         position="dashboard" addPreferredActive={addPreferredActive} setAddPreferredActive={setAddPreferredActive} preferred={preferred}/>
                     <EditAlerts allCryptos={props.allCrypto} accessToken={props.accessToken} editAlertsActive={editAlertsActive} setEditAlertsActive={setEditAlertsActive}
-                                alerts={alerts} setAlerts={setAlerts} allCryptos={props.allCrypto}/>
+                                alerts={alerts} setAlerts={setAlerts} allCryptos={props.allCrypto} fetcherAlerts={fetcherAlerts} showResultPopup={props.showResultPopup} />
                     <p className="dashboard-title">Your favourite assets</p>
                     <ul style={{padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         <FavouriteTable accessToken={props.accessToken} preferred={preferred} setPreferred={setPreferred}/> 

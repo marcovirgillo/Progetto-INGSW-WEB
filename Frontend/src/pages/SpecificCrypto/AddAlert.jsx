@@ -14,6 +14,8 @@ const getDecimalPlaces = (number) => {
     return decimal;
 }
 
+let alerts = [];
+
 const AddAlert = (props) => {
     const [price, setPrice] = useState(0.0);
     const [firstPrice, setFirstPrice] = useState(0.0);
@@ -30,6 +32,7 @@ const AddAlert = (props) => {
                 const number = props.cryptoData.price;
                 setPrice(number >= 1 ? number : number.toFixed(getDecimalPlaces(number) + 2));
                 setFirstPrice(number >= 1 ? number : number.toFixed(getDecimalPlaces(number) + 2));
+                alerts = props.alerts;
             }
         }
     }, [props.cryptoData]); 
@@ -77,6 +80,13 @@ const AddAlert = (props) => {
         return (props.cryptoData.image ? props.cryptoData.image.small : props.cryptoData.logo);
     }
 
+    function getTicker(){
+        if(!props.cryptoData.market_data)
+            return props.cryptoData.ticker;
+        else
+            return props.cryptoData.symbol;
+    }
+
     const options = {
         method: 'POST',
         headers: {
@@ -84,7 +94,7 @@ const AddAlert = (props) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            'ticker': props.cryptoData.ticker,
+            'ticker': getTicker(),
             'price': price,
             'is_above': price >= firstPrice ? true : false
         })
@@ -93,7 +103,11 @@ const AddAlert = (props) => {
     const parseResponse = (res) => {
         if(res.status === 200) {
             console.log("Alert created");
+            if(!props.cryptoData.market_data){
+                props.fetcherAlerts();
+            }
             props.closePanel();
+            props.showResultPopup("Alert created successfully!");
         }
         else {
             console.log(res.status);
@@ -106,6 +120,8 @@ const AddAlert = (props) => {
         fetch(addAlertUrl, options)
             .then(res => parseResponse(res));
     }
+
+    console.log(props.cryptoData)
 
     return (
         <div className="add-alert">

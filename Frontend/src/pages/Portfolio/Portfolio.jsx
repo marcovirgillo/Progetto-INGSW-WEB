@@ -299,13 +299,20 @@ const Portfolio = (props) => {
                         </ul>
                         <ul style={{display: 'flex', flexDirection: 'columns', padding: 0, margin: 0,
                                     justifyContent: 'center', alignItems: 'center'}}>
-                            <PortfolioTable accessToken={props.accessToken} fetchChart={fetcherChart} fetchInfo={fetcherInfo} 
-                                data={portfolioInfo.assets} openAddTransaction={openAddTransaction} assetsUl={myAssetsUl}/>
+                            <PortfolioTable accessToken={props.accessToken} 
+                                    fetchChart={fetcherChart} fetchInfo={fetcherInfo} 
+                                    showResultPopup={props.showResultPopup}
+                                    data={portfolioInfo.assets} 
+                                    openAddTransaction={openAddTransaction} assetsUl={myAssetsUl}/>
                         </ul>
 
-                        <ChooseCrypto accessToken={props.accessToken} fetchChart={fetcherChart} fetchInfo={fetcherInfo} lastSelectedCrypto={lastSelectedCrypto}
-                            className={getCryptoDialogClass()} setDialogOpen={setChooseCryptoPageActive} setLastSelectedCrypto={setLastSelectedCrypto} allCrypto={props.allCrypto}
-                            transactionPanelActive={transactionPanelActive} setTransactionPanelActive={setTransactionPanelActive} dialogActive={chooseCryptoPageActive}/>
+                        <ChooseCrypto accessToken={props.accessToken} 
+                            fetchChart={fetcherChart} fetchInfo={fetcherInfo} lastSelectedCrypto={lastSelectedCrypto}
+                            className={getCryptoDialogClass()} setDialogOpen={setChooseCryptoPageActive} 
+                            setLastSelectedCrypto={setLastSelectedCrypto} allCrypto={props.allCrypto}
+                            transactionPanelActive={transactionPanelActive} setTransactionPanelActive={setTransactionPanelActive} 
+                            dialogActive={chooseCryptoPageActive}
+                            showResultPopup={props.showResultPopup}/>
                     </div>
                 )}
         </div>

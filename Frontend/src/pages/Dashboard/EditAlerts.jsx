@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './EditAlerts.css';
 import './Dashboard.css';
 import SelectCryptoAlert from './SelectCryptoAlert';
+import { address } from '../../assets/globalVar';
 
 function SearchField(props) {
     return (
@@ -12,6 +13,8 @@ function SearchField(props) {
         </div>
     );
 }
+
+const removeAlertUrl = `http://${address}:8080/removeAlert`;
 
 const EditAlerts = (props) => {
     const [queryedData, setQueryedData] = useState(props.alerts);
@@ -79,11 +82,43 @@ const EditAlerts = (props) => {
         setSelectCryptoActive(true);
     }
 
+    function handleRemoveAlert(id){
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Authorization': props.accessToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'id': id
+            })
+        }
+
+        fetch(removeAlertUrl, options)
+            .then(res => parseResponse(res));
+
+        var array  = [...props.alerts].filter(item => item.id != id);
+        props.setAlerts(array);
+        props.showResultPopup("Alert removed successfully!");
+    }
+
+    const parseResponse = (res) => {
+        if(res.status === 200) {
+            console.log("Alert removed");
+        }
+        else {
+            console.log(res.status);
+            res.json().then(result => console.log(result));
+        }
+            
+    }
+
     return(
         <div className="edit-alerts">
             {props.editAlertsActive && (<div className="background-blurrer-edit-alerts" />)}
                 <SelectCryptoAlert selectCryptoActive={selectCryptoActive} setSelectCryptoActive={setSelectCryptoActive} 
-                                    allCryptos={props.allCryptos} accessToken={props.accessToken}/>
+                                    allCryptos={props.allCryptos} accessToken={props.accessToken} alerts={props.alerts} setAlerts={props.setAlerts} fetcherAlerts={props.fetcherAlerts}
+                                    showResultPopup={props.showResultPopup}/>
                 <div className={editAlertsClass()}>
                     <ul className="inline-list select-list">
                         <span style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
@@ -113,15 +148,15 @@ const EditAlerts = (props) => {
                             {queryedData.map((item, val) => (
                                 <ul key={val} className="crypto-list-item">
                                      <img src={require("../../res/logos/remove.png")} /* style={{marginRight:'10px'}} */ width={24} height={24} alt="remove alert" className="delete-dashboard-icon"
-                                                /* onClick={() => handleRemoveAlert(item.id)} TODO */
+                                                onClick={() => handleRemoveAlert(item.id)}
                                             />
                                     <img src={item.image_url} style={{paddingLeft:'5px'}} width={30} alt="crypto logo"/>  
                                     <p className="name">{item.name}</p>
                                     {screenSize > 600 && (
                                         <p className="ticker">{item.ticker.toUpperCase()}</p>
                                     )}
-                                    <p className="alert-price"> {getFormattedPrice(item.price)}</p>
                                     <div className="h-spacer-choose-crypto" />
+                                    <p className="alert-price"> {getFormattedPrice(item.price)}</p>
                                     {item.above ? <img src={require("../../res/logos/alert-up.png")} width={30} alt="alert up" className="updown-alert"/> :
                                                   <img src={require("../../res/logos/alert-down.png")} width={30} alt="alert down" className="updown-alert"/>  }
                                 </ul>

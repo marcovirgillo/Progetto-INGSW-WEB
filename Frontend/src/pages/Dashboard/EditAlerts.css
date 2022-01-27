@@ -111,12 +111,13 @@
 }
 
 .edit-alerts .name {
-    flex: 2 1 0;
+    /* flex: 2 1 0; */
     margin: 0px 0px 0px 10px;
     min-width: max-content;
 }
 
 .edit-alerts .ticker {
+    flex: 2 1 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

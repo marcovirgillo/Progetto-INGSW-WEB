@@ -29,7 +29,6 @@ public class Fetcher {
 		    
 		    is.close();
 		    return response;
-		    
 		} catch (Exception e) {
 			System.out.println("News API key: " + API.getInstance().getCurrentAPIKey() + " has reached maximum requests for today.");
 			Logger.getInstance().addEvent(errorMsg);

@@ -39,7 +39,7 @@ const Login = (props) => {
     function parseResult(res) {
         if(res.status === 200) {
             res.json().then((result) => props.setAccessToken(result['key']));
-            console.log("Accesso effettuato");
+            props.showResultPopup("Login successfull !");
             navigate("/");
         }
         else {

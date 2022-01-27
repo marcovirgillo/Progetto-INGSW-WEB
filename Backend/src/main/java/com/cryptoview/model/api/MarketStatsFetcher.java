@@ -7,9 +7,7 @@ public class MarketStatsFetcher {
 
 private static MarketStatsFetcher instance = null;
 
-	private MarketStatsFetcher() {
-		
-	}
+	private MarketStatsFetcher() {}
 	
 	public static MarketStatsFetcher getInstance() {
 		if (instance == null) 
