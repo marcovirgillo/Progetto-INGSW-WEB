@@ -7,7 +7,9 @@ import java.util.Base64;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cryptoview.BackendApplication;
 import com.cryptoview.controller.transfers.Credentials;
 import com.cryptoview.controller.transfers.FullCredentials;
 import com.cryptoview.persistence.dao.UserDaoJDBC;
@@ -22,11 +25,13 @@ import com.cryptoview.persistence.model.User;
 import com.cryptoview.persistence.model.domain.Email;
 import com.cryptoview.persistence.model.domain.Password;
 import com.cryptoview.persistence.model.domain.Username;
+import com.cryptoview.utilities.EmailSenderService;
 import com.cryptoview.utilities.SpringUtil;
 
 @RestController
 @CrossOrigin(origins = {"*"})
 public class AuthController {
+		
 	private interface UpdateUserFunction {
 		String call(User user, String token) throws SQLException, IllegalStateException;
 	}
@@ -36,9 +41,10 @@ public class AuthController {
 	public JSONObject doLogin(@RequestBody Credentials credentials, HttpServletResponse response) {
 		User utente = null;
 		JSONObject resp = new JSONObject();
-		
 		try {
+			EmailSenderService.sendEmail("vinsgigliotti@gmail.com", "porco", "dio");
 			utente = UserDaoJDBC.getInstance().checkCredentials(new Username(credentials.username), new Password(credentials.password));
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.setStatus(Protocol.SERVER_ERROR);
@@ -72,6 +78,7 @@ public class AuthController {
 				
 				token = newToken;
 			}
+			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -324,6 +331,27 @@ public class AuthController {
 			resp.put("msg", "The provided password is not valid");
 			
 			return resp;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@PostMapping("/forgotPassword")
+	public void resetPassword(@RequestBody JSONObject obj) {
+		User utente = null;
+		
+		try {
+			utente = UserDaoJDBC.getInstance().findByEmail(new Email((String) obj.get("email"))); 
+			if (utente != null) {
+				String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?";
+				String pwd = RandomStringUtils.random( 15, characters );
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+	
+		} catch (IllegalArgumentException | NullPointerException e2) {
+			e2.printStackTrace();
+		
 		}
 	}
 }

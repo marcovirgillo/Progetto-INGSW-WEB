@@ -1,10 +1,12 @@
 package com.cryptoview.persistence.dao;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.cryptoview.persistence.model.User;
@@ -18,9 +20,11 @@ public class UserDaoJDBC extends UserDao {
 	private static UserDaoJDBC instance;
 	
 	private String findByTokenQuery = "select * from utente where token=? and token !=''";
+	private String findByEmailQuery = "select * from utente where email=? and email != ''";
 	private String findByTokenNoAvatarQuery = "select username, email from utente where token=? and token !=''";
 	private String checkCredentialsQuery = "select * from utente where username=?";
 	private String saveTokenQuery = "update utente set token=? where username=?";
+	private String saveOtpQuery = "update utente set otp=?, otp_date=? where username=?";
 	private String saveUserQuery = "insert into utente values(?,?, null, '', ?)";
 	private String getTokenQuery = "select token from utente where username=?";
 	private String updateUserEmailQuery = "update utente set email=? where token=?";
@@ -72,6 +76,25 @@ public class UserDaoJDBC extends UserDao {
 	public User findByToken(String token) throws SQLException, IllegalArgumentException, NullPointerException {
 		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(findByTokenNoAvatarQuery);
 		stm.setString(1, token);
+		
+		ResultSet rs = stm.executeQuery();
+		User utente = null;
+		if(rs.next()) {
+			utente = new User();
+			utente.setUsername(new Username(rs.getString("username")));
+			utente.setEmail(new Email(rs.getString("email")));
+		}
+		
+		rs.close();
+		stm.close();
+		
+		return utente;
+	}
+	
+	@Override
+	public User findByEmail(Email email) throws SQLException, IllegalArgumentException, NullPointerException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(findByEmailQuery);
+		stm.setString(1, email.toString());
 		
 		ResultSet rs = stm.executeQuery();
 		User utente = null;
@@ -193,4 +216,17 @@ public class UserDaoJDBC extends UserDao {
 		
 		return utente;
 	}
+
+	@Override
+	public void saveOtp(String email, String token) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(saveTokenQuery);
+		stm.setString(1, token);
+		stm.setString(2, java.time.LocalDate.now().toString());
+		stm.setString(3, email);
+		
+		stm.execute();
+		stm.close();
+	}
+
+	
 }

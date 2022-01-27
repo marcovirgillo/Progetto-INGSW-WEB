@@ -33,3 +33,4 @@
 2022-01-24T19:46:58.426329280 ERROR fetching popular news.
 2022-01-24T19:46:58.427196266 ERROR fetching popular news.
 2022-01-24T19:46:58.428100321 ERROR fetching popular news.
+2022-01-27T17:05:19.681734800 ERROR fetching market stats.

@@ -37,7 +37,6 @@ public class PortfolioController {
 	private JSONObject getPrices(HttpServletRequest request, HttpServletResponse response) {
 		String timeStamp = request.getHeader("timeStamp");
 		String token = request.getHeader("Authorization");
-		
 		try {
 			User user = UserDaoJDBC.getInstance().findByToken(token); 
 			

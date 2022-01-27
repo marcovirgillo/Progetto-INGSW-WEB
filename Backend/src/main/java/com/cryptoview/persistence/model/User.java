@@ -18,7 +18,7 @@ public class User {
 	private byte[] avatar;
 	
 	public User() {}
-	
+
 	public String getEmail() {
 		return email.toString();
 	}
