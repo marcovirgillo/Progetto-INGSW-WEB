@@ -30,7 +30,6 @@ export default function SideBar(props) {
             function handleClickOutside(event) {
                 if (ref.current && !ref.current.contains(event.target)) {
                     if(enabled == true){
-                        /* console.log("You clicked outside of sidebar!"); */
                         props.setSideBarEnabled(false)
                     }
                 }

@@ -102,7 +102,6 @@ const AddAlert = (props) => {
 
     const parseResponse = (res) => {
         if(res.status === 200) {
-            console.log("Alert created");
             if(!props.cryptoData.market_data){
                 props.fetcherAlerts();
             }

@@ -226,12 +226,17 @@ export default function CriptoTable(props) {
         <Table className="table" sx={{maxWidth: '95%', marginTop: '30px'}}>
             <TableHead>
                 <TableRow>
-                    <TableCell className="table-attribute">#</TableCell>
+                    <TableCell className="table-attribute"onClick={() => {sorting("rank"); setItemActive("rank")}} style={{cursor: 'pointer'}}>
+                        <TableCellArrow content="#" arrowChecker="rank" />
+                    </TableCell>
                     <TableCell className="table-attribute">Name</TableCell>
                     <TableCell className="table-attribute"onClick={() => {sorting("price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
                         <TableCellArrow content="Price" arrowChecker="price" />
                     </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("change"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
+                    <TableCell className="table-attribute" onClick={() => {sorting("change_1h"); setItemActive("1h")}} style={{cursor: 'pointer'}}>
+                        <TableCellArrow content="1h" arrowChecker="1h" />
+                    </TableCell>
+                    <TableCell className="table-attribute" onClick={() => {sorting("change_24h"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
                         <TableCellArrow content="24h" arrowChecker="24h" />
                     </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("change_7d"); setItemActive("7d")}} style={{cursor: 'pointer'}}>
@@ -270,6 +275,9 @@ export default function CriptoTable(props) {
                                     </TableCell>
                                     <TableCell className="table-item">
                                         {getFormattedPrice(item.price)}
+                                    </TableCell>
+                                    <TableCell className={getPriceClass(item.change_1h)}>
+                                        {change(item.change_1h)} %
                                     </TableCell>
                                     <TableCell className={getPriceClass(item.change_24h)}>
                                         {change(item.change_24h)} %

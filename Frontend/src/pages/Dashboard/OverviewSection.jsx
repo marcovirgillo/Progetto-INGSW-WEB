@@ -59,7 +59,7 @@ export default function OverviewSection(props) {
                     setTopPerformers(result.preferences_top_gainers);
                     setWorstPerformers(result.preferences_worst_performer);
                     },
-                      (error) => console.log(error));
+                    (error) => console.log(error));
         }
         else if(res.status === 6001) {
             console.log("No gainers found");

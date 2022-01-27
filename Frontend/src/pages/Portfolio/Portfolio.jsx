@@ -71,7 +71,6 @@ const Portfolio = (props) => {
     }
 
     const processInfo = res => {
-        console.log("Info arrivate");
         if(res.status === 200) {
             res.json()
                 .then((result) => setPortfolioInfo(result),
@@ -91,7 +90,7 @@ const Portfolio = (props) => {
     const processValue = res => {
         if(res.status === 200) {
             res.json()
-                .then((result) => {console.log(result); processData(result)},
+                .then((result) => processData(result),
                     (error) => console.log(error));
         }
 
@@ -115,7 +114,6 @@ const Portfolio = (props) => {
         if(props.accessToken === null || props.accessToken === "")
             return;
 
-        console.log("fetcho info");
         fetch(portfolioInfoUrl, optionsInfo)
             .then((res) => processInfo(res));
     }

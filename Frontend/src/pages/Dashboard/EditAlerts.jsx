@@ -107,7 +107,6 @@ const EditAlerts = (props) => {
             console.log("Alert removed");
         }
         else {
-            console.log(res.status);
             res.json().then(result => console.log(result));
         }
             

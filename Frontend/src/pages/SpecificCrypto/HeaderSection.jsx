@@ -84,7 +84,6 @@ const HeaderSection = (props) => {
 
     useEffect(() => {
         if(props.accessToken !== null && props.accessToken !== ""){
-            console.log("Fetching preferences")
             fetcherPreferences();
         }
     }, []);

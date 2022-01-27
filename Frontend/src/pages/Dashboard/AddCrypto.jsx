@@ -80,8 +80,7 @@ const AddCrypto = (props) => {
             var array  = [...selected].filter(item => item.ticker != crypto);
             selected = array;
         }
-
-        console.log(selected)
+        
         setUpdateChecked(!updateChecked);
     };
 
