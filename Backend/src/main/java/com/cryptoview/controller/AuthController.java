@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cryptoview.BackendApplication;
 import com.cryptoview.controller.transfers.Credentials;
 import com.cryptoview.controller.transfers.FullCredentials;
 import com.cryptoview.persistence.dao.UserDaoJDBC;
@@ -42,7 +40,6 @@ public class AuthController {
 		User utente = null;
 		JSONObject resp = new JSONObject();
 		try {
-			EmailSenderService.sendEmail("vinsgigliotti@gmail.com", "porco", "dio");
 			utente = UserDaoJDBC.getInstance().checkCredentials(new Username(credentials.username), new Password(credentials.password));
 			
 		} catch (SQLException e) {
@@ -114,6 +111,9 @@ public class AuthController {
 					
 					return resp;
 				}
+				
+				if(user.getUsername().equals("piero"))
+					EmailSenderService.sendEmail("pierobassa222@gmail.com", "hai loggato", "bastardo");
 				
 				//altrimenti, restituisco 200 e l'oggetto user
 				response.setStatus(Protocol.OK);
@@ -335,17 +335,17 @@ public class AuthController {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@PostMapping("/forgotPassword")
 	public void resetPassword(@RequestBody JSONObject obj) {
 		User utente = null;
 		
 		try {
 			utente = UserDaoJDBC.getInstance().findByEmail(new Email((String) obj.get("email"))); 
+			
 			if (utente != null) {
-				String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?";
-				String pwd = RandomStringUtils.random( 15, characters );
-				
+				String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.?#$%^&+=!";
+				String pwd = RandomStringUtils.random(30, characters);
+				System.out.println(pwd);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

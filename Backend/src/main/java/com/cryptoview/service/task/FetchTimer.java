@@ -22,7 +22,7 @@ public class FetchTimer implements DisposableBean, Runnable {
 	private final int FREQUENCY_NEWS = 1000 * 60 * 30; //update ogni 30 minuti
 	private final int FREQUENCY_TOKEN_EXPIRY = 1000 * 60 * 60 * 24; //24 ore
 	private final int FREQUENCY_NOTIFICATION_1H = 1000 * 60 * 59; //59 minuti;
-	private final int FREQUENCY_NOTIFICATION_24H = 1000 * 60 * 720; // 12h
+	private final int FREQUENCY_NOTIFICATION_24H = 1000 * 60 * 720; // 12 ore
 	
 	private long lastUpdateGainers = 0;
 	private long lastUpdateNews = 0;
