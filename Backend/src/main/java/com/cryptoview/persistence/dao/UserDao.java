@@ -19,11 +19,11 @@ public abstract class UserDao implements Dao<User>{
 	public abstract String getToken(String username) throws SQLException;
 	public abstract User checkCredentials(Username username, Password password) throws SQLException;
 	public abstract void saveToken(String user, String token) throws SQLException;
-	public abstract void saveOtp(String email, String token) throws SQLException;
 	
 	public abstract void updateUserEmail(Email emai, String token) throws SQLException;
 	public abstract void updateUserAvatar(byte[] avatar, String token) throws SQLException;
 	public abstract void resetUserAvatar(String token) throws SQLException;
 	public abstract void updateUserPassword(Password newPass, String token) throws SQLException;
+	public abstract void deleteToken(String token) throws SQLException;
 
 }

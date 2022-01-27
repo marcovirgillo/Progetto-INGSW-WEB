@@ -10,16 +10,19 @@ export default function AppRoutes(props) {
     return (
         <Routes>
             <Route path="/" exact element={<Home accessToken={props.accessToken}/>} />
-            <Route path="/portfolio" exact element={<Portfolio accessToken={props.accessToken}/>} />
-            <Route path="/dashboard" exact element={<Dashboard accessToken={props.accessToken} allCrypto={props.allCrypto} />} />
+            <Route path="/portfolio" exact element={<Portfolio accessToken={props.accessToken} allCrypto={props.allCrypto} 
+                                                                showResultPopup={props.showResultPopup}/>} 
+            />
+            <Route path="/dashboard" exact element={<Dashboard accessToken={props.accessToken} allCrypto={props.allCrypto} showResultPopup={props.showResultPopup}/>}/>} />
             <Route path="/news" exact element={<News />} />
             <Route path="/exchanges" exact element={<Exchanges />} />
-            <Route path="/profile" exact element={<Profile userLogged={props.userLogged} setAccessToken={props.setAccessToken} accessToken={props.accessToken}/>} />
-            <Route path="/crypto/:name" exact element={<SpecificCrypto accessToken={props.accessToken} allCrypto={props.allCrypto}/>}/>
+            <Route path="/profile" exact element={<Profile userLogged={props.userLogged} setAccessToken={props.setAccessToken} 
+                                                    accessToken={props.accessToken} fetchProfile={props.fetchProfile}/>} />
+            <Route path="/crypto/:name" exact element={<SpecificCrypto accessToken={props.accessToken} allCrypto={props.allCrypto} showResultPopup={props.showResultPopup}/>}/>
             <Route path="/exchange/:name" exact element={<SpecificExchange />} />
             <Route path="/aboutus" exact element={<AboutUs />} />
-            <Route path="/login" exact element={<Login setAccessToken={props.setAccessToken}/>} />
-            <Route path="/signup" exact element={<Signup />} />
+            <Route path="/login" exact element={<Login setAccessToken={props.setAccessToken} showResultPopup={props.showResultPopup}/>} />
+            <Route path="/signup" exact element={<Signup showResultPopup={props.showResultPopup} />} />
             <Route path="/forgotpassword" exact element={<ForgotPassword />} />
             <Route exact element={<OverviewSection accessToken={props.accessToken}/>} />
         </Routes>

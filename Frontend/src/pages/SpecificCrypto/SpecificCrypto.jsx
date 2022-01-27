@@ -63,7 +63,7 @@ const SpecificCrypto = (props) => {
     const fetcher = () => {
         fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}`)
         .then((res) => res.json())
-        .then((result) => setData(result)/* setCryptoData(result) */, 
+        .then((result) => setData(result), 
         (error) => console.log("Error fetching crypto"));
     }
 
@@ -250,13 +250,13 @@ const SpecificCrypto = (props) => {
             <div className="paper-grey">
                 <div style={{paddingTop:'20px'}}/>
                 <HeaderSection data={cryptoData} accessToken={props.accessToken} allCrypto={props.allCrypto} />
-                <AddAlert cryptoData={cryptoData} addAlertActive={addAlertActive} setAddAlertActive={setAddAlertActive} />
+                <AddAlert cryptoData={cryptoData} addAlertActive={addAlertActive} closePanel={() => setAddAlertActive(false)} accessToken={props.accessToken} showResultPopup={props.showResultPopup}/>
                 {
                     screenSize>600 && (
-                        <>
+                        <React.Fragment>
                             <div style={{paddingTop:'20px'}}/>
                             <StatisticsSection data={cryptoData} />
-                        </>
+                        </React.Fragment>
                     )
                 }
                 {isSupported() && (

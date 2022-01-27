@@ -4,8 +4,6 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import TransactionPanel from './TransactionPanel';
 
-const allCryptoUrl = `http://${address}:8080/supportedCryptoSorted`;
-
 function SearchField(props) {
     return (
         <div className="app-bar-search-field">
@@ -25,15 +23,12 @@ export default function ChooseCrypto(props) {
         setTimeout(() => props.setTransactionPanelActive(false), 100);
     }
 
-
     useEffect(() => {
-        if(props.accessToken != null && props.accessToken != ""){
-            fetch(allCryptoUrl)
-                .then((res) => res.json())
-                .then((result) => {setAllCryptos(result); setQueryedData(result)},
-                    (error) => console.log(error));
+        if(props.allCrypto) {
+            setAllCryptos(props.allCrypto);
+            setQueryedData(props.allCrypto);
         }
-    }, []);
+    }, [props.allCrypto]);
 
     const queryData = (str) => {
         let allCryptoCopy = [];
@@ -46,10 +41,16 @@ export default function ChooseCrypto(props) {
         setQueryedData(allCryptoCopy);
     }
 
+    const chooseCrypto = (item) => {
+        props.setLastSelectedCrypto(item);
+        props.setTransactionPanelActive(true);
+        setQueryedData(allCryptos);
+    }
+
     return (
         <React.Fragment>
             {/* inserisco questo div che si sovrappone agli altri per non far cliccare i vari bottoni se il dialog è aperto */}
-            {props.dialogActive && (<div className="-backgroundblurrer" />)}
+            {props.dialogActive && (<div className="background-blurrer" />)}
             {!props.transactionPanelActive && (
                 <div className={props.className}>
                     <ul className="inline-list select-list">
@@ -62,7 +63,7 @@ export default function ChooseCrypto(props) {
                         <SearchField queryData={queryData}/>
                         <ul className="search-list crypto-list">
                             {queryedData.map((item, val) => (
-                                <ul key={val} className="crypto-list-item" onClick={() => {props.setLastSelectedCrypto(item); props.setTransactionPanelActive(true)}}>
+                                <ul key={val} className="crypto-list-item" onClick={() => chooseCrypto(item)}>
                                     <img src={item.logo} width={30} alt="crypto logo"/>  
                                     <p>{item.name}</p>
                                     <p className="ticker">{item.ticker.toUpperCase()}</p>
@@ -75,8 +76,10 @@ export default function ChooseCrypto(props) {
                 </div>
             )}
             {props.transactionPanelActive && (
-                <TransactionPanel className={props.className} fetchChart={props.fetchChart} fetchInfo={props.fetchInfo} accessToken={props.accessToken} 
-                    crypto={props.lastSelectedCrypto} closePanel={closeTransactionPanel} />
+                <TransactionPanel className={props.className} fetchChart={props.fetchChart} 
+                        fetchInfo={props.fetchInfo} accessToken={props.accessToken} 
+                        crypto={props.lastSelectedCrypto} closePanel={closeTransactionPanel}
+                        showResultPopup={props.showResultPopup} />
             )}
         </React.Fragment>
     )

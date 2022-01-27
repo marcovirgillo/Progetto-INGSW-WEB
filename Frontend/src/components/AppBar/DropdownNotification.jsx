@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { address } from '../../assets/globalVar';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from '@mui/material';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
@@ -49,15 +48,15 @@ const DropdownNotification = React.forwardRef((props, ref) => {
                         <span className={getClassName(props.notif.price_Change)}>
                             &nbsp;{props.notif.price_Change} %&nbsp;
                         </span>
-                        <span>in the last&nbsp;</span> 
+                        in the last&nbsp; 
                         {props.notif.price_Change_Interval === 1 ? 'hour' : '24 hours'}
                     </React.Fragment>
                 )}
                 {props.notif.type === 'a' && (
                     <React.Fragment>
-                        &nbsp;has reached the price target
+                        &nbsp;has reached the price target &nbsp;
                         <span className={getClassNameAlert(props.notif.above)}>
-                            &nbsp;{getFormattedPrice(props.notif.target_Price)}&nbsp;
+                            {getFormattedPrice(props.notif.target_Price)}&nbsp;
                         </span>
                     </React.Fragment>
                 )}
@@ -75,7 +74,7 @@ const DropdownNotification = React.forwardRef((props, ref) => {
                                 <img src={item.logo} width={20} height={20} style={{borderRadius: '100%'}} alt="crypyo logo"/>
                                 <NotificationText notif={item} closePanel={props.closePanel}/>
                                 <div className="notif-spacer" />
-                                <Icon className="delete-btn" onClick={()=>{ props.deleteNotification(item.id, val)}}> 
+                                <Icon className="delete-btn" onClick={()=>{ props.deleteNotification(item.id, val, item.type)}}> 
                                     <DeleteOutlineRoundedIcon className="delete-icon" sx={{color: 'white'}}/> 
                                 </Icon>
                             </li>
@@ -85,7 +84,7 @@ const DropdownNotification = React.forwardRef((props, ref) => {
                         </ul>
                     )))}
                     {props.notificationList.length === 0 && (
-                        <p style={{color: 'white', margin: '0px 20px 0px 20px'}}>There are no notifications</p>
+                        <p style={{color: 'white', margin: '0px 20px 0px 20px', fontWeight: '500'}}>There are no notifications</p>
                     )}
                 </ul>
             </div>

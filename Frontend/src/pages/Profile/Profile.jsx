@@ -4,6 +4,7 @@ import "./Profile.css"
 import { address } from "../../assets/globalVar";
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import scaleImage from './ImageConverter.js'
 
 const updateAvatarUrl = `http://${address}:8080/updateUserAvatar`;
 const updateProfileUrl = `http://${address}:8080/updateUserEmail`;
@@ -22,8 +23,10 @@ function isEmptyObject(obj) {
 
 const NameAndImage = (props) => {
     const [image, setImage] = useState(null);
+    const [dropdownImageActive, setDropdownImageActive] = useState(false);
     const inputImage = useRef(null);
     
+    //se cambia l'immagine, la posto al backend
     useEffect(() => {
         if(image !== null)
             updateAvatar();
@@ -42,15 +45,7 @@ const NameAndImage = (props) => {
     }
 
     const convertToBase64 = (file) => {
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-            setImage(reader.result);
-        };
-
-        reader.onerror = function (error) {
-            console.log('Error: ', error);
-        };
+        scaleImage(file, setImage, () => props.showError("Cannot load image, please retry!", "form"));
     }
 
     const getProfilePic = () => {
@@ -75,19 +70,16 @@ const NameAndImage = (props) => {
         fetch(updateAvatarUrl, updateAvataroptions)
             .then(res => {
                 if(res.status === 200) {
-                    //TODO apposto
+                   props.fetchProfile();
                 }
             });
     }
-
-    const [dropdownImageActive, setDropdownImageActive] = useState(false);
-
 
     const resetAvatar = () => {
         fetch(resetAvatarUrl, resetAvatarOptions)
             .then(res => {
                 if(res.status === 200) {
-                    setImage(null);
+                    props.fetchProfile();
                 }
             });
     }
@@ -111,19 +103,18 @@ const NameAndImage = (props) => {
             <ul className='name-image-list'>
                 <div className='image-pencil-container' >
                     <input type="file" ref={inputImage} style = {{display: 'none'}} onChange={(e) => handleOnChange(e)} />
-                    <img src={image === null ? getProfilePic() : image} className='account-image' />
+                    <img src={getProfilePic()} className='account-image' />
                     <img src={require("../../res/logos/edit.png")} className='pencil' onClick={() => setDropdownImageActive(!dropdownImageActive)}/>
-
-                    
-                    {dropdownImageActive === true && (<div className='dropdown-edit-image'>
+                </div>
+                <p className='account-big-name'>{props.user.username}</p>
+                {dropdownImageActive === true && (
+                    <div className='dropdown-edit-image'>
                         <ul className='dropdown-edit-image-list'>
                             <p className='dropdown-edit-image-item' onClick={onChangeImage} >Change avatar</p>
                             <p className='dropdown-edit-image-item' onClick={onDeleteImage}> Delete avatar</p>
                         </ul>
-                    </div>)}
-
-                </div>
-                <p className='account-big-name'>{props.user.username}</p>
+                    </div>
+                )}
             </ul>
         </div>
     );
@@ -132,6 +123,11 @@ const NameAndImage = (props) => {
 const AccountInfo = (props) => {
     const [emailEditable, setEmailEditable] = useState(false);
     const [emailInputField, setEmailInputField] = useState(props.user.email);
+
+    useEffect(() => {   
+        if(props.user && props.user.email != undefined)
+            setEmailInputField(props.user.email);
+    }, [props.user]);
 
     const isCharacterALetter = (char) => {
         return (/[a-zA-Z]/).test(char)
@@ -186,7 +182,7 @@ const AccountInfo = (props) => {
 
     const parseResponse = res => {
         if(res.status === 200) {
-            //TODO apposto
+           props.fetchProfile();
         }
         if(res.status === 5020) 
             props.showError("Email is not valid, please retry", 'form');
@@ -365,16 +361,17 @@ const EditPasswordPopup = (props) => {
 
 const Profile = (props) => {
     const navigate = useNavigate();
+    const [passwordEditable, setPasswordEditable] = useState(false);
+    const [formErrorLabelActive, setFormErrorLabelActive] = useState(false);
+    const [popupErrorLabelActive, setPopupErrorLabelActive] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
+
+        if(props.accessToken === "" && isEmptyObject(props.userLogged))
+            navigate("/login");
     }, [])
-
-    useEffect(() => {
-        console.log("props profile", props);
-        if(props.accessToken === "" || isEmptyObject(props.userLogged))
-            navigate("/login")
-    }, []);
 
     const logoutLink = `http://${address}:8080/logout`;
 
@@ -403,8 +400,6 @@ const Profile = (props) => {
             .then(res => parseResponse(res));
     }
 
-    const [passwordEditable, setPasswordEditable] = useState(false);
-
     const enablePasswordEdit = () => {
         setPasswordEditable(true);
     }
@@ -412,10 +407,6 @@ const Profile = (props) => {
     const disablePasswordEdit = () => {
         setPasswordEditable(false);
     }
-
-    const [formErrorLabelActive, setFormErrorLabelActive] = useState(false);
-    const [popupErrorLabelActive, setPopupErrorLabelActive] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
 
     const getErrorLabelClassname = () => {
         if(formErrorLabelActive || popupErrorLabelActive)
@@ -446,6 +437,8 @@ const Profile = (props) => {
                         <NameAndImage
                            user={props.userLogged}
                            accessToken={props.accessToken}
+                           fetchProfile={props.fetchProfile}
+                           showError = {showError}
                         />
                         
                         <AccountInfo 
@@ -454,6 +447,7 @@ const Profile = (props) => {
                             enablePasswordEdit={enablePasswordEdit}
                             disablePasswordEdit = {disablePasswordEdit}
                             accessToken={props.accessToken}
+                            fetchProfile={props.fetchProfile}
 
                             formErrorLabelActive = {formErrorLabelActive}
                             popupErrorLabelActive = {popupErrorLabelActive}

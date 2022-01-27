@@ -7,6 +7,7 @@ import AppBar from './components/AppBar/AppBar';
 import Footer from './components/Footer/Footer';
 import React, { useState, useEffect } from 'react';
 import { address } from './assets/globalVar';
+import ResultPopup from './components/ResultPopup/ResultPopup';
 
 const checkLoginAddress = `http://${address}:8080/checkLogin`;
 const allCryptoUrl = `http://${address}:8080/supportedCrypto`;
@@ -20,6 +21,8 @@ export default function App() {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("Auth Token"));
     const [userLogged, setUserLogged] = useState({});
     const [allCrypto, setAllCrypto] = useState([]);
+    const [resultPopupActive, setResultPopupActive] = useState(false);
+    const [resultPopupText, setResultPopupText] = useState("");
 
     //provo a vedere se il mio token per il login è valido
     const fetchData = () => {
@@ -36,6 +39,7 @@ export default function App() {
             .then((result) => setAllCrypto(result),
                    (error) => console.log("Error fetching supported crypto "));
     }, []);
+
 
     useEffect(fetchData, [accessToken]);
 
@@ -60,20 +64,17 @@ export default function App() {
     //controllo la risposta del server dopo il tentativo di login
     const parseResult = res => {
         if(res.status === 200) {
-            console.log("Login con token da app js success")
+            console.log("Fetch con token da app js success")
             res.json().then(result => setUserLogged(result['user']));
         }
         else if(res.status === 5000 && accessToken != "") {
-            //TODO popup rifai il login
             //In questo caso il token non nullo che ho salvato non è valido e devo rifare l'accesso
-            saveToken("");
             setUserLogged({});
             saveToken("");
         }
         else {
             console.log("Errore durante il login da app js:")
             res.json().then((val) => console.log(val));
-            saveToken("");
             setUserLogged({});
             saveToken("");
         }
@@ -84,18 +85,26 @@ export default function App() {
         setAccessToken(token);
     } 
 
+    const showResultPopup = (msg) => {
+        setResultPopupActive(true);
+        setResultPopupText(msg);
+        setTimeout(() => setResultPopupActive(false), 3000);
+    }
+
     return (
         <BrowserRouter>
             <div className="layout-main">
                 <SideBar sideBarEnabled={sideBarEnabled} setSideBarEnabled={setSideBarEnabled} sideBarClass={sideBarClass}/>
                 <div className="layout-content">
+                    <ResultPopup isActive={resultPopupActive} text={resultPopupText} />
                     <AppBar setSideBarEnabled={setSideBarEnabled} setSearchMobileOpen={setSearchMobileOpen} 
                             isMobileOpen={searchMobileOpen} isSearchFieldOpen={searchMobileOpen} 
                             accessToken={accessToken} setAccessToken={saveToken} allCryptos={allCrypto}
                             setUserLogged={setUserLogged} userLogged={userLogged}
                     />
                     <div className="layout-content-main">
-                        <AppRoutes accessToken={accessToken} setAccessToken={saveToken} allCrypto={allCrypto} userLogged={userLogged}/> 
+                        <AppRoutes accessToken={accessToken} setAccessToken={saveToken} allCrypto={allCrypto} 
+                                   userLogged={userLogged} fetchProfile={fetchData} showResultPopup={showResultPopup}/> 
                         <Footer />
                     </div>
                 </div>

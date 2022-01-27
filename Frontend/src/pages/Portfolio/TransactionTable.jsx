@@ -150,6 +150,7 @@ export default function TransactionTable(props) {
     const parseDelete = res => {
         if(res.status === 200) {
             setPopupActive(false);
+            props.showResultPopup("Transaction removed successfully!");
             fetchAllData();
         }
         else 
@@ -289,6 +290,7 @@ export default function TransactionTable(props) {
                                 transaction_type={getTransactionType()} transfer_type={getTransferType()}
                                 accessToken={props.accessToken}
                                 fetchAllData={fetchAllData}
+                                showResultPopup={props.showResultPopup}
                                 closePanel={() => setEditTransactionActive(false)}
                 /></React.Fragment>
             )}

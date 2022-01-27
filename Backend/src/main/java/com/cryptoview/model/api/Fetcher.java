@@ -23,35 +23,12 @@ public class Fetcher {
 	
 	public String fetch(String url, String errorMsg) throws IOException {
 		try {
-			/*URL obj = new URL(url);
-			
-			HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-			conn.setRequestMethod("GET");
-			
-			//Getting the response code
-			int responsecode = conn.getResponseCode();
-			
-			if(responsecode != 200) {
-				System.out.println(java.time.LocalDateTime.now() + " " + errorMsg +  " [" + responsecode + "]");
-				Logger.getInstance().addEvent(errorMsg + " [" + responsecode + "]");
-			}
-			
-			String inline = "";
-		    Scanner scanner = new Scanner(obj.openStream());
-		  
-		    //Write all the JSON data into a string using a scanner
-		    while (scanner.hasNext()) {
-		       inline += scanner.nextLine();
-		    }
-		   
-		    scanner.close();*/
 			InputStream is = new URL(url).openStream();
 		    BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
 		    String response = readAll(rd);
 		    
 		    is.close();
 		    return response;
-		    
 		} catch (Exception e) {
 			System.out.println("News API key: " + API.getInstance().getCurrentAPIKey() + " has reached maximum requests for today.");
 			Logger.getInstance().addEvent(errorMsg);

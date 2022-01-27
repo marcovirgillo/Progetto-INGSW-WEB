@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Map;
 
 import org.json.simple.JSONArray;
@@ -19,7 +20,6 @@ import com.cryptoview.persistence.dao.PreferencesDaoJDBC;
 import com.cryptoview.persistence.dao.UserDaoJDBC;
 import com.cryptoview.persistence.model.Alert;
 import com.cryptoview.persistence.model.AlertNotification;
-import com.cryptoview.persistence.model.Notification;
 import com.cryptoview.persistence.model.Preference;
 import com.cryptoview.persistence.model.PriceNotification;
 
@@ -30,13 +30,12 @@ public class PreferencesService {
 	private final Double NOTIFICATION_1H_TRESHOLD = 5.0;
 	private final Double NOTIFICATION_24H_TRESHOLD = 7.0;
 
-
-	private PreferencesService() {
-	}
+	private PreferencesService() {}
 
 	public static PreferencesService getInstance() {
 		if (instance == null)
 			instance = new PreferencesService();
+		
 		return instance;
 	}
 
@@ -59,7 +58,6 @@ public class PreferencesService {
 
 	@SuppressWarnings("unchecked")
 	public JSONObject dashboardPreferencesToJson(List<Preference> preferences) {
-
 		ArrayList<CryptoDetail> array = new ArrayList<CryptoDetail>();
 		List<CryptoDetail> allCrypto = new ArrayList<CryptoDetail>(TopCryptos.getInstance().getAllSupportedCrypto());
 		
@@ -151,7 +149,7 @@ public class PreferencesService {
 	}
 	
 	public void updateNotifications1h() throws SQLException {
-		List <String> users = UserDaoJDBC.getInstance().getAll().stream().map(user -> user.getUsername()).toList();
+		List <String> users = UserDaoJDBC.getInstance().getAll().stream().map(user -> user.getUsername()).collect(Collectors.toList());
 		
 		for(String user : users) {
 			List <Preference> userPreferences = PreferencesDaoJDBC.getInstance().getUserPreferences(user);
@@ -173,7 +171,7 @@ public class PreferencesService {
 	}
 	
 	public void updateNotifications24h() throws SQLException {
-		List <String> users = UserDaoJDBC.getInstance().getAll().stream().map(user -> user.getUsername()).toList();
+		List <String> users = UserDaoJDBC.getInstance().getAll().stream().map(user -> user.getUsername()).collect(Collectors.toList());
 		
 		for(String user : users) {
 			List <Preference> userPreferences = PreferencesDaoJDBC.getInstance().getUserPreferences(user);
@@ -192,6 +190,28 @@ public class PreferencesService {
 				}
 			}
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONObject alertsToJSON(List<Alert> alerts) {
+		JSONObject response = new JSONObject();
+		JSONArray array = new JSONArray();
+
+		for (var alert : alerts) {
+			JSONObject obj = new JSONObject();
+			CryptoDetail crypto = TopCryptos.getInstance().getSupportedCryptoDetail(alert.getCriptoTicker());
+			obj.put("id", alert.getId());
+			obj.put("ticker", alert.getCriptoTicker());
+			obj.put("price", alert.getTargetPrice());
+			obj.put("above", alert.isAbove());
+			obj.put("name", crypto.getName());
+			obj.put("image_url", crypto.getLogo());
+			array.add(obj);
+		}
+
+		response.put("alerts", array);
+
+		return response;
 	}
 	
 	public void checkAlerts(Map<String, CryptoDetail> supportedCryptoDetail) throws SQLException {

@@ -157,6 +157,7 @@ public class AuthController {
 				}
 				
 				//altrimenti invalido il token
+				UserDaoJDBC.getInstance().deleteToken(token);
 				UserDaoJDBC.getInstance().saveToken(user.getUsername(), "");
 				response.setStatus(Protocol.OK);
 				resp.put("msg", "logout successful");

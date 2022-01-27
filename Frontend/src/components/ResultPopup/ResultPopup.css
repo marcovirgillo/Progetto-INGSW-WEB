@@ -1,0 +1,44 @@
+.result-popup {
+    position: fixed;
+    left: var(--side-bar-min-width);
+    top: 75px;
+    width: calc(100% - var(--side-bar-min-width));
+    z-index: 200;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    transform: translateY(-145px);
+    transition: 0.3s ease-in-out;
+}
+
+.result-popup-active {
+    transform: translateY(0px);
+    transition: 0.3s ease-in-out;
+}
+
+.result-wrapper {
+    box-sizing: border-box;
+    background-color: var(--bg-color-dark);
+    z-index: 600;
+    border-radius: 10px;
+    padding: 10px 20px 10px 20px;
+}
+
+@media only screen and (max-width: 1500px) {
+    .result-popup {
+        left: 0px;
+        width: 100%;
+    }    
+}
+
+.result-popup-list {
+    display: flex;
+    align-items: center;
+}
+
+.result-popup p {
+    color: white;
+    font-weight: 500;
+    margin-left: 10px;
+
+}

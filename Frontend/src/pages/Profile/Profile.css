@@ -58,6 +58,7 @@
     padding: 0;
     display: flex;
     flex-direction: row;
+    position: relative;
 }
 
 .account-image {
@@ -86,9 +87,10 @@
 .dropdown-edit-image {
     border-radius: 10px;
     background-color: var(--bg-color-dark);
-    position: fixed;
-    top: 17%;
-    left: 46%
+    position: absolute;
+    top: -10px;
+    left: 85px;
+    width: fit-content;
 }
 
 .dropdown-edit-image-list {
@@ -99,6 +101,7 @@
    flex-direction: column;
    justify-content: center;
    align-items: center;
+   min-width: max-content;
    padding: 5px 5px 5px 5px;
 }
 
@@ -383,10 +386,6 @@
     .edit-password-popup {
         left: 25% !important;
         width: 50% !important;
-    }
-
-    .dropdown-edit-image {
-        left: 29%
     }
 }
 

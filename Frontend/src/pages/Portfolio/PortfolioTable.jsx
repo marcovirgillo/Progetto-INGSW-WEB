@@ -150,6 +150,7 @@ export default function CriptoTable(props) {
         if(res.status === 200) {
             props.fetchChart(); 
             props.fetchInfo();
+            props.showResultPopup("Asset removed successfully!");
             setSelectedAsset({'logo': '', 'ticker': ''});
         }
         else 
@@ -221,8 +222,10 @@ export default function CriptoTable(props) {
     return (
         <React.Fragment>
             {transactionTableActive && (
-                <TransactionTable assetsUl={props.assetsUl} logo={selectedAsset.logo} closeTable={() => setTransactionTableActive(false)}
-                                    accessToken={props.accessToken} cripto={selectedAsset} fetchChart={props.fetchChart} fetchInfo={props.fetchInfo}
+                <TransactionTable assetsUl={props.assetsUl} logo={selectedAsset.logo} 
+                                closeTable={() => setTransactionTableActive(false)}
+                                showResultPopup={props.showResultPopup}
+                                accessToken={props.accessToken} cripto={selectedAsset} fetchChart={props.fetchChart} fetchInfo={props.fetchInfo}
                 />
             )}
             {!transactionTableActive && (

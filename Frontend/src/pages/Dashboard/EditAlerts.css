@@ -1,0 +1,179 @@
+.edit-alerts .edit-alerts-div {
+    width: 28%;
+    top: 16%;
+    left: 45%;
+    background-color: var(--bg-color-dark);
+    border-radius: 12px;
+    position: fixed;
+    z-index: 100;
+    transform: scale(0);
+    transition: transform 0.3s ease 0s;
+}
+
+.edit-alerts .div-active{
+    transform: scale(1);
+    transition: transform 0.3s ease 0s;
+}
+
+.edit-alerts .inline-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    max-height: 40px;
+    padding: 0px;
+}
+
+.edit-alerts .select-list {
+    margin: 10px 30px 0px 30px;
+}
+
+.edit-alerts .background-blurrer-edit-alerts {
+    position: fixed;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
+    z-index: 50;
+    background-color: rgba(31, 31, 31, 0.5);
+    backdrop-filter: blur(5px); 
+    margin: -5px;
+}
+
+.edit-alerts .close-alert-icon{
+    margin-top: 18px;
+    padding: 7px;
+    cursor: pointer;
+}
+
+.edit-alerts .close-alert-icon:hover{
+    background-color: #2a799e;
+    border-radius: 10px;
+}
+
+.edit-alerts .alert-crypto-icon{
+    margin-left: -10px;
+    margin-top: 15px;
+    padding-right: 15px;
+}
+
+.edit-alerts .alert-price {
+    font-weight: 600;
+    color: var(--bg-color-blue);
+}
+
+.edit-alerts .updown-alert{
+    padding-left: 15px;
+    padding-right: 10px;
+    margin-left: 10px;
+}
+
+@media only screen and (max-width: 1500px){
+    .edit-alerts .alert-price {
+        padding-left:0px;
+    }
+    .edit-alerts .updown-alert{
+        padding-left:5px;
+        padding-right:5px;
+    }
+
+    .edit-alerts .search-list{
+        padding-left: '0px' !important;
+    }
+}
+
+.edit-alerts .create-allert-icon{
+    padding: 7px;
+    cursor: pointer;
+}
+
+.edit-alerts .create-allert-icon:hover {
+    background-color: #5eca49;
+    border-radius: 10px;
+}
+
+.edit-alerts .list-item {
+    padding: 0px;
+    padding-left: 10px;
+    margin-left: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex: 1 0 0;
+    width: 93%;
+    max-height: 52px;
+    border-radius: 10px;
+}
+
+.edit-alerts .create-allert-button{
+    padding:5px;
+    cursor: pointer;
+}
+
+.edit-alerts .name {
+    /* flex: 2 1 0; */
+    margin: 0px 0px 0px 10px;
+    min-width: max-content;
+}
+
+.edit-alerts .ticker {
+    flex: 2 1 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 2 !important;
+    margin-left: 10px;
+}
+
+.edit-alerts .create-allert-button:hover{
+    background-color: #55AD11;
+    border-radius: 10px;
+}
+
+.edit-alerts .crypto-list-item {
+    padding: 0px;
+    padding-left: 10px;
+    margin-left: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex: 1 0 0;
+    width: 100%;
+    box-sizing: border-box;
+    max-height: 52px;
+    border-radius: 10px;
+}
+
+
+.edit-alerts .crypto-list {
+    margin-top: 10px;
+    width: 98%;
+    align-items: flex-start;
+    cursor: pointer;
+    margin-left:0px;
+    padding: 0px;
+}
+
+@media only screen and (max-width: 1500px){
+    .edit-alerts .edit-alerts-div {
+        left: 20% !important;
+        width: 50% !important;
+    }
+}
+
+@media only screen and (max-width: 1000px){
+    .edit-alerts .edit-alerts-div {
+        left: 20% !important;
+        width: 60% !important;
+    }
+}
+
+
+@media only screen and (max-width: 800px)  {
+    .edit-alerts .edit-alerts-div {
+        top: 20% !important;
+        left: 5% !important;
+        width: 90% !important;
+    }
+}

@@ -11,8 +11,8 @@ public class Password {
 	
 	public Password(String value) {
 		notNull(value);
-		//inclusiveBetween(min_len, max_len, value.length());
-		//matchesPattern(value, regex);
+		inclusiveBetween(min_len, max_len, value.length());
+		matchesPattern(value, regex);
 		
 		this.value = value;
 	}
