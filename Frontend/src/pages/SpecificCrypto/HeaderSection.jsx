@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router';
-import { Navigate } from 'react-router-dom';
 import './SpecificCrypto.css';
 import "./../../App.css";
-import { info } from './TestData.js';
 import { useNavigate } from "react-router-dom";
 import { address } from './../../assets/globalVar.js';
 
