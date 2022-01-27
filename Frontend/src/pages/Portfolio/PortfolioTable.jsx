@@ -251,6 +251,9 @@ export default function CriptoTable(props) {
                                 <TableCell className="table-attribute" onClick={() => {sorting("avg_buy_price"); setItemActive("avg-buy-price"); }} style={{cursor: 'pointer'}}>
                                     <TableCellArrow content="Avg. Buy Price" arrowChecker="avg-buy-price" />
                                 </TableCell>
+                                <TableCell className="table-attribute" onClick={() => {sorting("dollar_spent"); setItemActive("spent"); }} style={{cursor: 'pointer'}}>
+                                    <TableCellArrow content="Total Spent" arrowChecker="spent" />
+                                </TableCell>
                                 <TableCell className="table-attribute" onClick={() => {sorting("profit_dollar"); setItemActive("profit"); }} style={{cursor: 'pointer'}}>
                                     <TableCellArrow content="Profit/Loss" arrowChecker="profit" />
                                 </TableCell>
@@ -287,6 +290,9 @@ export default function CriptoTable(props) {
                                             </TableCell>
                                             <TableCell className="table-item">
                                                 {getFormattedPrice(item.avg_buy_price)}
+                                            </TableCell>
+                                            <TableCell className="table-item">
+                                                {getFormattedPrice(item.dollar_spent)}
                                             </TableCell>
                                             <TableCell className="table-item">
                                                 <ul className="table-item-list">

@@ -288,6 +288,12 @@
     margin: 10px 18px 0px 30px;
 }
 
+.portfolio .no-result-label {
+    color: var(--light-gray-color);
+    width: 100%;
+    text-align: center;
+}
+
 .portfolio .search-list {
     display: flex;
     flex-direction: column;

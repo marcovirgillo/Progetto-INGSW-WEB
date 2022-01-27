@@ -61,7 +61,8 @@ public class PortfolioService {
 		Map <String, Double> avgPrices = new HashMap<>();
 		Map <String, Double> dollarProfit = new HashMap<>();
 		Map <String, Double> percentageProfit = new HashMap<>();
-		getPriceInfo((ArrayList<Transaction>) portfolio.getTransactionList(), dollarProfit, avgPrices, percentageProfit);
+		Map <String, Double> dollarSpentCrypto = new HashMap<>();
+		getPriceInfo((ArrayList<Transaction>) portfolio.getTransactionList(), dollarProfit, dollarSpentCrypto, avgPrices, percentageProfit);
 		
 		for(Crypto crypto : portfolio.getCryptoMap().keySet()) {
 			JSONObject cryptoObj = new JSONObject();
@@ -74,9 +75,10 @@ public class PortfolioService {
 			cryptoObj.put("change_7d", TopCryptos.getInstance().getSupportedCrypto7dChange(crypto.getTicker()));
 			cryptoObj.put("holdings", formatHoldingStr(portfolio.getCryptoMap().get(crypto)) + " " + crypto.getTicker().toUpperCase());
 			cryptoObj.put("holding_dollar", portfolio.getCryptoMap().get(crypto) * TopCryptos.getInstance().getSupportedCryptoPrice(crypto.getTicker()));
-			cryptoObj.put("avg_buy_price", avgPrices.get(crypto.getTicker()));
+			cryptoObj.put("avg_buy_price", avgPrices.getOrDefault(crypto.getTicker(), 0.0));
 			cryptoObj.put("profit_dollar", dollarProfit.get(crypto.getTicker()));
-			cryptoObj.put("profit_percentage", percentageProfit.get(crypto.getTicker()));
+			cryptoObj.put("profit_percentage", percentageProfit.getOrDefault(crypto.getTicker(), 0.0));
+			cryptoObj.put("dollar_spent", dollarSpentCrypto.getOrDefault(crypto.getTicker(), 0.0));
 			
 			assets.add(cryptoObj);
 		}
@@ -353,10 +355,9 @@ public class PortfolioService {
 		return resp;
 	}
 
-	private void getPriceInfo(ArrayList<Transaction> transactionList, Map <String, Double> profitDollar,
+	private void getPriceInfo(ArrayList<Transaction> transactionList, Map <String, Double> profitDollar, Map <String, Double> dollarSpent,
 			                  Map <String, Double> avgPrices, Map <String, Double> profitPercentage) {
 		
-		Map <String, Double> dollarSpent = new HashMap<>();
 		Map <String, Double> cryptoQuantityAvg = new HashMap<>();
 		Map <String, Double> totalBalance = new HashMap<>();
 		Map <String, Double> totalCryptoInPortfolio = new HashMap<>();
@@ -385,22 +386,27 @@ public class PortfolioService {
 			}
 		}
 		
-		for(String ticker : dollarSpent.keySet()) {
-			Double avg = dollarSpent.get(ticker);
-			avg = avg / cryptoQuantityAvg.get(ticker);
+		for(String ticker : totalCryptoInPortfolio.keySet()) {
+			Double avg = dollarSpent.getOrDefault(ticker, 0.0);
+			//se non ho speso nulla, allora avg price è 0
+			if(avg != 0.0)
+				avg = avg / cryptoQuantityAvg.get(ticker);
+			
 			avgPrices.put(ticker, avg);
 			
-			Double balance = totalBalance.get(ticker);
+			Double balance = totalBalance.getOrDefault(ticker, 0.0);
 			Double liquidValue = TopCryptos.getInstance().getSupportedCryptoPrice(ticker);
 			liquidValue = liquidValue * totalCryptoInPortfolio.get(ticker);
 			balance = balance + liquidValue;
-			Double totalSpent = dollarSpent.get(ticker);
+			Double totalSpent = dollarSpent.getOrDefault(ticker, 0.0);
 			
-			Double percentage = balance;
-			percentage = percentage / totalSpent;
+			Double percentage = 0.0;
+			if(totalSpent != 0.0) {
+				percentage = balance / totalSpent;
+			}
 			percentage *= 100;
 			profitPercentage.put(ticker, round(percentage, 2));
-			profitDollar.put(ticker, round(balance, 2));
+			profitDollar.put(ticker, round(balance, 3));
 		}
 	}
 	

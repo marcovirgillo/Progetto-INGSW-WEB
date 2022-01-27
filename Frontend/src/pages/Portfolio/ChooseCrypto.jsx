@@ -71,6 +71,9 @@ export default function ChooseCrypto(props) {
                                     <ArrowForwardIosRoundedIcon sx={{color: 'white', marginRight: '5px'}}/>
                                 </ul>
                             ))}
+                            {queryedData && queryedData.length === 0 && (
+                                <p className="no-result-label">No cryptos found</p>
+                            )}
                         </ul>
                     </ul>
                 </div>

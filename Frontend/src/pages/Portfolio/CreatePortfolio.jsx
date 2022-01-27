@@ -94,6 +94,7 @@ export default function CreatePortfolio(props) {
     const parseResult = (res) => {
         if(res.status === 200) {
             props.updateData();
+            props.showResultPopup("Portfolio created successfully!");
         }
         else if(res.status === 5050) {
             console.log("A portfolio already exists");
