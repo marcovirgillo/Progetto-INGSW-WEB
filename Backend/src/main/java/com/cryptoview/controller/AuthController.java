@@ -348,7 +348,7 @@ public class AuthController {
 				String pwd = RandomStringUtils.random(30, characters);
 				Password newPassword = new Password(pwd);
 				Email email = new Email((String) obj.get("email"));
-				EmailSenderService.sendEmail(email.toString(), "Password reset", pwd);
+				EmailSenderService.sendPasswordResetEmail(email.toString(), pwd);
 				UserDaoJDBC.getInstance().updateUserPasswordByEmail(newPassword, email);
 				response.setStatus(Protocol.OK);
 				JSONObject resp = new JSONObject();

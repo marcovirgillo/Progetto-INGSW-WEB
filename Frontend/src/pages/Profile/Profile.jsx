@@ -70,7 +70,8 @@ const NameAndImage = (props) => {
         fetch(updateAvatarUrl, updateAvataroptions)
             .then(res => {
                 if(res.status === 200) {
-                   props.fetchProfile();
+                    props.showResultPopup("Avatar updated successfully!");
+                    props.fetchProfile();
                 }
             });
     }
@@ -79,6 +80,7 @@ const NameAndImage = (props) => {
         fetch(resetAvatarUrl, resetAvatarOptions)
             .then(res => {
                 if(res.status === 200) {
+                    props.showResultPopup("Avatar removed successfully!");
                     props.fetchProfile();
                 }
             });
@@ -182,7 +184,8 @@ const AccountInfo = (props) => {
 
     const parseResponse = res => {
         if(res.status === 200) {
-           props.fetchProfile();
+            props.showResultPopup("Email updated successfully!");
+            props.fetchProfile();
         }
         if(res.status === 5020) 
             props.showError("Email is not valid, please retry", 'form');
@@ -239,6 +242,7 @@ const AccountInfo = (props) => {
                             showError = {props.showError}
                             errorMessage = {props.errorMessage}
                             accessToken = {props.accessToken}
+                            showResultPopup={props.showResultPopup}
                         />
                     }
                 </div>
@@ -301,6 +305,7 @@ const EditPasswordPopup = (props) => {
 
     const parsePasswordResponse = res => {
         if(res.status === 200) {
+            props.showResultPopup("Password updated successfully!");
             props.disablePasswordEdit();
         }
         if(res.status === 5020) 
@@ -386,7 +391,7 @@ const Profile = (props) => {
 
     const parseResponse = res => {
         if(res.status === 200) {
-            console.log("Logout successful");
+            props.showResultPopup("Logout successfull!");
             props.setAccessToken("");
         }
         else {
@@ -439,6 +444,7 @@ const Profile = (props) => {
                            accessToken={props.accessToken}
                            fetchProfile={props.fetchProfile}
                            showError = {showError}
+                           showResultPopup={props.showResultPopup}
                         />
                         
                         <AccountInfo 
@@ -448,6 +454,7 @@ const Profile = (props) => {
                             disablePasswordEdit = {disablePasswordEdit}
                             accessToken={props.accessToken}
                             fetchProfile={props.fetchProfile}
+                            showResultPopup={props.showResultPopup}
 
                             formErrorLabelActive = {formErrorLabelActive}
                             popupErrorLabelActive = {popupErrorLabelActive}
