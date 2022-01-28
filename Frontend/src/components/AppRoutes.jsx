@@ -23,7 +23,7 @@ export default function AppRoutes(props) {
             <Route path="/aboutus" exact element={<AboutUs />} />
             <Route path="/login" exact element={<Login setAccessToken={props.setAccessToken} showResultPopup={props.showResultPopup}/>} />
             <Route path="/signup" exact element={<Signup showResultPopup={props.showResultPopup} />} />
-            <Route path="/forgotpassword" exact element={<ForgotPassword />} />
+            <Route path="/forgotpassword" exact element={<ForgotPassword showResultPopup={props.showResultPopup}/>} />
             <Route exact element={<OverviewSection accessToken={props.accessToken}/>} />
         </Routes>
     )

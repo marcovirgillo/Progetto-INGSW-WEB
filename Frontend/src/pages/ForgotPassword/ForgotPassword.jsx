@@ -1,10 +1,44 @@
 import React, { useEffect, useState } from 'react'
 import './ForgotPassword.css'
 import { Link } from 'react-router-dom'
+import { address } from '../../assets/globalVar';
+import { useNavigate } from "react-router-dom";
 
-export default function ForgotPassword() {
+
+export default function ForgotPassword(props) {
+
+    const navigate = useNavigate();
+
+    const resetAddress = `http://${address}:8080/forgotpassword`;
 
     const [screenSize, setScreenSize] = useState(window.innerWidth);
+    const [email, setEmail] = useState("");
+
+    const resetOptions = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'email' : email,
+        }),
+    };
+
+    const parseResponse = res => {
+        if(res.status === 200) {
+            props.showResultPopup("Mail sent !");
+            navigate("/login");
+        }
+        else {
+            console.log("error");
+            res.json().then(result => console.log(result));
+        }
+    }
+
+    const resetPassword = () => {
+        fetch(resetAddress, resetOptions)
+            .then(res => parseResponse(res));
+    }
 
     useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
@@ -61,7 +95,6 @@ export default function ForgotPassword() {
         return {minHeight:'60vh'}
     }
 
-    const [email, setEmail] = useState("");
     const [errorLabelActive, setErrorLabelActive] = useState(false);
 
     const checkEmailField = () => {
@@ -106,7 +139,7 @@ export default function ForgotPassword() {
                 <div style={{paddingTop:'20px'}} />
                 <div className="forgot-password-field">
                     <span className="send-button-style" style={fieldFont()}>
-                        <div className='send-button-text' onClick={checkEmailField} style={sendButtonTextStyle("normal") }>Send</div>
+                        <div className='send-button-text' onClick={resetPassword} style={sendButtonTextStyle("normal") }>Send</div>
                     </span>
                     
                     {errorLabelActive === true && <div className={getErrorLabelClassname()}>

@@ -193,7 +193,7 @@ public class AuthController {
 			utente.setUsername(new Username(credentials.username));
 			
 			UserDaoJDBC.getInstance().save(utente);
-			
+			EmailSenderService.sendEmail(credentials.email.toString(), "Welcome!", EmailSenderService.REGISTRATION_MESSAGES);
 			response.setStatus(Protocol.OK);
 			resp.put("msg", "Account created succesffully");
 			
@@ -335,8 +335,9 @@ public class AuthController {
 		}
 	}
 	
-	@PostMapping("/forgotPassword")
-	public void resetPassword(@RequestBody JSONObject obj) {
+	@SuppressWarnings("unchecked")
+	@PostMapping("/forgotpassword")
+	public JSONObject resetPassword(@RequestBody JSONObject obj, HttpServletResponse response) {
 		User utente = null;
 		
 		try {
@@ -345,14 +346,30 @@ public class AuthController {
 			if (utente != null) {
 				String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.?#$%^&+=!";
 				String pwd = RandomStringUtils.random(30, characters);
-				System.out.println(pwd);
+				Password newPassword = new Password(pwd);
+				Email email = new Email((String) obj.get("email"));
+				EmailSenderService.sendEmail(email.toString(), "Password reset", pwd);
+				UserDaoJDBC.getInstance().updateUserPasswordByEmail(newPassword, email);
+				response.setStatus(Protocol.OK);
+				JSONObject resp = new JSONObject();
+				resp.put("msg", "Account created succesffully");
+				return resp;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			JSONObject resp = new JSONObject();
+			response.setStatus(Protocol.INVALID_DATA);
+			resp.put("msg", "The provided password is not valid");
+			
+			return resp;
 	
 		} catch (IllegalArgumentException | NullPointerException e2) {
-			e2.printStackTrace();
+			JSONObject resp = new JSONObject();
+			response.setStatus(Protocol.INVALID_DATA);
+			resp.put("msg", "The provided password is not valid");
+			
+			return resp;
 		
 		}
+		return obj;
 	}
 }

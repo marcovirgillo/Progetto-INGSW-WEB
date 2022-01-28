@@ -26,6 +26,7 @@ public class UserDaoJDBC extends UserDao {
 	private String getTokenQuery = "select token from utente where username=?";
 	private String updateUserEmailQuery = "update utente set email=? where token=?";
 	private String updateUserPasswordQuery = "update utente set password=? where token=?";
+	private String updateUserPasswordByEmailQuery = "update utente set password=? where email=?";
 	private String updateAvatarQuery = "update utente set avatar=? where token=?";
 	private String resetAvatarQuery = "update utente set avatar=null where token=?";
 	private String getAllUsers = "select * from utente";
@@ -223,5 +224,16 @@ public class UserDaoJDBC extends UserDao {
 
 		stm.execute();
 		stm.close();
+	}
+
+	@Override
+	public void updateUserPasswordByEmail(Password newPass, Email email) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(updateUserPasswordByEmailQuery);
+		stm.setString(1, SpringUtil.hashPassword(newPass.toString()));
+		stm.setString(2, email.toString());
+
+		stm.execute();
+		stm.close();
+		
 	}
 }

@@ -24,6 +24,7 @@ public abstract class UserDao implements Dao<User>{
 	public abstract void updateUserAvatar(byte[] avatar, String token) throws SQLException;
 	public abstract void resetUserAvatar(String token) throws SQLException;
 	public abstract void updateUserPassword(Password newPass, String token) throws SQLException;
+	public abstract void updateUserPasswordByEmail(Password newPass, Email email) throws SQLException;
 	public abstract void deleteToken(String token) throws SQLException;
 
 }

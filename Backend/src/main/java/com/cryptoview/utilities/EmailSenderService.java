@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailSenderService {
 	
+	public static final String REGISTRATION_MESSAGES = "Hi there! \n Welcome in Cryptoview!";
+	
 	@Autowired
 	public EmailSenderService(JavaMailSender sender) {
 		mailSender = sender;	
