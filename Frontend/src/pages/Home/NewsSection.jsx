@@ -37,7 +37,7 @@ export default function NewsSection() {
     }, [screenSize]);
 
     const fetchData = () => {
-        fetch(`http://${address}:8080/latestNews`)
+        fetch(`http://${address}/latestNews`)
             .then((res) => res.json())
             .then((result) => setNewsData(result),
                   (error) => console.log("Error fetching latest news"));

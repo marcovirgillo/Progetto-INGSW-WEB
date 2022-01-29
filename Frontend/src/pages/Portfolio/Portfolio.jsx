@@ -17,8 +17,8 @@ import { blue } from '@mui/material/colors';
 const greenColor = "#46C95B";
 const redColor = "#E05757";
 
-const portfolioChartUrl = `http://${address}:8080/portfolioValue`;
-const portfolioInfoUrl = `http://${address}:8080/portfolioInfo`;
+const portfolioChartUrl = `http://${address}/portfolioValue`;
+const portfolioInfoUrl = `http://${address}/portfolioInfo`;
 
 //è il rettangolo che mostra l'andamento percentuale delle 24h
 function IndicatorRectangle(props) {

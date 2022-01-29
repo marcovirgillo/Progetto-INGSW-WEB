@@ -2,12 +2,10 @@ import React, { Component, useState, useEffect } from 'react'
 import { TableBody, Table, TableCell, TableHead, TableRow, Icon } from '@mui/material';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
-import { useInterval } from '../../components/Hooks.js';
 import { Link, Navigate  } from 'react-router-dom'
-import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { address } from './../../assets/globalVar.js';
 
-const removePreferenceUrl = `http://${address}:8080/removePreference`;
+const removePreferenceUrl = `http://${address}/removePreference`;
 
 export default function CriptoTable(props) {
     const [preferred, setPreferred] = useState([]);

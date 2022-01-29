@@ -9,9 +9,9 @@ import React, { useState, useEffect } from 'react';
 import { address } from './assets/globalVar';
 import ResultPopup from './components/ResultPopup/ResultPopup';
 
-const checkLoginAddress = `http://${address}:8080/checkLogin`;
-const allCryptoUrl = `http://${address}:8080/supportedCrypto`;
-const logoutLink = `http://${address}:8080/logout`;
+const checkLoginAddress = `http://${address}/checkLogin`;
+const allCryptoUrl = `http://${address}/supportedCrypto`;
+const logoutLink = `http://${address}/logout`;
 
 export default function App() {
     //le due funzioni di stato vengono passate a sideBar e appbar, e servono a chiudere/aprire la sidebar sull'evento onclick dei bottoni
