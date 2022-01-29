@@ -25,7 +25,7 @@ function isEmptyObject(obj) {
 function DropdownProfile(props) {
     return (
         <div className={"dropdown dropdown-profile " + props.class}>
-            {!isEmptyObject(props.userLogged) ? <LoggedAccount setAccessToken={props.setAccessToken} user={props.userLogged} accessToken={props.accessToken} /> 
+            {!isEmptyObject(props.userLogged) ? <LoggedAccount setAccessToken={props.setAccessToken} user={props.userLogged} doLogout={props.doLogout} accessToken={props.accessToken} /> 
                                             : <AccessAccount setAccessToken={props.setAccessToken}/> }
         </div>
     );
@@ -245,6 +245,7 @@ export default function AppBar(props) {
                     <DropdownProfile class={dropdownProfileActive ? ' drop-active' : ''} 
                             accessToken={props.accessToken} setAccessToken={props.setAccessToken}
                             userLogged={props.userLogged} setUserLogged={props.setUserLogged}
+                            doLogout={props.doLogout}
                     />
                 </React.Fragment>
             )}

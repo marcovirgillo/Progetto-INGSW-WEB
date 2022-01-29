@@ -376,7 +376,8 @@ const Profile = (props) => {
 
         if(props.accessToken === "" && isEmptyObject(props.userLogged))
             navigate("/login");
-    }, [])
+
+    }, [props.userLogged]);
 
     const logoutLink = `http://${address}:8080/logout`;
 
