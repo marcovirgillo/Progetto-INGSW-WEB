@@ -499,7 +499,7 @@ public class UserPreferencesController {
 			}
 		} catch (SQLException e) {
 			response.setStatus(Protocol.SERVER_ERROR);
-			resp.put("msg", "Internal server error or Alert doesn't exist");
+			resp.put("msg", "Internal server error or Alert does not exist");
 			
 			return resp;
 		}
