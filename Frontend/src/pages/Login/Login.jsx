@@ -184,7 +184,7 @@ const Login = (props) => {
                 </div>
                 <div className="login-field">
                     <input className="login-field-style" value={password} onChange={(ev) => setPassword(ev.target.value)}
-                        onPaste={(ev) => ev.preventDefault()} type="password" placeholder='At least 8 characters' style={fieldFont()}
+                       type="password" placeholder='At least 8 characters' style={fieldFont()}
                     />
 
                 </div>

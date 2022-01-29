@@ -16,7 +16,7 @@ export default function Account(props) {
     const parseResponse = res => {
         if(res.status === 200) {
             console.log("Logout successful");
-            props.setAccessToken("");
+            props.doLogout();
         }
         else {
             console.log("Error during logout");

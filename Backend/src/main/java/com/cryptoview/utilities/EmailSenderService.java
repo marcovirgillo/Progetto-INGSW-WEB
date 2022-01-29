@@ -8,6 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailSenderService {
 	
+	public static final String REGISTRATION_MESSAGES = "Hi there! \n Welcome in Cryptoview!";
+	private static final String PASSWORD_RESET_MSG = "Hi there!\nThis is your temporary password to access the account. You must change it"
+													+ " after the first login\n\n";
+	
 	@Autowired
 	public EmailSenderService(JavaMailSender sender) {
 		mailSender = sender;	
@@ -24,5 +28,9 @@ public class EmailSenderService {
 
 		mailSender.send(message);
 		System.out.println("Mail sent!");
+	}
+	
+	public static void sendPasswordResetEmail(String toEmail, String pwd) {
+		sendEmail(toEmail, "Passord reset CryptoView Account", PASSWORD_RESET_MSG + pwd);
 	}
 }

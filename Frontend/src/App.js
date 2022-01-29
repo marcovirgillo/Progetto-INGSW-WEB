@@ -26,8 +26,12 @@ export default function App() {
 
     //provo a vedere se il mio token per il login è valido
     const fetchData = () => {
-        fetch(checkLoginAddress, req_options)
-            .then(res => parseResult(res));   
+        if(accessToken === "")
+            setUserLogged({});
+        else {
+            fetch(checkLoginAddress, req_options)
+                .then(res => parseResult(res));   
+        }
     }
 
     useEffect(() => {
@@ -91,6 +95,11 @@ export default function App() {
         setTimeout(() => setResultPopupActive(false), 3000);
     }
 
+    const doLogout = () => {
+        setUserLogged({});
+        saveToken("");
+    }
+
     return (
         <BrowserRouter>
             <div className="layout-main">
@@ -100,7 +109,7 @@ export default function App() {
                     <AppBar setSideBarEnabled={setSideBarEnabled} setSearchMobileOpen={setSearchMobileOpen} 
                             isMobileOpen={searchMobileOpen} isSearchFieldOpen={searchMobileOpen} 
                             accessToken={accessToken} setAccessToken={saveToken} allCryptos={allCrypto}
-                            setUserLogged={setUserLogged} userLogged={userLogged}
+                            setUserLogged={setUserLogged} userLogged={userLogged} doLogout={doLogout}
                     />
                     <div className="layout-content-main">
                         <AppRoutes accessToken={accessToken} setAccessToken={saveToken} allCrypto={allCrypto} 

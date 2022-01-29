@@ -1,10 +1,54 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import './ForgotPassword.css'
 import { Link } from 'react-router-dom'
+import { address } from '../../assets/globalVar';
+import { useNavigate } from "react-router-dom";
 
-export default function ForgotPassword() {
+
+export default function ForgotPassword(props) {
+
+    const navigate = useNavigate();
+
+    const resetAddress = `http://${address}:8080/forgotpassword`;
 
     const [screenSize, setScreenSize] = useState(window.innerWidth);
+    const [errorLabelActive, setErrorLabelActive] = useState(false);
+    const [errorLabelText, setErrorLabelText] = useState("");
+    const [buttonDisabled, setButtonDisabled] = useState(false);
+    const [email, setEmail] = useState("");
+
+    const resetOptions = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'email' : email,
+        }),
+    };
+
+    const parseResponse = res => {
+        if(res.status === 200) {
+            props.showResultPopup("Mail sent !");
+            navigate("/login");
+        }
+        else {
+            console.log("error");
+            res.json().then(result => console.log(result));
+        }
+
+        setButtonDisabled(false);
+    }
+
+    const resetPassword = () => {
+        if(!checkEmailField())
+            return;
+
+        setTimeout(() => setButtonDisabled(false), 5000);
+
+        fetch(resetAddress, resetOptions)
+            .then(res => parseResponse(res));
+    }
 
     useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
@@ -38,8 +82,8 @@ export default function ForgotPassword() {
     }
 
     function loginEndingStyle(color){
-        if(screenSize<600)
-            if(color==="blue")
+        if(screenSize < 600)
+            if(color === "blue")
                 return {color:'#32C0FF', fontSize:'14px', cursor:'pointer', display:'flex', flexDirection:'row'};
             else
                 return {color:'white', fontSize:'14px'};
@@ -49,25 +93,24 @@ export default function ForgotPassword() {
         return {color:'white', fontSize:'16px'};
     }
 
-    function sendButtonTextStyle(type){
-        if(screenSize<600 && type=="normal")
-            return {fontSize:'16px', paddingTop:'9px'};
-        return {fontSize:'18px'};
-    }
-
     function minHeight(){
-        if(screenSize<600)
+        if(screenSize < 600)
             return {minHeight:'100vh'}
         return {minHeight:'60vh'}
     }
 
-    const [email, setEmail] = useState("");
-    const [errorLabelActive, setErrorLabelActive] = useState(false);
-
     const checkEmailField = () => {
-        if(email === "")
-            showError();
+        if(email === "") {
+            showError("Email cannot be empty, please check again!");
+            return false;
+        }
+  
+        if (!email.match(/^[a-zA-Z0-9\\.]+@[a-z]+[\\.]{1}[a-z]+$/)) {
+            showError("The email is not valid, please check again!");
+            return false;
+        }
 
+        return true;
     }
 
     const getErrorLabelClassname = () => {
@@ -77,8 +120,9 @@ export default function ForgotPassword() {
             return "error-label";
     }
 
-    const showError = () => {
+    const showError = (msg) => {
         setErrorLabelActive(true);
+        setErrorLabelText(msg);
         setTimeout(() => setErrorLabelActive(false), 3500);
     }
 
@@ -96,7 +140,9 @@ export default function ForgotPassword() {
                 </div>
                 <div style={{paddingTop:'15px'}} />
                 <div> 
-                    <span className="forgot-password-header-subtitle" style={subtitle()}>Don't worry! Resetting your password is easy. Just type in the email you registered to CryptoView</span>
+                    <span className="forgot-password-header-subtitle" style={subtitle()}>
+                        Don't worry! Resetting your password is easy. Just type in the email you registered to CryptoView
+                    </span>
                 </div>
                 <div style={{paddingTop:'20px'}} />
                 <span className="forgot-password-field-title" style={fieldFont()}>Email</span>
@@ -105,12 +151,14 @@ export default function ForgotPassword() {
                 </div>
                 <div style={{paddingTop:'20px'}} />
                 <div className="forgot-password-field">
-                    <span className="send-button-style" style={fieldFont()}>
-                        <div className='send-button-text' onClick={checkEmailField} style={sendButtonTextStyle("normal") }>Send</div>
-                    </span>
+                    <button disabled={buttonDisabled} className='send-button'  onClick={resetPassword}>
+                        <span>
+                            Send
+                        </span>
+                    </button>
                     
-                    {errorLabelActive === true && <div className={getErrorLabelClassname()}>
-                        <p>Error, please check the input field and retry!</p>
+                    {errorLabelActive && <div className={getErrorLabelClassname()}>
+                        <p>{errorLabelText}</p>
                     </div> }
 
                 </div>

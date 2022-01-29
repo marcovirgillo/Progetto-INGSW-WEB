@@ -95,21 +95,18 @@ const EditAlerts = (props) => {
         }
 
         fetch(removeAlertUrl, options)
-            .then(res => parseResponse(res));
-
-        var array  = [...props.alerts].filter(item => item.id != id);
-        props.setAlerts(array);
-        props.showResultPopup("Alert removed successfully!");
+            .then(res => parseResponse(res, id));
     }
 
-    const parseResponse = (res) => {
+    const parseResponse = (res, id) => {
         if(res.status === 200) {
-            console.log("Alert removed");
+            var array  = [...props.alerts].filter(item => item.id != id);
+            props.setAlerts(array);
+            props.showResultPopup("Alert removed successfully!");
         }
         else {
             res.json().then(result => console.log(result));
         }
-            
     }
 
     return(
