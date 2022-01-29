@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import scaleImage from './ImageConverter.js'
 
-const updateAvatarUrl = `http://${address}:8080/updateUserAvatar`;
-const updateProfileUrl = `http://${address}:8080/updateUserEmail`;
-const updatePasswordUrl = `http://${address}:8080/updateUserPassword`;
-const resetAvatarUrl = `http://${address}:8080/resetUserAvatar`;
+const updateAvatarUrl = `http://${address}/updateUserAvatar`;
+const updateProfileUrl = `http://${address}/updateUserEmail`;
+const updatePasswordUrl = `http://${address}/updateUserPassword`;
+const resetAvatarUrl = `http://${address}/resetUserAvatar`;
 
 function isEmptyObject(obj) {
     for(var prop in obj) {
@@ -379,33 +379,6 @@ const Profile = (props) => {
 
     }, [props.userLogged]);
 
-    const logoutLink = `http://${address}:8080/logout`;
-
-    const req_options = {
-        method: 'GET',
-        headers: { 
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin' : '*',
-            'Authorization': props.accessToken
-        }
-    };
-
-    const parseResponse = res => {
-        if(res.status === 200) {
-            props.showResultPopup("Logout successfull!");
-            props.setAccessToken("");
-        }
-        else {
-            console.log("Error during logout");
-            res.json().then((result) => console.log(result));
-        }
-    }
-
-    const doLogout = () => {
-        fetch(logoutLink, req_options)
-            .then(res => parseResponse(res));
-    }
-
     const enablePasswordEdit = () => {
         setPasswordEditable(true);
     }
@@ -466,7 +439,7 @@ const Profile = (props) => {
                     </div>
                     
                     <Link to="/" className='sign-out-button'> 
-                        <div onClick={doLogout} > Sign out </div>
+                        <div onClick={props.doLogout} > Sign out </div>
                     </Link>
 
                 </div>

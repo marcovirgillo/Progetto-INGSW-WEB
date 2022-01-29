@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { address } from '../../assets/globalVar'
 import { useNavigate } from "react-router-dom";
 
-const loginLink = `http://${address}:8080/login`;
+const loginLink = `http://${address}/login`;
 
 const Login = (props) => {
     const [screenSize, setScreenSize] = useState(window.innerWidth);

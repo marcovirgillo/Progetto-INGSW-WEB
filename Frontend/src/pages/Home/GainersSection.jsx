@@ -11,17 +11,17 @@ export default function GainersSection() {
 
     //Serve per fetchare da spring
     useEffect(() => {
-        fetch(`http://${address}:8080/topGainers`)
+        fetch(`http://${address}/topGainers`)
             .then(res => res.json())
             .then((result) => setTopPerformers(result),
                   (error) => console.log("Error fetching top gainers"));
 
-        fetch(`http://${address}:8080/worstPerformers`)
+        fetch(`http://${address}/worstPerformers`)
             .then(res => res.json())
             .then((result) => setWorstPerformers(result),
                   (error) => console.log("Error fetching worst performers"));
 
-         fetch(`http://${address}:8080/marketStats`)
+         fetch(`http://${address}/marketStats`)
         .then(res => res.json())
         .then((result) => setMarketStats(result),
             (error) => console.log("Error fetching market stats")); 

@@ -73,7 +73,7 @@ const SpecificCrypto = (props) => {
     }
 
     const exchangesFetcher = () => {
-        fetch(`http://${address}:8080/getTop100Exchanges`) 
+        fetch(`http://${address}/getTop100Exchanges`) 
         .then((res) => res.json())
         .then((result) => setExchanges(result),
         (error) => console.log("Error fetching exchanges in specific crypto"));

@@ -58,7 +58,7 @@ export default function ExchangesTable() {
     }
 
     const fetchData = () => {
-        fetch(`http://${address}:8080/getTop100Exchanges`)
+        fetch(`http://${address}/getTop100Exchanges`)
             .then((res) => res.json())
             .then((result) => setExchangesTable(result),
                   (error) => console.log("Error fetching top 100 exchanges"));
