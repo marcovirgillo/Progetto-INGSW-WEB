@@ -4,9 +4,9 @@ import "./../../App.css";
 import { useNavigate } from "react-router-dom";
 import { address } from './../../assets/globalVar.js';
 
-const getPreferencesUrl = `http://${address}/getPreferences`;
-const addPreferenceUrl = `http://${address}/addPreference`;
-const removePreferenceUrl = `http://${address}/removePreference`;
+const getPreferencesUrl = `https://${address}/getPreferences`;
+const addPreferenceUrl = `https://${address}/addPreference`;
+const removePreferenceUrl = `https://${address}/removePreference`;
 
 let ispreferred;
 const HeaderSection = (props) => {

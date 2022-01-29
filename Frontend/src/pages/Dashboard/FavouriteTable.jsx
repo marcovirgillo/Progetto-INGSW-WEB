@@ -5,7 +5,7 @@ import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import { Link, Navigate  } from 'react-router-dom'
 import { address } from './../../assets/globalVar.js';
 
-const removePreferenceUrl = `http://${address}/removePreference`;
+const removePreferenceUrl = `https://${address}/removePreference`;
 
 export default function CriptoTable(props) {
     const [preferred, setPreferred] = useState([]);

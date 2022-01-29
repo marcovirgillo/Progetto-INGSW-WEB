@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { address } from '../../assets/globalVar';
 import { useNavigate } from "react-router-dom";
 
-const signupAddress = `http://${address}/registration`;
+const signupAddress = `https://${address}/registration`;
 
 const Signup = (props) => {
     const [screenSize, setScreenSize] = useState(window.innerWidth);

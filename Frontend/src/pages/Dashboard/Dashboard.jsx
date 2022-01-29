@@ -10,8 +10,8 @@ import { address } from './../../assets/globalVar.js';
 import CircularProgress from '@mui/material/CircularProgress';
 import { blue } from '@mui/material/colors';
 
-const getPreferencesUrl = `http://${address}/getPreferencesDashboard`;
-const getAlertsUrl = `http://${address}/getAlerts`;
+const getPreferencesUrl = `https://${address}/getPreferencesDashboard`;
+const getAlertsUrl = `https://${address}/getAlerts`;
 
 const Dashboard = (props) => {
     const [preferred, setPreferred] = useState([]);

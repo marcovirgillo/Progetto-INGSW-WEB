@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import scaleImage from './ImageConverter.js'
 
-const updateAvatarUrl = `http://${address}/updateUserAvatar`;
-const updateProfileUrl = `http://${address}/updateUserEmail`;
-const updatePasswordUrl = `http://${address}/updateUserPassword`;
-const resetAvatarUrl = `http://${address}/resetUserAvatar`;
+const updateAvatarUrl = `https://${address}/updateUserAvatar`;
+const updateProfileUrl = `https://${address}/updateUserEmail`;
+const updatePasswordUrl = `https://${address}/updateUserPassword`;
+const resetAvatarUrl = `https://${address}/resetUserAvatar`;
 
 function isEmptyObject(obj) {
     for(var prop in obj) {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './AddAlert.css';
 import { address } from '../../assets/globalVar';
 
-const addAlertUrl = `http://${address}/saveAlert`;
+const addAlertUrl = `https://${address}/saveAlert`;
 
 const getDecimalPlaces = (number) => {
     let decimal = 0;

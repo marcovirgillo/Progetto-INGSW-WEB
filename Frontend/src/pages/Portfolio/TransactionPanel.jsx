@@ -8,8 +8,8 @@ import  ArrowDropUpRoundedIcon  from '@mui/icons-material/ArrowDropUpRounded';
 import { address } from '../../assets/globalVar';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
-const addTransactionUrl = `http://${address}/addTransaction`;
-const editTransactionUrl = `http://${address}/updateTransaction`;
+const addTransactionUrl = `https://${address}/addTransaction`;
+const editTransactionUrl = `https://${address}/updateTransaction`;
 
 function CustomSelectDropown(props) {
     const getClassName = () => {

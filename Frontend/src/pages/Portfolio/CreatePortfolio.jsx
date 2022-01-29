@@ -72,7 +72,7 @@ function CreatePopup(props) {
     );
 }
 
-const createPortfolioAddress = `http://${address}/createPortfolio`
+const createPortfolioAddress = `https://${address}/createPortfolio`
 
 export default function CreatePortfolio(props) {
     const [popupActive, setPopupActive] = useState(false);

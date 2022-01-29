@@ -9,8 +9,8 @@ import AccessAccount from './AccessAccount.jsx'
 import DropdownNotification from './DropdownNotification.jsx';
 import { address } from '../../assets/globalVar';
 
-const getNotificationsUrl = `http://${address}/getUserNotifications`;
-const deleteNotificationsUrl = `http://${address}/deleteUserNotifications`;
+const getNotificationsUrl = `https://${address}/getUserNotifications`;
+const deleteNotificationsUrl = `https://${address}/deleteUserNotifications`;
 
 function isEmptyObject(obj) {
     for(var prop in obj) {

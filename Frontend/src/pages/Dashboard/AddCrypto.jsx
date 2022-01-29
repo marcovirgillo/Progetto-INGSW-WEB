@@ -3,7 +3,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { blue } from '@mui/material/colors';
 import { address } from './../../assets/globalVar.js';
 
-const addPreferencesUrl = `http://${address}/addPreferences`;
+const addPreferencesUrl = `https://${address}/addPreferences`;
 
 function SearchField(props) {
     return (

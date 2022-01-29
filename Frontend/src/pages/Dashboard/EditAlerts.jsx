@@ -14,7 +14,7 @@ function SearchField(props) {
     );
 }
 
-const removeAlertUrl = `http://${address}/removeAlert`;
+const removeAlertUrl = `https://${address}/removeAlert`;
 
 const EditAlerts = (props) => {
     const [queryedData, setQueryedData] = useState(props.alerts);

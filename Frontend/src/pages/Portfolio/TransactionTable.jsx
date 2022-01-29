@@ -9,8 +9,8 @@ import { formatProfitDollar } from './PortfolioTable';
 import ConfirmPopup from './ConfirmPopup';
 import TransactionPanel from './TransactionPanel';
 
-const transactionUrl = `http://${address}/assetTransactions`
-const removeTransactionUrl = `http://${address}/removeTransaction`
+const transactionUrl = `https://${address}/assetTransactions`
+const removeTransactionUrl = `https://${address}/removeTransaction`
 const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
 
 

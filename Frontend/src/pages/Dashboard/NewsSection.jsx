@@ -31,7 +31,7 @@ const SideNewsBox = (props) => {
     );
 }
 
-const getNewsURL = `http://${address}/getPreferredNews`;
+const getNewsURL = `https://${address}/getPreferredNews`;
 
 export default function NewsSection(props) {    
     

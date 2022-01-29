@@ -5,8 +5,8 @@ import { address } from './../../assets/globalVar.js';
 
 const interval_fetch = 1000 * 120;
 
-const getGainersUrl = `http://${address}/gainersSection`;
-const portfolioStatsUrl = `http://${address}/portfolioOverview`;
+const getGainersUrl = `https://${address}/gainersSection`;
+const portfolioStatsUrl = `https://${address}/portfolioOverview`;
 
 export default function OverviewSection(props) {
     const [topPerformers, setTopPerformers] = useState([]);
