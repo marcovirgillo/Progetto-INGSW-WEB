@@ -1,0 +1,935 @@
+.portfolio {
+    background-color: var(--bg-color-dark);
+    min-height: 100vh;
+    padding: 0px 10px 10px 10px;
+}
+
+.portfolio .paper-grey {
+    background-color: var(--bg-color-gray);
+    border-radius: 8px;
+    width: 100%;
+    padding-bottom: 40px;
+}
+
+.portfolio .name-label {
+   margin: 0;
+   padding-top: 30px;
+   margin-left: 60px;
+   color: white;
+}
+
+.portfolio h3 {
+    color: var(--light-gray-color);
+}
+
+.portfolio .portfolio-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 60px;
+    padding: 0px;
+}
+
+.portfolio .current-balance-label {
+    margin: 0;
+    padding: 10px 0px 10px 4px;
+}
+
+.portfolio .inline-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    max-height: 40px;
+    padding: 0px;
+}
+
+.portfolio .btn-containers-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0px;
+}
+
+.portfolio .rectangle {
+    border-radius: 12px;
+    color: white;
+    padding: 6px 8px 6px 8px;
+    margin-left: 20px;
+    font-weight: 600;
+}
+
+.portfolio .rectangle-green {
+    background-color: #46C95B;
+}
+
+.portfolio .label-green {
+    color: #46C95B;
+    font-weight: 500;
+}
+
+.portfolio .rectangle-red {
+    background-color: #E05757;
+}
+
+.portfolio .label-red {
+    color: #E05757;
+    font-weight: 500;
+}
+
+.portfolio .current-balance {
+    color: white;
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.portfolio .label-24h {
+    color: var(--light-gray-color);
+    margin-left: 10px;
+    font-size: 0.portfolio .9em;
+}
+
+.portfolio .h-spacer {
+    display: revert;
+    flex: 1;
+}
+
+.portfolio .chart-div {
+    max-width: 92%;
+    padding-left: 60px;
+}
+
+.portfolio .chart-btns-mobile {
+    display: none;
+}
+
+.portfolio .chart-btns-desktop {
+    display: flex;
+}
+
+.portfolio .chart {
+    margin-left: -10px;
+}
+
+@media only screen and (max-width: 800px) {
+    .portfolio .table{
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+        font-size: 12px !important;
+        max-height: 100vh !important;
+    }
+
+    .portfolio .chart-btns-mobile {
+        display: flex;
+    }
+
+    .portfolio .h-spacer {
+        display: none;
+    }
+
+    .portfolio .chart-btns-desktop {
+        display: none;
+    }
+
+    .portfolio .btn-container {
+        width: 100%;
+        max-width: 98%;
+        justify-content: space-evenly;
+    }
+
+    .portfolio .chart-div {
+        padding-left: 20px;
+    }
+
+    .portfolio .chart {
+        margin-left: -15px;
+    }
+
+    .portfolio .portfolio-list {
+        margin-left: 30px;
+    }
+
+    .portfolio {
+        padding: 0px !important;
+    }
+
+    .portfolio .paper-grey {
+        border-radius: 0px;
+    }
+
+    .portfolio .name-label {
+        margin-left: 30px;
+    }
+
+    .portfolio .assets-list {
+        margin-left: 25px !important;
+        margin-right: 30px !important;
+    }
+}
+
+.portfolio .table-attribute {
+    color: white !important;
+}
+
+.portfolio .table-item {
+    color: white !important;
+    text-align: left !important;
+    text-transform: capitalize !important;
+    padding: 10px 0px 10px 15px !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+}
+
+.portfolio table tr th, tbody tr td {
+    border-bottom: none !important;
+}
+
+.portfolio .table-header-list {
+    display: flex;
+}
+
+.portfolio .table:last-child {
+    border: hidden !important;
+}
+
+.portfolio table th:first-child{
+    border-radius:10px 0 0 10px;
+}
+  
+.portfolio table th:last-child{
+    border-radius:0 10px 10px 0;
+}
+
+.portfolio .table-item-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.portfolio .table-item ul {
+    padding: 0px;
+}
+
+.portfolio .item-green {
+    color: var(--price-color-green) !important;
+}
+
+.portfolio .item-red {
+    color: var(--price-color-red) !important;
+}
+
+.portfolio .item-grey {
+    color: var(--light-gray-color);
+}
+
+.portfolio .profit {
+    padding: 0px 0px 0px 10px !important;
+}
+
+.portfolio .assets-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0px;
+    margin: 20px 60px -20px 60px;
+}
+
+.portfolio p {
+    white-space: pre;
+}
+
+.portfolio .white-label {
+    color: white;
+    font-weight: 600;
+}
+
+.portfolio .assets-label {
+    font-size: 1.2em;
+}
+
+.portfolio .btn-label {
+    margin-left: 8px;
+}
+
+.portfolio .add-new-btn {
+    background: var(--color-cyan);
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    padding: 0px 10px 0px 10px;
+    cursor: pointer;
+}
+
+.portfolio .add-new-btn:hover {
+    background: #1879a7;
+}
+
+.h-spacer-assets {
+    flex: 1;
+}
+
+.portfolio .choose-crypto-div {
+    width: 30%;
+    top: 14%;
+    left: 42%;
+    background-color: var(--bg-color-dark);
+    border-radius: 12px;
+    position: fixed;
+    z-index: 600;
+    transform: scale(0);
+    transition: transform 0.3s ease 0s;
+}
+
+.portfolio .select-list {
+    margin: 10px 18px 0px 30px;
+}
+
+.portfolio .no-result-label {
+    color: var(--light-gray-color);
+    width: 100%;
+    text-align: center;
+}
+
+.portfolio .search-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-y: scroll;
+    height: 360px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 16px;
+    padding-bottom: 22px;
+}
+
+.portfolio .crypto-list {
+    margin-top: 10px;
+    width: 92%;
+    align-items: flex-start;
+    cursor: pointer;
+}
+
+.portfolio .app-bar-search-field {
+    width: 92%;
+    margin-left: -20px;
+}
+
+.portfolio .app-bar-search {
+    width: 100%;
+}
+
+.portfolio .crypto-list-item {
+    padding: 0px;
+    padding-left: 20px;
+    margin-left: 6px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex: 1 0 0;
+    width: 93%;
+    max-height: 52px;
+    border-radius: 10px;
+}
+
+.portfolio .crypto-list-item:hover {
+    background-color: var(--bg-color-gray);
+}
+
+.crypto-list-item p {
+    margin-left: 15px;
+    color: white;
+}
+
+.h-spacer-choose-crypto {
+    flex: 1 0 0;
+}
+
+.portfolio .div-active {
+    transform: scale(1);
+    transition: transform 0.3s ease 0s;
+}
+
+.transaction-div-list .btn-container {
+    width: 90%;
+    margin: 0px;
+    justify-content: space-around;
+}
+
+.transactions-btn-container p {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.portfolio .transaction-item {
+    margin-top: 20px;
+    border: 1px solid var(--light-gray-color);
+    width: 85%;
+}
+
+.portfolio .transaction-item:hover {
+    background-color: transparent !important;
+}
+
+.portfolio .field-container {
+    padding: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 88%;
+}
+
+.portfolio .field {
+    width: 100%;
+}
+
+.portfolio input {
+    width: 90%;
+}
+
+.portfolio .field {    
+    padding: 0px;
+}
+
+.portfolio .field p {
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: white;
+}
+
+.portfolio .field input[type=number] {
+    border-radius: 10px;
+    border: 1px solid var(--bg-color-dark);
+    padding: 14px 8px 14px 8px;
+    background-color: var(--bg-color-gray);
+    color: white;
+}
+
+.portfolio .field input[type=number]:hover {
+    border: 1px solid black !important;
+}
+
+.portfolio .field .dollar-symbol {
+    color: white;
+    position: absolute;
+    left: 10px;
+    bottom: 16px;
+    font-size: 0.9em;
+}
+
+.portfolio .price-field {
+    position: relative;
+} 
+
+.portfolio .price-field input[type=number] {
+    padding-left: 25px;
+    width: 90%;
+}
+
+.portfolio .transaction-div-list {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 16px 0px 16px 0px
+}
+
+.MuiFormControl-root {
+    background-color: var(--bg-color-gray) !important;
+    border-radius: 10px !important;
+    border: none !important;
+}
+
+.MuiOutlinedInput-input {
+    padding: 11px 0px 8px 10px !important;
+}
+
+.portfolio .total-label {
+    color: var(--light-gray-color);
+    margin: 0px;
+    margin-top: 20px;
+}
+
+.portfolio .total-dollar {
+    margin: 10px 0px 0px 0px;
+    color: white;
+    font-weight: 600px;
+    font-size: 1.5em;
+}
+
+.portfolio .add-transaction-btn {
+    width: 88%;
+    background: var(--color-cyan);
+    border-radius: 10px;
+    padding: 1px 0px 1px 0px;
+    margin: 15px 0px 15px 0px;
+    cursor: pointer;
+}
+
+.portfolio .add-transaction-btn:hover {
+    background: var(--color-cyan-dark);
+}
+
+.portfolio .add-transaction-btn p {
+    text-align: center;
+    color: white;
+    font-weight: 600;
+}
+
+.portfolio .btn-ul {
+    width: 100%;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.portfolio .field select * {
+    font-weight: 600;
+}
+
+.portfolio .field select:hover {
+    border: 2px solid black;
+}
+
+.portfolio .option-item {
+    padding: 10px 0px 10px 0px;
+    cursor: pointer;
+}
+
+.portfolio .custom-select {
+    width: 97%;
+    background-color: var(--bg-color-gray);
+    padding: 10px 5px 10px 10px !important;
+    border: 1px solid transparent;
+    padding: 0px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.portfolio .custom-select p {
+    margin: 0px;
+}
+
+.portfolio .custom-dropdown-select {
+    width: 46%;
+    background-color: var(--bg-color-gray);
+    z-index: 600;
+    border-radius: 10px;
+    margin-top: 5px;
+    position: absolute;
+    transform: translateY(-50%) scaleY(0);
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease 0s;
+    
+}
+
+.portfolio .custom-dropdown-select p {
+    border-radius: 8px;
+    padding: 8px 0px 8px 10px;
+    margin: 10px 5px 10px 5px;
+    cursor: pointer;
+}
+
+.portfolio .custom-dropdown-select p:hover {
+    background-color: #5c5c5c;
+}
+
+.portfolio .drop-select-active {
+    z-index: 600;
+    transform: translateY(0%) scaleY(1);
+    transition: transform 0.3s ease 0s;
+}
+
+.portfolio .bottom-container {
+    padding: 0px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 16px 0px 16px 0px;
+}
+
+.portfolio .wrapper {
+    padding: 0px;
+    width: 88%;
+}
+
+/* è il tasto 3-dot che fa aprire il dropdown */
+.portfolio .options-btn {
+    width: 24px;
+    border-radius: 50%;
+    padding: 10px 5px 2px 8px;
+    cursor: pointer;
+}
+
+.portfolio .options-btn-transaction {
+    padding: 16px 8px 4px 8px !important;
+}
+
+.portfolio .field input[type='number'] {
+    font-weight: 600;
+}
+
+.portfolio .options-btn-transaction:hover {
+    background-color: #5c5c5c;
+}
+
+.portfolio .options-btn:hover {
+    background-color: #5c5c5c;
+}
+
+.portfolio .dropdown-options {
+    border-radius: 10px;
+    background-color: var(--bg-color-dark);
+    position: absolute;
+    right: 40px;
+    transform: translateY(-50%) scaleY(0);
+}
+
+.portfolio .options-list {
+    padding: 10px 10px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 160px;
+}
+
+.portfolio .option-item:hover {
+    background-color: #5c5c5c;
+}
+
+.portfolio .options-list p {
+    color: white;
+    font-weight: 600;
+    margin-left: 5px;
+}
+
+.portfolio .option-item {
+    padding: 2px 5px 2px 5px;
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 95%;
+    border-radius: 10px;
+}
+
+.drop-opt-active {
+    transform: translateY(0%) scaleY(1) !important;
+    transition: transform 0.3s ease 0s;
+}
+
+.portfolio .error-label {
+    background-color: #d14242;
+    width: 85%;
+    border-radius: 8px;
+    padding: 5px 0px 6px 0px;
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.3s, transform 0.3s !important;
+    -webkit-transition: opacity 0.5s;
+}
+
+.portfolio .error-label p {
+    color: white;
+    font-weight: 500;
+    text-align: center;
+    white-space: initial;
+}
+
+.portfolio .label-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: transform 0.3s;
+    -webkit-transition: opacity 0.3s;
+}
+
+.portfolio .error-label p {
+    margin: 5px 0px 0px 0px;
+}
+
+.background-blurrer {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    z-index: 500;
+    background-color: rgba(31, 31, 31, 0.5);
+}
+
+.portfolio .error-label-create-portfolio {
+    border-radius: border-box;
+    width: 85%;
+    color: #d31111;
+    text-align: left;
+    font-weight: 500;
+    font-size: 0.9em;
+    margin: 8px 0px 0px 0px;
+}
+
+.portfolio .confirm-popup {
+    position: fixed;
+    top: 20%;
+    left: 46%;
+    background-color: var(--bg-color-dark);
+    max-width: 320px;
+    border-radius: 10px;
+    padding-bottom: 20px;
+}
+
+.portfolio .popup-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+}
+
+.portfolio .popup-title {
+    color: white;
+    width: 90%;
+    font-weight: 600;
+    font-size: 1.2em;
+}
+
+.portfolio .popup-text {
+    max-width: 85%;
+    color: var(--light-gray-color);
+    margin-bottom: 15px;
+}
+
+.portfolio .popup-btn {
+    width: 88%;
+    text-align: center;
+    color: white;
+    padding: 10px 0px 10px 0px;
+    border-radius: 10px;
+    margin-bottom: 0px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.portfolio .popup-confirm {
+    background-color: rgb(209, 0, 0);
+}
+
+.portfolio .popup-confirm:hover {
+    background-color: rgb(179, 0, 0);
+}
+
+.portfolio .popup-cancel {
+    background-color: var(--light-gray-color);
+}
+
+.portfolio .popup-cancel:hover {
+    background-color: #7a7a7a;
+}
+
+.portfolio .create-portfolio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.portfolio .create-portfolio .title {
+    margin: 0px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: white;
+    font-size: 1.5em;
+}
+
+.portfolio .create-btn {
+    width: 160px;
+    background-color: var(--color-cyan);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.portfolio .create-btn:hover {
+    background: #1879a7;
+}
+
+.portfolio .create-btn-list {
+    margin: 0px;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.portfolio .create-btn-list p {
+    margin-left: 10px;
+    color: white;
+    font-weight: 500;
+}
+
+.create-portfolio-container {
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 200px;
+    padding-top: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.create-portfolio-popup {
+    box-sizing: border-box;
+    position: fixed;
+    width: 400px;
+    left: 46%;
+    top: 25%;
+    background-color: var(--bg-color-gray);
+    border-radius: 10px;
+    padding-bottom: 15px;
+}
+
+.portfolio .popup-create {
+    background-color: var(--color-cyan);
+}
+
+.portfolio .popup-create:hover {
+    background-color: var(--color-cyan-dark);
+}
+
+.create-portfolio-popup .app-bar-search {
+    width: 90% !important;
+    padding-left: 10px !important;
+}
+
+.create-portfolio-popup .popup-label {
+    color: var(--light-gray-color);
+    font-size: 0.9em;
+    position: relative;
+    left: -30%;
+    margin: 10px 0px 0px 0px;
+}
+
+.all-transactions-div {
+    margin-top: 40px;
+    width: 92%;
+    padding: 0px;
+}
+
+.all-transactions-div .MuiTable-root {
+    max-width: 100% !important;
+}
+
+.all-transactions-div .current-balance {
+    margin: 0px;
+    margin-left: 20px;
+}
+
+.all-transactions-div .cripto-label {
+    color: var(--light-gray-color);
+}
+
+#all-cripto-table {
+    max-width: 94%;
+}
+
+.portfolio .back-btn {
+    display: flex;
+    align-items: center;
+    background-color: #464646;
+    width: fit-content;
+    border-radius: 10px;
+    padding: 8px 15px 8px 8px;
+    cursor: pointer;
+}
+
+.portfolio .back-btn:hover {
+    background-color: #3d3d3d;
+}
+
+.portfolio .back-btn p {
+    color: white;
+    padding-left: 10px;
+    margin: 0px;
+}
+
+.portfolio .cripto-info-item {
+    padding: 0px;
+    margin-right: 40px;
+}
+
+.portfolio .cripto-info-item .title {
+    margin-top: 0px;
+    color: var(--light-gray-color);
+}
+
+.portfolio .cripto-info-item .value {
+    color: white;
+}
+
+.all-transactions-div .stats-list {
+    display: flex;
+    align-items: center;
+    padding: 0; 
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.stats-list #last-child {
+    margin-right: 0px;
+} 
+
+.portfolio .apexcharts-legend-text {
+    color: white !important;
+    margin-left: 10px;
+    font-weight: 600 !important;
+}
+
+.portfolio .statistics-list {
+    padding: 0px;
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    column-gap: 40px;
+}
+
+.portfolio .statistics-list-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.portfolio .statistics-inner-list {
+    padding: 0px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.portfolio .statistics-list p {
+    font-weight: 500;
+}
+
+.portfolio .statistics-list .label {
+    color: var(--light-gray-color);
+}
+
+.portfolio input[type=text] {
+    color: white;
+    padding-left: 40px;
+    font-weight: 500;
+}

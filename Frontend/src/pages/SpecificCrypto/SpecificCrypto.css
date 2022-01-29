@@ -1,0 +1,340 @@
+.specific-crypto {
+    background-color: var(--bg-color-dark);
+    min-height: 100vh;
+    padding: 0px 10px 10px 10px;
+}
+
+.paper-grey {
+    background-color: var(--bg-color-gray);
+    border-radius: 8px;
+    width: 100%;
+    padding-bottom: 40px;
+}
+
+.chart-div {
+    margin-top: -20px;
+    max-width: 90%;
+    padding-left: 60px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.header{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /*align-items: flex-start;*/
+    padding-left: 80px;
+}
+
+.btn-containers-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0px;
+}
+
+.chart-btns-desktop {
+    display: flex;
+}
+
+.h-spacer {
+    display: revert;
+    flex: 1;
+}
+
+.chart-btns-mobile {
+    display: none;
+}
+
+.container-crypto {
+    width: 100%;
+    height: 100%;
+    padding-top: 10px;
+}
+
+.container-title-test {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    max-width: 650px;
+    margin: 0 auto;
+    padding-left:20px;
+}
+
+.header-section {
+    width: 100%;
+    display: flex; 
+    justify-content: center;
+}
+
+.header-section-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 90%;
+    margin-left: -20px;
+}
+
+.community-info-container {
+    margin-right: 40px;
+}
+
+.container-title-price {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.container-title-crypto{
+    margin-top: -10px;
+    margin-left: -20px;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.crypto-title{
+    color: #FFFFFF;
+    font-weight: 500;
+    font-size: 35px;
+    margin-left: 15px;
+}
+
+.cripto-description {
+    color: #DBDBDB;
+    margin-left: 70px;
+    font-weight: bold;
+    font-size: 18px;
+    word-wrap:break-word;
+
+}
+
+.grey-container{
+    background-color: #737373;
+    color: white;
+    font-weight: 500;
+    border-radius: 15px;
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    cursor: default;
+    max-height: 35px;
+    padding: 6px 13px;
+    margin-bottom: 10px;
+}
+
+.green-container{
+    background-color: #55AD11;
+    color: white;
+    font-weight: 500;
+    border-radius: 15px;
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    cursor: default;
+    max-height: 35px;
+    padding: 6px 13px;
+    margin-bottom: 10px;
+}
+
+.red-container{
+    background-color: #B63939;
+    color: white;
+    font-weight: 500;
+    border-radius: 15px;
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    cursor: default;
+    max-height: 35px;
+    padding: 6px 13px;
+    margin-bottom: 10px;
+}
+
+.specific-crypto-primary-btn{
+    background-color: #737373;
+    color: white;
+    font-weight: 500;
+    border-radius: 15px;
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    cursor: default;
+    max-height: 35px;
+    padding: 6px 13px;
+    margin-bottom: 10px;
+}
+.specific-crypto-primary-btn:hover{
+    background-color: rgb(99, 133, 172);
+}
+
+.p-crypto {
+    color: white;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.p-crypto-green {
+    color: #55AD11;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.p-crypto-red {
+    color: #B63939;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.crypto-main-stats-4x {
+    background-color: #414141;
+    height: 150px;
+}
+
+.crypto-main-container-title {
+    color: #BBBBBB;
+    font-weight: 500;
+    font-size: 18px;
+    padding: 10px;
+    margin-left: 15px;
+}
+
+.crypto-main-container-value  {
+    text-align: center;
+    color: white;
+    font-weight: 500;
+    font-size: 24px;
+}
+
+.crypto-main-container-change {
+    text-align: center;
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.trust-score-container-green {
+    background-color: #55AD11;
+    color: white;
+    font-weight: 500;
+    border-radius: 15px;
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    cursor: default;
+    max-height: 35px;
+    padding: 6px 13px;
+    margin-bottom: 10px;
+    max-width: 8px;
+    min-height: 20px;
+}
+
+.trust-score-container-yellow {
+    background-color: #B6A939;
+    color: white;
+    font-weight: 500;
+    border-radius: 15px;
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    cursor: default;
+    max-height: 35px;
+    padding: 6px 13px;
+    margin-bottom: 10px;
+    max-width: 8px;
+    min-height: 20px;
+}
+
+.trust-score-container-red {
+    background-color: #B63939;
+    color: white;
+    font-weight: 500;
+    border-radius: 15px;
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    cursor: default;
+    max-height: 35px;
+    padding: 6px 13px;
+    margin-bottom: 10px;
+    max-width: 8px;
+    min-height: 20px;
+}
+
+.specific-crypto .button-container {
+    justify-content: flex-end;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.specific-crypto .alert-container-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+    margin-left: 50px;
+    font-weight: bold;
+    font-size: 15px;
+    background-color:   #B6A939;
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    text-align: center;
+    cursor: pointer;
+    margin-right: 100px;
+    padding: 0px 20px 0px 20px;
+    min-width: 120px;
+}
+
+.specific-crypto .alert-container-title:hover {
+    background-color: #a0952f;
+}
+
+@media only screen and (max-width: 900px){
+    .specific-crypto .button-container {
+        justify-content: left;
+    }
+}
+
+@media only screen and (max-width:600px) {
+    .prices-info-container,
+    .community-info-container {
+        font-size: 120;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .chart-btns-mobile {
+        display: flex;
+    }
+
+    .h-spacer {
+        display: none;
+    }
+
+    .chart-btns-desktop {
+        display: none;
+    }
+
+    .btn-container {
+        width: 100%;
+        max-width: 98%;
+        justify-content: space-evenly;
+    }
+
+    .chart-div {
+        padding-left: 20px;
+    }
+
+    .chart {
+        margin-left: -15px;
+    }
+
+    .paper-grey {
+        border-radius: 0px;
+    }
+
+    .specific-crypto {
+        padding: 0px;
+    }
+}

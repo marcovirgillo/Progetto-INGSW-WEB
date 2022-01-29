@@ -1,20 +1,121 @@
-import React, { Component, useState, useEffect } from 'react'
+import React, { Component, useState, useEffect, useReducer } from 'react'
 import { TableBody, Table, TableCell, TableHead, TableRow, Icon } from '@mui/material';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
-import { CriptoData } from "./TestData.js"
 import "./Home.css"
 import { useInterval } from '../../components/Hooks.js';
-import { Link, Navigate  } from 'react-router-dom'
+import { Link, useNavigate  } from 'react-router-dom'
 import { address } from './../../assets/globalVar.js';
+
+import { Preferred } from './TestData.js';
 
 //https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 const interval_fetch = 1000 * 120; //60 secondi
 
-export default function CriptoTable() {
+const getPreferencesUrl = `http://${address}:8080/getPreferences`;
+const addPreferenceUrl = `http://${address}:8080/addPreference`;
+const removePreferenceUrl = `http://${address}:8080/removePreference`;
+
+export default function CriptoTable(props) {
     const [cryptoTable, setCryptoTable] = useState([]);
     const [order, setOrder] = useState("ASC");
     const [itemActive, setItemActive] = useState(null);
+
+    const [preferred, setPreferred] = useState([]);
+
+    const optionsPreferences = {
+        method: 'GET',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken
+        }
+    }
+
+    let optionsAddPreference = {
+        method: 'PUT',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken,
+        },
+        body: {}
+    }
+
+    let optionsRemovePreference = {
+        method: 'DELETE',
+        headers : {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': props.accessToken,
+        },
+        body: {}
+    }
+
+    const addPreference = (ticker_) => {
+        const body = {
+            'ticker': ticker_
+        }
+
+        optionsAddPreference.body = JSON.stringify(body);
+
+        fetch(addPreferenceUrl, optionsAddPreference)
+            .then(res => parseResponse(res));
+    }
+
+    const removePreference = (ticker_) => {
+        const body = {
+            'ticker': ticker_
+        }
+
+        optionsRemovePreference.body = JSON.stringify(body);
+
+        fetch(removePreferenceUrl, optionsRemovePreference)
+            .then(res => parseResponse(res));
+    }
+
+    const parseResponse = res => {
+        if(res.status === 200) {
+            console.log("Preference added/removed successfully!");
+        }
+         else {
+            res.json().then(result => console.log(result));
+        }
+    }
+
+    useEffect(() => {
+        if(props.accessToken === "")
+            setPreferred([]);
+        else{
+            fetcherPreferences();
+        }
+    }, [props.accessToken]); 
+
+    useEffect(() => {
+        if(props.accessToken !== null && props.accessToken !== ""){
+            console.log("Fetching preferences")
+            fetcherPreferences();
+        }
+    }, []);
+
+    const fetcherPreferences = () => {
+        if(props.accessToken === null || props.accessToken === "")
+            return;
+
+        fetch(getPreferencesUrl, optionsPreferences)
+        .then((res) => processPreferences(res));
+    }
+
+    const processPreferences = res => {
+        if(res.status === 200) {
+            res.json()
+                .then((result) => setPreferred(result.preferences),
+                      (error) => console.log(error));
+        }
+        else if(res.status === 6001) {
+            console.log("No preferences found");
+        }
+    }
 
     const sorting = (col) => {
         if(order === "ASC"){
@@ -36,20 +137,13 @@ export default function CriptoTable() {
     const isArrowActive = (order, type) => {
         if(itemActive == type) {
             if(order == "DSC")
-                return <ArrowDropDownRoundedIcon/>;
+                return <ArrowDropUpRoundedIcon/>;
 
-            return <ArrowDropUpRoundedIcon />;
+            return <ArrowDropDownRoundedIcon />;
         }
     }
 
     const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
-
-    //L'id della cripto è contenuto dentro il link per la sua immagine, quindi prima lo estraggo dalla stringa e poi lo inserisco nel link del chart
-    function getChartUrl(image_url) {
-        let part1 = image_url.substr(42, image_url.length);
-        let part2 = part1.substring(0, part1.indexOf("/"));
-        return `https://www.coingecko.com/coins/${part2}/sparkline`;
-    }
 
     function getPriceClass(price) {
         let className = 'table-item ';
@@ -74,65 +168,85 @@ export default function CriptoTable() {
             return "+" + change.toFixed(2);
         }
         
-        return change.toFixed(2)  
+        return change.toFixed(2);
     }
 
-    function handleOnClick(id){
-        return <Navigate 
-                    to={{
-                    pathname: "/profile"                
-                }}  
-             />
+    const TableCellArrow = props => {
+        return (
+            <span className="table-header-list">
+                { props.content }
+                { isArrowActive(order, props.arrowChecker) }
+            </span>
+        )
     }
 
     const fetchData = () => {
         fetch(`http://${address}:8080/getTop100`)
             .then((res) => res.json())
             .then((result) => setCryptoTable(result),
-                  (error) => alert("Error fetching top 100 cryptos"));
+                  (error) => console.log("Error fetching top 100 cryptos"));
     };
 
     useEffect(fetchData, []);
 
     useInterval(() => fetchData, interval_fetch);
 
+    function findPreferred(name){
+        if(preferred === undefined)
+            return false;
+        var item  = preferred.find(item => item.id === name);
+        if(item != undefined) {
+            return true;
+        }
+        return false;
+    }
+
+    const navigate = useNavigate();
+
+    function handlePreferred(flag, crypto){
+        if(props.accessToken === "" || props.accessToken === null){
+            navigate("/login");
+            return;
+        }
+        if(flag === false){
+            removePreference(crypto);
+            var array  = [...preferred].filter(item => item.id != crypto);
+            setPreferred(array);
+        }
+        else{
+            addPreference(crypto);
+            var newPref = {id: crypto};
+            var array = [...preferred];
+            array.push(newPref);
+            setPreferred(array);
+        }
+    }
 
     return (
         <Table className="table" sx={{maxWidth: '95%', marginTop: '30px'}}>
             <TableHead>
                 <TableRow>
-                    <TableCell className="table-attribute">#</TableCell>
+                    <TableCell className="table-attribute"onClick={() => {sorting("rank"); setItemActive("rank")}} style={{cursor: 'pointer'}}>
+                        <TableCellArrow content="#" arrowChecker="rank" />
+                    </TableCell>
                     <TableCell className="table-attribute">Name</TableCell>
                     <TableCell className="table-attribute"onClick={() => {sorting("price"); setItemActive("price")}} style={{cursor: 'pointer'}}>
-                    {  <span className="table-header-list">
-                            Price
-                            { isArrowActive(order, "price") }
-                         </span> }
+                        <TableCellArrow content="Price" arrowChecker="price" />
                     </TableCell>
-                    <TableCell className="table-attribute" onClick={() => {sorting("change"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
-                       {  <span className="table-header-list">
-                            24h
-                            { isArrowActive(order, "24h") }
-                         </span> }
-                        
+                    <TableCell className="table-attribute" onClick={() => {sorting("change_1h"); setItemActive("1h")}} style={{cursor: 'pointer'}}>
+                        <TableCellArrow content="1h" arrowChecker="1h" />
+                    </TableCell>
+                    <TableCell className="table-attribute" onClick={() => {sorting("change_24h"); setItemActive("24h")}} style={{cursor: 'pointer'}}>
+                        <TableCellArrow content="24h" arrowChecker="24h" />
                     </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("change_7d"); setItemActive("7d")}} style={{cursor: 'pointer'}}>
-                        {  <span className="table-header-list">
-                                7d
-                                { isArrowActive(order, "7d")}
-                            </span> }
+                        <TableCellArrow content="7d" arrowChecker="7d" />
                     </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("market_cap"); setItemActive("market-cap")}} style={{cursor: 'pointer'}}>
-                        {  <span className="table-header-list">
-                                Market Cap
-                                {isArrowActive(order, "market-cap")}
-                            </span> }
+                        <TableCellArrow content="Market Cap" arrowChecker="market-cap" />
                     </TableCell>
                     <TableCell className="table-attribute" onClick={() => {sorting("volume"); setItemActive("total-volume"); }} style={{cursor: 'pointer'}}>
-                        {  <span className="table-header-list">
-                                 Volume
-                                {isArrowActive(order, "total-volume")}
-                            </span> }
+                        <TableCellArrow content="Volume" arrowChecker="total-volume" />
                     </TableCell>
                     <TableCell className="table-attribute">7d Chart</TableCell>
                 </TableRow>
@@ -141,21 +255,32 @@ export default function CriptoTable() {
                 {
                     cryptoTable.map((item, val) => (
                             <TableRow key={val}>
-                                    <TableCell className="table-item">{item.rank}</TableCell>
+                                    <TableCell className="table-item">
+                                        <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
+                                            {findPreferred(item.ticker) ? 
+                                                <img src={require("../../res/logos/star-checked.png")} width={18} height={18}  style={{paddingRight:'15px', cursor:'pointer', paddingBottom:'5px'}} onClick={() => handlePreferred(false, item.ticker)}/> :
+                                                <img src={require("../../res/logos/star-unchecked.png")} width={18} height={18} style={{paddingRight:'15px', cursor:'pointer', paddingBottom:'5px'}} onClick={() => handlePreferred(true, item.ticker)}/>
+                                            }
+                                            {item.rank}
+                                        </ul>
+                                    </TableCell>
                                     <TableCell className="table-item">
                                         <ul style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
                                             <img src={item.logo} width={24} height={24} style={{marginRight: 10}}/>
-                                            <Link to={`/crypto/${item.name}`} state={{ id: item.id }} className="item-name">
+                                            <Link to={`/crypto/${item.id}`} className="item-name">
                                                 <p>{item.name}</p>
                                             </Link>
-                                            <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker})</p>
+                                            <p className="item-ticker" style={{textAlign: 'center'}}>({item.ticker.toUpperCase()})</p>
                                         </ul>
                                     </TableCell>
                                     <TableCell className="table-item">
                                         {getFormattedPrice(item.price)}
                                     </TableCell>
-                                    <TableCell className={getPriceClass(item.change)}>
-                                        {change(item.change)} %
+                                    <TableCell className={getPriceClass(item.change_1h)}>
+                                        {change(item.change_1h)} %
+                                    </TableCell>
+                                    <TableCell className={getPriceClass(item.change_24h)}>
+                                        {change(item.change_24h)} %
                                     </TableCell>
                                     <TableCell className={getPriceClass(item.change_7d)}>
                                         {change(item.change_7d)} %
@@ -167,7 +292,7 @@ export default function CriptoTable() {
                                         {getPriceWithCurrency(item.volume)}
                                     </TableCell>
                                     <TableCell className="table-item">
-                                        <img src={getChartUrl(item.logo)} />
+                                        <img src={item.chart7d} />
                                     </TableCell>
                             </TableRow>
                     ))

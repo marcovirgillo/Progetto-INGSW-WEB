@@ -1,0 +1,93 @@
+.exchanges-page {
+    background-color: var(--bg-color-dark);
+    min-height: 100vh;
+    padding: 0px 10px 10px 10px;
+}
+
+.trust-bar-exchange {
+    width: 90px;
+}
+
+.item-green-exchange {
+    border-radius: 15px !important;
+    background-color: #55AD11;
+}
+
+.item-yellow-exchange {
+    border-radius: 15px !important;
+    background-color: #AAAD11;
+}
+
+.item-red-exchange {
+    border-radius: 15px !important;
+    background-color: #E05757;
+}
+
+.table-attribute-exchange {
+    color: white !important;
+}
+
+.table-item-exchange {
+    color: white !important;
+    text-align: left !important;
+    text-transform: capitalize !important;
+    padding: 10px 0px 10px 15px !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+    
+}
+
+.table-item-exchange-specific {
+    color: white !important;
+    text-align: left !important;
+    text-transform: capitalize !important;
+    padding: 30px 30px 30px 15px !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+    
+}
+
+.item-name-exchange {
+    font-weight: bold;
+    font-size: 15px;
+    color: white;
+    text-decoration: none;
+}
+
+.item-name-exchange:hover {
+    color: #6ac0e2;
+}
+
+
+@media only screen and (max-width: 800px) {
+    .exchanges-page {
+        padding: 0;
+    }
+
+    .exchanges-title {
+        font-size: 14px !important;
+        margin-left: 50px !important;
+    }
+}
+
+.exchanges-title {
+    color: white;
+    margin-left: 70px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.trust_score {
+    text-indent: 25px;
+}
+
+.image-coin {
+    font-weight: bold !important;
+    font-size: 15px !important;
+    display: flex;
+    margin: 0; 
+    padding: 0; 
+    flex-direction: row; 
+    align-items:'center'
+}
+

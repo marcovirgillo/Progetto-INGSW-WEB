@@ -1,0 +1,12 @@
+
+@media only screen and (max-width: 600px) {
+    .crypto-title {
+        font-size: 20px;
+    }
+
+    .exchange-image {
+        height: 40px;
+        width: 40px;
+    }
+
+}

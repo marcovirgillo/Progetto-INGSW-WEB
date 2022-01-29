@@ -7,6 +7,10 @@
         transform: translateX(-100%); 
     } 
 
+    .dropdown-search {
+        left: 135px !important;
+    }
+
     .side-bar-active {
         transform: translateX(0) !important;
     }
@@ -17,6 +21,10 @@
 
     .menu-button {
         display: revert !important;
+    }
+
+    .portfolio .confirm-popup {
+        left: 34% !important;
     }
 
     .side-bar-back-btn {
@@ -36,12 +44,16 @@
     }
 
     .dropdown-notification {
-        right: 15px !important;
+        right: 10px !important;
         font-size: 0.8em !important;
     }
 
     .delete-icon {
         font-size: 20px !important;
+    }
+
+    .create-portfolio-popup { 
+        left: 32% !important;
     }
 
     .app-bar-logo {
@@ -51,9 +63,29 @@
     .layout-content-main {
         margin-left: 0px !important;
     }
+
+    .choose-crypto-div {
+        left: 20% !important;
+        width: 60% !important;
+    }
+
+    .edit-password-popup {
+        left: 32% !important;
+        width: 36% !important;
+    }
 }
 
+/*qui il div aggiungi cripto riempie quasi tutto lo schermo */
 @media only screen and (max-width: 600px) {
+    .transaction-div-list .btn-container {
+        margin-left: 15px;
+        width: 89% !important;
+    }
+
+    .dropdown-notification {
+        width: 96%;
+    }
+
     .search-icon {
         display: revert !important;
     }
@@ -61,8 +93,73 @@
     .app-bar-search-field {
         display: none !important;
     }
+
+    .portfolio .error-label p {
+        font-size: 0.8em;
+    }
+
+    .dropdown-search {
+        left: 10px !important;
+        width: 92% !important;
+    }
+
+    .field-container {
+        flex-direction: column !important;
+    }
+
+    .portfolio .custom-dropdown-select {
+        width: 90% !important;
+    }
+
+    /*è prezzo cripto*/
+    .price-field input[type=number] {
+        width: 92% !important;
+    }
+
+    /*è l'input quantita cripto */
+    .portfolio input {
+        width: 96% !important;
+    }
+
+    .portfolio .confirm-popup {
+        left: 12% !important;
+    }
+
+    .property-content {
+        font-size: 0.9em !important;
+    }
+
+    .password-content {
+        font-size: 0.9em !important;
+    }
 }
 
+@media only screen and (max-width: 800px)  {
+    .choose-crypto-div {
+        top: 14% !important;
+        left: 5% !important;
+        width: 90% !important;
+    }
+
+    .account-wrapper {
+        width: 90% !important;
+    }
+
+    .create-portfolio-popup {
+        left: 10% !important;
+        width: 80% !important;
+    }
+
+    .choose-crypto-div .app-bar-search-field {
+        display: flex !important;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .gainers-list {
+        padding-left: 36px !important;
+    }
+}
 
 @media only screen and (min-width: 1000px) {
     ::-webkit-scrollbar {
@@ -93,5 +190,38 @@
 #root {
     width: 100%;
     height: 100vh;
+}
+
+.btn-container {
+    background-color: #4E4E4E;
+    color: white;
+    font-weight: 500;
+    border-radius: 15px;
+    box-shadow: 0px 4px 9px 2px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    max-height: 35px;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.btn-container p {
+    padding: 8px 15px 8px 15px
+}
+
+.btn-active {
+    background-color: #737373;
+    border-radius: 15px;
+}
+
+
+.apexcharts-xaxis-label tspan {
+    fill: #8F8F8F !important;
+}
+
+.apexcharts-yaxis-label tspan {
+    fill: #8F8F8F !important;
 }
 
