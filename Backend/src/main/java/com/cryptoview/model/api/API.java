@@ -87,8 +87,6 @@ public class API {
 		String currentDateString = currentDate.toString();
 		String yesterdayDateString = yesterdayDate.toString();
 		
-		String test = popularNewsKeyPart1 + yesterdayDateString + popularNewsKeyPart2 + currentDateString + popularNewsKeyPart3 + getNewsKey();
-		System.out.println(test);
 		return popularNewsKeyPart1 + yesterdayDateString + popularNewsKeyPart2 + currentDateString + popularNewsKeyPart3 + getNewsKey();
 	
 	}

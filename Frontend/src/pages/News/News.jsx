@@ -175,8 +175,6 @@ export default function News() {
                             />
                         ))
                     }
-
-
                 
                     {/* Three side news*/}
                     <div className='three-side-news-container'>
@@ -187,16 +185,13 @@ export default function News() {
                                     title = {item.title}
                                     imagePath = {item.imageUrl}
                                     publishedAt = {item.publishedAt}
-                                    url = {item.url}
-                                    
+                                    url = {item.url}                  
                                 />
                             ))
                         }
                     </div>
                 </div>
-
             </div>
-
 
         
             <SearchField
