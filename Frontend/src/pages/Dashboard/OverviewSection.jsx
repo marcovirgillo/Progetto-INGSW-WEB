@@ -61,7 +61,7 @@ export default function OverviewSection(props) {
                     },
                     (error) => console.log(error));
         }
-        else if(res.status === 6001) {
+        else if(res.status === 490) {
             console.log("No gainers found");
         }
     }
@@ -82,7 +82,7 @@ export default function OverviewSection(props) {
                     },
                       (error) => console.log(error));
         }
-        else if(res.status === 6001) {
+        else if(res.status === 490) {
             console.log("No portfolio stats");
         }
     }

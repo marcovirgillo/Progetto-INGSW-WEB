@@ -141,10 +141,10 @@ export default function TransactionPanel(props) {
 
             props.closePanel();
         }
-        else if(res.status === 5020) {
+        else if(res.status === 465) {
             res.json().then(result => console.log(result));
             showErrorMessage("Error, please check the input fields and retry!");
-        } else if (res.status === 5030) {
+        } else if (res.status === 468) {
             showErrorMessage("Insufficient crypto amount, please retry!");
         } else {
             res.json().then(result => console.log(result));

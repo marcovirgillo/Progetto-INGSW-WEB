@@ -71,7 +71,7 @@ export default function App() {
         if(res.status === 200) {
             res.json().then(result => setUserLogged(result['user']));
         }
-        else if(res.status === 5000 && accessToken != "") {
+        else if(res.status === 498 && accessToken != "") {
             //In questo caso il token non nullo che ho salvato non è valido e devo rifare l'accesso
             setUserLogged({});
             saveToken("");

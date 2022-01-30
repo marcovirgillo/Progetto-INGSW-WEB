@@ -104,7 +104,6 @@ const AddCrypto = (props) => {
             else
                 return "choose-crypto-div-dashboard";
         }
-
     }
 
     return (
@@ -115,9 +114,11 @@ const AddCrypto = (props) => {
                     <ul className="inline-list select-list">
                         <span style={{color: 'white', fontSize:'20px', fontWeight:'700', paddingTop:'15px'}}>Select your favourite assets</span>
                         <div className="h-spacer-choose-crypto"/>
-                        <img src={require("../../res/logos/close.png")} width={24} height={24} alt="close add preferences" className="close-dashboard-icon"
-                                                onClick={() => props.setAddPreferredActive(false)}
-                                            />
+                        {props.position !=="beforeDashboard" && (
+                            <img src={require("../../res/logos/close.png")} width={24} height={24} alt="close add preferences" className="close-dashboard-icon"
+                            onClick={() => props.setAddPreferredActive(false)}
+                        />
+                        )}
                     </ul>
                     <ul className="search-list">
                         <div style={{paddingTop:'30px'}} />

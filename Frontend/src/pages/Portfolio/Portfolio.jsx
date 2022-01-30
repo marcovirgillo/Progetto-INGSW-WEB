@@ -54,7 +54,6 @@ const Portfolio = (props) => {
     const optionsChart = {
         method: 'GET',
         headers : {
-            'Content-Type': 'application/json',
             'Access-Control-Allow-Origin' : '*',
             'Authorization': props.accessToken,
             'timeStamp': chartInterval
@@ -64,7 +63,6 @@ const Portfolio = (props) => {
     const optionsInfo = {
         method: 'GET',
         headers : {
-            'Content-Type': 'application/json',
             'Access-Control-Allow-Origin' : '*',
             'Authorization': props.accessToken,
         }
@@ -77,7 +75,7 @@ const Portfolio = (props) => {
                       (error) => console.log(error));
         }
 
-        if(res.status === 5010) {
+        if(res.status === 461) {
             console.log("Portfolio doesn't exists");
             setPortfolioExists(false);
         }
@@ -94,7 +92,7 @@ const Portfolio = (props) => {
                     (error) => console.log(error));
         }
 
-        if(res.status === 5010) {
+        if(res.status === 461) {
             console.log("Portfolio doesn't exists");
             setPortfolioExists(false);
         }

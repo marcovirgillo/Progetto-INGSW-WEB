@@ -87,7 +87,7 @@ const Dashboard = (props) => {
                 .then((result) => {setPreferred(result.preferences); setFetched(true);},
                       (error) => console.log(error));
         }
-        else if(res.status === 6001) {
+        else if(res.status === 490) {
             console.log("No preferences found");
         }
     }
@@ -98,7 +98,7 @@ const Dashboard = (props) => {
                 .then((result) => {setAlerts(result.alerts)},
                       (error) => console.log(error));
         }
-        else if(res.status === 7002) {
+        else if(res.status === 496) {
             console.log("No alerts found");
         }
     }

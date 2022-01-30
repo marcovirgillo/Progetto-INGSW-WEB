@@ -187,7 +187,7 @@ const AccountInfo = (props) => {
             props.showResultPopup("Email updated successfully!");
             props.fetchProfile();
         }
-        if(res.status === 5020) 
+        if(res.status === 465) 
             props.showError("Email is not valid, please retry", 'form');
         if(res.status === 500)
             props.showError("Server error! Please try again later", 'form');
@@ -308,7 +308,7 @@ const EditPasswordPopup = (props) => {
             props.showResultPopup("Password updated successfully!");
             props.disablePasswordEdit();
         }
-        if(res.status === 5020) 
+        if(res.status === 465) 
             props.showError("Error! Password characters are not valid, please retry", 'popup');
         if(res.status === 500)
             props.showError("Server error! Please try again later", 'popup');
