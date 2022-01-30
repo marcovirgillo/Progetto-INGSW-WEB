@@ -37,7 +37,6 @@ const AddCrypto = (props) => {
 
     const addPreferences = () => {
         if(selected.length === 0){
-            console.log("No preferences selected!")
             return;
         }
         const body = selected;
@@ -52,7 +51,6 @@ const AddCrypto = (props) => {
 
     const parseResponse = res => {
         if(res.status === 200) {
-            console.log("Preferences added successfully!");
             props.fetcherPreferences();
         }
          else {

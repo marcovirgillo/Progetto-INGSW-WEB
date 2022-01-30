@@ -64,10 +64,7 @@ const HeaderSection = (props) => {
     }
 
     const parseResponse = res => {
-        if(res.status === 200) {
-            console.log("Preference added/removed successfully!");
-        }
-        else if(res.status === 491) {
+        if(res.status === 491) {
             console.log("Preference already exists")
         } else {
             res.json().then(result => console.log(result));
@@ -101,9 +98,6 @@ const HeaderSection = (props) => {
             res.json()
                 .then((result) => setPreferred(result.preferences),
                       (error) => console.log(error));
-        }
-        else if(res.status === 490) {
-            console.log("No preferences found");
         }
     }
 

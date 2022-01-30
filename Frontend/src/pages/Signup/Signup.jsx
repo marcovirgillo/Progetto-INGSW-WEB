@@ -57,7 +57,7 @@ const Signup = (props) => {
         else if(res.status === 403)
             showError("Error! Please check the input fields and retry");
         else {
-            console.log("error during signup");
+            showError("Error! please try again later");
             res.json().then(result => console.log(result));
         }
     }

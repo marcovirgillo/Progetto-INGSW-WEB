@@ -120,8 +120,6 @@ const AddAlert = (props) => {
             .then(res => parseResponse(res));
     }
 
-    console.log(props.cryptoData)
-
     return (
         <div className="add-alert">
             {props.addAlertActive && (<div className="background-blurrer-alert" />)}

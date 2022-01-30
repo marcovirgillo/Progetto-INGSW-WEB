@@ -74,8 +74,6 @@ const Dashboard = (props) => {
     const fetcherAlerts = () =>{
         if(props.accessToken === null || props.accessToken === "")
             return;
-
-        console.log("fetching alerts")
         
         fetch(getAlertsUrl, optionsPreferences)
         .then((res) => processAlerts(res));
@@ -97,9 +95,6 @@ const Dashboard = (props) => {
             res.json()
                 .then((result) => {setAlerts(result.alerts)},
                       (error) => console.log(error));
-        }
-        else if(res.status === 496) {
-            console.log("No alerts found");
         }
     }
 

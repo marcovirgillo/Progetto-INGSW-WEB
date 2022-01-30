@@ -93,7 +93,6 @@ const Portfolio = (props) => {
         }
 
         if(res.status === 461) {
-            console.log("Portfolio doesn't exists");
             setPortfolioExists(false);
         }
         else 

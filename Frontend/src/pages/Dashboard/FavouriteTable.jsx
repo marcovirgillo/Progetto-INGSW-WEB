@@ -42,10 +42,7 @@ export default function CriptoTable(props) {
     }
 
     const parseResponse = res => {
-        if(res.status === 200) {
-            console.log("Preference removed successfully!");
-        }
-        else {
+        if(res.status != 200) {
             res.json().then(result => console.log(result));
         }
     }

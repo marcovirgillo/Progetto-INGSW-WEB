@@ -63,7 +63,6 @@ const Login = (props) => {
         if(!checkConstraints())
             return;
 
-        console.log("sto loggando!");
         fetch(loginLink, loginOptions)
         .then((res) => parseResult(res));
     }
