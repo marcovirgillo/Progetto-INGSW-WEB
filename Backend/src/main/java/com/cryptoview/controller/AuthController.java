@@ -112,9 +112,6 @@ public class AuthController {
 					return resp;
 				}
 				
-				if(user.getUsername().equals("piero"))
-					EmailSenderService.sendEmail("pierobassa222@gmail.com", "hai loggato", "bastardo");
-				
 				//altrimenti, restituisco 200 e l'oggetto user
 				response.setStatus(Protocol.OK);
 				resp.put("user", user);
