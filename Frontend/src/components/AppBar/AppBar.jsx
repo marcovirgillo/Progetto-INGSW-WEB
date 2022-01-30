@@ -144,8 +144,6 @@ export default function AppBar(props) {
         setQueryedData(allCryptoCopy);
     }
 
-    useEffect(() => setQueryedData(props.allCryptos), [props.allCryptos]);
-
     const parseResponse = res => {
         if(res.status === 200) {
             res.json().then(result => setNotificationList(result['notifications']));
@@ -154,8 +152,10 @@ export default function AppBar(props) {
     }
 
     const fetchNotifications = () => {
-        if(props.accessToken === null || props.accessToken === "")
+        if(props.accessToken === null || props.accessToken === "") {
+            setNotificationList([]);
             return;
+        }
         
         const options = {
             method: 'GET',
@@ -185,6 +185,7 @@ export default function AppBar(props) {
         setNotificationList(notif);
     }
 
+    useEffect(() => setQueryedData(props.allCryptos), [props.allCryptos]);
     useEffect(fetchNotifications, []);
     useEffect(fetchNotifications, [props.accessToken]);
 

@@ -284,7 +284,7 @@ const Portfolio = (props) => {
                             )}
                             { chartType === 'chart' && (<ChartButtons className="chart-btns-mobile"/>) }
                             { chartType === 'allocation' && portfolioInfo.assets.length > 0 && (
-                                <ul style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                                <ul style={{width: '100%', display: 'flex', justifyContent: 'center', padding: '0px'}}>
                                     <PieChart width="500px" height="300px" data={parsePortfolioAssets()} />
                                 </ul>
                             )}

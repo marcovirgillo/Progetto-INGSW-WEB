@@ -447,7 +447,11 @@ public class UserPreferencesController {
 			
 			Alert alert = new Alert();
 			alert.setCriptoTicker((String) obj.get("ticker"));
-			alert.setTargetPrice(Double.parseDouble((String) obj.get("price")));
+			try {
+				alert.setTargetPrice((Double) obj.get("price"));
+			} catch (ClassCastException e3) {
+				alert.setTargetPrice(Double.valueOf((String) obj.get("price")));
+			}
 			alert.setAbove((boolean) obj.get("is_above"));
 			PreferencesDaoJDBC.getInstance().save(alert, user.getUsername());
 			
@@ -456,6 +460,7 @@ public class UserPreferencesController {
 			
 			return resp;	
 		} catch (SQLException e) {
+			e.printStackTrace();
 			response.setStatus(Protocol.SERVER_ERROR);
 			resp.put("msg", "Internal server error");
 			
@@ -499,7 +504,7 @@ public class UserPreferencesController {
 			}
 		} catch (SQLException e) {
 			response.setStatus(Protocol.SERVER_ERROR);
-			resp.put("msg", "Internal server error or Alert doesn't exist");
+			resp.put("msg", "Internal server error or Alert does not exist");
 			
 			return resp;
 		}

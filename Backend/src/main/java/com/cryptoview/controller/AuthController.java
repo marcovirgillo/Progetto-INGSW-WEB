@@ -135,7 +135,7 @@ public class AuthController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@GetMapping("/logout")
+	@PostMapping("/logout")
 	public JSONObject doLogout(HttpServletRequest request, HttpServletResponse response) {
 		JSONObject resp = new JSONObject();
 		String token = request.getHeader("Authorization");
