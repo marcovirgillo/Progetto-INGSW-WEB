@@ -112,21 +112,11 @@ const AddCrypto = (props) => {
                     <ul className="inline-list select-list">
                         <span style={{color: 'white', fontSize:'20px', fontWeight:'700', paddingTop:'15px'}}>Select your favourite assets</span>
                         <div className="h-spacer-choose-crypto"/>
-<<<<<<< HEAD
-                        {
-                            props.position !=="beforeDashboard" && (
-                                <img src={require("../../res/logos/close.png")} width={24} height={24} alt="close add preferences" className="close-dashboard-icon"
-                                                onClick={() => props.setAddPreferredActive(false)}
-                                            />
-                            )
-                        }
-=======
                         {props.position !=="beforeDashboard" && (
                             <img src={require("../../res/logos/close.png")} width={24} height={24} alt="close add preferences" className="close-dashboard-icon"
                             onClick={() => props.setAddPreferredActive(false)}
                         />
                         )}
->>>>>>> e9ca5878b5452b4ed710193311b674a27fac0aac
                     </ul>
                     <ul className="search-list">
                         <div style={{paddingTop:'30px'}} />
