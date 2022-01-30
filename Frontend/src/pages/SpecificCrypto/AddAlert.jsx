@@ -109,7 +109,6 @@ const AddAlert = (props) => {
             props.showResultPopup("Alert created successfully!");
         }
         else {
-            console.log(res.status);
             res.json().then(result => console.log(result));
         }
             
