@@ -9,7 +9,7 @@ export default function ForgotPassword(props) {
 
     const navigate = useNavigate();
 
-    const resetAddress = `http://${address}:8080/forgotpassword`;
+    const resetAddress = `https://${address}/forgotpassword`;
 
     const [screenSize, setScreenSize] = useState(window.innerWidth);
     const [errorLabelActive, setErrorLabelActive] = useState(false);

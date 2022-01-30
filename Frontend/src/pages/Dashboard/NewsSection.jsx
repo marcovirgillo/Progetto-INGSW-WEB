@@ -31,7 +31,7 @@ const SideNewsBox = (props) => {
     );
 }
 
-const getNewsURL = `http://${address}:8080/getPreferredNews`;
+const getNewsURL = `https://${address}/getPreferredNews`;
 
 export default function NewsSection(props) {    
     
@@ -62,7 +62,7 @@ export default function NewsSection(props) {
                 .then((result) => {setNewsData(result.news)},
                       (error) => console.log(error));
         }
-        else if(res.status === 6001) {
+        else if(res.status === 490) {
             console.log("No news preferences found");
         }
     }

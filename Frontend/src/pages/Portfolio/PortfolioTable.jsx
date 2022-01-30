@@ -9,7 +9,7 @@ import ConfirmPopup from './ConfirmPopup';
 import TransactionTable from './TransactionTable';
 
 const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency:'USD'});
-const removeAssetUrl = `http://${address}:8080/removeCripto`;
+const removeAssetUrl = `https://${address}/removeCripto`;
 
 function getPriceClass(price) {
     let className = 'table-item ';

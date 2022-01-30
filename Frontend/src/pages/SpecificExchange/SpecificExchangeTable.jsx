@@ -81,7 +81,7 @@ export default function ExchangesTable() {
     }, []);
 
     const fetchData = () => {
-        fetch(`http://${address}:8080/getTop100`)
+        fetch(`https://${address}/getTop100`)
             .then((res) => res.json())
             .then((result) => setCryptoTable(result),
                   (error) => console.lg("Error fetching top 100 cryptos"));

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './AddAlert.css';
 import { address } from '../../assets/globalVar';
 
-const addAlertUrl = `http://${address}:8080/saveAlert`;
+const addAlertUrl = `https://${address}/saveAlert`;
 
 const getDecimalPlaces = (number) => {
     let decimal = 0;
@@ -109,7 +109,6 @@ const AddAlert = (props) => {
             props.showResultPopup("Alert created successfully!");
         }
         else {
-            console.log(res.status);
             res.json().then(result => console.log(result));
         }
             
@@ -119,8 +118,6 @@ const AddAlert = (props) => {
         fetch(addAlertUrl, options)
             .then(res => parseResponse(res));
     }
-
-    console.log(props.cryptoData)
 
     return (
         <div className="add-alert">

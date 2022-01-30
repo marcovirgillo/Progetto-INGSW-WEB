@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { address } from '../../assets/globalVar';
 import { useNavigate } from "react-router-dom";
 
-const signupAddress = `http://${address}:8080/registration`;
+const signupAddress = `https://${address}/registration`;
 
 const Signup = (props) => {
     const [screenSize, setScreenSize] = useState(window.innerWidth);
@@ -57,7 +57,7 @@ const Signup = (props) => {
         else if(res.status === 403)
             showError("Error! Please check the input fields and retry");
         else {
-            console.log("error during signup");
+            showError("Error! please try again later");
             res.json().then(result => console.log(result));
         }
     }

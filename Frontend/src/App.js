@@ -9,8 +9,9 @@ import React, { useState, useEffect } from 'react';
 import { address } from './assets/globalVar';
 import ResultPopup from './components/ResultPopup/ResultPopup';
 
-const checkLoginAddress = `http://${address}:8080/checkLogin`;
-const allCryptoUrl = `http://${address}:8080/supportedCrypto`;
+const checkLoginAddress = `https://${address}/checkLogin`;
+const allCryptoUrl = `https://${address}/supportedCrypto`;
+const logoutLink = `https://${address}/logout`;
 
 export default function App() {
     //le due funzioni di stato vengono passate a sideBar e appbar, e servono a chiudere/aprire la sidebar sull'evento onclick dei bottoni
@@ -68,10 +69,9 @@ export default function App() {
     //controllo la risposta del server dopo il tentativo di login
     const parseResult = res => {
         if(res.status === 200) {
-            console.log("Fetch con token da app js success")
             res.json().then(result => setUserLogged(result['user']));
         }
-        else if(res.status === 5000 && accessToken != "") {
+        else if(res.status === 498 && accessToken != "") {
             //In questo caso il token non nullo che ho salvato non è valido e devo rifare l'accesso
             setUserLogged({});
             saveToken("");
@@ -95,7 +95,18 @@ export default function App() {
         setTimeout(() => setResultPopupActive(false), 3000);
     }
 
+    const logoutOptions = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            'Authorization': accessToken
+        }
+    }
+
     const doLogout = () => {
+        fetch(logoutLink, logoutOptions);
+        
         setUserLogged({});
         saveToken("");
     }
@@ -112,7 +123,7 @@ export default function App() {
                             setUserLogged={setUserLogged} userLogged={userLogged} doLogout={doLogout}
                     />
                     <div className="layout-content-main">
-                        <AppRoutes accessToken={accessToken} setAccessToken={saveToken} allCrypto={allCrypto} 
+                        <AppRoutes accessToken={accessToken} setAccessToken={saveToken} allCrypto={allCrypto} doLogout={doLogout}
                                    userLogged={userLogged} fetchProfile={fetchData} showResultPopup={showResultPopup}/> 
                         <Footer />
                     </div>

@@ -17,8 +17,8 @@ import { blue } from '@mui/material/colors';
 const greenColor = "#46C95B";
 const redColor = "#E05757";
 
-const portfolioChartUrl = `http://${address}:8080/portfolioValue`;
-const portfolioInfoUrl = `http://${address}:8080/portfolioInfo`;
+const portfolioChartUrl = `https://${address}/portfolioValue`;
+const portfolioInfoUrl = `https://${address}/portfolioInfo`;
 
 //è il rettangolo che mostra l'andamento percentuale delle 24h
 function IndicatorRectangle(props) {
@@ -54,7 +54,6 @@ const Portfolio = (props) => {
     const optionsChart = {
         method: 'GET',
         headers : {
-            'Content-Type': 'application/json',
             'Access-Control-Allow-Origin' : '*',
             'Authorization': props.accessToken,
             'timeStamp': chartInterval
@@ -64,7 +63,6 @@ const Portfolio = (props) => {
     const optionsInfo = {
         method: 'GET',
         headers : {
-            'Content-Type': 'application/json',
             'Access-Control-Allow-Origin' : '*',
             'Authorization': props.accessToken,
         }
@@ -77,7 +75,7 @@ const Portfolio = (props) => {
                       (error) => console.log(error));
         }
 
-        if(res.status === 5010) {
+        if(res.status === 461) {
             console.log("Portfolio doesn't exists");
             setPortfolioExists(false);
         }
@@ -94,8 +92,7 @@ const Portfolio = (props) => {
                     (error) => console.log(error));
         }
 
-        if(res.status === 5010) {
-            console.log("Portfolio doesn't exists");
+        if(res.status === 461) {
             setPortfolioExists(false);
         }
         else 
@@ -284,7 +281,7 @@ const Portfolio = (props) => {
                             )}
                             { chartType === 'chart' && (<ChartButtons className="chart-btns-mobile"/>) }
                             { chartType === 'allocation' && portfolioInfo.assets.length > 0 && (
-                                <ul style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                                <ul style={{width: '100%', display: 'flex', justifyContent: 'center', padding: '0px'}}>
                                     <PieChart width="500px" height="300px" data={parsePortfolioAssets()} />
                                 </ul>
                             )}

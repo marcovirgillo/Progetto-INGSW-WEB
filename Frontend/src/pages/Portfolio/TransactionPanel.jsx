@@ -8,8 +8,8 @@ import  ArrowDropUpRoundedIcon  from '@mui/icons-material/ArrowDropUpRounded';
 import { address } from '../../assets/globalVar';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
-const addTransactionUrl = `http://${address}:8080/addTransaction`;
-const editTransactionUrl = `http://${address}:8080/updateTransaction`;
+const addTransactionUrl = `https://${address}/addTransaction`;
+const editTransactionUrl = `https://${address}/updateTransaction`;
 
 function CustomSelectDropown(props) {
     const getClassName = () => {
@@ -141,10 +141,10 @@ export default function TransactionPanel(props) {
 
             props.closePanel();
         }
-        else if(res.status === 5020) {
+        else if(res.status === 465) {
             res.json().then(result => console.log(result));
             showErrorMessage("Error, please check the input fields and retry!");
-        } else if (res.status === 5030) {
+        } else if (res.status === 468) {
             showErrorMessage("Insufficient crypto amount, please retry!");
         } else {
             res.json().then(result => console.log(result));

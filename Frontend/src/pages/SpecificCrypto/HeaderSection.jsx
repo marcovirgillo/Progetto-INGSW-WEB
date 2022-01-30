@@ -4,9 +4,9 @@ import "./../../App.css";
 import { useNavigate } from "react-router-dom";
 import { address } from './../../assets/globalVar.js';
 
-const getPreferencesUrl = `http://${address}:8080/getPreferences`;
-const addPreferenceUrl = `http://${address}:8080/addPreference`;
-const removePreferenceUrl = `http://${address}:8080/removePreference`;
+const getPreferencesUrl = `https://${address}/getPreferences`;
+const addPreferenceUrl = `https://${address}/addPreference`;
+const removePreferenceUrl = `https://${address}/removePreference`;
 
 let ispreferred;
 const HeaderSection = (props) => {
@@ -64,11 +64,8 @@ const HeaderSection = (props) => {
     }
 
     const parseResponse = res => {
-        if(res.status === 200) {
-            console.log("Preference added/removed successfully!");
-        }
-        else if(res.status === 5020) {
-            console.log("Preference already existed")
+        if(res.status === 491) {
+            console.log("Preference already exists")
         } else {
             res.json().then(result => console.log(result));
         }
@@ -101,9 +98,6 @@ const HeaderSection = (props) => {
             res.json()
                 .then((result) => setPreferred(result.preferences),
                       (error) => console.log(error));
-        }
-        else if(res.status === 6001) {
-            console.log("No preferences found");
         }
     }
 

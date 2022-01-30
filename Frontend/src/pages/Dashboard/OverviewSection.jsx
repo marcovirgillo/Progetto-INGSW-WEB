@@ -5,8 +5,8 @@ import { address } from './../../assets/globalVar.js';
 
 const interval_fetch = 1000 * 120;
 
-const getGainersUrl = `http://${address}:8080/gainersSection`;
-const portfolioStatsUrl = `http://${address}:8080/portfolioOverview`;
+const getGainersUrl = `https://${address}/gainersSection`;
+const portfolioStatsUrl = `https://${address}/portfolioOverview`;
 
 export default function OverviewSection(props) {
     const [topPerformers, setTopPerformers] = useState([]);
@@ -61,7 +61,7 @@ export default function OverviewSection(props) {
                     },
                     (error) => console.log(error));
         }
-        else if(res.status === 6001) {
+        else if(res.status === 490) {
             console.log("No gainers found");
         }
     }
@@ -82,7 +82,7 @@ export default function OverviewSection(props) {
                     },
                       (error) => console.log(error));
         }
-        else if(res.status === 6001) {
+        else if(res.status === 490) {
             console.log("No portfolio stats");
         }
     }

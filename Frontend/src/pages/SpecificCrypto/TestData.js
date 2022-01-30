@@ -9,7 +9,7 @@ export const info = {
           ""
         ],
         "blockchain_site": [
-          "http://polkascan.io/",
+          "https://polkascan.io/",
           "https://polkadot-cc1.subscan.io/",
           "https://hubble.figment.io/polkadot/chains/polkadot",
           "",

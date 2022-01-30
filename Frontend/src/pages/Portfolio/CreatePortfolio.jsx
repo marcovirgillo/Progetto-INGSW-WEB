@@ -45,9 +45,9 @@ function CreatePopup(props) {
 
     //se cambia lo status code, controllo se devo mostrae errore
     useEffect(() => {
-        if(props.status === 5020)
+        if(props.status === 465)
             showError("The name is not valid!");
-        else if(props.status === 5000)
+        else if(props.status === 500)
             showError("Server error, please retry!");
         else
             setErrorLabelActive(false);
@@ -72,7 +72,7 @@ function CreatePopup(props) {
     );
 }
 
-const createPortfolioAddress = `http://${address}:8080/createPortfolio`
+const createPortfolioAddress = `https://${address}/createPortfolio`
 
 export default function CreatePortfolio(props) {
     const [popupActive, setPopupActive] = useState(false);
@@ -96,7 +96,7 @@ export default function CreatePortfolio(props) {
             props.updateData();
             props.showResultPopup("Portfolio created successfully!");
         }
-        else if(res.status === 5050) {
+        else if(res.status === 475) {
             console.log("A portfolio already exists");
             props.updateData();
         }

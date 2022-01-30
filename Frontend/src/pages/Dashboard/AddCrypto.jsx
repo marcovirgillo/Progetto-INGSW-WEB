@@ -3,7 +3,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { blue } from '@mui/material/colors';
 import { address } from './../../assets/globalVar.js';
 
-const addPreferencesUrl = `http://${address}:8080/addPreferences`;
+const addPreferencesUrl = `https://${address}/addPreferences`;
 
 function SearchField(props) {
     return (
@@ -37,7 +37,6 @@ const AddCrypto = (props) => {
 
     const addPreferences = () => {
         if(selected.length === 0){
-            console.log("No preferences selected!")
             return;
         }
         const body = selected;
@@ -52,7 +51,6 @@ const AddCrypto = (props) => {
 
     const parseResponse = res => {
         if(res.status === 200) {
-            console.log("Preferences added successfully!");
             props.fetcherPreferences();
         }
          else {
@@ -104,7 +102,6 @@ const AddCrypto = (props) => {
             else
                 return "choose-crypto-div-dashboard";
         }
-
     }
 
     return (
@@ -115,6 +112,7 @@ const AddCrypto = (props) => {
                     <ul className="inline-list select-list">
                         <span style={{color: 'white', fontSize:'20px', fontWeight:'700', paddingTop:'15px'}}>Select your favourite assets</span>
                         <div className="h-spacer-choose-crypto"/>
+<<<<<<< HEAD
                         {
                             props.position !=="beforeDashboard" && (
                                 <img src={require("../../res/logos/close.png")} width={24} height={24} alt="close add preferences" className="close-dashboard-icon"
@@ -122,6 +120,13 @@ const AddCrypto = (props) => {
                                             />
                             )
                         }
+=======
+                        {props.position !=="beforeDashboard" && (
+                            <img src={require("../../res/logos/close.png")} width={24} height={24} alt="close add preferences" className="close-dashboard-icon"
+                            onClick={() => props.setAddPreferredActive(false)}
+                        />
+                        )}
+>>>>>>> e9ca5878b5452b4ed710193311b674a27fac0aac
                     </ul>
                     <ul className="search-list">
                         <div style={{paddingTop:'30px'}} />

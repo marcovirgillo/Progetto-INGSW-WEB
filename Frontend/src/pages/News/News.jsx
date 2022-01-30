@@ -93,7 +93,7 @@ export default function News() {
     const [popularNewsData, setPopularNewsData] = useState([]);
 
     const fetchPopularNews = () => {
-        fetch(`http://${address}:8080/popularNews`)
+        fetch(`https://${address}/popularNews`)
             .then((res) => res.json())
             .then((result) => setPopularNewsData(result),
                   (error) => console.log("Error fetching popular news"));
@@ -102,7 +102,7 @@ export default function News() {
     const [latestNewsData, setLatestNewsData] = useState([]);
 
     const fetchAllLatestNews = () => {
-        fetch(`http://${address}:8080/allLatestNews`)
+        fetch(`https://${address}/allLatestNews`)
             .then((res) => res.json())
             .then((result) => setLatestNewsData(result),
                   (error) => console.log("Error fetching latest news"));

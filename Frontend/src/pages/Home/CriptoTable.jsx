@@ -12,9 +12,9 @@ import { Preferred } from './TestData.js';
 //https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 const interval_fetch = 1000 * 120; //60 secondi
 
-const getPreferencesUrl = `http://${address}:8080/getPreferences`;
-const addPreferenceUrl = `http://${address}:8080/addPreference`;
-const removePreferenceUrl = `http://${address}:8080/removePreference`;
+const getPreferencesUrl = `https://${address}/getPreferences`;
+const addPreferenceUrl = `https://${address}/addPreference`;
+const removePreferenceUrl = `https://${address}/removePreference`;
 
 export default function CriptoTable(props) {
     const [cryptoTable, setCryptoTable] = useState([]);
@@ -112,7 +112,7 @@ export default function CriptoTable(props) {
                 .then((result) => setPreferred(result.preferences),
                       (error) => console.log(error));
         }
-        else if(res.status === 6001) {
+        else if(res.status === 490) {
             console.log("No preferences found");
         }
     }
@@ -181,7 +181,7 @@ export default function CriptoTable(props) {
     }
 
     const fetchData = () => {
-        fetch(`http://${address}:8080/getTop100`)
+        fetch(`https://${address}/getTop100`)
             .then((res) => res.json())
             .then((result) => setCryptoTable(result),
                   (error) => console.log("Error fetching top 100 cryptos"));

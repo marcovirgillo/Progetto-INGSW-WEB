@@ -10,8 +10,8 @@ import { address } from './../../assets/globalVar.js';
 import CircularProgress from '@mui/material/CircularProgress';
 import { blue } from '@mui/material/colors';
 
-const getPreferencesUrl = `http://${address}:8080/getPreferencesDashboard`;
-const getAlertsUrl = `http://${address}:8080/getAlerts`;
+const getPreferencesUrl = `https://${address}/getPreferencesDashboard`;
+const getAlertsUrl = `https://${address}/getAlerts`;
 
 const Dashboard = (props) => {
     const [preferred, setPreferred] = useState([]);
@@ -74,8 +74,6 @@ const Dashboard = (props) => {
     const fetcherAlerts = () =>{
         if(props.accessToken === null || props.accessToken === "")
             return;
-
-        console.log("fetching alerts")
         
         fetch(getAlertsUrl, optionsPreferences)
         .then((res) => processAlerts(res));
@@ -87,7 +85,7 @@ const Dashboard = (props) => {
                 .then((result) => {setPreferred(result.preferences); setFetched(true);},
                       (error) => console.log(error));
         }
-        else if(res.status === 6001) {
+        else if(res.status === 490) {
             console.log("No preferences found");
         }
     }
@@ -97,9 +95,6 @@ const Dashboard = (props) => {
             res.json()
                 .then((result) => {setAlerts(result.alerts)},
                       (error) => console.log(error));
-        }
-        else if(res.status === 7002) {
-            console.log("No alerts found");
         }
     }
 
