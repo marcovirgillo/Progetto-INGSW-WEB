@@ -7,7 +7,7 @@ const AboutUs = () => {
 
     return (
         <div>
-            <s>Marco gay</s>
+            <s>Under construction...</s>
         </div>
     )
 }
