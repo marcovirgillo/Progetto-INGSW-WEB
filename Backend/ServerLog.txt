@@ -74,3 +74,46 @@
 2022-01-29T20:32:23.355412600 ERROR fetching popular news.
 2022-01-29T20:32:23.356409700 ERROR fetching popular news.
 2022-01-29T20:32:23.356409700 ERROR fetching popular news.
+2022-02-02T12:54:32.728918770 ERROR fetching top cryptos.
+2022-02-02T12:54:32.730410312 ERROR fetching market stats.
+2022-02-02T12:54:32.730687532 ERROR fetching exchanges.
+2022-02-02T13:15:41.519597679 ERROR fetching top cryptos.
+2022-02-02T13:15:41.521228256 ERROR fetching market stats.
+2022-02-02T13:15:41.522466399 ERROR fetching exchanges.
+2022-02-02T13:15:41.525273947 ERROR fetching latest news.
+2022-02-02T13:15:41.526245428 ERROR fetching latest news.
+2022-02-02T13:15:41.526822977 ERROR fetching latest news.
+2022-02-02T13:15:41.527463440 ERROR fetching latest news.
+2022-02-02T13:15:41.528303753 ERROR fetching latest news.
+2022-02-02T13:15:41.528892708 ERROR fetching latest news.
+2022-02-02T13:15:41.529439388 ERROR fetching latest news.
+2022-02-02T13:15:41.529975107 ERROR fetching latest news.
+2022-02-02T13:15:41.530943707 ERROR fetching popular news.
+2022-02-02T13:15:41.531581896 ERROR fetching popular news.
+2022-02-02T13:15:41.532270265 ERROR fetching popular news.
+2022-02-02T13:15:41.532959540 ERROR fetching popular news.
+2022-02-02T13:15:41.533600161 ERROR fetching popular news.
+2022-02-02T13:15:41.534131344 ERROR fetching popular news.
+2022-02-02T13:15:41.534695585 ERROR fetching popular news.
+2022-02-02T13:15:41.535226367 ERROR fetching popular news.
+2022-02-02T15:24:14.214165701 ERROR fetching top cryptos.
+2022-02-02T15:24:14.215073634 ERROR fetching market stats.
+2022-02-02T15:24:14.215824292 ERROR fetching exchanges.
+2022-02-02T15:24:14.219793385 ERROR fetching latest news.
+2022-02-02T15:24:14.220261754 ERROR fetching latest news.
+2022-02-02T15:24:14.220597209 ERROR fetching latest news.
+2022-02-02T15:24:14.220934761 ERROR fetching latest news.
+2022-02-02T15:24:14.221686402 ERROR fetching latest news.
+2022-02-02T15:24:14.222270792 ERROR fetching latest news.
+2022-02-02T15:24:14.222895764 ERROR fetching latest news.
+2022-02-02T15:24:14.223419669 ERROR fetching latest news.
+2022-02-02T15:24:14.226689518 ERROR fetching popular news.
+2022-02-02T15:24:14.228336727 ERROR fetching popular news.
+2022-02-02T15:24:14.230534327 ERROR fetching popular news.
+2022-02-02T15:24:14.231946780 ERROR fetching popular news.
+2022-02-02T15:24:14.232433130 ERROR fetching popular news.
+2022-02-02T15:24:14.232759169 ERROR fetching popular news.
+2022-02-02T15:24:14.233056972 ERROR fetching popular news.
+2022-02-02T15:24:14.233514769 ERROR fetching popular news.
+2022-02-02T15:44:42.123264524 ERROR fetching crypto history
+2022-02-02T15:44:42.125418288 ERROR fetching crypto history

@@ -12,7 +12,8 @@ import CreatePortfolio from './CreatePortfolio';
 import PieChart from '../../components/Chart/PieChart';
 import PortfolioStatistics from './PortfolioStatistics';
 import CircularProgress from '@mui/material/CircularProgress';
-import { blue } from '@mui/material/colors';
+import { blue, green } from '@mui/material/colors';
+import  ConfirmPopup  from './ConfirmPopup';
 
 const greenColor = "#46C95B";
 const redColor = "#E05757";
@@ -46,6 +47,7 @@ const Portfolio = (props) => {
     const [transactionPanelActive, setTransactionPanelActive] = useState(false);
     const [portfolioExists, setPortfolioExists] = useState(true);
     const [infoFetched, setInfoFetched] = useState(false);
+    const [confirmPopupActive, setConfirmPopupActive] = useState(false);
 
     const myAssetsUl = useRef(null);
 
@@ -228,6 +230,32 @@ const Portfolio = (props) => {
         return chart_data;
     }
 
+    const parseDeleteAll = res => {
+        if(res.status === 200) {
+            fetcherInfo();
+            fetcherChart();
+        }
+    }
+
+    const deleteAllAssets = () => {
+        const url = `http://${address}:8080/removeAllCryptos`;
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': props.accessToken,
+            }
+        })
+        .then(res => parseDeleteAll(res));
+    }
+
+    const getChartColor = () => {
+        const prices = chartData[0]['data'];
+        if(prices.length > 0)
+            return prices[0] > prices[prices.length - 1] ? redColor : greenColor;
+
+        return greenColor;
+    }
+
     if(infoFetched === false) {
         return (
             <div className="portfolio">
@@ -241,6 +269,7 @@ const Portfolio = (props) => {
             </div>
         )
     }
+
     return (
         <div className="portfolio">
                 {!portfolioExists && (<CreatePortfolio updateData={updateData} accessToken={props.accessToken} showResultPopup={props.showResultPopup}/>)}
@@ -274,7 +303,7 @@ const Portfolio = (props) => {
                             </ul>
                             {chartType === "chart" && chartData [0].data.length > 1 && (
                             <CryptoChart className="chart"
-                                color={portfolioChange.balance_change_24h >= 0 ? greenColor : redColor} 
+                                color={getChartColor()}
                                 width="100%" 
                                 height="120%"
                                 data={chartData} 
@@ -295,6 +324,9 @@ const Portfolio = (props) => {
                         <ul ref={myAssetsUl} className="assets-list">
                             <p className="white-label assets-label">My Assets</p>
                             <div className="h-spacer-assets" />
+                            <button onClick={() => setConfirmPopupActive(true)}>
+                                Remove all assets
+                            </button>
                             <ButtonAddNewAsset setCryptoDialogOpen={setChooseCryptoPageActive}/>
                         </ul>
                         <ul style={{display: 'flex', flexDirection: 'columns', padding: 0, margin: 0,
@@ -314,6 +346,13 @@ const Portfolio = (props) => {
                             dialogActive={chooseCryptoPageActive}
                             showResultPopup={props.showResultPopup}/>
                     </div>
+                )}
+                {confirmPopupActive && (
+                    <ConfirmPopup 
+                        title="Delete all assets" 
+                        text="Are you sure you want to delete all the assets in portfolio ?"
+                        onConfirm={() => {deleteAllAssets(); setConfirmPopupActive(false)}}
+                        onCancel={() => setConfirmPopupActive(false)}/>
                 )}
         </div>
     )
