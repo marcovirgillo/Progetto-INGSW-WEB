@@ -26,6 +26,8 @@ public class CryptoDaoJDBC extends CryptoDao {
 	
 	private final String getAllQuery = "select * from crypto;";
 	private final String getCryptoPortfolio = "select * from criptoinportfolio where username=?";
+	private final String removeCryptoQuery = "delete from crypto where ticker=?";
+	private final String insertNewCryptoQuery = "insert into crypto values(?,?,?,?);";
 	
 	private CryptoDaoJDBC() {
 		cryptosMap = new HashMap<>();
@@ -73,7 +75,16 @@ public class CryptoDaoJDBC extends CryptoDao {
 
 	@Override
 	public void save(Crypto obj) throws SQLException {
-		//Non serve
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(insertNewCryptoQuery);
+		stm.setString(1, obj.getTicker());
+		stm.setString(2, obj.getName());
+		stm.setInt(3, obj.getIdGraphic());
+		stm.setString(4, obj.getIdApi());
+		
+		stm.execute();
+		stm.close();
+		
+		cryptosMap.put(obj.getTicker(), obj);
 	}
 
 	@Override
@@ -96,7 +107,7 @@ public class CryptoDaoJDBC extends CryptoDao {
 	}
 	
 	//Questo metodo deve essere eseguito SOLO per aggiornare le cripto supportate (Aggiunge nuove se non sono già presenti)
-	public void updateSupportedCrypto() throws SQLException {
+	/*public void updateSupportedCrypto() throws SQLException {
 		String query = "insert into crypto values(?,?,?,?) ON CONFLICT DO NOTHING";		
 		JSONArray cryptos = TopCryptoFetcher.getInstance().fetch(200);
 		
@@ -120,6 +131,17 @@ public class CryptoDaoJDBC extends CryptoDao {
 		chart = chart.substring(42, chart.length());
 		chart = chart.substring(0, chart.indexOf("/"));
 		return Integer.parseInt(chart);
+	}*/
+
+	@Override
+	public void removeCrypto(String ticker) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(removeCryptoQuery);
+		stm.setString(1, ticker);
+		
+		stm.execute();
+		stm.close();
+		
+		cryptosMap.remove(ticker);
 	}
 
 }

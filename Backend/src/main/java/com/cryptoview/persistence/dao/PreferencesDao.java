@@ -22,4 +22,6 @@ public abstract class PreferencesDao {
 	public abstract List<Alert> getUserAlerts(String username) throws SQLException;
 	public abstract boolean removeAlert(Integer id, String username) throws SQLException;
 	public abstract List<Alert> getCryptoAlerts(String ticker) throws SQLException;
+	
+	public abstract void removeAllUserPreferences(String username) throws SQLException;
 }

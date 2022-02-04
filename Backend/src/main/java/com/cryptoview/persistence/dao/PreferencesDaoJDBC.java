@@ -21,6 +21,8 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 	private String removeAlert = "delete from alerts where id=? and username=?";
 	private String getAllAlerts = "select * from alerts where username=?";
 	private String getCryptoAlerstQuery = "select * from alerts where ticker=?";
+	private String removeAllUserAlerts = "delete from alerts where username=?";
+	private String removeAllUsersPreferences = "delete from preferire where username=?";
 	
 	private PreferencesDaoJDBC() {}
 	
@@ -195,5 +197,20 @@ public class PreferencesDaoJDBC extends PreferencesDao{
 		rs.close();
 		
 		return list;
+	}
+
+	@Override
+	public void removeAllUserPreferences(String username) throws SQLException {
+		PreparedStatement stm1 = DBConnection.getInstance().getConnection().prepareStatement(removeAllUserAlerts);
+		PreparedStatement stm2 = DBConnection.getInstance().getConnection().prepareStatement(removeAllUsersPreferences);
+		
+		stm1.setString(1, username);
+		stm2.setString(1, username);
+		
+		stm1.execute();
+		stm2.execute();
+		
+		stm1.close();
+		stm2.close();
 	}
 }

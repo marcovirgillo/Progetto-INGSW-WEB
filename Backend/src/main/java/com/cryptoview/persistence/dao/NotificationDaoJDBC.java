@@ -22,6 +22,8 @@ public class NotificationDaoJDBC extends NotificationDao {
 	private String getUserAlertNotification = "select * from alert_notification where username=?";
 	private String deleteNotification = "delete from notification where username=? and id=?";
 	private String deleteAlertNotification = "delete from alert_notification where username=? and id=?";
+	private String deleteUserPriceNotifications = "delete from notification where username=?";
+	private String deleteUserAlertNotifications = "delete from alert_notification where username=?";
 	
 	private NotificationDaoJDBC() {}
 	
@@ -34,7 +36,7 @@ public class NotificationDaoJDBC extends NotificationDao {
 	
 	@Override
 	public List<Notification> getAll() throws SQLException {
-		// TODO Auto-generated method stub
+		//Non serve
 		return null;
 	}
 
@@ -121,6 +123,21 @@ public class NotificationDaoJDBC extends NotificationDao {
 		
 		stm.execute();
 		stm.close();
+	}
+
+	@Override
+	public void removeAllUserNotifications(String username) throws SQLException {
+		PreparedStatement stm1 = DBConnection.getInstance().getConnection().prepareStatement(deleteUserAlertNotifications);
+		PreparedStatement stm2 = DBConnection.getInstance().getConnection().prepareStatement(deleteUserPriceNotifications);
+		
+		stm1.setString(1, username);
+		stm2.setString(1, username);
+		
+		stm1.execute();
+		stm2.execute();
+		
+		stm1.close();
+		stm2.close();
 	}
 
 }

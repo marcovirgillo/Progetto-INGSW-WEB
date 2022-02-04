@@ -11,6 +11,7 @@
 	<title>CryptoView - Admin Dashboard</title>
 	<link rel="stylesheet"
 		href="../../admin_assets/css/dashboard.css">
+	<script src="../../javascript/dashboard.js" type="module"></script>
 </head>
 
 <body>  
@@ -18,6 +19,13 @@
 		<div class="app-bar">
 			<img src="../../admin_assets/logos/CryptoViewLogo.png" width="96" height="96" />
 			<p class="page-name">CryptoView Administration </p>
+			<div class="spacer"></div>
+			<a href="doLogout">
+				<div id="logoutBtn" class="btn logout-btn">
+					<img src="../../admin_assets/logos/logout.png" width="24" height="24"/>
+					<p>Logout</p>
+				</div>
+			</a>
 		</div>
 		<div class="dashboard-content">
 			<div class="assets-div">
@@ -25,10 +33,10 @@
 					<fieldset>
 						<input type="text" placeholder="Ticker" id="tickerField" />
 						<input type="text" placeholder="Name" id="nameField" />
-						<input type="text" placeholder="ID" id="idField" />
 						<input type="text" placeholder="API ID" id="apiIdField" />
+						<input type="text" placeholder="Graphic ID" id="graphicIdField" min="0" onfocus="this.type='number';"/>
 					</fieldset>
-					<div class="add-new-btn">
+					<div id="addAssetBtn" class="btn add-new-btn">
 						<img src="../../admin_assets/logos/plus.png" width="24" height="24" />
 						<p>Add Asset</p>
 					</div>
@@ -39,24 +47,24 @@
 						<thead class="thead-dark">
 							<tr>
 								<th scope="col">#</th>
-								<th scope="col">Ticker</th>
+								<th id="cryptoName" scope="col">Ticker</th>
 								<th scope="col">Name</th>
-								<th scope="col">ID</th>
 								<th scope="col">API ID</th>
+								<th scope="col">Graphic ID</th>
 								<th scope="col"></th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="assetsList">
 							<c:forEach items="${cryptos}" var="crypto" varStatus="loop">
 								<tr>
-									<th scope="col">${loop.index + 1}</th>
-									<th scope="row">${crypto.ticker}</th>
-									<th scope="row">${crypto.name}</th>
-									<th scope="row">${crypto.idApi}</th>
-									<th scope="row">${crypto.idGraphic}</th>
-									<th scope="row">
+									<td>${loop.index + 1}</th>
+									<td>${crypto.ticker}</th>
+									<td>${crypto.name}</th>
+									<td>${crypto.idApi}</th>
+									<td>${crypto.idGraphic}</th>
+									<td>
 										<img src="../../admin_assets/logos/remove.png" width="24" height="24"/>
-									</th>
+									</td>
 								</tr>
 							</c:forEach>
 					</table>
@@ -70,7 +78,7 @@
 						<input type="text" placeholder="Email" id="emailField" />
 						<input type="text" placeholder="Password" id="passwordField" />
 					</fieldset>
-					<div class="add-new-btn">
+					<div id="addNewUser" class="btn add-new-btn">
 						<img src="../../admin_assets/logos/plus.png" width="24" height="24" />
 						<p>Add User</p>
 					</div>
@@ -86,15 +94,15 @@
 							<th scope="col"></th>
 						</tr>
 						</thead>
-						<tbody>
+						<tbody id="usersList">
 						<c:forEach items="${users}" var="user" varStatus="loop">
 							<tr>
-								<th scope="col">${loop.index + 1}</th>
-								<th scope="row">${user.username}</th>
-								<th scope="row">${user.email}</th>
-								<th scope="row">
+								<td>${loop.index + 1}</th>
+								<td>${user.username}</th>
+								<td>${user.email}</th>
+								<td>
 									<img src="../../admin_assets/logos/remove.png" width="24" height="24"/>
-								</th>
+								</td>
 							</tr>
 						</c:forEach>
 					</table>
@@ -102,6 +110,9 @@
 			</div>
 		</div>
 	</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.js"
+		integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+		crossorigin="anonymous"></script>
 </body>
 
 </html>

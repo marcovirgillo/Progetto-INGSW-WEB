@@ -31,6 +31,9 @@ public class UserDaoJDBC extends UserDao {
 	private String resetAvatarQuery = "update utente set avatar=null where token=?";
 	private String getAllUsers = "select * from utente";
 	private String deleteTokenQuery = "delete from tokens where token=?";
+	private String checkUserAdmin = "select * from utente where username=? and is_admin=true";
+	private String deleteUser = "delete from utente where username=?";
+	private String getUserEmail = "select email from utente where username=?";
 
 	private UserDaoJDBC() {
 	}
@@ -234,6 +237,54 @@ public class UserDaoJDBC extends UserDao {
 
 		stm.execute();
 		stm.close();
+	}
+
+	@Override
+	public boolean isUserAdmin(Username username) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(checkUserAdmin);
+		stm.setString(1, username.toString());
 		
+		ResultSet rs = stm.executeQuery();
+		
+		boolean res = false;
+		if(rs.next()) 
+			res = true;
+		
+		rs.close();
+		stm.close();
+		
+		return res;
+	}
+
+	@Override
+	public void removeUser(Username username) throws SQLException {
+		//rimuovo tutte le cripto dal portfolio e le transazioni
+		PortfolioDaoJDBC.getInstance().removeAllCryptos(username.toString());
+		PortfolioDaoJDBC.getInstance().remove(username.toString());
+		PreferencesDaoJDBC.getInstance().removeAllUserPreferences(username.toString());
+		NotificationDaoJDBC.getInstance().removeAllUserNotifications(username.toString());
+		
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(deleteUser);
+		stm.setString(1, username.toString());
+		
+		stm.execute();
+		stm.close();
+	}
+
+	@Override
+	public Email getUserEmail(Username username) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(getUserEmail);
+		stm.setString(1, username.toString());
+		
+		ResultSet rs = stm.executeQuery();
+		Email email = null;
+		if(rs.next()) {
+			email = new Email(rs.getString("email"));
+		}
+		
+		stm.close();
+		rs.close();
+		
+		return email;
 	}
 }

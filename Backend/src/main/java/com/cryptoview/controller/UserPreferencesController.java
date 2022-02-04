@@ -447,11 +447,23 @@ public class UserPreferencesController {
 			
 			Alert alert = new Alert();
 			alert.setCriptoTicker((String) obj.get("ticker"));
-			try {
+			
+			Object price = obj.get("price");
+			if(price instanceof Double)
 				alert.setTargetPrice((Double) obj.get("price"));
-			} catch (ClassCastException e3) {
-				alert.setTargetPrice(Double.valueOf((String) obj.get("price")));
+			else if(price instanceof Integer) {
+				double num = (int) price; 
+				alert.setTargetPrice(num);
 			}
+			else if(price instanceof String) {
+				try {
+					alert.setTargetPrice(Double.valueOf((String) obj.get("price")));
+				} catch (ClassCastException e3) {
+					double num = Integer.valueOf((String) obj.get("price"));
+					alert.setTargetPrice(num);
+				}
+			}
+			
 			alert.setAbove((boolean) obj.get("is_above"));
 			PreferencesDaoJDBC.getInstance().save(alert, user.getUsername());
 			
