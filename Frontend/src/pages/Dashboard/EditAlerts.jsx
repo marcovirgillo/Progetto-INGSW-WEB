@@ -110,16 +110,6 @@ const EditAlerts = (props) => {
         }
     }
 
-    function handleDeleteAll(){
-        if(window.confirm("Do you want to delete all alerts?")){
-            console.log("Yes")
-            setQueryedData([]);
-        }
-        else{
-            console.log("No")
-        }
-    }
-
     return(
         <div className="edit-alerts">
             {props.editAlertsActive && (<div className="background-blurrer-edit-alerts" />)}
@@ -131,10 +121,6 @@ const EditAlerts = (props) => {
                         <span style={{display:'flex', margin:0, padding:0, flexDirection: 'row', alignItems:'center'}}>
                             <img src={require("../../res/logos/alert2.png")} width={30} height={30} alt="crypto icon" className="alert-crypto-icon"/>
                             <span style={{color: 'white', fontSize:'20px', fontWeight:'700', paddingTop:'15px'}}>Your alerts</span>  
-                            <p className='specific-crypto-primary-btn container-title' style={{marginLeft:'10px', marginTop:'22px', cursor:'pointer'}} onClick={() => handleDeleteAll()}>
-                                <img src={require("../../res/logos/remove.png")} width={26} height={26} style={{marginRight:'10px'}}/>
-                                <span className="list-title-crypto" style={{marginBottom:'2px'}}>Remove all</span>
-                            </p>
                         </span>
                         <div className="h-spacer-choose-crypto"/>
                         <img src={require("../../res/logos/close.png")} width={24} height={24} alt="close add preferences" className="close-alert-icon"

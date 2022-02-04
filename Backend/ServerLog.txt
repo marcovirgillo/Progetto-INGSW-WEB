@@ -112,3 +112,22 @@
 2022-02-02T14:49:34.939575800 ERROR fetching top cryptos.
 2022-02-02T14:49:34.940573200 ERROR fetching market stats.
 2022-02-02T14:49:34.940573200 ERROR fetching exchanges.
+2022-02-03T20:42:43.075621400 ERROR fetching top cryptos.
+2022-02-03T20:42:43.126485600 ERROR fetching market stats.
+2022-02-03T20:42:43.129477200 ERROR fetching exchanges.
+2022-02-03T20:42:43.149423500 ERROR fetching latest news.
+2022-02-03T20:42:43.150422400 ERROR fetching latest news.
+2022-02-03T20:42:43.154410600 ERROR fetching latest news.
+2022-02-03T20:42:43.156405400 ERROR fetching latest news.
+2022-02-03T20:42:43.156405400 ERROR fetching latest news.
+2022-02-03T20:42:43.156405400 ERROR fetching latest news.
+2022-02-03T20:42:43.156405400 ERROR fetching latest news.
+2022-02-03T20:42:43.157402200 ERROR fetching latest news.
+2022-02-03T20:42:43.157402200 ERROR fetching popular news.
+2022-02-03T20:42:43.158400500 ERROR fetching popular news.
+2022-02-03T20:42:43.159397500 ERROR fetching popular news.
+2022-02-03T20:42:43.159397500 ERROR fetching popular news.
+2022-02-03T20:42:43.177349700 ERROR fetching popular news.
+2022-02-03T20:42:43.177349700 ERROR fetching popular news.
+2022-02-03T20:42:43.177349700 ERROR fetching popular news.
+2022-02-03T20:42:43.178347300 ERROR fetching popular news.
