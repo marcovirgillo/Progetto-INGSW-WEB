@@ -4,6 +4,7 @@ import { Grid } from '@mui/material'
 import { address } from './../../assets/globalVar.js'
 import { RvHookup } from '@mui/icons-material'
 
+const newsInPage = 25;
 
 const BigNewsBox = (props) => {
     return (
@@ -69,14 +70,29 @@ const SearchField = (props) => {
     );
 }
 
+
 const NewsPages = (props) => {
+
+    const totalNews = props.latestNewsDataLength;
+
+    const numPages = Math.floor(totalNews / newsInPage);
+    
+    let pages = [];
+    for(let i = 1; i <= numPages; i++) {
+        pages.push(i);
+    }
+
+    if(totalNews % newsInPage !== 0)
+        pages.push(numPages+1);
+   
     return (
         <div className='news-pages-container'>
             <ul className='news-pages-list'>
-                <p className='news-page-number' onClick={() => props.setCurrentPage(1)}>1</p>
-                <p className='news-page-number' onClick={() => props.setCurrentPage(2)}>2</p>
-                <p className='news-page-number' onClick={() => props.setCurrentPage(3)}>3</p>
-                <p className='news-page-number' onClick={() => props.setCurrentPage(4)}>4</p>
+                {
+                    pages.map((currentPage, index) => (
+                        <p key={index} className='news-page-number' onClick={() => props.setCurrentPage(currentPage)}>{currentPage}</p>
+                    ))
+                }
             </ul>
         </div>
     );
@@ -131,15 +147,11 @@ export default function News() {
     }
 
     const sliceLatestNewsDataInPages = () => {
-        let latestNewsDataCopy = latestNewsData;
-        if(currentPageSelected === 1)
-            return latestNewsDataCopy.slice(0, 25);
-        else if(currentPageSelected === 2)
-            return latestNewsDataCopy.slice(25, 50);
-        else if(currentPageSelected === 3)
-            return latestNewsDataCopy.slice(50, 75);    
-        else if(currentPageSelected === 4)
-            return latestNewsDataCopy.slice(75, 100);    
+
+        let lastIndex = currentPageSelected * newsInPage;
+        const startIndex = lastIndex - newsInPage;
+
+        return latestNewsData.slice(startIndex, lastIndex);
     }
 
     const getLatestNews = () => {
@@ -197,7 +209,6 @@ export default function News() {
 
             </div>
 
-
         
             <SearchField
                 getInput = {getInput}
@@ -219,6 +230,7 @@ export default function News() {
                                 publishedAt = {item.publishedAt}
                                 url = {item.url}
                                 
+                                
                             />
                         ))
                     }  
@@ -226,6 +238,7 @@ export default function News() {
 
                 {searchFieldContent === "" && <NewsPages
                     setCurrentPage = {setCurrentPage}
+                    latestNewsDataLength = {latestNewsData.length}
                  />}
             </div>
         
