@@ -12,5 +12,6 @@ public abstract class CryptoDao implements Dao <Crypto> {
 	public abstract void save(Crypto obj) throws SQLException;
 	
 	public abstract Map <Crypto, Double> getCryptoInPortfolio(String owner) throws SQLException;
+	public abstract void removeCrypto(String ticker) throws SQLException;
 
 }

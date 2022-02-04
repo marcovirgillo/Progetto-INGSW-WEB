@@ -13,5 +13,7 @@ public abstract class NotificationDao implements Dao<Notification> {
 	public abstract List<Notification> getUserNotification(String user) throws SQLException;
 	public abstract void removePriceNotification(Integer id, String user) throws SQLException;
 	public abstract void removeAlertNotification(Integer id, String user) throws SQLException;
+	
+	public abstract void removeAllUserNotifications(String username) throws SQLException;
 
 }

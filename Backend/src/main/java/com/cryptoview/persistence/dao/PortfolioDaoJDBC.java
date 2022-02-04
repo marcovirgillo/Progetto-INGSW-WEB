@@ -17,6 +17,7 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 	private final String removeCryptoQuery = "delete from criptoinportfolio where username=? and ticker=?";
 	private final String insertPortfolio = "insert into portfolio values(?, now(), ?)";
 	private final String removeAllCryptoQuery = "delete from criptoinportfolio where username=?";
+	private final String deletePortfolioQuery = "delete from portfolio where username_owner=?";
 	
 	private PortfolioDaoJDBC() {}
 	
@@ -89,5 +90,14 @@ public class PortfolioDaoJDBC extends PortfolioDao {
 		
 		stm.execute();
 		stm.close();	
+	}
+
+	@Override
+	public void remove(String portfolio) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(deletePortfolioQuery);
+		stm.setString(1, portfolio);
+		
+		stm.execute();
+		stm.close();
 	}
 }

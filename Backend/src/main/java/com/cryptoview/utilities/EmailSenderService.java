@@ -12,6 +12,8 @@ public class EmailSenderService {
 	private static final String PASSWORD_RESET_MSG = "Hi there!\nThis is your temporary password to access the account. You must change it"
 													+ " after the first login\n\n";
 	
+	private static final String ACCOUNT_DELETION = "Hi there, your account has been deleted by our staff!\nFeel free to contact us to get more detail\nDelete goes brr";;
+	
 	@Autowired
 	public EmailSenderService(JavaMailSender sender) {
 		mailSender = sender;	
@@ -32,5 +34,10 @@ public class EmailSenderService {
 	
 	public static void sendPasswordResetEmail(String toEmail, String pwd) {
 		sendEmail(toEmail, "Passord reset CryptoView Account", PASSWORD_RESET_MSG + pwd);
+	}
+
+	public static void sendAccountDeletedEmail(String email) {
+		sendEmail(email, "CryptoView account deletion", ACCOUNT_DELETION);
+		
 	}
 }

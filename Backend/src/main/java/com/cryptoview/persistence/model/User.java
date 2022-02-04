@@ -16,11 +16,22 @@ public class User {
 	private Email email;
 	private Username username;
 	private byte[] avatar;
+	private boolean isAdmin;
 	
-	public User() {}
+	public User() {
+		this.isAdmin = false;
+	}
 
 	public String getEmail() {
 		return email.toString();
+	}
+	
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+	
+	public boolean isAdmin() {
+		return isAdmin;
 	}
 	
 	public void setEmail(Email email) {
@@ -61,6 +72,9 @@ public class User {
 		user.setAvatar(rs.getBytes("avatar"));
 		user.setEmail(new Email(rs.getString("email")));
 		user.setUsername(new Username(rs.getString("username")));
+		
+		if(rs.getBoolean("is_admin") == true)
+			user.setAdmin(true);
 		
 		return user;
 	}
