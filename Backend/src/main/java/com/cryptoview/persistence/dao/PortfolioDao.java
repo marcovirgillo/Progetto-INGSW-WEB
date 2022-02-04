@@ -12,4 +12,5 @@ public abstract class PortfolioDao implements Dao<Portfolio> {
 	
 	public abstract Portfolio get(String owner) throws Exception;
 	public abstract boolean removeCrypto(String ticker, String portfolio) throws SQLException;
+	public abstract void removeAllCryptos(String portfolio) throws SQLException;
 }

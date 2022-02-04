@@ -406,6 +406,47 @@ public class PortfolioController {
 	}
 	
 	@SuppressWarnings("unchecked")
+	@DeleteMapping("/removeAllCryptos")
+	public JSONObject removeAllCryptos(HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("Authorization");
+		JSONObject resp = new JSONObject();
+		
+		try {
+			User user = UserDaoJDBC.getInstance().findByToken(token);
+			
+			if(user == null) {
+				response.setStatus(Protocol.INVALID_TOKEN);
+				resp.put("msg", "The auth token is not valid");
+				
+				return resp;
+			}
+			
+			Portfolio portfolio = PortfolioDaoJDBC.getInstance().get(user.getUsername());
+			
+			if(portfolio != null) {
+				PortfolioDaoJDBC.getInstance().removeAllCryptos(portfolio.getUsernameOwner());
+				response.setStatus(Protocol.OK);
+				resp.put("msg", "All cryptos removed!");
+				
+				return resp;
+			}
+			else {
+				response.setStatus(Protocol.PORTFOLIO_DOESNT_EXISTS);
+				resp.put("msg", "Portfolio doesn't exists");
+				
+				return resp;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.setStatus(Protocol.SERVER_ERROR);
+			resp.put("msg", "Internal server error");
+			
+			return resp;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
 	private int portfolioDoesnExist(JSONObject resp) {
 		resp.put("msg", "The user doesn't have a portfolio");
 		return Protocol.PORTFOLIO_DOESNT_EXISTS;
