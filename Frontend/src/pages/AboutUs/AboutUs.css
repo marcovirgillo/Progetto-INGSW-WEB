@@ -1,0 +1,54 @@
+.about-us {
+    background-color: var(--bg-color-dark);
+    padding: 0px 10px 10px 10px;
+}
+
+.about-us .paper-gray {
+    background-color: var(--bg-color-gray);
+    border-radius: 8px;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.about-us .about-us-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.about-us .about-us-text {
+    font-size: 22px;
+    color: #2fade8;
+    font-weight: 600;
+}
+
+.about-us .info-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.about-us .info-text {
+    color:white;
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-weight: 500;
+    font-size: 18px;
+    /* word-wrap:break-word;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    max-width: 400px;
+    margin: 0 auto; */
+}
