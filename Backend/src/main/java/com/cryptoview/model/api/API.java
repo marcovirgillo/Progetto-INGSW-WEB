@@ -1,5 +1,7 @@
 package com.cryptoview.model.api;
 
+import java.time.LocalDate;
+
 public class API {
 
 	public static API instance = null;
@@ -22,7 +24,11 @@ public class API {
 	private final String criptoHistoryAPIPart1 = "https://api.coingecko.com/api/v3/coins/";
 	private final String cryptoHistoryAPIPart2 = "/market_chart?vs_currency=usd&days=";
 	
-	private final String popularNewsKey = "https://newsapi.org/v2/everything?domains=cointelegraph.com,coindesk.com&pageSize=4&sortBy=popularity&apiKey=";
+	private final String popularNewsKeyPart1 = "https://newsapi.org/v2/everything?from=";
+	private final String popularNewsKeyPart2 = "&to=";
+	private final String popularNewsKeyPart3 = "&domains=cointelegraph.com,coindesk.com&pageSize=4&sortBy=popularity&apiKey=";
+	
+	
 	private final String allLatestNewsKey = "https://newsapi.org/v2/everything?domains=cointelegraph.com,coindesk.com&pageSize=100&sortBy=publishedAt&apiKey=";		
 	
 	private final String preferredNewsPart1 = "https://newsapi.org/v2/everything?";
@@ -75,7 +81,14 @@ public class API {
 	}
 	
 	public String getPopularNewsKey() {
-		return popularNewsKey + getNewsKey();
+		LocalDate currentDate = LocalDate.now();
+		LocalDate yesterdayDate = currentDate.minusDays(1);
+		
+		String currentDateString = currentDate.toString();
+		String yesterdayDateString = yesterdayDate.toString();
+		
+		return popularNewsKeyPart1 + yesterdayDateString + popularNewsKeyPart2 + currentDateString + popularNewsKeyPart3 + getNewsKey();
+	
 	}
 	
 	public String getAllNewsKey() {
