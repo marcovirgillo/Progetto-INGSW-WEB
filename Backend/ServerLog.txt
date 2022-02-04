@@ -1,0 +1,1 @@
+2022-02-04T12:41:10.533915 ERROR fetching popular news.
