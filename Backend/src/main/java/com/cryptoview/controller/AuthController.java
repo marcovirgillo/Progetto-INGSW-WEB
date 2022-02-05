@@ -344,6 +344,13 @@ public class AuthController {
 		try {
 			utente = UserDaoJDBC.getInstance().findByEmail(new Email((String) obj.get("email")));
 
+			if(UserDaoJDBC.getInstance().isGoogleAccount(new Email((String) obj.get("email")))) {
+				response.setStatus(Protocol.INVALID_DATA);
+				JSONObject resp = new JSONObject();
+				resp.put("msg", "Cannot update the password of a google account");
+				return resp;
+			}
+			
 			if (utente != null) {
 				String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.?#$%^&+=!";
 				String pwd = RandomStringUtils.random(30, characters);
@@ -374,38 +381,52 @@ public class AuthController {
 		return obj;
 	}
 
-	@SuppressWarnings({ "unchecked", "null" })
+	@SuppressWarnings({ "unchecked"})
 	@PostMapping("/loginGoogle")
 	public JSONObject doLoginGoogle(@RequestBody JSONObject obj, HttpServletResponse response) {
 		User utente = null;
 		JSONObject res = new JSONObject();
 		try {
+			String username = (String) obj.get("username");
 			utente = UserDaoJDBC.getInstance().findByEmail(new Email((String) obj.get("email")));
-
-			if (utente == null) {
+			
+			//se non esiste nessun utente registrato con quella mail, posso procedere con il login incompleto, richiedendo l'username
+			if (utente == null && username == null) {
+				response.setStatus(Protocol.INCOMPLETE_GOOGLE_LOGIN);
+				res.put("msg", "Please choose your username and retry");
+				return res;
+			}
+			//è arrivato l'username e posso completare la creazione dell'account google e il login
+			else if(utente == null && username != null) {
 				utente = new User();
 				utente.setEmail(new Email((String) obj.get("email")));
-				utente.setUsername(new Username((String) obj.get("username")));
+				utente.setUsername(new Username(username));
+				utente.setGoogleUser(true);
 
-				UserDaoJDBC.getInstance().saveWithoutPassword(utente);
-				EmailSenderService.sendEmail(obj.get("email").toString(), "Welcome!",
-						EmailSenderService.REGISTRATION_MESSAGES);
-				response.setStatus(Protocol.OK);
-				res.put("msg", "Account created succesffully");
+				UserDaoJDBC.getInstance().saveGoogleUser(utente, (String) obj.get("google_id"));
+				EmailSenderService.sendEmail(obj.get("email").toString(), "Welcome!", EmailSenderService.REGISTRATION_MESSAGES);
 			}
-			
 			else {
-				utente = UserDaoJDBC.getInstance().checkGoogleCredentials(new Username((String) obj.get("username")), new Email((String) obj.get("email")) );
+				if(UserDaoJDBC.getInstance().isGoogleAccount(new Email((String) obj.get("email"))))
+					utente = UserDaoJDBC.getInstance().checkGoogleCredentials((String) obj.get("google_id"), new Email((String) obj.get("email")));
+				else {
+					response.setStatus(Protocol.USER_ALREADY_EXISTS);
+					res.put("msg", "This email is already registered");
+					return res;
+				}
 			}
 			
 			String token = "";
 
-			token = UserDaoJDBC.getInstance().getToken((String) obj.get("username"));
+			token = UserDaoJDBC.getInstance().getToken(utente.getUsername().toString());
 
-			String newToken = SpringUtil.generateNewToken();
-			UserDaoJDBC.getInstance().saveToken((String) obj.get("username"), newToken);
+			// se il token è vuoto, ne genero uno nuovo
+			if (token.isBlank()) {
+				String newToken = SpringUtil.generateNewToken();
+				UserDaoJDBC.getInstance().saveToken(utente.getUsername().toString(), newToken);
 
-			token = newToken;
+				token = newToken;
+			}
 
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");

@@ -223,7 +223,9 @@ const AccountInfo = (props) => {
                             : <p className='property-content'> {emailInputField} </p>
                         }
                         <div className="property-spacer" />
-                        <p className="edit-button" onClick={() => setEmailEditable(!emailEditable)}>{emailEditable ? 'Cancel' : 'Edit'}</p>
+                        {!props.user.googleUser && (
+                            <p className="edit-button" onClick={() => setEmailEditable(!emailEditable)}>{emailEditable ? 'Cancel' : 'Edit'}</p>
+                        )}
                     </ul>
                 </div>
 
@@ -232,7 +234,9 @@ const AccountInfo = (props) => {
                     <ul className="property-list">
                         <input type="password" defaultValue={"cryptoview"} className='password-content'/>
                         <div className="property-spacer" />
-                        <p className='edit-button' onClick={props.enablePasswordEdit}> Edit </p>
+                        {!props.user.googleUser && (
+                            <p className='edit-button' onClick={props.enablePasswordEdit}> Edit </p>
+                        )}
                     </ul>
                     {props.passwordEditable === true &&
                         <EditPasswordPopup 

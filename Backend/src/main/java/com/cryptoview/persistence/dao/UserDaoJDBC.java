@@ -20,12 +20,13 @@ public class UserDaoJDBC extends UserDao {
 	private String findByTokenQuery = "select * from utente where token=? and token !=''";
 	private String findByEmailQuery = "select * from utente where email=? and email != ''";
 	private String findByTokenNoAvatarQuery = "select username, email from utente where token=? and token !=''";
-	private String checkCredentialsQuery = "select * from utente where username=?";
+	private String checkCredentialsQuery = "select * from utente where username=? and google_id=null";
+	private String checkGoogleCredentialsQuery = "select username, email from utente where google_id=? and email=?";
 	private String saveTokenQuery = "update utente set token=? where username=?";
 	private String saveUserQuery = "insert into utente values(?,?, null, '', ?)";
-	private String saveUserWithoutPasswordQuery = "insert into utente values(?,null, null, '', ?)";
+	private String saveGoogleUser = "insert into utente values(?, null, null, '', ?, false, ?)";
 	private String getTokenQuery = "select token from utente where username=?";
-	private String updateUserEmailQuery = "update utente set email=? where token=?";
+	private String updateUserEmailQuery = "update utente set email=? where token=? and google_id=null";
 	private String updateUserPasswordQuery = "update utente set password=? where token=?";
 	private String updateUserPasswordByEmailQuery = "update utente set password=? where email=?";
 	private String updateAvatarQuery = "update utente set avatar=? where token=?";
@@ -35,6 +36,7 @@ public class UserDaoJDBC extends UserDao {
 	private String checkUserAdmin = "select * from utente where username=? and is_admin=true";
 	private String deleteUser = "delete from utente where username=?";
 	private String getUserEmail = "select email from utente where username=?";
+	private String checkIsGoogleAccount = "select google_id from utente where email=?;";
 
 	private UserDaoJDBC() {
 	}
@@ -77,10 +79,11 @@ public class UserDaoJDBC extends UserDao {
 	}
 	
 	@Override
-	public void saveWithoutPassword(User obj) throws SQLException {
-		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(saveUserWithoutPasswordQuery);
+	public void saveGoogleUser(User obj, String googleId) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(saveGoogleUser);
 		stm.setString(1, obj.getEmail());
 		stm.setString(2, obj.getUsername());
+		stm.setString(3, googleId);
 
 		stm.execute();
 
@@ -134,6 +137,9 @@ public class UserDaoJDBC extends UserDao {
 		User utente = null;
 		if (rs.next()) {
 			String dbPassword = rs.getString("password");
+			//se la password è null, significa che è un account google
+			if(password == null)
+				return utente;
 
 			if (SpringUtil.checkPassword(dbPassword, password.toString()))
 				utente = User.parseFromDB(rs);
@@ -147,17 +153,18 @@ public class UserDaoJDBC extends UserDao {
 	}
 	
 	@Override
-	public User checkGoogleCredentials(Username username, Email email) throws SQLException {
-		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(checkCredentialsQuery);
-		stm.setString(1, username.toString());
+	public User checkGoogleCredentials(String google_id, Email email) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(checkGoogleCredentialsQuery);
+		stm.setString(1, google_id);
+		stm.setString(2, email.toString());
 
 		ResultSet rs = stm.executeQuery();
 		User utente = null;
 		if (rs.next()) {
-			String dbEmail = rs.getString("email");
-
-			if (email.toString().equals(dbEmail))
-				utente = User.parseFromDB(rs);
+			utente = new User();
+			utente.setUsername(new Username(rs.getString("username")));
+			utente.setEmail(new Email(email.toString()));
+			utente.setGoogleUser(true);
 		}
 
 		rs.close();
@@ -319,5 +326,24 @@ public class UserDaoJDBC extends UserDao {
 		rs.close();
 		
 		return email;
+	}
+
+	@Override
+	public boolean isGoogleAccount(Email mail) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(checkIsGoogleAccount);
+		stm.setString(1, mail.toString());
+		
+		ResultSet rs = stm.executeQuery();
+		boolean res = false;
+		if(rs.next()) {
+			String id = rs.getString("google_id");
+			if(id != null && id.length() > 0)
+				res = true;
+		}
+		
+		rs.close();
+		stm.close();
+		
+		return res;
 	}
 }

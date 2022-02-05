@@ -17,6 +17,7 @@ public class User {
 	private Username username;
 	private byte[] avatar;
 	private boolean isAdmin;
+	private boolean isGoogleUser;
 	
 	public User() {
 		this.isAdmin = false;
@@ -24,6 +25,14 @@ public class User {
 
 	public String getEmail() {
 		return email.toString();
+	}
+	
+	public boolean isGoogleUser() {
+		return isGoogleUser;
+	}
+	
+	public void setGoogleUser(boolean isGoogleUser) {
+		this.isGoogleUser = isGoogleUser;
 	}
 	
 	public void setAdmin(boolean isAdmin) {
@@ -75,6 +84,10 @@ public class User {
 		
 		if(rs.getBoolean("is_admin") == true)
 			user.setAdmin(true);
+		
+		String googleId = rs.getString("google_id");
+		if(googleId != null && googleId.length() > 0)
+			user.setGoogleUser(true);
 		
 		return user;
 	}

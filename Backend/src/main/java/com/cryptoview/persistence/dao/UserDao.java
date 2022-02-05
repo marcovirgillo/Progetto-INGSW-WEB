@@ -12,14 +12,15 @@ public abstract class UserDao implements Dao<User>{
 
 	public abstract List<User> getAll() throws SQLException;
 	public abstract void save(User obj) throws SQLException;
-	public abstract void saveWithoutPassword(User obj) throws SQLException;
+	public abstract void saveGoogleUser(User obj, String googleId) throws SQLException;
+	public abstract boolean isGoogleAccount(Email mail) throws SQLException;
 	
 	public abstract User findByToken(String token) throws SQLException, IllegalArgumentException, NullPointerException;
 	public abstract User findByEmail(Email email) throws SQLException, IllegalArgumentException, NullPointerException;
 	public abstract User findByTokenWithAvatar(String token) throws SQLException, IllegalArgumentException, NullPointerException;
 	public abstract String getToken(String username) throws SQLException;
 	public abstract User checkCredentials(Username username, Password password) throws SQLException;
-	public abstract User checkGoogleCredentials(Username username, Email email) throws SQLException;
+	public abstract User checkGoogleCredentials(String google_id, Email email) throws SQLException;
 	public abstract void saveToken(String user, String token) throws SQLException;
 	
 	public abstract void updateUserEmail(Email emai, String token) throws SQLException;

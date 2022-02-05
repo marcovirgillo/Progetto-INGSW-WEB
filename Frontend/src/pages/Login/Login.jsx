@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { address } from '../../assets/globalVar'
 import { useNavigate } from "react-router-dom";
 import GoogleLogin from 'react-google-login';
+import ChooseUsername from './ChooseUsername';
 
 
 const loginLink = `http://${address}:8080/login`;
@@ -12,10 +13,16 @@ const loginGoogleLink = `http://${address}:8080/loginGoogle`;
 
 const Login = (props) => {
     const [screenSize, setScreenSize] = useState(window.innerWidth);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [errorLabelActive, setErrorLabelActive] = useState(false);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+    const [googleUsername, setGoogleUsername] = useState("");
+    const [googleId, setGoogleId] = useState("");
     const [email, setEmail] = useState(""); // per login Google
+    const [chooseUsernameDivActive, setChooseUsernameDivActive] = useState(false);
 
     
     const navigate = useNavigate();
@@ -37,8 +44,20 @@ const Login = (props) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            'username': username,
             'email': email,
+            'google_id': googleId
+        }),
+    };
+
+    const completeLoginGoogle = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'username': googleUsername,
+            'email': email,
+            'google_id': googleId
         }),
     };
 
@@ -59,18 +78,19 @@ const Login = (props) => {
             props.showResultPopup("Login successfull !");
             navigate("/");
         }
+        else if(res.status === 401) {
+            showError("Error! Invalid combination of username/password");
+        }
         else {
             res.json().then((result) => {
-                setErrorType("Invalid");
-                showError();
+                showError("Error, please check the input fields and retry!");
             })
         }
     }
 
     function checkConstraints(){
-        if(username=="" || password==""){
-            setErrorType("Empty");
-            showError();
+        if(username === "" || password === ""){
+            showError("Error, some fields are empty! Please retry");
             return false;
         }
         return true;
@@ -154,8 +174,7 @@ const Login = (props) => {
         }
     }
 
-    const [errorLabelActive, setErrorLabelActive] = useState(false);
-    const [errorType, setErrorType] = useState("");
+   
 
     const getErrorLabelClassname = () => {
         if(errorLabelActive)
@@ -164,18 +183,19 @@ const Login = (props) => {
             return "error-label";
     }
 
-    const showError = () => {
+    const showError = (msg) => {
         setErrorLabelActive(true);
-        setTimeout(() => {setErrorLabelActive(false); setErrorType("")}, 3500);
+        setErrorMessage(msg);
+        setTimeout(() => {setErrorLabelActive(false); setErrorMessage("")}, 3500);
     }
 
     useEffect(() => {
         if (email !== "") 
-            doLoginGoogle();
+            doFirstGoogleLogin();
     }, [email])
 
     const handleLogin = (googleData) => {
-        setUsername(googleData.getBasicProfile().getId());
+        setGoogleId(googleData.getBasicProfile().getId());
         setEmail(googleData.getBasicProfile().getEmail());
     }
 
@@ -183,9 +203,33 @@ const Login = (props) => {
         console.log("no");
     }
 
-    const doLoginGoogle = () => {
+    const parseGoogleResult = res => {
+        if(res.status === 200) {
+            res.json().then((result) => props.setAccessToken(result['key']));
+            props.showResultPopup("Login successfull !");
+            navigate("/");
+            return;
+        }
+        if(res.status === 450) {
+            setChooseUsernameDivActive(true);
+            return;
+        }
+        else if(res.status === 409) {
+            showError("Error! This email is already registered with a non-google account!");
+        }
+
+        setEmail("");
+    }
+
+    const confirmAccountCreation = () => {
+        setChooseUsernameDivActive(false);
+        fetch(loginGoogleLink, completeLoginGoogle)
+            .then(res => parseResult(res));
+    }
+
+    const doFirstGoogleLogin = () => {
         fetch(loginGoogleLink, loginGoogleOptions)
-        .then((res) => parseResult(res));
+        .then((res) => parseGoogleResult(res));
     }
 
     return (
@@ -239,7 +283,7 @@ const Login = (props) => {
                         cookiePolicy={'single_host_origin'}
                     />
                     {(errorLabelActive === true && <div className={getErrorLabelClassname()}>
-                        {errorType === "Empty" ? <p>Error, please check the input fields and retry!</p> : <p>Error, invalid combination of username and password!</p> }
+                        <p>{errorMessage}</p> 
                     </div>)}
                 </div>
 
@@ -255,6 +299,12 @@ const Login = (props) => {
                     <span className="login-ending"><Link to="/forgotpassword" style={loginEndingStyle("blue")}>Forgot your password?</Link></span>
                 </div>
             </div>
+            {chooseUsernameDivActive && (
+                <ChooseUsername 
+                    setGoogleUsername={setGoogleUsername} 
+                    onConfirm={confirmAccountCreation} 
+                    onCancel={() => {setGoogleUsername(""); setEmail(""); setChooseUsernameDivActive(false)}}/>
+            )}
         </div>
     )
 }

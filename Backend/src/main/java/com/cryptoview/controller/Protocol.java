@@ -6,6 +6,7 @@ public class Protocol {
 	public static final int INVALID_TOKEN = 5000;
 	//è per quendo le credenziali non rispettano regex, min length ecc..
 	public static final int INVALID_CREDENTIALS = 403;
+	public static final int INCOMPLETE_GOOGLE_LOGIN = 450;
 	//la combinazione user/pass è sbagliata
 	public static final int WRONG_CREDENTIALS = 401;
 	public static final int USER_ALREADY_EXISTS = 409;

@@ -52,7 +52,7 @@
         font-size: 20px !important;
     }
 
-    .create-portfolio-popup { 
+    .create-portfolio-popup, .choose-username-popup { 
         left: 32% !important;
     }
 
@@ -145,7 +145,7 @@
         width: 90% !important;
     }
 
-    .create-portfolio-popup {
+    .create-portfolio-popup, .choose-username-popup {
         left: 10% !important;
         width: 80% !important;
     }

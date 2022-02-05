@@ -70,7 +70,7 @@ export default function GainersSection() {
                             topPerformers.map((item, val) => (
                                 <ul key={val} className="list-item">
                                     <p className="list-number">{val+1}</p>
-                                    <Link to={`/crypto/${item.id}`} style={{display:'flex', flexDirection:'row', alignItems: 'center'}} >
+                                    <Link to={`/crypto/${item.id}`} style={{display:'flex', flexDirection:'row', alignItems: 'center', maxWidth: '65%'}} >
                                         <Icon sx={{width:18, height:18, fontSize:'1em'}}> 
                                             <img src={item.logo} width={18} height={18}/> 
                                         </Icon>
@@ -98,7 +98,7 @@ export default function GainersSection() {
                             worstPerformers.map((item, val) => (
                                 <ul key={5 + val} className="list-item">
                                     <p className="list-number">{val+1}</p>
-                                    <Link to={`/crypto/${item.id}`} style={{display:'flex', flexDirection:'row', alignItems: 'center'}} >
+                                    <Link to={`/crypto/${item.id}`} style={{display:'flex', flexDirection:'row', alignItems: 'center', maxWidth: '65%'}} >
                                         <Icon sx={{width:18, height:18, fontSize:'1em'}}> <img src={item.logo} width={18} height={18}/> </Icon>
                                         <p className="list-name">{item.name}</p>
                                         <p className="list-ticker">{item.ticker.toUpperCase()}</p>
