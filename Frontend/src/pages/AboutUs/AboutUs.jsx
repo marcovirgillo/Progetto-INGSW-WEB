@@ -45,7 +45,7 @@ const AboutUs = () => {
                             <img src={require("../../res/images/marco.jpeg")} /* width={24} height={24} */ alt="404 image" className="img404" />
                         </div>
                         <div class="caption" style={{marginTop:'-20px'}}>
-                            <h3>Marco Virgilio</h3>
+                            <h3>Marco Virgillo</h3>
                             <div class="social-links">
                             
                             </div>

@@ -1,0 +1,10 @@
+.terms-conditions {
+    background-color: var(--bg-color-dark);
+    min-height: 100vh;
+    padding: 0px 10px 10px 10px;
+}
+
+.paper-grey-terms-conditions {
+    background-color: var(--bg-color-gray);
+    border-radius: 8px;
+}
