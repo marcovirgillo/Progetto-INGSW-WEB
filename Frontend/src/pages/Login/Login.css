@@ -114,33 +114,25 @@
     border-radius: 10px !important;
     border: none !important;  
     background-color: #F2F2F2 !important;
-    text-align: center !important;
-
+    color: rgb(4, 4, 4) !important;
+    font-size: 18px !important;
+    justify-content: center;
 }
+
+.login-button-style-google div {
+    padding: 0px !important;
+    padding-top: 5px !important;
+    background-color: transparent !important;
+}
+
+
+.login-button-style-google span {
+   font-weight: 600 !important;
+}
+
 
 .login-button-style-google:hover {
     background-color: #e1e1e1;
-}
-
-.login-button-text-google {
-    padding: 0;
-    display: flex;
-    justify-content: space-evenly;
-    padding-top: 3px;
-    color: rgb(4, 4, 4);
-    font-weight: 600 !important;
-    font-size: 18px;
-}
-
-.google-field-list {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    max-width: 200px;
-    margin: 0 auto;
-    text-align: center; 
-    list-style: inside;
 }
 
 .login-ending{
