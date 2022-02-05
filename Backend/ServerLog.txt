@@ -1,3 +1,0 @@
-2022-02-05T09:49:46.658576 ERROR fetching top cryptos.
-2022-02-05T09:49:46.665692 ERROR fetching market stats.
-2022-02-05T09:49:46.666599 ERROR fetching exchanges.

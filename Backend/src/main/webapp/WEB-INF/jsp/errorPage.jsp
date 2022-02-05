@@ -14,13 +14,15 @@
 
 <body>  
 	<div class="error-page">
-		<img class="error-image" src="../../admin_assets/logos/404.png"/>
-		<p class="error-text">Page not found</p>
+		<img class="error-image" src="../../admin_assets/logos/403.png"/>
+		<p class="error-text">${text}</p>
 		
-		<div id="addNewUser" id="homeButton" class="btn home-btn">
-			<img src="../../admin_assets/logos/home.png" width="24" height="24" />
-			<p>Login</p>
-		</div>
+		<a href="/admin/login">
+			<div id="homeButton" class="btn home-btn">
+				<img src="../../admin_assets/logos/home.png" width="24" height="24" />
+				<p>Login</p>
+			</div>
+		</a>
 		
 	</div>
 		

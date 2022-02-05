@@ -49,3 +49,11 @@ body {
 	margin: 0px;
 	margin-left: 6px;
 }
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: none;
+}
