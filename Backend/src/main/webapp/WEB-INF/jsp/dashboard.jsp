@@ -57,11 +57,11 @@
 						<tbody id="assetsList">
 							<c:forEach items="${cryptos}" var="crypto" varStatus="loop">
 								<tr>
-									<td>${loop.index + 1}</th>
-									<td>${crypto.ticker}</th>
-									<td>${crypto.name}</th>
-									<td>${crypto.idApi}</th>
-									<td>${crypto.idGraphic}</th>
+									<td>${loop.index + 1}</td>
+									<td>${crypto.ticker}</td>
+									<td>${crypto.name}</td>
+									<td>${crypto.idApi}</td>
+									<td>${crypto.idGraphic}</td>
 									<td>
 										<img src="../../admin_assets/logos/remove.png" width="24" height="24"/>
 									</td>
@@ -97,9 +97,9 @@
 						<tbody id="usersList">
 						<c:forEach items="${users}" var="user" varStatus="loop">
 							<tr>
-								<td>${loop.index + 1}</th>
-								<td>${user.username}</th>
-								<td>${user.email}</th>
+								<td>${loop.index + 1}</td>
+								<td>${user.username}</td>
+								<td>${user.email}</td>
 								<td>
 									<img src="../../admin_assets/logos/remove.png" width="24" height="24"/>
 								</td>

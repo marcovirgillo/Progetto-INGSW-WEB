@@ -1,3 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 
@@ -23,10 +26,15 @@
 						<i class="login__icon fas fa-lock"></i>
 						<input name="password" type="password" class="login__input" placeholder="Password">
 					</div>
+					<c:if test="${error != null}">
+						<div style="background-color: red; border-radius: 10px; padding: 10px;">
+							<p style="color: white; font-size: 0.9em; font-weight: bold; font-family: sans-serif;">${error}</p>
+						</div>
+					</c:if>	
 					<button class="button login__submit">
 						<span id="login-btn" class="button__text">Log In Now</span>
 						<i class="button__icon fas fa-chevron-right"></i>
-					</button>				
+					</button>		
 				</form>
 			</div>
 			<div class="screen__background">

@@ -34,7 +34,7 @@ public class AdministrationController {
 	}
 	
 	@PostMapping("/doLogin")
-	public void doLogin(HttpServletRequest request, HttpServletResponse response, 
+	public String doLogin(HttpServletRequest request, HttpServletResponse response, 
 			              String username, String password) throws IOException {
 		User utente = null;
 		
@@ -44,32 +44,34 @@ public class AdministrationController {
 			e.printStackTrace();
 			response.setStatus(Protocol.SERVER_ERROR);
 			
-			response.sendRedirect("");
-			return;
+			request.setAttribute("error", "Server error, please retry!");
+			
+			return "login";
 		} catch (IllegalArgumentException | NullPointerException e2) {
 			e2.printStackTrace();
-			response.setStatus(Protocol.INVALID_CREDENTIALS);
+			response.setStatus(Protocol.INVALID_CREDENTIALS);	
+			request.setAttribute("error", "Invalid credentials, please retry!");
 			
-			response.sendRedirect("");
-			return;
+			return "login";
 		}
 		
 		if(utente == null) {
-			response.setStatus(Protocol.WRONG_CREDENTIALS);
-			
-			response.sendRedirect("");
-			return;
+			response.setStatus(Protocol.WRONG_CREDENTIALS);	
+			request.setAttribute("error", "Username/password doesn't match, please retry!");
+			return "login";
 		}
 		
 		if(!utente.isAdmin()) {
-			response.sendRedirect("");
-			return;
+			request.setAttribute("error", "This user is not an admin, please retry!");
+			
+			return "login";
 		}
 		
 		HttpSession session = request.getSession(true);
 		session.setAttribute("username", username);
 	
 		response.sendRedirect("/admin/dashboard");
+		return "dashboard";
 	}
 	
 	@GetMapping("/dashboard")
@@ -78,18 +80,23 @@ public class AdministrationController {
 		Object username = (Object) session.getAttribute("username");
 		
 		if(!(username instanceof String)) {
-			return "";
+			request.setAttribute("text", "The username is not valid");
+			return "errorPage";
 		}
 		
 		String userStr = (String) username;
 		
 		try {
-			if(!UserDaoJDBC.getInstance().isUserAdmin(new Username(userStr)))
-				return "";
+			if(!UserDaoJDBC.getInstance().isUserAdmin(new Username(userStr))) {
+				request.setAttribute("text", "This user is not an admin");
+				return "errorPage";
+			}
 		} catch (IllegalArgumentException | NullPointerException e) {
-			return "";
+			request.setAttribute("text", "The username is not valid");
+			return "errorPage";
 		} catch (SQLException e) {
-			return "";
+			request.setAttribute("text", "Server error, please retry!");
+			return "errorPage";
 		}
 		
 		List <Crypto> allCryptos = new ArrayList<>();
@@ -106,7 +113,7 @@ public class AdministrationController {
 		
 		request.setAttribute("cryptos", allCryptos);
 		request.setAttribute("users", allUsers);
-		
+
 		return "dashboard";
 	}
 	
@@ -118,5 +125,4 @@ public class AdministrationController {
 		
 		response.sendRedirect("/admin/login");
 	}
-	
 }

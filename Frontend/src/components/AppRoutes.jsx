@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import { Route, Routes } from 'react-router-dom'
-import { Home, Dashboard, Exchanges, News, Portfolio, Profile, AboutUs, Login, Signup, ForgotPassword, Page404 } from '../pages'
+import { Home, Dashboard, Exchanges, News, Portfolio, Profile, AboutUs, Login, Signup, ForgotPassword, Page404, TermsAndConditions } from '../pages'
 import OverviewSection from '../pages/Dashboard/OverviewSection'
 import SpecificCrypto from '../pages/SpecificCrypto/SpecificCrypto'
 import SpecificExchange from '../pages/SpecificExchange/SpecificExchange'
@@ -26,6 +26,8 @@ export default function AppRoutes(props) {
             <Route path="/forgotpassword" exact element={<ForgotPassword showResultPopup={props.showResultPopup}/>} />
             <Route exact element={<OverviewSection accessToken={props.accessToken}/>} />
             <Route path='*' exact element={<Page404 />} />
+            <Route path='/termsconditions' exact element={<TermsAndConditions />} />
+
         </Routes>
     )
 }
