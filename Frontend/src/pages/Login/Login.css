@@ -109,12 +109,13 @@
 }
 
 .login-button-style-google {
-    height: 38px;
-    width:100%;
-    border-radius: 10px;
-    border: none;  
-    background-color: #F2F2F2;
-    cursor: pointer;
+    height: 38px !important;
+    width:100% !important;
+    border-radius: 10px !important;
+    border: none !important;  
+    background-color: #F2F2F2 !important;
+    text-align: center !important;
+
 }
 
 .login-button-style-google:hover {

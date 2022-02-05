@@ -23,6 +23,7 @@ public class UserDaoJDBC extends UserDao {
 	private String checkCredentialsQuery = "select * from utente where username=?";
 	private String saveTokenQuery = "update utente set token=? where username=?";
 	private String saveUserQuery = "insert into utente values(?,?, null, '', ?)";
+	private String saveUserWithoutPasswordQuery = "insert into utente values(?,null, null, '', ?)";
 	private String getTokenQuery = "select token from utente where username=?";
 	private String updateUserEmailQuery = "update utente set email=? where token=?";
 	private String updateUserPasswordQuery = "update utente set password=? where token=?";
@@ -69,6 +70,17 @@ public class UserDaoJDBC extends UserDao {
 		stm.setString(1, obj.getEmail());
 		stm.setString(2, SpringUtil.hashPassword(obj.getPassword()));
 		stm.setString(3, obj.getUsername());
+
+		stm.execute();
+
+		stm.close();
+	}
+	
+	@Override
+	public void saveWithoutPassword(User obj) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(saveUserWithoutPasswordQuery);
+		stm.setString(1, obj.getEmail());
+		stm.setString(2, obj.getUsername());
 
 		stm.execute();
 
@@ -124,6 +136,27 @@ public class UserDaoJDBC extends UserDao {
 			String dbPassword = rs.getString("password");
 
 			if (SpringUtil.checkPassword(dbPassword, password.toString()))
+				utente = User.parseFromDB(rs);
+		}
+
+		rs.close();
+		stm.close();
+
+		return utente;
+
+	}
+	
+	@Override
+	public User checkGoogleCredentials(Username username, Email email) throws SQLException {
+		PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(checkCredentialsQuery);
+		stm.setString(1, username.toString());
+
+		ResultSet rs = stm.executeQuery();
+		User utente = null;
+		if (rs.next()) {
+			String dbEmail = rs.getString("email");
+
+			if (email.toString().equals(dbEmail))
 				utente = User.parseFromDB(rs);
 		}
 

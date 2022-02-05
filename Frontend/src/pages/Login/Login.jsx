@@ -3,15 +3,21 @@ import './Login.css'
 import { Link } from 'react-router-dom'
 import { address } from '../../assets/globalVar'
 import { useNavigate } from "react-router-dom";
+import GoogleLogin from 'react-google-login';
+
 
 const loginLink = `http://${address}:8080/login`;
+const loginGoogleLink = `http://${address}:8080/loginGoogle`;
+
 
 const Login = (props) => {
     const [screenSize, setScreenSize] = useState(window.innerWidth);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [email, setEmail] = useState(""); // per login Google
 
+    
     const navigate = useNavigate();
 
     const loginOptions = {
@@ -22,6 +28,17 @@ const Login = (props) => {
         body: JSON.stringify({
             'username': username,
             'password': password,
+        }),
+    };
+
+    const loginGoogleOptions = { // per login Google
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'username': username,
+            'email': email,
         }),
     };
 
@@ -63,7 +80,6 @@ const Login = (props) => {
         if(!checkConstraints())
             return;
 
-        console.log("sto loggando!");
         fetch(loginLink, loginOptions)
         .then((res) => parseResult(res));
     }
@@ -153,6 +169,25 @@ const Login = (props) => {
         setTimeout(() => {setErrorLabelActive(false); setErrorType("")}, 3500);
     }
 
+    useEffect(() => {
+        if (email !== "") 
+            doLoginGoogle();
+    }, [email])
+
+    const handleLogin = (googleData) => {
+        setUsername(googleData.getBasicProfile().getId());
+        setEmail(googleData.getBasicProfile().getEmail());
+    }
+
+    const handleFailureLogin = (googleData) => {
+        console.log("no");
+    }
+
+    const doLoginGoogle = () => {
+        fetch(loginGoogleLink, loginGoogleOptions)
+        .then((res) => parseResult(res));
+    }
+
     return (
         <div className="login">
             <div className="paper-grey" style={minHeight()}>
@@ -196,16 +231,16 @@ const Login = (props) => {
                 </div>
                 <div style={{paddingTop:'8px'}} />
                 <div className="login-field">
-                    <span className="login-button-style-google" style={fieldFont()}>
-                        <span className="google-field-list">
-                            <img src={require("../../res/logos/google.png")}  alt="google-login" height={25} width={25} style={{paddingTop:'7px'}}/> 
-                            <div className='login-button-text-google' style={loginButtonTextStyle("google")}>Log in with Google</div>
-                        </span>
-                    </span>
+                    <GoogleLogin className='login-button-style-google'
+                        clientId="140222624817-bp2u7f7v2h9f9ofrc9k50naurvh48sgi.apps.googleusercontent.com"
+                        buttonText="Login with Google"
+                        onSuccess={handleLogin}
+                        onFailure={handleFailureLogin}
+                        cookiePolicy={'single_host_origin'}
+                    />
                     {(errorLabelActive === true && <div className={getErrorLabelClassname()}>
                         {errorType === "Empty" ? <p>Error, please check the input fields and retry!</p> : <p>Error, invalid combination of username and password!</p> }
                     </div>)}
-
                 </div>
 
                 
