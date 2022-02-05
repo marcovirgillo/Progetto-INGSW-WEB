@@ -20,13 +20,13 @@ public class UserDaoJDBC extends UserDao {
 	private String findByTokenQuery = "select * from utente where token=? and token !=''";
 	private String findByEmailQuery = "select * from utente where email=? and email != ''";
 	private String findByTokenNoAvatarQuery = "select username, email from utente where token=? and token !=''";
-	private String checkCredentialsQuery = "select * from utente where username=? and google_id=null";
+	private String checkCredentialsQuery = "select * from utente where username=? and google_id is null";
 	private String checkGoogleCredentialsQuery = "select username, email from utente where google_id=? and email=?";
 	private String saveTokenQuery = "update utente set token=? where username=?";
 	private String saveUserQuery = "insert into utente values(?,?, null, '', ?)";
 	private String saveGoogleUser = "insert into utente values(?, null, null, '', ?, false, ?)";
 	private String getTokenQuery = "select token from utente where username=?";
-	private String updateUserEmailQuery = "update utente set email=? where token=? and google_id=null";
+	private String updateUserEmailQuery = "update utente set email=? where token=? and google_id is null";
 	private String updateUserPasswordQuery = "update utente set password=? where token=?";
 	private String updateUserPasswordByEmailQuery = "update utente set password=? where email=?";
 	private String updateAvatarQuery = "update utente set avatar=? where token=?";
