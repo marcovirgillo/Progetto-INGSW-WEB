@@ -45,8 +45,7 @@ public class AdministrationController {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.setStatus(Protocol.SERVER_ERROR);
-			
-			response.sendRedirect("");
+		
 			return;
 		} catch (IllegalArgumentException | NullPointerException e2) {
 			e2.printStackTrace();
@@ -86,8 +85,9 @@ public class AdministrationController {
 		String userStr = (String) username;
 		
 		try {
-			if(!UserDaoJDBC.getInstance().isUserAdmin(new Username(userStr)))
+			if(!UserDaoJDBC.getInstance().isUserAdmin(new Username(userStr))) {
 				return "";
+			}
 		} catch (IllegalArgumentException | NullPointerException e) {
 			return "";
 		} catch (SQLException e) {
@@ -108,6 +108,7 @@ public class AdministrationController {
 		
 		request.setAttribute("cryptos", allCryptos);
 		request.setAttribute("users", allUsers);
+
 		
 		return "dashboard";
 	}
@@ -119,6 +120,11 @@ public class AdministrationController {
 			session.invalidate();
 		
 		response.sendRedirect("/admin/login");
+	}
+	
+	@GetMapping("/errorPage")
+	public String errorPage() {
+		return "errorPage";
 	}
 	
 }
