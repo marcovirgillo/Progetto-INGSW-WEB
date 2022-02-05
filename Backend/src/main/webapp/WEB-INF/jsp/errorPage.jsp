@@ -14,7 +14,7 @@
 
 <body>  
 	<div class="error-page">
-		<img class="error-image" src="../../admin_assets/logos/404.png"/>
+		<img class="error-image" src="../../admin_assets/logos/403.png"/>
 		<p class="error-text">${text}</p>
 		
 		<a href="/admin/login">
