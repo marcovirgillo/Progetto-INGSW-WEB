@@ -16,6 +16,7 @@ import org.json.simple.JSONObject;
 import com.cryptoview.model.CryptoDetail;
 import com.cryptoview.model.api.TopCryptoFetcher;
 import com.cryptoview.persistence.model.Crypto;
+import com.cryptoview.service.TopCryptos;
 
 public class CryptoDaoJDBC extends CryptoDao {
 
@@ -85,6 +86,7 @@ public class CryptoDaoJDBC extends CryptoDao {
 		stm.close();
 		
 		cryptosMap.put(obj.getTicker(), obj);
+		TopCryptos.getInstance().updateNewCryptoData(obj.getTicker(), obj.getIdApi());
 	}
 
 	@Override

@@ -129,6 +129,12 @@ public class TopCryptos {
 			}
 		}
 	}
+	
+	//quando aggiungo una crypto da pannello admin, fetcho i suoi dati di mercato
+    public void updateNewCryptoData(String ticker, String id) {
+        CryptoDetail cryptoDetail = CryptoDetail.parseFromSingleResponse(TopCryptoFetcher.getInstance().fetchCrypto(id));
+        supportedCryptoDetail.put(ticker, cryptoDetail);
+    }
 
 	private String getCryptoChart(String imageUrl) {
 		Integer cryptoId = getIdFromImage(imageUrl);
