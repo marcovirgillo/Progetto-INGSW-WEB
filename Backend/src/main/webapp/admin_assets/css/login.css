@@ -13,9 +13,25 @@ body {
 
 .container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+}
+
+.login-list {
+  width: 360px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-left: -20px;
+} 
+
+.admin{
+  color:white;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .screen {

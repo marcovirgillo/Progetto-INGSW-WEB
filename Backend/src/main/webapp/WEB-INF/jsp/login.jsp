@@ -15,6 +15,10 @@
 
 <body>
 	<div class="container">
+		<div class="login-list"">
+			<img src="../../admin_assets/logos/CryptoViewLogo.png" width="96" height="96" />
+			<p  class="admin">Admin</p>
+		</div>
 		<div class="screen">
 			<div class="screen__content">
 				<form class="login" method="POST" action="doLogin">
