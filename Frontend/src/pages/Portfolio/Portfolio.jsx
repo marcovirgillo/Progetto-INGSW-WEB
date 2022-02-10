@@ -237,7 +237,7 @@ const Portfolio = (props) => {
         }
     }
 
-    const deleteAllAssets = () => {
+    /*const deleteAllAssets = () => {
         const url = `http://${address}:8080/removeAllCryptos`;
         fetch(url, {
             method: 'DELETE',
@@ -246,7 +246,7 @@ const Portfolio = (props) => {
             }
         })
         .then(res => parseDeleteAll(res));
-    }
+    }*/
 
     const getChartColor = () => {
         const prices = chartData[0]['data'];
@@ -324,9 +324,9 @@ const Portfolio = (props) => {
                         <ul ref={myAssetsUl} className="assets-list">
                             <p className="white-label assets-label">My Assets</p>
                             <div className="h-spacer-assets" />
-                            <button onClick={() => setConfirmPopupActive(true)}>
+                            {/*<button onClick={() => setConfirmPopupActive(true)}>
                                 Remove all assets
-                            </button>
+                            </button>*/}
                             <ButtonAddNewAsset setCryptoDialogOpen={setChooseCryptoPageActive}/>
                         </ul>
                         <ul style={{display: 'flex', flexDirection: 'columns', padding: 0, margin: 0,
@@ -351,7 +351,7 @@ const Portfolio = (props) => {
                     <ConfirmPopup 
                         title="Delete all assets" 
                         text="Are you sure you want to delete all the assets in portfolio ?"
-                        onConfirm={() => {deleteAllAssets(); setConfirmPopupActive(false)}}
+                        onConfirm={() => {/*deleteAllAssets();*/ setConfirmPopupActive(false)}}
                         onCancel={() => setConfirmPopupActive(false)}/>
                 )}
         </div>
